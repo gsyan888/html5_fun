@@ -7,6 +7,8 @@ seperator = ",";	//題目字串中，各欄位的分隔符號
 answer_field_number = 0;		//答案在第幾欄位(由 0 起算)
 question_field_number = 3;		//題幹在第幾欄位(由 0 起算)
 
+//針對成語的額外欄位
+phonics_field_number = 1;		//注音符號在第幾欄位(由 0 起算)
 description_field_number = 2;	//解釋在第幾欄位(由 0 起算)
 
 auto_replace_answer = "yes";	//是否自動將題幹中帶有的答案字串用括號取代

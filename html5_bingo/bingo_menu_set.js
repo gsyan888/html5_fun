@@ -28,5 +28,7 @@ menu_items = new Array(
 , '三上國語第12課,data/bingo-h-3-1-12.js'
 , '三上國語第13課,data/bingo-h-3-1-13.js'
 , '三上國語第14課,data/bingo-h-3-1-14.js'
+
+, '設定範例(展示各種素材),bingo_question_example.js'
 //------------------------------------選單選項結束,以下請勿修改
 );

@@ -1,16 +1,21 @@
 CACHE MANIFEST
 
-# Updated on: 2017-09-21 00:00:02
+# Updated on: 2017-09-21 00:00:03
 
 
 #----------以下為檔案清單------------
 bingo.js
 bingo_set.js
 bingo_menu_set.js
+bingo_question_example.js
 
 assets/sound_bingo.mp3
 assets/sound_ng.mp3
 assets/sound_ok.mp3
+
+samples/cat.png
+samples/dog.png
+samples/dog.mp3
 
 data/bingo-h-3-1-01.js
 data/bingo-h-3-1-02.js

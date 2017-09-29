@@ -1,0 +1,17 @@
+CACHE MANIFEST
+
+# Updated on: 2014-07-12 00:00:00
+
+
+#----------以下為檔案清單------------
+
+sentence.js
+sentence_set.js
+question_set.js
+assets/startup.png
+assets/startup-ipad-p.png
+assets/startup-ipad-l.png
+assets/icon.png
+
+NETWORK:
+*

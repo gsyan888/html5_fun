@@ -1,0 +1,18 @@
+CACHE MANIFEST
+
+# Updated on: 2017-09-12 00:00:01
+
+
+#----------以下為檔案清單------------
+
+wheel_set.js
+wheel.js
+html5_wheel.html
+assets/startup.png
+assets/startup-ipad-p.png
+assets/startup-ipad-l.png
+assets/icon.png
+assets/sound_spin.mp3
+
+NETWORK:
+*

@@ -133,7 +133,7 @@ img {
         if os.path.exists(pageFilePath) :
             print pageFilePath
             if row > 0 and row%col_total == 0 :
-                outfile.write( '</div><!-------end of tr------->\n' )  #end of tr
+                outfile.write( '</div><!--end of tr-->\n' )  #end of tr
             if row%col_total == 0 :
                 outfile.write( '\n<div class="css_tr">\n\n' )
             outfile.write( '<div class="css_td">\n' )
@@ -161,8 +161,8 @@ img {
             outfile.write( '</div><!--end of td-->\n\n' )   #end of td
             row = row+1
     
-    outfile.write( '</div><!-------end of tr------->\n' )   #end of tr
-    outfile.write( '</div><!-------end of table------->\n' )   #end of table
+    outfile.write( '</div><!--end of tr-->\n' )   #end of tr
+    outfile.write( '</div><!--end of table-->\n' )   #end of table
     outfile.write( footer )    
     outfile.close()
     print 'Create index page : ' + outfilePath + '\n'

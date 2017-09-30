@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 """Utilty to make index page
 """
@@ -32,7 +33,7 @@ def make_index_page() :
 
     header = """<html>
 <head>
-<title>HTML5 FUN : gsyan</title>
+<title>HTML5 FUN : gsyan : ¶¯</title>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
 <style>
 h1 {

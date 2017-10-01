@@ -1,0 +1,14 @@
+CACHE MANIFEST
+
+# Updated on: 2017-10-01 00:00:00
+
+
+#----------以下為檔案清單------------
+lotto.js
+lotto_set.js
+
+samples/cat.png
+samples/dog.png
+
+NETWORK:
+*

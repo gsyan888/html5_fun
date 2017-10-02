@@ -19,6 +19,8 @@ urlDict["html5_pk2"] = "http://gsyan888.blogspot.com/2013/12/html5-pk2.html"
 urlDict["html5_ghost"] = "http://gsyan888.blogspot.com/2012/12/html5-ghost.html"
 urlDict["html5_pk"] = "http://gsyan888.blogspot.com/2012/11/html5-pk.html"
 urlDict["html5_lotto"] = "http://gsyan888.blogspot.com/2012/11/html5-lotto.html"
+urlDict["html5_bingo"] = "http://gsyan888.blogspot.com/2017/10/html5-bingo.html"
+
 
 
 currentPath = os.getcwd();

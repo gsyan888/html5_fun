@@ -3,7 +3,7 @@ CACHE MANIFEST
 #----------------------------------------------
 # 下面這一行不要移除，有修改資料，記得把時間改一下
 #----------------------------------------------
-# Updated on: 2017-10-03 00:00:03
+# Updated on: 2017-10-03 00:00:04
 #
 
 #----------------------------------------------
@@ -44,7 +44,7 @@ assets/baseball.png
 assets/pitcher-1.png
 assets/pitcher-2.png
 assets/baseball.mp3
-
+assets/baseball.ogg
 
 
 NETWORK:

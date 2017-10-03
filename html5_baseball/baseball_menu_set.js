@@ -1,4 +1,4 @@
-menu_title='棒球高手';
+menu_title='王牌投手';
 menu_items = new Array(
   "九九乘法,data/9x9.js"
 , "除法入門級,data/9x9-divide.js"  

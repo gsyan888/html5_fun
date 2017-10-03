@@ -19,3 +19,5 @@ defaultHoldTime = 2;			//每個選項暫停移動等候按下的秒數
 scoreToAdd = 10;		//答對時加幾分
 scoreToMinus = -10;		//答錯時扣幾分
 
+soundEffectEnable = true;	//是否啟用音效
+

@@ -55,7 +55,8 @@
 		onResize()
 		
 		//hide the vodeo element, add by gsyan
-		var video = document.getElementsByTagName("VIDEO")[0];
+		//var video = document.getElementsByTagName("VIDEO")[0];
+		//video.style.visibility = 'hidden';
 		//video.style.display = 'none';
 	})
 	
@@ -103,12 +104,16 @@
 	////////////////////////////////////////////////////////////////////////////////
 	
 	// init controls for camera
+	
+	// mobile use the fipped pattern markers files m-marker-*.patt
 	var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-	if (isMobile) {
+	if (isMobile) {	
 		var markerUrlPrefix = 'data/m-marker-';
 	} else {
 		var markerUrlPrefix = 'data/marker-';
 	}
+	
+	//load the pattern files in sequence
 	var loadMarkersVar = setInterval(loadMarkers, 100);
 	var markerNumber = -1;
 	var timerCounter = 0;
@@ -122,6 +127,7 @@
 				//	loadedNum = 0;
 				//	alert(Object.keys(arToolkitContext.arController.patternMarkers));
 				//}
+				//got the patternMakers object length
 				var loadedNum = -1;
 				var item;
 				for(item in arToolkitContext.arController.patternMarkers){
@@ -211,5 +217,7 @@
 				}
 			}
 		}
-		ar_numbers.update();
+		if ( typeof(ar_numbers) == 'object' ) {
+			ar_numbers.update();
+		}
 	})

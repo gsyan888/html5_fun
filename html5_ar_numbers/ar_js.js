@@ -164,22 +164,9 @@
 		renderer.render( scene, camera );
 	})
 	
+	// push detected result to ar_numbers.update
 	var oldDir = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
-	
-	// run the rendering loop
-	var lastTimeMsec= null
-	requestAnimationFrame(function animate(nowMsec){
-		// keep looping
-		requestAnimationFrame( animate );
-		// measure time
-		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-		lastTimeMsec	= nowMsec
-		// call each update function
-		onRenderFcts.forEach(function(onRenderFct){
-			onRenderFct(deltaMsec/1000, nowMsec/1000)
-		})
-		
+	onRenderFcts.push(function() {
 		var result = '';
 		var newDir = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
 		
@@ -219,5 +206,21 @@
 		}
 		if ( typeof(ar_numbers) == 'object' ) {
 			ar_numbers.update();
-		}
+		}	
+	});
+	
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(100, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+		
 	})

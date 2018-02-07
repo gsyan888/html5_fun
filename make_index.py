@@ -11,6 +11,7 @@ import os
 compiledPath = 'html5_fun'
 
 urlDict = {}
+urlDict["html5_stroke"] = "http://gsyan888.blogspot.com/2013/12/html5-stroke.html"
 urlDict["html5_wheel"] = "http://gsyan888.blogspot.com/2017/09/html5-wheel.html"
 urlDict["html5_spelling"] = "http://gsyan888.blogspot.com/2014/08/html5-spelling.html"
 urlDict["html5_sentence"] = "http://gsyan888.blogspot.com/2014/07/html5-sentence.html"
@@ -20,7 +21,6 @@ urlDict["html5_ghost"] = "http://gsyan888.blogspot.com/2012/12/html5-ghost.html"
 urlDict["html5_pk"] = "http://gsyan888.blogspot.com/2012/11/html5-pk.html"
 urlDict["html5_lotto"] = "http://gsyan888.blogspot.com/2012/11/html5-lotto.html"
 urlDict["html5_bingo"] = "http://gsyan888.blogspot.com/2017/10/html5-bingo.html"
-
 
 
 currentPath = os.getcwd();

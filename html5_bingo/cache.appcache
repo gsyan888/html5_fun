@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Updated on: 2017-09-25 00:00:00
+# Updated on: 2018-02-07 00:00:00
 
 
 #----------以下為檔案清單------------
@@ -17,20 +17,37 @@ samples/cat.png
 samples/dog.png
 samples/dog.mp3
 
-data/bingo-h-3-1-01.js
-data/bingo-h-3-1-02.js
-data/bingo-h-3-1-03.js
-data/bingo-h-3-1-04.js
-data/bingo-h-3-1-05.js
-data/bingo-h-3-1-06.js
-data/bingo-h-3-1-07.js
-data/bingo-h-3-1-08.js
-data/bingo-h-3-1-09.js
-data/bingo-h-3-1-10.js
-data/bingo-h-3-1-11.js
-data/bingo-h-3-1-12.js
-data/bingo-h-3-1-13.js
-data/bingo-h-3-1-14.js
+data-h-3-1/bingo_menu_set-h-3-1.js
+data-h-3-1/bingo-h-3-1-01.js
+data-h-3-1/bingo-h-3-1-02.js
+data-h-3-1/bingo-h-3-1-03.js
+data-h-3-1/bingo-h-3-1-04.js
+data-h-3-1/bingo-h-3-1-05.js
+data-h-3-1/bingo-h-3-1-06.js
+data-h-3-1/bingo-h-3-1-07.js
+data-h-3-1/bingo-h-3-1-08.js
+data-h-3-1/bingo-h-3-1-09.js
+data-h-3-1/bingo-h-3-1-10.js
+data-h-3-1/bingo-h-3-1-11.js
+data-h-3-1/bingo-h-3-1-12.js
+data-h-3-1/bingo-h-3-1-13.js
+data-h-3-1/bingo-h-3-1-14.js
+
+data-h-3-2/bingo_menu_set-h-3-2.js
+data-h-3-2/bingo-h-3-2-01.js
+data-h-3-2/bingo-h-3-2-02.js
+data-h-3-2/bingo-h-3-2-03.js
+data-h-3-2/bingo-h-3-2-04.js
+data-h-3-2/bingo-h-3-2-05.js
+data-h-3-2/bingo-h-3-2-06.js
+data-h-3-2/bingo-h-3-2-07.js
+data-h-3-2/bingo-h-3-2-08.js
+data-h-3-2/bingo-h-3-2-09.js
+data-h-3-2/bingo-h-3-2-10.js
+data-h-3-2/bingo-h-3-2-11.js
+data-h-3-2/bingo-h-3-2-12.js
+data-h-3-2/bingo-h-3-2-13.js
+data-h-3-2/bingo-h-3-2-14.js
 
 NETWORK:
 *

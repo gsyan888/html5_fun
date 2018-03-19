@@ -1,16 +1,11 @@
 CACHE MANIFEST
 
-# Updated on: 2017-09-17 00:00:02
+# Updated on: 2017-09-17 00:00:03
 
 
 #----------以下為檔案清單------------
-html5_poke.html
 poke_set.js
 poke.js
-assets/startup.png
-assets/startup-ipad-p.png
-assets/startup-ipad-l.png
-assets/icon.png
 data/alien.png
 data/angel.png
 data/base.png

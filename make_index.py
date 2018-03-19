@@ -44,7 +44,7 @@ h1 {
   }
 #css_table {
       display:table;
-      width:100%
+      width:100%;
   }
 .css_tr {
       display: table-row;
@@ -54,6 +54,7 @@ h1 {
       border: 0px solid black;
       text-align:center;
       vertical-align:middle;
+      width : 20%;
       height : 130pt;
   }
 img {

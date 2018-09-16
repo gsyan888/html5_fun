@@ -70,7 +70,8 @@ soundEffectEnable = true;	//是否啟用音效: true / false
 //顯示抽取結果對話框的相關設定
 //--------------------------------------------------
 //上方的標題字
-result_dialog_caption = '樂透';			
+result_dialog_caption = '樂透';
+result_dialog_caption_font_size = 70;	//標題字大小			
 
 //上方的小圖示 : 
 //	base64 編碼工具： https://www.base64-image.de/ 

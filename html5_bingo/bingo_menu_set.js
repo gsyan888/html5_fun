@@ -18,7 +18,8 @@ menu_title='BINGO';		//選單標題
 //
 menu_items = new Array(
 //------------------------------------下一行開始為選單增加項目
-  '◎翰林版三上國語1-14課成語,data-h-3-1/bingo_menu_set-h-3-1.js,menu'
+  '◎翰林版四上國語1-14課成語,data-h-4-1/bingo_menu_set-h-4-1.js,menu'
+, '◎翰林版三上國語1-14課成語,data-h-3-1/bingo_menu_set-h-3-1.js,menu'
 , '◎翰林版三下國語1-14課成語,data-h-3-2/bingo_menu_set-h-3-2.js,menu'
 
 , '設定範例(展示各種素材),bingo_question_example.js'

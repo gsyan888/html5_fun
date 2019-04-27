@@ -9,7 +9,7 @@ card_swap_mode = 0;
 
 //遊戲開始前的說明對話框設定
 help_title = '說明';		//標題
-help_description = '請拖曳各片段，排出正確的句子。加油！';	//說明
+help_description = '請移動各張卡片，排出正確的句子。加油！';	//說明
 help_button_caption = '開始';	//按鈕上的文字
 
 

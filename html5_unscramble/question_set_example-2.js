@@ -11,7 +11,7 @@ card_swap_mode = 0;
 //遊戲開始前的說明對話框設定
 //----------------
 help_title = '說明';		//標題
-help_description = '請排出正確的英文單字。加油！';	//說明
+help_description = '請移動各張卡片，排出正確的英文單字。加油！';	//說明
 help_button_caption = '開始';	//按鈕上的文字
 
 
@@ -28,12 +28,12 @@ sound_autoPlay = false;
 tts_enabled = true;
 
 //將題庫中的哪一個欄位的文字轉語音(由 0 起算)
-tts_is_at_index = 1;
+tts_is_at_index = 0;
 	
 //----------------
 //Googl TTS 文字轉語音的設定
 //----------------
-tts_language = 'zh_tw';  // en : 英語,   zh_tw : 中文
+tts_language = 'en';  // en : 英語,   zh_tw : 中文
 tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl='+tts_language+'&client=tw-ob&ttsspeed=1&q=';
 
 //----------------

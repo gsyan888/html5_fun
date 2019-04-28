@@ -60,16 +60,16 @@ split_seperator = " ";	//句子字串中，切割子字串的的分隔符號
 //----------------
 question_lines=new Array(
 //------------------------------------下一行開始增加題目
-  "What’s wrong?###怎麼了？"
-, 'My leg hurts.###他的腳受傷了。'
-, 'His hands hurt.###他的手受傷了。'
-, 'Her foot hurts.###他的腳受傷了。'
-, 'I have a headache.###我頭痛。'
-, 'She has a toothache.###她牙痛。'
-, 'She has a runny nose.###她流鼻水。'
-, 'My eyes hurt.###mp3/8.mp3'
-, 'Her arm hurts.###mp3/9.mp3'
-, 'His ear hurts.###mp3/10.mp3'
+  "What's wrong?###怎麼了？"
+, "My leg hurts.###他的腳受傷了。"
+, "His hands hurt.###他的手受傷了。"
+, "Her foot hurts.###他的腳受傷了。"
+, "I have a headache.###我頭痛。"
+, "She has a toothache.###她牙痛。"
+, "She has a runny nose.###她流鼻水。"
+, "My eyes hurt.###mp3/8.mp3"
+, "Her arm hurts.###mp3/9.mp3"
+, "His ear hurts.###mp3/10.mp3"
 //------------------------------------題庫結束,以下請勿修改
 );
 

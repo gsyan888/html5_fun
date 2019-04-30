@@ -7,6 +7,13 @@
 // 1 : click
 card_swap_mode = 0; 
 
+//是否使用「送出答案」的按鈕
+// true : 玩家按「送出答案」才核對答案
+// false : 卡片換位置後就自動對答案
+enableSubmitButton = false;
+
+
+
 //遊戲開始前的說明對話框設定
 help_title = '說明';		//標題
 help_description = '請移動各張卡片，排出正確的句子。加油！';	//說明

@@ -30,6 +30,13 @@ sound_enabled = true;
 //是否自動播放語音 true : 自動播放 / false : 按播放鈕才播放
 sound_autoPlay = true;
 
+//語音自動重播
+//自動播放的次數
+sound_autoPlayLoop = 1;
+//隔多久重播(單位秒)
+sound_autoPlayDelay = 2;
+
+
 //是否使用 TTS 的語音
 tts_enabled = true;
 
@@ -42,7 +49,8 @@ tts_is_at_index = 0;
 
 //Googl TTS 文字轉語音的設定
 tts_language = 'zh_tw';		//中文
-tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl='+tts_language+'&client=tw-ob&ttsspeed=1&q=';
+tts_speed = 1;  //語音的速度 0 ~ 1 (可用小數)
+tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl='+tts_language+'&client=tw-ob&ttsspeed='+tts_speed+'&q=';
 
 
 //
@@ -60,6 +68,14 @@ tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl='+tts_lan
 //再以 split_seperator 分割
 data_seperator = "###";	//題目字串中，各欄位的分隔符號
 split_seperator = " ";	//句子字串中，切割子字串的的分隔符號
+
+//是否以字串長度來切割子字串,
+//	如果設為 true, 題庫第一欄位會以長度來切割
+//	如果設為 false (預設值), 題庫第一欄位會以 split_seperator 來切割
+split_by_length = false;	
+split_by_length_substring_length = 1;	//當 split_by_length 為 true , 子字串多長
+
+
 
 //----------------
 //題庫

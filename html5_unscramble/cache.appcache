@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Updated on: 2019-05-18 00:00:00
+# Updated on: 2019-05-21 00:00:00
 
 
 #----------以下為檔案清單------------
@@ -10,6 +10,7 @@ unscramble_menu_set.js
 question_set_example-1.js
 question_set_example-2.js
 question_set_example-3.js
+question_set_example-4.js
 
 
 NETWORK:

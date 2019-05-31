@@ -11,10 +11,7 @@ numberOfQuestionsPerRound = 50;
 //也就是會為 questionLines 的左欄前面自動加上的字串
 //
 // English 1200
-// http://mail.ymps.tyc.edu.tw/english1200/
-// https://stuweb.syps.tp.edu.tw/english1200/
-//
-soundBaseURL = 'https://stuweb.syps.tp.edu.tw/english1200/';
+soundBaseURL = 'https://gsyan888.github.io/english1200/';
 
 //是否使用 TTS 的語音
 tts_enabled = false;

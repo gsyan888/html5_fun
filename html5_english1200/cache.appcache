@@ -1,12 +1,13 @@
 CACHE MANIFEST
 
-# Updated on: 2019-06-02 00:00:00
+# Updated on: 2019-06-02 00:00:01
 
 
 #----------以下為檔案清單------------
 english1200.js
 english1200_menu_set.js
 english1200-all-set.js
+english1200-all-set-sentence.js
 questions_set_tts.js
 
 

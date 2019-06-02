@@ -7,6 +7,10 @@ numberOfOptionsPerRow = 2;
 //每回合抽幾題題目
 numberOfQuestionsPerRound = 50;
 
+//出題時選擇題目的方式 true:亂數選題  false:按題庫順序
+select_questions_in_random = true; 
+
+
 //聲音檔路徑的前置網址
 //也就是會為 questionLines 的左欄前面自動加上的字串
 //

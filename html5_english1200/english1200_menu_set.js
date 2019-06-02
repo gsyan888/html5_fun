@@ -15,11 +15,13 @@ menu_title='English1200';		//選單標題
 //   第三個欄位：類型，
 //   			 如果未指定，為題庫檔案;
 //   			 如果設為 menu ，表示為選單設定檔案
-//   			 最後一行的設定即為設了 menu 的範例
+//				 ex. 
+//				 '第一冊英文單字','questions_set_book_1.js', 'menu'
 //
 menu_items = new Array(
 //------------------------------------下一行開始為選單增加項目
  'English1200,english1200-all-set.js'
 ,'設定範例(TTS發音),questions_set_tts.js'
+,'設定範例:句子二選一,questions_set_sentence.js'
 //------------------------------------選單選項結束,以下請勿修改
 );

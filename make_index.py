@@ -123,7 +123,7 @@ img {
 """
     footer ="""
 <hr size="1" width="95%" />
-<div id="url">Some HTML5 games created by LimeJS.<br /><a href="https://gsyan888.blogspot.com/">http://gsyan888.blogspot.com/</a></div>
+<div id="url">Some HTML5 games created by LimeJS.<br /><a href="https://gsyan888.blogspot.com/">https://gsyan888.blogspot.com/</a></div>
 </body>
 </html>
 """

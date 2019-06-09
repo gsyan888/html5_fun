@@ -11,17 +11,17 @@ import os
 compiledPath = 'html5_fun'
 
 urlDict = {}
-urlDict["html5_stroke"] = "http://gsyan888.blogspot.com/2013/12/html5-stroke.html"
-urlDict["html5_wheel"] = "http://gsyan888.blogspot.com/2017/09/html5-wheel.html"
-urlDict["html5_spelling"] = "http://gsyan888.blogspot.com/2014/08/html5-spelling.html"
-urlDict["html5_sentence"] = "http://gsyan888.blogspot.com/2014/07/html5-sentence.html"
-urlDict["html5_phonetics_quiz"] = "http://gsyan888.blogspot.com/2014/02/html5-phoneticsquiz.html"
-urlDict["html5_pk2"] = "http://gsyan888.blogspot.com/2013/12/html5-pk2.html"
-urlDict["html5_ghost"] = "http://gsyan888.blogspot.com/2012/12/html5-ghost.html"
-urlDict["html5_pk"] = "http://gsyan888.blogspot.com/2012/11/html5-pk.html"
-urlDict["html5_lotto"] = "http://gsyan888.blogspot.com/2012/11/html5-lotto.html"
-urlDict["html5_bingo"] = "http://gsyan888.blogspot.com/2017/10/html5-bingo.html"
-urlDict["html5_number_selector"] = "http://gsyan888.blogspot.com/2012/11/html5-numberselector.html"
+urlDict["html5_stroke"] = "https://gsyan888.blogspot.com/2013/12/html5-stroke.html"
+urlDict["html5_wheel"] = "https://gsyan888.blogspot.com/2017/09/html5-wheel.html"
+urlDict["html5_spelling"] = "https://gsyan888.blogspot.com/2014/08/html5-spelling.html"
+urlDict["html5_sentence"] = "https://gsyan888.blogspot.com/2014/07/html5-sentence.html"
+urlDict["html5_phonetics_quiz"] = "https://gsyan888.blogspot.com/2014/02/html5-phoneticsquiz.html"
+urlDict["html5_pk2"] = "https://gsyan888.blogspot.com/2013/12/html5-pk2.html"
+urlDict["html5_ghost"] = "https://gsyan888.blogspot.com/2012/12/html5-ghost.html"
+urlDict["html5_pk"] = "https://gsyan888.blogspot.com/2012/11/html5-pk.html"
+urlDict["html5_lotto"] = "https://gsyan888.blogspot.com/2012/11/html5-lotto.html"
+urlDict["html5_bingo"] = "https://gsyan888.blogspot.com/2017/10/html5-bingo.html"
+urlDict["html5_number_selector"] = "https://gsyan888.blogspot.com/2012/11/html5-numberselector.html"
 urlDict["html5_unscramble"] = "https://gsyan888.blogspot.com/2019/04/html5-unscramble.html"
 urlDict["html5_strokeeditor"] = "https://gsyan888.blogspot.com/2019/04/html5-stroke-editor.html"
 
@@ -123,7 +123,7 @@ img {
 """
     footer ="""
 <hr size="1" width="95%" />
-<div id="url">Some HTML5 games created by LimeJS.<br /><a href="http://gsyan888.blogspot.com/">http://gsyan888.blogspot.com/</a></div>
+<div id="url">Some HTML5 games created by LimeJS.<br /><a href="https://gsyan888.blogspot.com/">http://gsyan888.blogspot.com/</a></div>
 </body>
 </html>
 """

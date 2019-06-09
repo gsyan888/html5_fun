@@ -1,5 +1,5 @@
 //每題有幾個選項
-numberOfOptions = 6;
+numberOfOptions = 4;
 
 //每列最多可以有幾個選項
 numberOfOptionsPerRow = 2;	
@@ -259,7 +259,7 @@ letter_c/sounds/club.mp3##n.社團
 letter_c/sounds/coast.mp3##n.海岸
 letter_c/sounds/coat.mp3##n.外套
 letter_c/sounds/coffee.mp3##n.咖啡
-letter_c/sounds/Coke.mp3##n.可樂
+letter_c/sounds/coke.mp3##n.可樂
 letter_c/sounds/cold.mp3##adj.冷的
 letter_c/sounds/collect.mp3##v.收集
 letter_c/sounds/color.mp3##n.顏色
@@ -303,7 +303,7 @@ letter_d/sounds/dawn.mp3##n.黎明
 letter_d/sounds/day.mp3##n.日子
 letter_d/sounds/dead.mp3##adj.死亡的
 letter_d/sounds/dear.mp3##adj.親愛的
-letter_d/sounds/december.mp3##n.十二月
+letter_d/sounds/December.mp3##n.十二月
 letter_d/sounds/decide.mp3##v.決定
 letter_d/sounds/decrease.mp3##v;n.減少
 letter_d/sounds/delicious.mp3##adj.好吃的
@@ -405,7 +405,7 @@ letter_f/sounds/fall.mp3##v.掉落
 letter_f/sounds/false.mp3##adj.錯誤的
 letter_f/sounds/family.mp3##n.家庭家人
 letter_f/sounds/famous.mp3##adj.有名的
-letter_f/sounds/fan.mp3##n.迷
+letter_f/sounds/fan.mp3##n.迷;電扇;扇子
 letter_f/sounds/fancy.mp3##n.adj.幻想,想像的
 letter_f/sounds/fantastic.mp3##adj.很棒的
 letter_f/sounds/farm.mp3##n.農場
@@ -457,7 +457,7 @@ letter_f/sounds/fourteen.mp3##n.十四
 letter_f/sounds/fourth.mp3##n.第四
 letter_f/sounds/free.mp3##adj.空閒的免費的
 letter_f/sounds/fresh.mp3##adj.新鮮的
-letter_f/sounds/friday.mp3##n.星期五
+letter_f/sounds/Friday.mp3##n.星期五
 letter_f/sounds/friend.mp3##n.朋友
 letter_f/sounds/friendly.mp3##adj.友善的
 letter_f/sounds/friendship.mp3##n.友誼
@@ -587,9 +587,9 @@ letter_j/sounds/jog.mp3##v.慢跑
 letter_j/sounds/join.mp3##v.參與
 letter_j/sounds/joy.mp3##n.喜悅
 letter_j/sounds/juice.mp3##n.果汁
-letter_j/sounds/july.mp3##n.七月
+letter_j/sounds/July.mp3##n.七月
 letter_j/sounds/jump.mp3##v.跳
-letter_j/sounds/june.mp3##n.六月
+letter_j/sounds/June.mp3##n.六月
 letter_j/sounds/junior_high_school.mp3##n.國中
 letter_j/sounds/just.mp3##adv.只是
 letter_k/sounds/keep.mp3##v.保持
@@ -848,8 +848,8 @@ letter_p/sounds/push.mp3##v.推
 letter_p/sounds/put.mp3##v.放
 letter_q/sounds/queen.mp3##n.皇后
 letter_q/sounds/question.mp3##n.問題
-letter_q/sounds/quick.mp3##adj.
-letter_q/sounds/quiet.mp3##adj.
+letter_q/sounds/quick.mp3##adj.快速的
+letter_q/sounds/quiet.mp3##adj.安靜的
 letter_q/sounds/quite.mp3##adv.非常，相當
 letter_r/sounds/rabbit.mp3##n.兔子
 letter_r/sounds/race.mp3##n.競賽
@@ -914,7 +914,7 @@ letter_s/sounds/scooter.mp3##n.滑板車
 letter_s/sounds/sea.mp3##n.海
 letter_s/sounds/season.mp3##n.季節
 letter_s/sounds/seat.mp3##n.位子
-letter_s/sounds/second.mp3##adj.第二秒
+letter_s/sounds/second.mp3##adj.第二；秒
 letter_s/sounds/see.mp3##v.看見
 letter_s/sounds/seed.mp3##n.種子
 letter_s/sounds/seek.mp3##v.追尋
@@ -1133,7 +1133,7 @@ letter_t/sounds/twice.mp3##adv.兩次　
 letter_t/sounds/two.mp3##n.二　
 letter_t/sounds/typhoon.mp3##n.颱風　
 letter_u/sounds/umbrella.mp3##n.雨傘
-letter_u/sounds/uncle.mp3##n.叔、舅
+letter_u/sounds/uncle.mp3##n.伯、叔、舅
 letter_u/sounds/under.mp3##prep.在底下
 letter_u/sounds/understand.mp3##v.了解
 letter_u/sounds/unhappy.mp3##adj.不高興的

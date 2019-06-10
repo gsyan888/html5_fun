@@ -24,6 +24,7 @@ urlDict["html5_bingo"] = "https://gsyan888.blogspot.com/2017/10/html5-bingo.html
 urlDict["html5_number_selector"] = "https://gsyan888.blogspot.com/2012/11/html5-numberselector.html"
 urlDict["html5_unscramble"] = "https://gsyan888.blogspot.com/2019/04/html5-unscramble.html"
 urlDict["html5_strokeeditor"] = "https://gsyan888.blogspot.com/2019/04/html5-stroke-editor.html"
+urlDict["html5_english1200"] = "https://gsyan888.blogspot.com/2019/06/html5-english-1200.html"
 
 currentPath = os.getcwd();
 parent_folder_name, current_folder_name = os.path.split(currentPath)

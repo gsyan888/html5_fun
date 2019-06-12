@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Updated on: 2019-06-11 00:00:00
+# Updated on: 2019-06-13 00:00:00
 
 
 #----------以下為檔案清單------------
@@ -9,6 +9,7 @@ english1200_menu_set.js
 english1200-all-set.js
 english1200-all-set-sentence.js
 questions_set_tts.js
+questions_set_klokah.js'
 
 
 NETWORK:

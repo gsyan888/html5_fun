@@ -23,5 +23,6 @@ menu_items = new Array(
 ,'English1200:句子,english1200-all-set-sentence.js'
 ,'設定範例(TTS發音),questions_set_tts.js'
 ,'設定範例:句子二選一,questions_set_sentence.js'
+,'九族E樂園,questions_set_klokah.js'
 //------------------------------------選單選項結束,以下請勿修改
 );

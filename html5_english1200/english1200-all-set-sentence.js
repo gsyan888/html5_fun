@@ -1,4 +1,19 @@
-﻿//每題有幾個選項
+﻿//題幹的字型大小
+questionFontSize = 48; 
+
+//題幹的顏色
+questionFontColor = "#ff0000";
+
+//選項的字型顏色
+optionsFontColor = "#fffeef";
+
+//選項的背景顏色
+optionsBackgroundColor = "#0000ff"; 
+
+//選項的字型大小
+optionsFontSize = 30;
+
+//每題有幾個選項
 numberOfOptions = 3;
 
 //每列最多可以有幾個選項

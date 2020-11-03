@@ -1,12 +1,20 @@
 CACHE MANIFEST
 
-# Updated on: 2020-11-01 00:00:01
+# Updated on: 2020-11-03 00:00:00
 
 
 #----------以下為檔案清單------------
 animation.js
-assets/animation-frames.png
+animation_set.js
 assets/animation-mask.png
+assets/animation-frames.png
+assets/animation-frames-1.png
+assets/animation-frames-2.png
+assets/animation-frames-3.png
+assets/animation-frames-4.png
+assets/animation-frames-5.png
+assets/animation-frames-6.png
+
 
 NETWORK:
 *

@@ -11,7 +11,7 @@ optionsFontColor = "#fffeef";
 optionsBackgroundColor = "#0000ff"; 
 
 //選項的字型大小
-optionsFontSize = 30;
+optionsFontSize = 35;
 
 //每題有幾個選項
 numberOfOptions = 3;

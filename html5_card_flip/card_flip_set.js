@@ -53,9 +53,15 @@ seperator = ',';
 //	每一題組由第二行起代表著一張牌及其分數，
 //		第一個欄位 : 牌的內容，
 //		第二個欄位 : 分數。
-//		第三個欄位 : 字型大小。
 //
 question_answer_hint_score = function(){/*--這一行請勿更改--
+猜猜看,腳踏車
+節能省碳,10
+摩門教,5
+練習曲,3
+輪子,2
+鐵馬,1
+
 國小220英語單字-動物類-四足,animal
 bear,4~8
 cat,3
@@ -75,13 +81,6 @@ bird,4
 dragon,12
 duck,4
 zoo,10
-
-猜猜看,腳踏車
-節能省碳,10
-摩門教,5
-練習曲,3
-輪子,2
-鐵馬,1
 
 
 -----*/}.toString().slice("function(){/*--這一行請勿更改--".length+2+(typeof(CR_LF_First_Pos)!='undefined' ? CR_LF_First_Pos:0),-9);

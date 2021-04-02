@@ -26,7 +26,7 @@ urlDict["html5_unscramble"] = "https://gsyan888.blogspot.com/2019/04/html5-unscr
 urlDict["html5_strokeeditor"] = "https://gsyan888.blogspot.com/2019/04/html5-stroke-editor.html"
 urlDict["html5_english1200"] = "https://gsyan888.blogspot.com/2019/06/html5-english-1200.html"
 urlDict["html5_card_flip"] = "https://gsyan888.blogspot.com/2021/03/html5-card-flip.html"
-urlDict["html5_gomoku"] = "https://gsyan888.blogspot.com/2010/05/flash-gomoku.html"
+urlDict["html5_gomoku"] = "https://gsyan888.blogspot.com/2021/03/html5-gomoku.html"
 
 currentPath = os.getcwd();
 parent_folder_name, current_folder_name = os.path.split(currentPath)

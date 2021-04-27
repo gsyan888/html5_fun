@@ -54,12 +54,16 @@ seperator = ',';
 //		第一個欄位 : 牌的內容，
 //		第二個欄位 : 分數。
 //
+//		#2021.04.27加入
+//		第三個欄位 : 按下後會出現對話框, 對話框的內容, 可以是圖片、mp3或文字
+//						利用「半形井字號」當分隔，可放入不同的素材
+//
 question_answer_hint_score = function(){/*--這一行請勿更改--
-猜猜看,腳踏車
+猜猜看,腳踏車,assets/sample-photo-bike.jpg
 節能省碳,10
 摩門教,5
 練習曲,3
-輪子,2
+輪子,2,assets/sample-photo-wheel.png
 鐵馬,1
 
 國小220英語單字-動物類-四足,animal

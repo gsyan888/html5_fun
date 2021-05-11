@@ -468,7 +468,7 @@ letter_f/sounds/fry.mp3##v.炒;煎
 letter_f/sounds/full.mp3##adj.充滿的
 letter_f/sounds/fun.mp3##n.樂趣
 letter_f/sounds/funny.mp3##adj.好笑的
-letter_f/sounds/furniture.mp3##v.面對
+letter_f/sounds/furniture.mp3##v.家具
 letter_f/sounds/future.mp3##n.未來
 letter_g/sounds/game.mp3##n.遊戲
 letter_g/sounds/garbage.mp3##n.垃圾車

@@ -5,9 +5,8 @@
 // 對話框的標題字
 title = '戳戳樂';
 
-// 字型與字的大小
+// 字型
 font = '標楷體';
-fontsize = 60;
 
 // 是否在格子的左上角顯示格子的編號
 showNumber = 0;
@@ -34,9 +33,6 @@ paper = 'alien.png,angel.png,base.png,billy.png,borg.png,bricky.png,camouflage.p
 // 每一格的黑色外框線粗細大小
 blackborder = 5
 
-// 要設計幾欄幾列的戳戳樂
-col = 4;	//一橫排放幾格
-row = 2;	//一直排放幾格
 
 //----------------------------------
 //分隔符號設定

@@ -194,7 +194,7 @@ menu_items = [
 	, "html5_poke/assets/icon.png"
 	, "html5_poke/html5_poke.html"
 	, "archives/html5_poke.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2021/06/html5-poke.html"
 	],
 
 	[ "重組遊戲"

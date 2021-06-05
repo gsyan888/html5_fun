@@ -64,7 +64,7 @@ media_seperator	= '#';
 //
 question = new Array(
 //------------------------------------下一行開始增加題目
-  'eye 的中文是什麼？,1'
+  'eye 的中文是什麼？,2'
 , 'sample/cat.png,1'
 , 'sample/eye.mp3,1'
 , '圖片中的動物英文是什麼？#sample/cat.png,1'

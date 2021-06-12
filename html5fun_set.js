@@ -162,7 +162,7 @@ menu_items = [
 	, "html5_match/assets/icon.png"
 	, "html5_match/html5_match.html"
 	, "archives/html5_match.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2021/06/html5-match.html"
 	],
 
 	[ "抽號碼機"

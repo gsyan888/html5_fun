@@ -1,0 +1,22 @@
+CACHE MANIFEST
+
+# Updated on: 2021-06-12 00:00:00
+
+
+#----------以下為檔案清單------------
+html5_match.html
+match.js
+match_menu_set.js
+match_set.js
+match_set_9x9.js
+match_set_memory.js
+
+samples/cat.png
+samples/chicken.png
+samples/cow.png
+samples/dog.png
+samples/horse.png
+samples/monkey.png
+
+NETWORK:
+*

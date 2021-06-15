@@ -122,14 +122,16 @@ injectionAchex = function(username, classroomName, teacherName) {
 
 //找出戳戳樂的格子
 var getAllButtons = function() {
+	var box=null;
 	//boxLayer 中只有存放格子的 object 才有 length
 	//利用這個特性, 找到 boxLayer 中的元件
-	var names = Object.keys(boxLayer);
-	var box=null;
-	for(var i=0; i<names.length; i++) {
-		if(boxLayer[names[i]] && typeof(boxLayer[names[i]])=='object' && typeof(boxLayer[names[i]]['length'])=='number') {
-			var box = boxLayer[names[i]];
-			break;
+	if(boxLayer) {
+		var names = Object.keys(boxLayer);
+		for(var i=0; i<names.length; i++) {
+			if(boxLayer[names[i]] && typeof(boxLayer[names[i]])=='object' && typeof(boxLayer[names[i]]['length'])=='number') {
+				var box = boxLayer[names[i]];
+				break;
+			}
 		}
 	}
 	return box;
@@ -203,16 +205,19 @@ loadSettingFromExternalScript = function(scriptSrc, callback)  {
   docHead.insertBefore(scriptToAdd, docHead.firstChild);
 };
 
-fire = function() {
+fire = function(callback) {
 	var uname = gup('username');
 	if(uname && uname!='') {
-		username = uname;
+		username = decodeURI(uname);
 		classroomName = username;
 		teacherName = username;
 		//console.log([username, classroomName, teacherName]);
 		
 		//loadJavaScripts(firebaseSDKs, injection);
 		loadJavaScripts(achexSDKs, function() {
+			if(typeof(callback)=='function') {
+				callback();
+			}
 			injectionAchex(username, classroomName, teacherName);
 		});
 	};

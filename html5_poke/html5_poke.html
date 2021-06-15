@@ -16,6 +16,12 @@
 
 	<!-- startup image for web apps (320x460) -->
 	<link rel="apple-touch-startup-image" href="assets/startup.png" media="screen and (max-device-width: 320px)" />
+	<style>
+		body {
+			color: #000000;
+			background: #fffff;
+		}
+	</style>	
 </head>
 <body>
    	<script type="text/javascript">
@@ -30,22 +36,21 @@
 				if( results == null )    return "";  
 				else    return results[1];
 			}
-			var u = gup('username');
-			var delay = 0;
-			if(u && u!='') {
-				delay = 2000;
-			}
 			//add by gsyan
-			var loadInjection = function() {
+			//load websocket injection first then load LimeJS
+			var loadInjection = function(callback) {
 				var script = document.createElement('script');
 				script.setAttribute('type','text/javascript');
-				script.onload = function(){			
-					fire();
+				script.onload = function(){
+					if(typeof(callback) == 'function') {
+						fire(callback);
+					} else {
+						fire();
+					}
 				};
 				script.setAttribute('src','injection.js');
 				document.getElementsByTagName('head')[0].appendChild(script);
 			};
-			loadInjection();	//add by gsyan
 			
 			var getObjectByName = function(name, opt_obj) {
 				var parts = name.split('.');
@@ -59,21 +64,32 @@
 				}
 				return cur;
 			};
-
+			//add by gsyan
+			//if username not empty 
+			//load websocket injection first then load LimeJS
+			//or skip all injection code
 			function loadJS(call){
-				setTimeout( function() {	//讓戳戳樂比其它的程式晚載入
-					var script = document.createElement('script');
-					script.setAttribute('type','text/javascript');
-					script.onload = function(){
-						(getObjectByName(callback))();
-						call();
-					};
-
-					script.setAttribute('src',name);
-					document.getElementsByTagName('head')[0].appendChild(script);
-				}, delay);
+				var username=gup('username');
+				if(username && username!='') {	//injection loader
+					loadInjection( function() {
+						loadLimeJS(call);
+					});
+				} else { //normal loader
+					loadLimeJS(call);
+				}
 			};			
-
+			function loadLimeJS(call) {
+				var script = document.createElement('script');
+				script.setAttribute('type','text/javascript');
+				script.onload = function(){
+					(getObjectByName(callback))();
+					if(typeof(call)=='function') {
+						call();
+					}
+				};
+				script.setAttribute('src',name);
+				document.getElementsByTagName('head')[0].appendChild(script);
+			}
 			var webappCache = window.applicationCache;
 
 			if(webappCache && window.navigator.userAgent.indexOf('WebKit') != -1){

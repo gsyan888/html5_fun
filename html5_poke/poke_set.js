@@ -5,15 +5,12 @@
 // 對話框的標題字
 title = '戳戳樂';
 
-// 字型
+// 字型與字的大小
 font = '標楷體';
+fontsize = 60;
 
 // 是否在格子的左上角顯示格子的編號
 showNumber = 0;
-
-//格子左上角編號的字形大小(相對於格子的大小, 0~1 之間的數字)
-numberLabelFontSizeScale = 0.4;
-
 
 //
 // 戳洞時的音效，預設的音效為南投縣永興國小江明勳老師提供
@@ -37,6 +34,9 @@ paper = 'alien.png,angel.png,base.png,billy.png,borg.png,bricky.png,camouflage.p
 // 每一格的黑色外框線粗細大小
 blackborder = 5
 
+// 要設計幾欄幾列的戳戳樂
+col = 4;	//一橫排放幾格
+row = 2;	//一直排放幾格
 
 //----------------------------------
 //分隔符號設定
@@ -64,7 +64,7 @@ media_seperator	= '#';
 //
 question = new Array(
 //------------------------------------下一行開始增加題目
-  'eye 的中文是什麼？,2'
+  'eye 的中文是什麼？,1'
 , 'sample/cat.png,1'
 , 'sample/eye.mp3,1'
 , '圖片中的動物英文是什麼？#sample/cat.png,1'

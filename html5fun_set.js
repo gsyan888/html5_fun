@@ -213,6 +213,14 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2014/02/html5-phoneticsquiz.html"
 	],
 
+	[ "戳戳樂遙控測試版"
+	, "戳戳樂遙控器"
+	, "html5_remoteClick/assets/icon.png"
+	, "html5_remoteClick/html5_remoteClick.html"
+	, ""
+	, ""
+	],
+	
 	[ "Animation"
 	, "線上玩柵欄動畫"
 	, "html5_animation/assets/icon.png"

@@ -1,8 +1,9 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
+
 <html manifest="cache.appcache">
 <head>
-	<title>雄-戳戳樂</title>
-	<meta name="Author" content="gsyan, 顏國雄, 2012.11.04">
+	<title>雄-RemoteClick</title>
+	<meta name="Author" content="gsyan, 顏國雄, 2021.06.15">
 	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="apple-touch-icon" href="assets/icon.png"/>
@@ -19,34 +20,8 @@
 </head>
 <body>
    	<script type="text/javascript">
-
 		(function(name,callback){
-			//取得網址中的某一個參數(已編碼過的)
-			var gup = function( name ){
-				name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
-				var regexS = "[\\?&]"+name+"=([^&#]*)";  
-				var regex = new RegExp( regexS );  
-				var results = regex.exec( window.location.href ); 
-				if( results == null )    return "";  
-				else    return results[1];
-			}
-			var u = gup('username');
-			var delay = 0;
-			if(u && u!='') {
-				delay = 2000;
-			}
-			//add by gsyan
-			var loadInjection = function() {
-				var script = document.createElement('script');
-				script.setAttribute('type','text/javascript');
-				script.onload = function(){			
-					fire();
-				};
-				script.setAttribute('src','injection.js');
-				document.getElementsByTagName('head')[0].appendChild(script);
-			};
-			loadInjection();	//add by gsyan
-			
+
 			var getObjectByName = function(name, opt_obj) {
 				var parts = name.split('.');
 				var cur = opt_obj || window;
@@ -61,18 +36,16 @@
 			};
 
 			function loadJS(call){
-				setTimeout( function() {	//讓戳戳樂比其它的程式晚載入
-					var script = document.createElement('script');
-					script.setAttribute('type','text/javascript');
-					script.onload = function(){
-						(getObjectByName(callback))();
-						call();
-					};
+				var script = document.createElement('script');
+				script.setAttribute('type','text/javascript');
+				script.onload = function(){
+					(getObjectByName(callback))();
+					call();
+				};
 
-					script.setAttribute('src',name);
-					document.getElementsByTagName('head')[0].appendChild(script);
-				}, delay);
-			};			
+				script.setAttribute('src',name);
+				document.getElementsByTagName('head')[0].appendChild(script);
+			}
 
 			var webappCache = window.applicationCache;
 
@@ -100,13 +73,13 @@
 					if(started) return;
 					el.innerHTML = 'Starting';
 					loadJS(function(){
-						el.parentNode.removeChild(el);												
+						el.parentNode.removeChild(el);
 					});
 					started=1;
 					clearTimeout(timeout);
 				};
 
-				var timeout = setTimeout(function(){close()},2000);
+				var timeout = setTimeout(function(){close()},3000);
 
 				webappCache.addEventListener('checking', function(){
 					//console.log('checking');
@@ -152,7 +125,8 @@
 				loadJS(function(){});
 			}
 
-		})('poke.js','poke.start');
+		})('remoteClick.js','remoteClick.start');
+
 		</script>
 </body>
 

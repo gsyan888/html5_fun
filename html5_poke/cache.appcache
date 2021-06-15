@@ -1,11 +1,13 @@
 CACHE MANIFEST
 
-# Updated on: 2021-06-15 00:00:12
+# Updated on: 2021-06-15 00:00:21
 
 
 #----------以下為檔案清單------------
 html5_poke.html
 injection.js
+remoteClick.js
+remoteClick_set.js
 poke_set.js
 poke.js
 assets/startup.png

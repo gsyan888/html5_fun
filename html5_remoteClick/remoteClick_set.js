@@ -4,7 +4,7 @@ appUrl = '../html5_poke/html5_poke.html';
 
 //include Achex SDKs
 includeSDKs = [
-	'http://achex.ca/js/JQ.js'
-	,'http://achex.ca/js/jquery.achex.js'
+	'https://achex.ca/js/JQ.js'
+	,'https://achex.ca/js/jquery.achex.js'
 ];
 

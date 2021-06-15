@@ -44,8 +44,8 @@ injectionFirebase = function() {
 //jQuery / Achex hosted jQuery
 //Achex jQuery plugin
 var achexSDKs = [
-	"http://achex.ca/js/JQ.js"
-	,"http://achex.ca/js/jquery.achex.js"
+	"https://achex.ca/js/JQ.js"
+	,"https://achex.ca/js/jquery.achex.js"
 ];
 
 var username = '';

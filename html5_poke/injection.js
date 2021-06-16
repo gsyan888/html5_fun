@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------
 // Injection for HTML5 FUN
-// Author : gsyan (https://gsyan888.blogspot.com/firebasejs/8
+// Author : gsyan (https://gsyan888.blogspot.com/)
 // 
 // Modified :
 //				2021.06.13 created

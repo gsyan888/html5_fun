@@ -1,3 +1,12 @@
+//-------------------------------------------------------------------------
+// Injection for HTML5 FUN
+// Author : gsyan (https://gsyan888.blogspot.com/firebasejs/8
+// 
+// Modified :
+//				2021.06.13 created
+//				2021.06.16 add status message under the Achex Logo
+//-------------------------------------------------------------------------
+
 
 //Firebase 資料庫旳位址
 var databaseURL = "https://xxxxxxx-default-rtdb.firebaseio.com";
@@ -20,7 +29,7 @@ injectionFirebase = function() {
 	firebase.database().ref('poke/users').update({'cmd':-1});
 	
 	//先設定可按的總數是多少 totalNumber
-	//var buttons = getAllButtons();
+	//var buttons = getAllButtons(boxLayer);
 	//if(buttons) {
 	//	var n = buttons.length-1; //poke 的第 0 個是外框不是按鈕,所以減一
 	//	firebase.database().ref('poke/users').update({'totalNumber':n});
@@ -29,7 +38,7 @@ injectionFirebase = function() {
 	firebase.database().ref('poke/users/cmd').on('value', function(data) {
 		//取得該欄位的值
 		var cmd = data.val();
-		var buttons = getAllButtons();
+		var buttons = getAllButtons(boxLayer);
 		if(buttons && !isNaN(cmd)) {	//必須是由遠端送來的數字才處理
 			var totalNumber = buttons.length;	//格子總數
 			var index = parseInt(cmd); //遠端指定的編號為多少
@@ -94,17 +103,26 @@ injectionAchex = function(username, classroomName, teacherName) {
 					//console.log(message_object);
 					
 					//取得該欄位的值
-					var cmd = message_object['cmd'];
-					var buttons = getAllButtons();
-					if(buttons && !isNaN(cmd)) {	//必須是由遠端送來的數字才處理
-						var t = buttons.length;	//格子總數
-						var index = parseInt(cmd); //遠端指定的編號為多少
-						if(index>=0 && index <t) { //編號在範圍內的才處理
-							//第0個是外框, 所以戳戳樂的格由 1 開始
-							buttons[index+1].dispatchEvent('mousedown'); //觸發格子的 mousedown 事件,也就是按一下
+					var cmd = message_object['cmd'];					
+					if(cmd) {
+						//在右上角顯示誰發了 cmd
+						var msg = document.getElementById('remoteClickStatus');
+						if(!msg) {
+							var msg = addStatusTextNode();	//在右上角顯示發送狀態用
+						}
+						msg.innerText = cmd+'@'+message_object['FROM'];
+						//取得按鈕的 objects
+						var buttons = getAllButtons(boxLayer);
+						if(buttons && !isNaN(cmd)) {	//必須是由遠端送來的數字才處理
+							var t = buttons.length;	//格子總數
+							var index = parseInt(cmd); //遠端指定的編號為多少
+							if(index>=0 && index <t) { //編號在範圍內的才處理
+								//第0個是外框, 所以戳戳樂的格由 1 開始
+								buttons[index+1].dispatchEvent('mousedown'); //觸發格子的 mousedown 事件,也就是按一下
+								
+							}
 						}
 					}
-					
 				  }
 	};
 	
@@ -119,24 +137,43 @@ injectionAchex = function(username, classroomName, teacherName) {
 	//);	
 };
 
+//add a TextNode to show status at right top (under the Achex logo)
+var addStatusTextNode = function() {	
+	var txt = document.createTextNode('HTML5 FUN');
+	var msg = document.createElement("div");
+	msg.id = 'remoteClickStatus';
+	msg.appendChild(txt);
+	document.body.appendChild(msg);
+	msg.style['text-align']='right';
+	msg.style.position='relative';
+	msg.style.width='50px';
+	msg.style.height='50px';
+	msg.style.left=Math.floor(window.innerWidth-54)+'px';
+	msg.style.top='52px';
+	msg.style['font-size']='50%'; //'xx-small';
+	msg.style.color='#8FB5D0';
+	msg.style.opacity='0.8';
+	msg.innerText='@'+username;
+	return msg;
+};
+
 
 //找出戳戳樂的格子
-var getAllButtons = function() {
-	var box=null;
-	//boxLayer 中只有存放格子的 object 才有 length
-	//利用這個特性, 找到 boxLayer 中的元件
-	if(boxLayer) {
-		var names = Object.keys(boxLayer);
+var getAllButtons = function(objLayer) {
+	var buttons=null;
+	//Layer 中只有存放按扭的 object 才有 length
+	//利用這個特性, 找到 layer 中的元件
+	if(objLayer) {
+		var names = Object.keys(objLayer);
 		for(var i=0; i<names.length; i++) {
-			if(boxLayer[names[i]] && typeof(boxLayer[names[i]])=='object' && typeof(boxLayer[names[i]]['length'])=='number') {
-				var box = boxLayer[names[i]];
+			if(objLayer[names[i]] && typeof(objLayer[names[i]])=='object' && typeof(objLayer[names[i]]['length'])=='number') {
+				var buttons = objLayer[names[i]];
 				break;
 			}
 		}
 	}
-	return box;
-}	
-
+	return buttons;
+}
 //-------------------------------------------------
 //
 //-------------------------------------------------
@@ -205,20 +242,20 @@ loadSettingFromExternalScript = function(scriptSrc, callback)  {
   docHead.insertBefore(scriptToAdd, docHead.firstChild);
 };
 
-fire = function(callback) {
+var injection = function(callback) {
 	var uname = gup('username');
 	if(uname && uname!='') {
 		username = decodeURI(uname);
 		classroomName = username;
 		teacherName = username;
-		//console.log([username, classroomName, teacherName]);
-		
-		//loadJavaScripts(firebaseSDKs, injection);
+		//console.log([username, classroomName, teacherName]);		
 		loadJavaScripts(achexSDKs, function() {
 			if(typeof(callback)=='function') {
-				callback();
+				callback();				
 			}
 			injectionAchex(username, classroomName, teacherName);
 		});
 	};
 };
+
+var fire = injection;	//just for comparable

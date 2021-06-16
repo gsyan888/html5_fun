@@ -22,7 +22,6 @@
 			background: #ffffff;
 		}
 	</style>	
-	
 </head>
 <body>
    	<script type="text/javascript">
@@ -44,9 +43,9 @@
 				script.setAttribute('type','text/javascript');
 				script.onload = function(){
 					if(typeof(callback) == 'function') {
-						fire(callback);
+						injection(callback);
 					} else {
-						fire();
+						injection();
 					}
 				};
 				script.setAttribute('src','injection.js');

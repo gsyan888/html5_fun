@@ -218,7 +218,7 @@ menu_items = [
 	, "html5_remoteClick/assets/icon.png"
 	, "html5_remoteClick/html5_remoteClick.html"
 	, ""
-	, ""
+	, "https://gsyan888.blogspot.com/2021/06/html5-remoteclick.html"
 	],
 	
 	[ "Animation"

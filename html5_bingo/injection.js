@@ -177,8 +177,7 @@ addMicButton = function() {
 };
 	
 enableSpeech2Text = function() {
-	var micButton = document.getElementById('micButton');
-	var btnColor = micButton.style['background-color'].toLowerCase();		//'Violet'  DodgerBlue
+	var micButton = document.getElementById('micButton');	
 
 	//bingo gameLayer child 7~16 是選項按鈕
 	//buttons = getAllButtons(gameLayer).slice(7, 16);
@@ -195,20 +194,18 @@ enableSpeech2Text = function() {
 			//recognition.lang='cmn-Hant-TW'; 	//'en-US'
 			speech2TextEventsInit();
 		}
-		
+		var btnColor = micButton.style['background-color'].toLowerCase();		//'Violet'  DodgerBlue
 		if(btnColor=='dodgerblue') {
-			if(typeof(recognition.start)=='function') {
-				try {
-					//recognition.stop();				
+			try {
+				//recognition.stop();				
+				recognition.start();
+			console.log('ok');
+			} catch(e) { 
+				//console.log(e)
+				setTimeout( function() {
 					recognition.start();
-				console.log('ok');
-				} catch(e) { 
-					//console.log(e)
-					setTimeout( function() {
-						recognition.start();
-					}, 100);
-				};
-			}
+				}, 100);
+			};
 		} else {
 			recognition.stop();
 		}

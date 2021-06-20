@@ -199,7 +199,6 @@ enableSpeech2Text = function() {
 			try {
 				//recognition.stop();				
 				recognition.start();
-			console.log('ok');
 			} catch(e) { 
 				//console.log(e)
 				setTimeout( function() {
@@ -212,6 +211,7 @@ enableSpeech2Text = function() {
 	} else {
 		alert('抱歉~ 您的瀏覽器不支援語音辨識(webkitSpeechRecognition)的功能');
 		micButton.removeEventListener('mousedown', enableSpeech2Text);
+		micButton.removeEventListener('touchstart', enableSpeech2Text);
 		micButton.remove();
 	}
 }
@@ -224,7 +224,9 @@ var injection = function(callback) {
 	
 	//add Mic button on left bottom after 1 sec.
 	setTimeout( function() {
-		addMicButton().addEventListener('mousedown', enableSpeech2Text);
+		var btn = addMicButton();
+		btn.addEventListener('mousedown', enableSpeech2Text);
+		btn.addEventListener('touchstart', enableSpeech2Text);
 	}, 1000);
 }
 

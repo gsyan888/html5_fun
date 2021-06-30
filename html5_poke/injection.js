@@ -104,7 +104,7 @@ injectionAchex = function(username, classroomName, teacherName) {
 					
 					//取得該欄位的值
 					var cmd = message_object['cmd'];					
-					if(cmd) {
+					if(cmd !=null ) {
 						//在右上角顯示誰發了 cmd
 						var msg = document.getElementById('remoteClickStatus');
 						if(!msg) {

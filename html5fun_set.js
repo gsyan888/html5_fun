@@ -235,6 +235,14 @@ menu_items = [
 	, "html5_ar_numbers/html5_ar_numbers.html"
 	, "archives/html5_ar_numbers.zip"
 	, ""
+	],
+
+	[ "填字遊戲"
+	, "Crossword Puzzle 填字遊戲"
+	, "html5_crossword/assets/icon.png"
+	, "html5_crossword/html5_crossword.html"
+	, "archives/html5_crossword.zip"
+	, ""
 	]
 
 ];

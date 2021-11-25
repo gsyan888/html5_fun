@@ -1,0 +1,35 @@
+CACHE MANIFEST
+
+#----------------------------------------------
+# 下面這一行不要移除，有修改資料，記得把時間改一下
+#----------------------------------------------
+# Updated on: 2021-11-25 00:00:00
+#
+
+#----------------------------------------------
+# 以下為程式必備的檔案清單，不要更動
+#----------------------------------------------
+stroke.js
+stroke_sound_data.js
+assets/qrcode.png
+jsqrcode/grid.js
+jsqrcode/version.js
+jsqrcode/detector.js
+jsqrcode/formatinf.js
+jsqrcode/errorlevel.js
+jsqrcode/bitmat.js
+jsqrcode/datablock.js
+jsqrcode/bmparser.js
+jsqrcode/datamask.js
+jsqrcode/rsdecoder.js
+jsqrcode/gf256poly.js
+jsqrcode/gf256.js
+jsqrcode/decoder.js
+jsqrcode/qrcode.js
+jsqrcode/findpat.js
+jsqrcode/alignpat.js
+jsqrcode/databr.js
+jsqrcode/jquery-qrcode.js
+
+NETWORK:
+*

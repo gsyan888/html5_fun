@@ -4,6 +4,9 @@ questionFontSize = 48;
 //題幹的顏色
 questionFontColor = "#ff0000";
 
+//是否自動顯示選項供作答(預設為 true; false 時需按[開始作答]鈕才會出現選項)
+auto_show_options = true;
+
 //選項的字型顏色
 optionsFontColor = "#fffeef";
 

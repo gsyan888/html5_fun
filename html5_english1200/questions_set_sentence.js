@@ -4,6 +4,9 @@ numberOfOptions = 2;
 //每列最多可以有幾個選項
 numberOfOptionsPerRow = 1;	
 
+//是否自動顯示選項供作答(預設為 true; false 時需按[開始作答]鈕才會出現選項)
+auto_show_options = true;
+
 //每回合抽幾題題目
 numberOfQuestionsPerRound = 10;
 

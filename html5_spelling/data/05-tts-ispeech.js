@@ -1,5 +1,5 @@
-﻿//=======================================================
-// HTML5 Spelling 題庫設定檔: 使用自定的 MP3 語音檔
+//=======================================================
+// HTML5 Spelling 題庫設定檔: 使用 iSpeech TTS
 //=======================================================
 //
 //【測試區塊】
@@ -22,7 +22,7 @@ CR_LF_First_Pos = CR_LF_test.indexOf('_LF')-'CR_LF'.indexOf('_LF');
 //---------------------------------------------------
 //
 //是否使用 TTS 的語音(使用: true, 不使用: false)
-tts_enabled = false;
+tts_enabled = true;
 
 //
 //----------------
@@ -44,11 +44,11 @@ tts_enabled = false;
 //原始網站參數說明: http://www.ispeech.org/api/#voices-standard
 //
 //如果要使用 iSpeech TTS，就拿掉下面這[5行]最左邊的註解(兩個斜線)
-//tts_language = 'ukenglishfemale';  //auenglishfemale , usenglishfemale
-//tts_speed = 0;  	//語音的速度 10 ~ -10 (10:最快, 0:一般, -10最慢)
-//tts_pitch = 100; 	//音高 0~200 (100:預設值)
-//tts_base_url = 'https://www.ispeech.org/p/generic/getaudio?action=convert&pitch='+tts_pitch+'&speed='+tts_speed+'&voice='+tts_language+'&text=';
-//tts_cut_last_seconds = 2.318; //裁掉 iSpeech 最後面的聲音長度(秒為單位)
+tts_language = 'ukenglishfemale';  //auenglishfemale , usenglishfemale
+tts_speed = 0;  	//語音的速度 10 ~ -10 (10:最快, 0:一般, -10最慢)
+tts_pitch = 100; 	//音高 0~200 (100:預設值)
+tts_base_url = 'https://www.ispeech.org/p/generic/getaudio?action=convert&pitch='+tts_pitch+'&speed='+tts_speed+'&voice='+tts_language+'&text=';
+tts_cut_last_seconds = 2.318; //裁掉 iSpeech 最後面的聲音長度(秒為單位)
 
 
 //
@@ -61,7 +61,7 @@ timer = 0;
 
 //
 //每題要拿掉幾個字母當填空
-blanks_total_number = 1;
+blanks_total_number = 2;
 
 //
 //欄位分隔符號為兩個井字號(##)
@@ -76,9 +76,8 @@ seperator = '##';
 //    第三欄為MP3語音檔的路徑(沒有的話，tts_enabled = true 會以第一欄為TTS的朗讀內容)
 //
 questionLines = function(){/*--這一行請勿更改--
-angry##生氣##mp3/angry.mp3
-smile##微笑##mp3/smile.mp3
-cry##哭##mp3/cry.mp3
+angry##生氣
+smile##微笑
+cry##哭
 -----*/}.toString().slice("function(){/*--這一行請勿更改--".length+2+(typeof(CR_LF_First_Pos)!='undefined' ? CR_LF_First_Pos:0),-9);
-
 

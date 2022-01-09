@@ -60,6 +60,10 @@ tts_cut_last_seconds = 0; //裁掉最後面的聲音長度(秒為單位)
 timer = 0;
 
 //
+//答對一題加幾分
+number_of_points_for_one_question = 10;
+
+//
 //每題要拿掉幾個字母當填空
 blanks_total_number = 1;
 

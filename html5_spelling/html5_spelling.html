@@ -3,8 +3,8 @@
 <head>
 	<title>雄-單字高手</title>
 	<meta name="Author" content="gsyan, 顏國雄, glglace, 江明勳, 2014.08.24">
-	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 	<meta name="referrer" content="no-referrer" />	
+	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="apple-touch-icon" href="assets/icon.png"/>
 	<!-- STARTUP IMAGES -->
@@ -29,8 +29,34 @@
 </head>
 <body>
    	<script type="text/javascript">
-		(function(name,callback){
 
+
+		(function(name,callback){
+			//取得網址中的某一個參數(已編碼過的)
+			var gup = function( name ){
+				name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+				var regexS = "[\\?&]"+name+"=([^&#]*)";  
+				var regex = new RegExp( regexS );  
+				var results = regex.exec( window.location.href ); 
+				if( results == null )    return "";  
+				else    return results[1];
+			}
+			//add by gsyan
+			//load websocket injection first then load LimeJS
+			var loadInjection = function(callback) {
+				var script = document.createElement('script');
+				script.setAttribute('type','text/javascript');
+				script.onload = function(){
+					if(typeof(callback) == 'function') {
+						injection(callback);
+					} else {
+						injection();
+					}
+				};
+				script.setAttribute('src','send-score.js');
+				document.getElementsByTagName('head')[0].appendChild(script);
+			};
+			
 			var getObjectByName = function(name, opt_obj) {
 				var parts = name.split('.');
 				var cur = opt_obj || window;
@@ -43,13 +69,28 @@
 				}
 				return cur;
 			};
-
+			//add by gsyan
+			//if username not empty 
+			//load websocket injection first then load LimeJS
+			//or skip all injection code
 			function loadJS(call){
+				var username=gup('username');
+				if(username && username!='') {	//injection loader
+					loadInjection( function() {
+						loadLimeJS(call);
+					});
+				} else { //normal loader
+					loadLimeJS(call);
+				}
+			};			
+			function loadLimeJS(call) {
 				var script = document.createElement('script');
 				script.setAttribute('type','text/javascript');
 				script.onload = function(){
 					(getObjectByName(callback))();
-					call();
+					if(typeof(call)=='function') {
+						call();
+					}
 				};
 
 				script.setAttribute('src',name);
@@ -88,7 +129,7 @@
 					clearTimeout(timeout);
 				};
 
-				var timeout = setTimeout(function(){close()},3000);
+				var timeout = setTimeout(function(){close()},2000);
 
 				webappCache.addEventListener('checking', function(){
 					//console.log('checking');

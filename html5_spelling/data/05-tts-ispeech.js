@@ -44,11 +44,11 @@ tts_enabled = true;
 //原始網站參數說明: http://www.ispeech.org/api/#voices-standard
 //
 //如果要使用 iSpeech TTS，就拿掉下面這[5行]最左邊的註解(兩個斜線)
-tts_language = 'ukenglishfemale';  //auenglishfemale , usenglishfemale
+tts_language = 'ukenglishfemale';  //auenglishfemale , usenglishfemale , chchinesefemale
 tts_speed = 0;  	//語音的速度 10 ~ -10 (10:最快, 0:一般, -10最慢)
 tts_pitch = 100; 	//音高 0~200 (100:預設值)
 tts_base_url = 'https://www.ispeech.org/p/generic/getaudio?action=convert&pitch='+tts_pitch+'&speed='+tts_speed+'&voice='+tts_language+'&text=';
-tts_cut_last_seconds = 2.318; //裁掉 iSpeech 最後面的聲音長度(秒為單位)
+tts_cut_last_seconds = 2.54; //english: 2.54 chinese: 5.5 裁掉 iSpeech 最後面的聲音長度(秒為單位)
 
 
 //

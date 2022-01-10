@@ -18,7 +18,6 @@
 	<!-- startup image for web apps (320x460) -->
 	<link rel="apple-touch-startup-image" href="assets/startup.png" media="screen and (max-device-width: 320px)" />
 	
-	<script LANGUAGE="JavaScript" src="send-score.js"></script>
 	<style>
 		body {
 			color: #000000;
@@ -48,13 +47,26 @@
 				script.setAttribute('type','text/javascript');
 				script.onload = function(){
 					if(typeof(callback) == 'function') {
-						injection(callback);
+						if(typeof(injection)=='function') {
+							injection(callback);
+						} else {
+							callback();
+						}
 					} else {
-						injection();
+						if(typeof(injection)=='function') {
+							injection();
+						}
+					}
+				};
+				script.onerror = function(){
+					if(typeof(callback) == 'function') {
+						callback();
 					}
 				};
 				script.setAttribute('src','send-score.js');
-				document.getElementsByTagName('head')[0].appendChild(script);
+				try {
+					document.getElementsByTagName('head')[0].appendChild(script);
+				} catch(e) { console.log(e); };
 			};
 			
 			var getObjectByName = function(name, opt_obj) {
@@ -74,14 +86,14 @@
 			//load websocket injection first then load LimeJS
 			//or skip all injection code
 			function loadJS(call){
-				var username=gup('username');
-				if(username && username!='') {	//injection loader
+				//var username=gup('username');
+				//if(username && username!='') {	//injection loader
 					loadInjection( function() {
 						loadLimeJS(call);
 					});
-				} else { //normal loader
-					loadLimeJS(call);
-				}
+				//} else { //normal loader
+				//	loadLimeJS(call);
+				//}
 			};			
 			function loadLimeJS(call) {
 				var script = document.createElement('script');

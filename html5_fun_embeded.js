@@ -4,13 +4,16 @@
 //
 //HTML5 FUN 的主程式路徑
 var moduleScripts = {
-  lotto:"https://gsyan888.github.io/html5_fun/html5_lotto/lotto.js"
+  lotto:{
+    src:"https://gsyan888.github.io/html5_fun/html5_lotto/lotto.js",
+    name:"樂透摸彩機"
+  }
 };
 //取得HTML5 FUN 程式的網址
 var moduleName = document.getElementById('injectionJS').getAttribute('moduleName');
 if(typeof(moduleName)!='undefined' && moduleName!=null) {	
   if(moduleScripts[moduleName]) {
-	HTML5FunScript = moduleScripts[moduleName];
+	HTML5FunScript = moduleScripts[moduleName].src;
   } else  {
 	HTML5FunScript = null;
   }
@@ -215,8 +218,8 @@ createPlayButton = function() {
   playButton.innerHTML = `
 	<center>
 	<p>&nbsp;</p>
-	<p><button onclick="injection()" type="button">PLAY</button></p>
-  `;	
+	<p><button onclick="injection()" type="button">開始玩
+  `+moduleScripts[moduleName].name+'</button></p>';	
 }
 //
 //自動載入就執行 injection , 否則就新增一個 PLAY 按鈕

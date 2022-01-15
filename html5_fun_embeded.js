@@ -158,7 +158,7 @@ closeApp = function(label) {
   //移除右上角的關閉按鈕
   try {
 	document.getElementById('closeBtn').remove();
-  } cache(error) {  };
+  } catch(error) {  };
   //移除
   removeHTML5FunEmbeded();
 }

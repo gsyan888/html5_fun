@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.16 10:20:00 
+ * - update 2022.01.16 12:50:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -15,7 +15,11 @@ var moduleScripts = {
   lotto:{
     src:"https://gsyan888.github.io/html5_fun/html5_lotto/lotto.js",
     name:"樂透摸彩機"
-  }
+  },
+  card_flip:{
+    src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",
+    name:"大家一起來"
+  }  
 };
 //取得HTML5 FUN 程式的網址
 var moduleName = document.getElementById('injectionJS').getAttribute('moduleName');

@@ -1,3 +1,11 @@
+/**
+ * @fileoverview
+ * - HTML5 FUN embeded 用的載入工具
+ * - update 2022.01.16 10:20:00 
+ * 
+ * @author gsyan 顏國雄
+ * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
+ */
 //=======================================================
 //以下為執行程式,不需要修改
 //=======================================================
@@ -223,10 +231,11 @@ createPlayButton = function() {
 }
 //
 //自動載入就執行 injection , 否則就新增一個 PLAY 按鈕
+createPlayButton();
 if(autoStart) {
   injection();
 } else {
-  createPlayButton();
+  //createPlayButton();
 }
 //
 //=======================================================

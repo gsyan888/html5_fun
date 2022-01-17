@@ -16,6 +16,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_lotto/lotto.js",
     name:"樂透摸彩機"
   },
+  spelling:{
+    src:"https://gsyan888.github.io/html5_fun/html5_spelling/spelling.js",
+    name:"單字高手"
+  },
   card_flip:{
     src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",
     name:"大家一起來"

@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.18 09:26:00 
+ * - update 2022.01.18 12:45:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -205,6 +205,10 @@ removeHTML5FunEmbeded = function() {
   if(typeof(window[moduleName])!='undefined' && typeof(window[moduleName].stop)=='function') {
 	window[moduleName].stop();
   }
+  //remove children of lime-scene
+  removeChild(document.getElementsByClassName('lime-scene')[0]);
+  //remove children of lime-director
+  removeChild(document.getElementsByClassName('lime-director')[0]);  
   //
   HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
   try {
@@ -212,10 +216,18 @@ removeHTML5FunEmbeded = function() {
 	removeChild(HTML5FunEmbeded);
   } catch(error) {    };
   HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
+  //remve all elements
   try {
-	//隠藏HTML5FunWrapper
-    HTML5FunWrapper.style.visibility = "hidden";
-  } catch(error) {    };
+	removeChild(HTML5FunWrapper);
+  } catch(error) {  console.log(error);  };
+  HTML5FunWrapper.remove();
+  HTML5FunEmbeded = null;
+  HTML5FunWrapper = null;
+  console.log('remove all elements');
+  //try {
+  //	//隠藏HTML5FunWrapper
+  //  HTML5FunWrapper.style.visibility = "hidden";
+  //} catch(error) {    };
   //恢復捲軸的功能  
   window.onscroll=null;
   //重新顯示原有的內容
@@ -250,6 +262,7 @@ createPlayButton = function() {
 //
 //自動載入就執行 injection , 否則就新增一個 PLAY 按鈕
 createPlayButton();
+//
 if(autoStart) {
   injection();
 } else {

@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.18 08:50:00 
+ * - update 2022.01.18 09:05:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -138,8 +138,7 @@ injection = function() {
 	  }
 	});
   } else if(document.getElementsByClassName('lime-director').length==1) {
-	var el = document.getElementsByClassName('lime-director')[0];
-	el.parentNode.replaceChild(elClone, el);
+	console.log('restart');
 	gameStart(true);
   }	else {
 	var el = document.getElementsByClassName('lime-director')[0];

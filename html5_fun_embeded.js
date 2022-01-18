@@ -172,7 +172,7 @@ gameStart = function() {
 	HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
 	var closeBtn = document.createElement('div')
 	closeBtn.id = 'closeBtn';
-	closeBtn.setAttribute('style', 'position:absolute;top:0;right:0;');
+	closeBtn.setAttribute('style', 'position:absolute;top:0;right:0;z-index:9998;');
 	var style = 'float:right;font-size:1.5em;font-family: Garamond, "Apple Garamond"; display:inline-block;padding:0px 4px 0px 4px; background:#D5F5E3;';
 	closeBtn.innerHTML="<span id='close' onclick='closeApp(); return false;' style='"+style+"'>&times;</span>";
 	HTML5FunEmbeded.firstChild.appendChild(closeBtn);
@@ -210,9 +210,15 @@ removeHTML5FunEmbeded = function() {
 	window[moduleName].stop();
   }
   //remove children of lime-scene
-  removeChild(document.getElementsByClassName('lime-scene')[0]);
+  var nTotal = document.getElementsByClassName('lime-scene').length;
+  for(var i=nTotal-1; i>=0; i--) {
+	removeChild(document.getElementsByClassName('lime-scene')[i]);
+  }
   //remove children of lime-director
-  removeChild(document.getElementsByClassName('lime-director')[0]);  
+  var nTotal = document.getElementsByClassName('lime-director').length;
+  for(var i=nTotal-1; i>=0; i--) {
+	removeChild(document.getElementsByClassName('lime-director')[i]);
+  }
   //
   HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
   try {

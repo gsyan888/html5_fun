@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.18 12:45:00 
+ * - update 2022.01.18 17:35:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -19,6 +19,10 @@ var moduleScripts = {
   spelling:{
     src:"https://gsyan888.github.io/html5_fun/html5_spelling/spelling.js",
     name:"單字高手"
+  },
+  english1200:{
+    src:"https://gsyan888.github.io/html5_fun/html5_english1200/english1200.js",
+    name:"English1200"
   },
   card_flip:{
     src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",

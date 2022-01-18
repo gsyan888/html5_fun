@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.18 08:30:00 
+ * - update 2022.01.18 08:40:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -91,7 +91,7 @@ injection = function() {
   
   //The wrapper
   if(!document.getElementById(id.HTML5FunWrapper)) {
-	var HTML5FunWrapper = document.createElement("div");
+	HTML5FunWrapper = document.createElement("div");
 	var style = 'background:#F8F9F9;position:fixed;height:100%;width:100%;left: 0;top: 0;z-index:10000;visibility:visible;';
 	HTML5FunWrapper.id = id.HTML5FunWrapper;
 	HTML5FunWrapper.setAttribute("style", style);
@@ -101,7 +101,7 @@ injection = function() {
 	//
 	//
 	if(!document.getElementById(id.HTML5FunEmbeded)) {
-	  var HTML5FunEmbeded = document.createElement("div");
+	  HTML5FunEmbeded = document.createElement("div");
 	  HTML5FunEmbeded.id = id.HTML5FunEmbeded;
 	  HTML5FunEmbeded.setAttribute("style",'position:absolute;top:0;right:0;bottom:0;left:0;');
 	  HTML5FunWrapper.appendChild(HTML5FunEmbeded);
@@ -142,7 +142,7 @@ injection = function() {
 };
 gameStart = function() {
   //
-  //var HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
+  //HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
   //removeChild(HTML5FunEmbeded);
   //
   //啟動遊戲
@@ -157,7 +157,7 @@ gameStart = function() {
 	document.body.style.overflow = 'hidden';
 	//
 	//右上角加一個關閉的按鈕
-	var HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
+	HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
 	var closeBtn = document.createElement('div')
 	closeBtn.id = 'closeBtn';
 	closeBtn.setAttribute('style', 'position:absolute;top:0;right:0;');
@@ -166,7 +166,7 @@ gameStart = function() {
 	HTML5FunEmbeded.firstChild.appendChild(closeBtn);
 	//
 	//將遊戲放到最上層
-	var HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
+	HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
 	if(typeof(HTML5FunWrapper)!='undefined' && HTML5FunWrapper!=null) {
 	  HTML5FunWrapper.style['z-index'] = 10000;
 	  HTML5FunWrapper.style.visibility = "visible";
@@ -198,12 +198,12 @@ removeHTML5FunEmbeded = function() {
 	window[moduleName].stop();
   }
   //
-  var HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
+  HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");
   try {
 	//移除 HTML5FunEmbeded 中的所有元件
 	removeChild(HTML5FunEmbeded);
   } catch(error) {    };
-  var HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
+  HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
   try {
 	//隠藏HTML5FunWrapper
     HTML5FunWrapper.style.visibility = "hidden";

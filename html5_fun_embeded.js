@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.18 08:40:00 
+ * - update 2022.01.18 08:50:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -111,7 +111,10 @@ injection = function() {
   if(document.getElementsByClassName('lime-director').length<=0) {
 	loadExternalScript(HTML5FunScript, function(success) {
       if(success) {
-		gameStart();
+		if(document.getElementsByClassName('lime-director').length<=0) {
+			console.log('HTML5FunScript load success');
+			gameStart();
+		}
 		//lotto.start();
 	  } else {
 	    //恢復捲軸的功能
@@ -135,8 +138,13 @@ injection = function() {
 	  }
 	});
   } else if(document.getElementsByClassName('lime-director').length==1) {
+	var el = document.getElementsByClassName('lime-director')[0];
+	el.parentNode.replaceChild(elClone, el);
 	gameStart(true);
   }	else {
+	var el = document.getElementsByClassName('lime-director')[0];
+	var elClone = document.getElementsByClassName('lime-director')[1];
+	el.parentNode.replaceChild(elClone, el);
 	console.log('number of lime-director total : '+document.getElementsByClassName('lime-director').length);
   }
 };

@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.18 17:35:00 
+ * - update 2022.01.19 22:55:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -174,7 +174,7 @@ gameStart = function() {
 	closeBtn.id = 'closeBtn';
 	closeBtn.setAttribute('style', 'position:absolute;top:0;right:0;z-index:9998;');
 	var style = 'float:right;font-size:1.5em;font-family: Garamond, "Apple Garamond"; display:inline-block;padding:0px 4px 0px 4px; background:#D5F5E3;';
-	closeBtn.innerHTML="<span id='close' onclick='closeApp(); return false;' style='"+style+"'>&times;</span>";
+	closeBtn.innerHTML="<span id='close' ontouchstart='closeApp(event)' onmousedown='closeApp(event)' style='"+style+"'>&times;</span>";
 	HTML5FunEmbeded.firstChild.appendChild(closeBtn);
 	//
 	//將遊戲放到最上層
@@ -187,7 +187,8 @@ gameStart = function() {
 }
 //
 //關閉遊戲的畫面
-closeApp = function(label) {
+closeApp = function(e) {
+  e.preventDefault();
   //移除右上角的關閉按鈕
   try {
 	document.getElementById('closeBtn').remove();

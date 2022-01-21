@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.19 22:55:00 
+ * - update 2022.01.21 13:16:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -24,6 +24,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_english1200/english1200.js",
     name:"English1200"
   },
+  basketball:{
+    src:"https://gsyan888.github.io/html5_fun/html5_basketball/basketball.js",
+    name:"投籃高手"
+  },  
   card_flip:{
     src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",
     name:"大家一起來"

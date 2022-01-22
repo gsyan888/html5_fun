@@ -1,12 +1,13 @@
 CACHE MANIFEST
 
-# Updated on: 2022-01-19 22:55:00
+# Updated on: 2022-01-23 04:25:00
 
 
 #----------以下為檔案清單------------
 lotto.js
 lotto_set.js
 lotto_embeded_media_set.js
+lotto_style.css
 
 samples/cat.png
 samples/dog.png

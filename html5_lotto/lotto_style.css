@@ -1,3 +1,4 @@
+/* ---------------for questions editor--------------- */
 #questionEditor{
 	overflow: auto;
 	white-space: nowrap;			
@@ -5,28 +6,34 @@
 	margin-bottom: 30px;
 	line-height: 50px;
 	text-align: left;
-	font:36px;
+	font-size:32px;
 }
 #questionEditor img{
 	display: inline-block;			
 	position: relative;
-	max-width: 40px;
-	max-height: 40px;
-	//padding: 2px 2px 2px 2px;
+	max-width: 50px;
+	max-height: 50px;
+	//padding: 0px 5px 0px 5px;
 	float: both;
+	border: 1px dashed;
+	margin: 0 15px;
 }
 #questionEditor div{
 	display: block;
 	position: relative;
 	border-bottom: 1px dashed;
-	width: 80%;
+	width: 90%;
 	clear: both;
+	//padding: 4px 1em 4px 1em;
+	margin: 15px 1em;
 }
 #questionOutput{
 	overflow: auto;
 	white-space: nowrap;			
 	border: 2px dashed #ccc; 
-	line-height: 46px;
-	font: 36px;
-	text-align: left;			
+	line-height: 30px;
+	font-size: 18px;
+	text-align: left;
+	padding: 5px 1em 5px 1em;
+	//margin: 0.5em 1em;
 }

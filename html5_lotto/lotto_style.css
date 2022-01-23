@@ -7,6 +7,7 @@
 	line-height: 50px;
 	text-align: left;
 	font-size:32px;
+	user-select: auto;
 }
 #questionEditor img{
 	display: inline-block;			
@@ -17,6 +18,8 @@
 	float: both;
 	border: 1px dashed;
 	margin: 0 15px;
+	-moz-user-select: all;
+	-webkit-user-select: all;
 }
 #questionEditor div{
 	display: block;
@@ -26,6 +29,7 @@
 	clear: both;
 	//padding: 4px 1em 4px 1em;
 	margin: 15px 1em;
+	-moz-user-select: text;
 }
 #questionOutput{
 	overflow: auto;

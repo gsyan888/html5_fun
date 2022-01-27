@@ -88,8 +88,12 @@ result_dialog_caption_font_color = '###>>>>>result_dialog_caption_font_color<<<<
 
 //下方文字內容的設定
 result_dialog_font_color = '###>>>>>result_dialog_font_color<<<<<###'; 	//文字的顏色
-result_dialog_font_size = ###>>>>>result_dialog_font_size<<<<<###;			//文字的預設大小
+result_dialog_font_size = ###>>>>>result_dialog_font_size<<<<<###;			//文字的預設大小,【注意】想使用,要設定: result_dialog_enable_fit_text = false
 result_dialog_text_align = '###>>>>>result_dialog_text_align<<<<<###'; 		//文字水平對齊方向(left, center, right)
+
+//是否啟用文字自動調整大小(2022.01.28加入的參數)
+//【注意】啟用的話，result_dialog_font_size 就沒用囉! 
+result_dialog_enable_fit_text = ###>>>>>result_dialog_enable_fit_text<<<<<###;	//啟用: true , 不啟用: false
 
 
 //*************************************************

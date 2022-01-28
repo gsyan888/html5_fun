@@ -96,7 +96,7 @@ result_dialog_caption_font_color = '#FF4000';
 
 //下方文字內容的設定
 result_dialog_font_color = '#ff0000'; 	//文字的顏色
-result_dialog_font_size = 80;			//文字的預設大小,【注意】想使用,要設定: result_dialog_enable_fit_text = false
+result_dialog_font_size = 120;			//文字的預設大小,【注意】需要搭配設定: result_dialog_enable_fit_text = false
 result_dialog_text_align = 'center'; 		//文字水平對齊方向(left, center, right)
 
 //是否啟用文字自動調整大小(2022.01.28加入的參數)

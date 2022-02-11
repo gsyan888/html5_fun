@@ -243,6 +243,14 @@ menu_items = [
 	, "html5_crossword/html5_crossword.html"
 	, "archives/html5_crossword.zip"
 	, ""
+	],
+	
+	[ "幾A幾B"
+	, "AB Game 幾A幾B猜謎遊戲"
+	, "html5_ab_game/assets/icon.png"
+	, "html5_ab_game/html5_ab_game.html"
+	, ""
+	, ""
 	]
 
 ];

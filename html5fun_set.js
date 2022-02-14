@@ -241,8 +241,8 @@ menu_items = [
 	, "AB Game 幾A幾B猜謎遊戲"
 	, "html5_ab_game/assets/icon.png"
 	, "html5_ab_game/html5_ab_game.html"
-	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
 	, ""
+	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
 	],
 	
 	[ "AR Numbers"

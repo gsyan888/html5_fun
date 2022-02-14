@@ -229,14 +229,6 @@ menu_items = [
 	, ""
 	],
 
-	[ "AR Numbers"
-	,"使用鏡頭與卡片玩遊戲"
-	, "html5_ar_numbers/assets/icon.png"
-	, "html5_ar_numbers/html5_ar_numbers.html"
-	, "archives/html5_ar_numbers.zip"
-	, ""
-	],
-
 	[ "填字遊戲"
 	, "Crossword Puzzle 填字遊戲"
 	, "html5_crossword/assets/icon.png"
@@ -249,9 +241,18 @@ menu_items = [
 	, "AB Game 幾A幾B猜謎遊戲"
 	, "html5_ab_game/assets/icon.png"
 	, "html5_ab_game/html5_ab_game.html"
+	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
 	, ""
+	],
+	
+	[ "AR Numbers"
+	,"使用鏡頭與卡片玩遊戲"
+	, "html5_ar_numbers/assets/icon.png"
+	, "html5_ar_numbers/html5_ar_numbers.html"
+	, "archives/html5_ar_numbers.zip"
 	, ""
 	]
+
 
 ];
 

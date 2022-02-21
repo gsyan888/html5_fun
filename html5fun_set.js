@@ -18,7 +18,7 @@ menu_items = [
 	, "html5_stroke_parts/assets/icon.png"
 	, "html5_stroke_parts/html5_stroke_parts.html"
 	, ""
-	, ""
+	, "https://gsyan888.blogspot.com/2021/12/html5-stroke-parts.html"
 	],
 
 	[ "筆順編輯器"

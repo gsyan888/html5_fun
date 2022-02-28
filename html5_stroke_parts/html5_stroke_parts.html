@@ -140,13 +140,15 @@
 			HEIGHT = 200;		
 		var pwidth = window.innerWidth;
 		var pheight = window.innerHeight;
-		var el = document.getElementById('logo');
-		el.style.cssText = 'opacity:0.6;text-align:center;width:'+WIDTH+'px;height:'+HEIGHT+'px;position:absolute;left:'+Math.round((pwidth-WIDTH)*.5)+'px;top:'+Math.round((pheight-HEIGHT)*.5)+'px';
+		var logo = document.getElementById('logo');
+		logo.style.cssText = 'opacity:0.6;text-align:center;width:'+WIDTH+'px;height:'+HEIGHT+'px;position:absolute;left:'+Math.round((pwidth-WIDTH)*.5)+'px;top:'+Math.round((pheight-HEIGHT)*.5)+'px';
 		//
 		setTimeout(function() { 
+			logo.remove();
 			window.scrollTo(0, 1);
-			el.remove();
-			loader('stroke_parts.js','stroke_parts.start');
+			setTimeout(function() { 
+				loader('stroke_parts.js','stroke_parts.start');
+			}, 100);
 		}, 1000);
 		</script>
 </body>

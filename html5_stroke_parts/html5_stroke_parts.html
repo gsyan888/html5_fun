@@ -27,9 +27,9 @@
 	</style>
 </head>
 <body>
+	<div id='logo'><img src='assets/icon.png'/><br/>HTML5 FUN BY GS.YAN</div>
    	<script type="text/javascript">
-		setTimeout(function() { window.scrollTo(0, 1) }, 1000);
-		(function(name,callback){
+		var loader = function(name,callback){
 
 			var getObjectByName = function(name, opt_obj) {
 				var parts = name.split('.');
@@ -134,8 +134,20 @@
 				loadJS(function(){});
 			}
 
-		})('stroke_parts.js','stroke_parts.start');
-
+		};
+		//set logo style
+		var WIDTH = 200,
+			HEIGHT = 200;		
+		var pwidth = window.innerWidth;
+		var pheight = window.innerHeight;
+		var el = document.getElementById('logo');
+		el.style.cssText = 'opacity:0.6;text-align:center;width:'+WIDTH+'px;height:'+HEIGHT+'px;position:absolute;left:'+Math.round((pwidth-WIDTH)*.5)+'px;top:'+Math.round((pheight-HEIGHT)*.5)+'px';
+		//
+		setTimeout(function() { 
+			window.scrollTo(0, 1);
+			el.remove();
+			loader('stroke_parts.js','stroke_parts.start');
+		}, 1000);
 		</script>
 </body>
 

@@ -5,14 +5,14 @@ caption = "HTML5 FUN BY GSYan";
 //caption , description, icon, demoURL, archiiveURL, blogURL
 //
 menu_items = [ 
-	[ "筆順練習第二版"
-	, "國字、注音筆順練習小工具"
-	, "html5_stroke/assets/icon.png"
-	, "html5_stroke/html5_stroke.html"
+	[ "幾A幾B"
+	, "AB Game 幾A幾B猜謎遊戲"
+	, "html5_ab_game/assets/icon.png"
+	, "html5_ab_game/html5_ab_game.html"
 	, ""
-	, "https://gsyan888.blogspot.com/2013/12/html5-stroke.html"
+	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
 	],
-
+	
 	[ "筆順練習第三版"
 	, "Stroke Parts"
 	, "html5_stroke_parts/assets/icon.png"
@@ -237,12 +237,12 @@ menu_items = [
 	, ""
 	],
 	
-	[ "幾A幾B"
-	, "AB Game 幾A幾B猜謎遊戲"
-	, "html5_ab_game/assets/icon.png"
-	, "html5_ab_game/html5_ab_game.html"
+	[ "筆順練習第二版"
+	, "國字、注音筆順練習小工具"
+	, "html5_stroke/assets/icon.png"
+	, "html5_stroke/html5_stroke.html"
 	, ""
-	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
+	, "https://gsyan888.blogspot.com/2013/12/html5-stroke.html"
 	],
 	
 	[ "AR Numbers"

@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Updated on: 2022-04-25 14:00:02
+# Updated on: 2022-04-25 14:00:12
 
 
 #----------以下為檔案清單------------
@@ -30,6 +30,7 @@ images/cat.png
 assets/startup.png
 assets/startup-ipad-p.png
 assets/startup-ipad-l.png
+assets/sound_data.js
 assets/sound_ok.mp3
 assets/sound_ng.mp3
 assets/sound_go.mp3

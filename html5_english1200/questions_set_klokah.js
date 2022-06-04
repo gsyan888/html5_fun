@@ -66,6 +66,11 @@ soundBaseURL = "http://klokah.tw/nine/sound/"+klokah_lang_id+"/"+klokah_level+"/
 var url = "https://web.klokah.tw/nine/php/getText.php?d="+klokah_lang_id+"&l="+klokah_level+"&c="+klokah_chapter;
 
 
+//語音播放的速度 (1.0 正常, 0.5 慢速, 2.0 兩倍速)
+audioPlaybackRate = 1.0; 
+
+
+
 //-------------------------------------------------
 // 
 //-------------------------------------------------

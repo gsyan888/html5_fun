@@ -20,6 +20,10 @@ select_questions_in_random = true;
 // English 1200
 soundBaseURL = 'https://gsyan888.github.io/english1200/';
 
+//語音播放的速度 (1.0 正常, 0.5 慢速, 2.0 兩倍速)
+audioPlaybackRate = 1.0; 
+
+
 //是否使用 TTS 的語音
 tts_enabled = true;
 

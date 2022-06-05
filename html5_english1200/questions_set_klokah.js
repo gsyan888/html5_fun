@@ -66,9 +66,14 @@ soundBaseURL = "http://klokah.tw/nine/sound/"+klokah_lang_id+"/"+klokah_level+"/
 var url = "https://web.klokah.tw/nine/php/getText.php?d="+klokah_lang_id+"&l="+klokah_level+"&c="+klokah_chapter;
 
 
-//語音播放的速度 (1.0 正常, 0.5 慢速, 2.0 兩倍速)
+//語音播放的速度(使用大於 0 的數字。例如:1.0 正常, 0.75 較慢速, 0.5 慢速, 1.5 快速, 2.0 兩倍速)
 audioPlaybackRate = 1.0; 
 
+//語音自動播放的次數。 
+audioAutoPlayLoop = 1;
+
+//隔多久重播(單位秒)
+audioAutoPlayDelay = 0;
 
 
 //-------------------------------------------------

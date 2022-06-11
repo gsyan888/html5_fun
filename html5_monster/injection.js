@@ -12,7 +12,7 @@
 //		2022.06.11 modifed for HTML5 monster
 //----------------------------------------------------------------------
 //給哪裡支程用的
-var HTML5FunAppName = 'bingo';  //value: bingo , monster
+var HTML5FunAppName = 'monster';  //value: bingo , monster
 
 var getAllButtons = function(objLayer) {
 	var buttons=null;

@@ -18,6 +18,8 @@ var enableTransToPinyin = true;
 //給哪支程用的
 var HTML5FunAppName = 'monster';  //會自動抓, 不用設定value: bingo , monster, bubble
 
+var eventType = 'mousedown';  //mousedown or touchstart, auto detect
+
 var pinyinJSFilename = 'pinyin.js';
 
 var getAllButtons = function(objLayer) {
@@ -78,7 +80,7 @@ findMousedownButtons = function(allBtn) {
 		var b = allBtn[i];
 		var names = Object.keys(b);
 		for(var j=0; j<names.length; j++) {
-			if(b[names[j]] && typeof(b[names[j]])=='object' && typeof(b[names[j]].mousedown)!='undefined' ) {
+			if(b[names[j]] && typeof(b[names[j]])=='object' && (typeof(b[names[j]].mousedown)!='undefined' || typeof(b[names[j]].touchstart)!='undefined') ) {
 				options.push(b);
 				break;
 			}
@@ -148,7 +150,8 @@ findButton = function(txt) {
 //click show hit button
 showDescription = function() {	
 	if(typeof(hintButton)!='undefined') {
-		hintButton.dispatchEvent('mousedown');
+		//hintButton.dispatchEvent('mousedown');
+		hintButton.dispatchEvent(eventType);
 	}
 }
 
@@ -166,7 +169,7 @@ speech2TextEventsInit = function() {
 		micButton.textLabel.innerText = '';
 		console.log('========語音辨識結束========');
 	};
-
+		
 	recognition.onresult = function(event) { 
 		console.log(event);
 		/*
@@ -200,7 +203,8 @@ speech2TextEventsInit = function() {
 				var dalayTime = 300;
 				if(btn!=null && typeof(btn)=='object') {
 					//找到按鈕就按
-					btn.dispatchEvent('mousedown');
+					//btn.dispatchEvent('mousedown');
+					btn.dispatchEvent(eventType);
 					msg = '請繼續';
 				} else {
 					//沒找到就顯示辨識出來的文字
@@ -210,6 +214,10 @@ speech2TextEventsInit = function() {
 				setTimeout(function() {
 					document.getElementById('micButton').textLabel.innerText = '';
 				}, dalayTime);
+				
+				//if(eventType.match(/touch/i)) {
+				//	document.getElementById('micButton').dispatchEvent(eventType);
+				//}
 			}
 		}
 	}
@@ -260,7 +268,14 @@ addMicButton = function() {
 	return micButton;
 };
 	
-enableSpeech2Text = function() {
+enableSpeech2Text = function(e) {
+	e.preventDefault();
+	//
+	//detect mousedown or touchstart
+	if(typeof(e.type)!='undefined') {
+		eventType = e.type;
+	}
+	//
 	var micButton = document.getElementById('micButton');	
 
 	//bingo gameLayer child 7~16 是選項按鈕
@@ -269,13 +284,17 @@ enableSpeech2Text = function() {
 	//hintButton = getAllButtons(gameLayer)[16];
 
 	//如果有支援語音辨識, 進行語音辨識初始化
-	if(typeof(webkitSpeechRecognition)=='function') {
+	speechRecognitionReady = (typeof(window.SpeechRecognition)=='function' || typeof(window.webkitSpeechRecognition)=='function' || typeof(window.mozSpeechRecognition)=='function' || typeof(window.msSpeechRecognition)=='function');
+	if(speechRecognitionReady) {
+	//if(typeof(webkitSpeechRecognition)=='function') {
 		//進行語音辨識初始化
 		if(typeof(recognition)=='undefined') {
-			recognition = new webkitSpeechRecognition();
+			recognition =  new (window.webkitSpeechRecognition || window.SpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+			//recognition = new webkitSpeechRecognition();
 			recognition.continuous = true;		//持續辨識,不自動停
-			//recognition.interimResults=true;	//立即辨識,不等待
+			recognition.interimResults=true;	//立即辨識,不等待
 			//recognition.lang='cmn-Hant-TW'; 	//'en-US'
+			
 			speech2TextEventsInit();
 		}
 		var btnColor = micButton.style['background-color'].toLowerCase();		//'Violet'  DodgerBlue
@@ -363,12 +382,17 @@ var injection = function(callback) {
 		callback();	
 	}
 	
-	//add Mic button on left bottom after 1 sec.
-	setTimeout( function() {
-		var btn = addMicButton();
-		btn.addEventListener('mousedown', enableSpeech2Text);
-		btn.addEventListener('touchstart', enableSpeech2Text);
-		loadPinyin();
-	}, 1000);
+	//如果有支援語音辨識, 進行語音辨識初始化
+	speechRecognitionReady = (typeof(window.SpeechRecognition)=='function' || typeof(window.webkitSpeechRecognition)=='function' || typeof(window.mozSpeechRecognition)=='function' || typeof(window.msSpeechRecognition)=='function');
+	if(speechRecognitionReady) {
+		//add Mic button on left bottom after 1 sec.
+		setTimeout( function() {
+			var btn = addMicButton();
+			btn.addEventListener('mousedown', enableSpeech2Text);
+			btn.addEventListener('touchstart', enableSpeech2Text);
+			//btn.addEventListener('touchend', enableSpeech2Text);
+			loadPinyin();
+		}, 1000);
+	}
 }
 

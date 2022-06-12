@@ -2,9 +2,11 @@ CACHE MANIFEST
 
 # If you use more files you need to manually list them here.
 # Don't remove next line
-# Updated on: 2012-12-02 00:00:02
+# Updated on: 2022-06-12 09:50:01
 
 bubble.js
+injection.js
+pinyin.js
 # bubble_set.js
 bubble_menu_set.js
 

@@ -1,10 +1,11 @@
 CACHE MANIFEST
 
-# Updated on: 2022-06-12 03:35:00
+# Updated on: 2022-06-12 09:50:00
 
 
 #----------以下為檔案清單------------
 injection.js
+pinyin.js
 bingo.js
 bingo_set.js
 bingo_menu_set.js

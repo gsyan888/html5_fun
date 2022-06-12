@@ -294,6 +294,7 @@ enableSpeech2Text = function(e) {
 			recognition.continuous = true;		//持續辨識,不自動停
 			recognition.interimResults=true;	//立即辨識,不等待
 			//recognition.lang='cmn-Hant-TW'; 	//'en-US'
+			recognition.lang='zh-TW';
 			
 			speech2TextEventsInit();
 		}

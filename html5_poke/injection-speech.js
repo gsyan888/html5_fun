@@ -111,6 +111,8 @@ getOptionButtons = function() {
 		//poke boxLayer child 第 0 個是外框
 		buttons = findMousedownButtons(getAllButtons(boxLayer));
 		buttonsTotal = buttons.length;
+		//將 poke 的顯示號碼改為要
+		showNumber = 1;
 	} 
 	//console.log(buttonsTotal);
 	//console.log(buttons);
@@ -149,7 +151,7 @@ findButton = function(txt) {
 			} else if(txt.match(/\s+go$|\dgo$|購$/i)) {
 				if(txt.match(/購$/i)) {
 					txt = txt.replace(/購$/g, ' go');
-					console.log('found '+txt);
+					//console.log('found '+txt);
 				}
 				if(txt.match(/\dgo$/i)) {
 					txt = txt.replace(/(\d)go$/ig, '$1 go');
@@ -410,7 +412,9 @@ function text2num(strSource) {
 		'sixty': 60,
 		'seventy': 70,
 		'eighty': 80,
-		'ninety': 90
+		'ninety': 90,
+		'for' : 4,
+		'to' : 2
 	};
 	var Magnitude = {
 		'thousand':     1000,
@@ -425,16 +429,21 @@ function text2num(strSource) {
 		'nonillion':    1000000000000000000000000000000,
 		'decillion':    1000000000000000000000000000000000,
 	};;
+	var all_keys = Object.keys(Small).join('|')+'|'+Object.keys(Magnitude).join('|')+'|go'
 	var match, word, n, g;
 	var words = strSource.split('\s+');
+	var re = RegExp(all_keys, 'i');
 	for(var i=0; i<words.length; i++) {
-		if(!words[i].match(/zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonilliondecillion|go/i)) {
-			console.log('debug : '+words[i]);
+		//if(!words[i].match(/zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonilliondecillion|go/i)) {
+		if(!words[i].match(re)) {
+			//console.log('debug : '+words[i]);
 			return null;
 		}
 	}
 	//搜尋的字串包括 go
-    match = (strSource+' ').match(/(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonilliondecillion|go)\s+/ig)
+	re = RegExp('('+all_keys+')\\s+', 'ig');
+    //match = (strSource+' ').match(/(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonilliondecillion|go)\s+/ig)
+	match = (strSource+' ').match(re);
     //console.log(match);
 	//如果沒有找到任何數字的單字或是沒有 go 的關鍵字就不轉換
 	if(typeof(match)=='undefined' || match==null) {
@@ -466,7 +475,7 @@ function text2num(strSource) {
 				found = true;
 			}
 			else { 
-				console.log("Unknown number: "+word); 
+				//console.log("Unknown number: "+word); 
 				found = false;
 			}
 		}

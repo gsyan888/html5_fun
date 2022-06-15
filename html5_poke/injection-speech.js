@@ -123,17 +123,6 @@ findButton = function(txt) {
 	var found = null;
 	for(var i=0; i<buttonsTotal; i++) {
 		var b = buttons[i];
-		//如果已答對的格子(.enable==false)跳過
-		//console.log(HTML5FunAppName+ ' , '+ b.enabled + ' , '+ getAnswer(b) + ' = ? '+ txt);
-		/*
-		if( (HTML5FunAppName=='bingo' && b.enabled && getAnswer(b) == txt)
-			|| (HTML5FunAppName=='monster' && typeof(b)=='object' && b!=null && getLabelText(b) == txt)
-		  ) 
-		{	
-			found = b;
-			break;
-		}
-		*/
 		var labelText = '';
 		if(HTML5FunAppName=='bingo' && b.enabled ) {
 			labelText = getAnswer(b);
@@ -227,20 +216,7 @@ speech2TextEventsInit = function() {
 	};
 		
 	recognition.onresult = function(event) { 
-		console.log(event);
-		/*
-		for(var i=0; i<event.results.length; i++){
-			var txt = event.results[i][0].transcript;
-			console.log(txt);
-			if(txt) {
-				var btn = findButton(txt);
-				if(btn!=null && typeof(btn)=='object') {
-					btn.dispatchEvent('mousedown');
-					break;
-				}
-			}
-		}
-		*/
+		//console.log(event);
 		var atIndex = event.resultIndex;
 		var theLast = event.results[atIndex].length-1;
 		var txt = event.results[atIndex][theLast].transcript;
@@ -533,14 +509,13 @@ displayPokeNumbers = function() {
 		var names = Object.keys(btn);
 		for(var i=0; i<names.length; i++) {
 			if(btn[names[i]] && typeof(btn[names[i]])=='object' && typeof(btn[names[i]].getElementsByTagName)=='function') {
-				if(typeof(btn[names[i]].innerText)!='undefined' && btn[names[i]].innerText!=null) {
-					//txt = btn[names[i]].innerText;
-					//console.log(j+ ' : '+txt);
-					//console.log(btn[names[i]].children[1].style['display']);
-					//console.log(btn[names[i]].children[1].innerHTML);
-					if(btn[names[i]].children.length>=2 && !isNaN(btn[names[i]].children[1].innerHTML)) {
-						btn[names[i]].children[1].innerHTML = j+1;
-						btn[names[i]].children[1].style['display'] = 'block';
+				//if(typeof(btn[names[i]].innerText)!='undefined' && btn[names[i]].innerText!=null) {
+				if(btn[names[i]].getAttribute('title')!=null && btn[names[i]].children.length==1) {
+					var child = btn[names[i]].children[0];
+					if(child.children.length>=2 && !isNaN(child.children[1].innerHTML)) {
+						child.children[1].innerHTML = j+1;
+						btn[names[i]].title = '#'+child.children[1].innerHTML;
+						child.children[1].style['display'] = 'block';
 					}
 					break;
 				}

@@ -144,6 +144,20 @@ findButton = function(txt) {
 			if(digits && digits.length>=3 && ((digits[1]!='undefined' && digits[1]==labelText) || (digits[2]!='undefined' && digits[2]==labelText)) ) {
 				found = b;
 				break;
+			} else if(txt.match(/繼續$|下一個$|關閉$|芝麻關門$|抽下一個$|OK$/i)) {
+				//符合的就按 Enter 鍵
+				var topLayerChildren = getAllButtons(topLayer);
+				if(topLayerChildren.length>0 && getAllButtons(topLayerChildren[0]).length>0) {
+					var eventEnterKeyup = new KeyboardEvent('keyup', {
+						code: 'Enter',
+						key: 'Enter',
+						charKode: 13,
+						keyCode: 13,
+						view: window
+					});
+					document.dispatchEvent(eventEnterKeyup);
+					break;
+				}
 			}
 			continue;
 		}

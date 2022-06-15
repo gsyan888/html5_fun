@@ -140,11 +140,33 @@ findButton = function(txt) {
 		} else if(HTML5FunAppName=='poke') {
 			//戳戳樂直接取數字來比較
 			labelText = i; //+'號';
-			var digits = txt.match(/number\s(\d+)$|(\d+)號$/i);
-			if(digits && digits.length>=3 && ((digits[1]!='undefined' && digits[1]==labelText) || (digits[2]!='undefined' && digits[2]==labelText)) ) {
+			//var digits = txt.match(/number\s(\d+)$|(\d+)\sgo$|(\d+)號$/i);
+			//if(digits && digits.length>=3 && ((digits[1]!='undefined' && digits[1]==labelText) || (digits[2]!='undefined' && digits[2]==labelText)) ) {
+			var digits = txt.match(/(\d+)號$/i);
+			if(digits && digits.length>=2 && digits[1]!='undefined' && digits[1]==labelText) {
 				found = b;
 				break;
-			} else if(txt.match(/繼續$|下一個$|關閉$|芝麻關門$|抽下一個$|OK$/i)) {
+			} else if(txt.match(/\s+go$|\dgo$|購$/i)) {
+				if(txt.match(/購$/i)) {
+					txt = txt.replace(/購$/g, ' go');
+					console.log('found '+txt);
+				}
+				if(txt.match(/\dgo$/i)) {
+					txt = txt.replace(/(\d)go$/ig, '$1 go');
+					//console.log(txt);
+				}
+				digits = txt.match(/(\d+)\sgo$/i);
+				if(digits && digits.length>=2 && digits[1]!='undefined') {
+					var num = digits[1];
+				} else {
+					var num = text2num(txt.toLowerCase());
+				}
+				//console.log(num+ ' : '+txt);
+				if(num && num==Number(labelText)) {
+					found = b;
+					break;
+				}					
+			} else if(txt.match(/繼續$|下一個$|關閉$|芝麻關門$|抽下一個$|OK$|okay$|next one$/i)) {
 				//符合的就按 Enter 鍵
 				var topLayerChildren = getAllButtons(topLayer);
 				if(topLayerChildren.length>0 && getAllButtons(topLayerChildren[0]).length>0) {
@@ -356,6 +378,105 @@ enableSpeech2Text = function(e) {
 		micButton.remove();
 	}
 }
+// text2num : convert English words to number
+// rf. https://stackoverflow.com/questions/11980087/javascript-words-to-numbers
+//
+function text2num(strSource) {
+	var Small = {
+		'zero': 0,
+		'one': 1,
+		'two': 2,
+		'three': 3,
+		'four': 4,
+		'five': 5,
+		'six': 6,
+		'seven': 7,
+		'eight': 8,
+		'nine': 9,
+		'ten': 10,
+		'eleven': 11,
+		'twelve': 12,
+		'thirteen': 13,
+		'fourteen': 14,
+		'fifteen': 15,
+		'sixteen': 16,
+		'seventeen': 17,
+		'eighteen': 18,
+		'nineteen': 19,
+		'twenty': 20,
+		'thirty': 30,
+		'forty': 40,
+		'fifty': 50,
+		'sixty': 60,
+		'seventy': 70,
+		'eighty': 80,
+		'ninety': 90
+	};
+	var Magnitude = {
+		'thousand':     1000,
+		'million':      1000000,
+		'billion':      1000000000,
+		'trillion':     1000000000000,
+		'quadrillion':  1000000000000000,
+		'quintillion':  1000000000000000000,
+		'sextillion':   1000000000000000000000,
+		'septillion':   1000000000000000000000000,
+		'octillion':    1000000000000000000000000000,
+		'nonillion':    1000000000000000000000000000000,
+		'decillion':    1000000000000000000000000000000000,
+	};;
+	var match, word, n, g;
+	var words = strSource.split('\s+');
+	for(var i=0; i<words.length; i++) {
+		if(!words[i].match(/zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonilliondecillion|go/i)) {
+			console.log('debug : '+words[i]);
+			return null;
+		}
+	}
+	//搜尋的字串包括 go
+    match = (strSource+' ').match(/(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|trillion|quadrillion|quintillion|sextillion|septillion|octillion|nonilliondecillion|go)\s+/ig)
+    //console.log(match);
+	//如果沒有找到任何數字的單字或是沒有 go 的關鍵字就不轉換
+	if(typeof(match)=='undefined' || match==null) {
+		return null;
+	} else if(!match[match.length-1].match(/go/i)) {
+		return null;
+	}
+	
+	var found = false;
+    n = 0;
+    g = 0;
+	//match 要去掉最後一個 go 的，所以 match.length-1
+	for(var i=0; i<match.length-1; i++) {
+		word = match[i].replace(/\s/g, '');
+		var x = Small[word];
+		if (x != null) {
+			g = g + x;
+			found = true;
+		}
+		else if (word == "hundred") {
+			g = g * 100;
+			found = true;
+		}
+		else {
+			x = Magnitude[word];
+			if (x != null) {
+				n = n + g * x
+				g = 0;
+				found = true;
+			}
+			else { 
+				console.log("Unknown number: "+word); 
+				found = false;
+			}
+		}
+	}
+	if(found) {
+		return n + g;
+	} else {
+		return null;
+	}
+}
 translate = function(queryString) {
 	//[[["MkEWBc","[[\"測試\",\"zh-CN\",\"zh-TW\",true],[null]]",null,"generic"]]]
 	var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=zh-TW&hl=zh-TW&dt=t&dt=bd&dj=1&source=icon&tk=411946.411946&q=';  
@@ -401,7 +522,21 @@ function loadPinyin(callback) {
 	script.setAttribute('src', pinyinJSFilename);
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
+//取得網址中的某一個參數(已編碼過的)
+var gup = function( name ){
+	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+	var regexS = "[\\?&]"+name+"=([^&#]*)";  
+	var regex = new RegExp( regexS );  
+	var results = regex.exec( window.location.href ); 
+	if( results == null )    return "";  
+	else    return results[1];
+}
 var injection = function(callback) {
+	//偵測是否指定辨識的語言
+	var lang = gup('lang');
+	if(lang != '') {
+		speechRecognitionLang = lang;
+	}
 	//偵測在使用哪一支 HTML5 FUN 的程式
 	var script = document.getElementsByTagName('script');
 	for(var i=0; i<script.length; i++) {

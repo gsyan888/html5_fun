@@ -141,7 +141,8 @@ findButton = function(txt) {
 			labelText = getLabelText(b);
 		} else if(HTML5FunAppName=='poke') {
 			//戳戳樂直接取數字來比較
-			labelText = i; //+'號';
+			//labelText = i; //+'號';
+			labelText = getLabelText(b)
 			//var digits = txt.match(/number\s(\d+)$|(\d+)\sgo$|(\d+)號$/i);
 			//if(digits && digits.length>=3 && ((digits[1]!='undefined' && digits[1]==labelText) || (digits[2]!='undefined' && digits[2]==labelText)) ) {
 			var digits = txt.match(/(\d+)號$/i);
@@ -361,6 +362,9 @@ enableSpeech2Text = function(e) {
 		}
 		var btnColor = micButton.style['background-color'].toLowerCase();		//'Violet'  DodgerBlue
 		if(btnColor=='dodgerblue') {
+			if(HTML5FunAppName=='poke') {
+				displayPokeNumbers();
+			}
 			try {
 				//recognition.stop();				
 				recognition.start();
@@ -519,6 +523,30 @@ translate = function(queryString) {
 	try {
 		req.send(null);
 	} catch(e) { }
+}
+//顯示戳戳樂的格子號碼, 並將號碼改為由 1 開始
+displayPokeNumbers = function() {
+	var btns = findMousedownButtons(getAllButtons(boxLayer));
+	//console.log(btns);
+	for(var j=0; j<btns.length; j++) {
+		var btn = btns[j];
+		var names = Object.keys(btn);
+		for(var i=0; i<names.length; i++) {
+			if(btn[names[i]] && typeof(btn[names[i]])=='object' && typeof(btn[names[i]].getElementsByTagName)=='function') {
+				if(typeof(btn[names[i]].innerText)!='undefined' && btn[names[i]].innerText!=null) {
+					//txt = btn[names[i]].innerText;
+					//console.log(j+ ' : '+txt);
+					//console.log(btn[names[i]].children[1].style['display']);
+					//console.log(btn[names[i]].children[1].innerHTML);
+					if(btn[names[i]].children.length>=2 && !isNaN(btn[names[i]].children[1].innerHTML)) {
+						btn[names[i]].children[1].innerHTML = j+1;
+						btn[names[i]].children[1].style['display'] = 'block';
+					}
+					break;
+				}
+			}
+		}
+	}
 }
 function loadPinyin(callback) {
 	var script = document.createElement('script');

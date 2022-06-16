@@ -12,6 +12,7 @@
 //		2022.06.11 modifed for HTML5 monster
 //		2022.06.12 trans Chinese to Pinyin , and using RegExp to check answers
 //		2022.06.15 support HTML5 poke
+//		2022.06.16 support HTML5 ghost
 //----------------------------------------------------------------------
 //是否將中文轉拼音
 var enableTransToPinyin = false;
@@ -101,21 +102,19 @@ getOptionButtons = function() {
 	if(HTML5FunAppName == 'bingo') {
 		//bingo gameLayer child 7~16 是選項按鈕
 		var btns = findMousedownButtons(getAllButtons(gameLayer));
-		buttons = btns.slice(1, btns.length-1)
-		buttonsTotal = buttons.length;
-		hintButton = btns[btns.length-1];
+		hintButton = btns[btns.length-1];  //右邊問號的按鈕(用來查看解釋)
+		buttons = btns.slice(1, btns.length-1); //九宮格按鈕
 	} else if(HTML5FunAppName == 'monster') {
 		buttons =  findMousedownButtons(getAllButtons(qLayer));
-		buttonsTotal = buttons.length;
+	} else if(HTML5FunAppName == 'ghost') {
+		//ghost 的結構不一樣，mousedown 是在下一層的某個物件中，所以不用 findMousedownButtons
+		buttons =  getAllButtons(answerLayer); 
 	} else 	if(HTML5FunAppName == 'poke') {
-		//poke boxLayer child 第 0 個是外框
+		//poke boxLayer children 第 0 個是外框, 它沒有 mousedown
 		buttons = findMousedownButtons(getAllButtons(boxLayer));
-		buttonsTotal = buttons.length;
-		//將 poke 的顯示號碼改為要
-		showNumber = 1;
-	} 
-	//console.log(buttonsTotal);
-	//console.log(buttons);
+		showNumber = 1; //將 poke 的顯示號碼改為要
+	}		
+	buttonsTotal = buttons.length; //按鈕的總數
 }
 
 //find a button by text of the label
@@ -126,8 +125,6 @@ findButton = function(txt) {
 		var labelText = '';
 		if(HTML5FunAppName=='bingo' && b.enabled ) {
 			labelText = getAnswer(b);
-		} else if(HTML5FunAppName=='monster' && typeof(b)=='object' && b!=null ) {
-			labelText = getLabelText(b);
 		} else if(HTML5FunAppName=='poke') {
 			//戳戳樂直接取數字來比較
 			//labelText = i; //+'號';
@@ -136,22 +133,24 @@ findButton = function(txt) {
 			//if(digits && digits.length>=3 && ((digits[1]!='undefined' && digits[1]==labelText) || (digits[2]!='undefined' && digits[2]==labelText)) ) {
 			var digits = txt.match(/(\d+)號$/i);
 			if(digits && digits.length>=2 && digits[1]!='undefined' && digits[1]==labelText) {
+				//中文的指令(數字+號)
 				found = b;
 				break;
 			} else if(txt.match(/\s+go$|\dgo$|購$/i)) {
+				//英文的指令(數字+go)
 				if(txt.match(/購$/i)) {
 					txt = txt.replace(/購$/g, ' go');
-					//console.log('found '+txt);
 				}
-				if(txt.match(/\dgo$/i)) {
+				if(txt.match(/\dgo$/i)) {	//數字跟go黏在一起的，添加空格
 					txt = txt.replace(/(\d)go$/ig, '$1 go');
 					//console.log(txt);
 				}
+				//取得阿拉伯數字
 				digits = txt.match(/(\d+)\sgo$/i);
 				if(digits && digits.length>=2 && digits[1]!='undefined') {
-					var num = digits[1];
+					var num = digits[1];  //已是阿拉伯數字的
 				} else {
-					var num = text2num(txt.toLowerCase());
+					var num = text2num(txt.toLowerCase()); //英文轉阿拉伯數字
 				}
 				//console.log(num+ ' : '+txt);
 				if(num && num==Number(labelText)) {
@@ -159,7 +158,7 @@ findButton = function(txt) {
 					break;
 				}					
 			} else if(txt.match(/繼續$|下一個$|關閉$|芝麻關門$|抽下一個$|OK$|okay$|next one$/i)) {
-				//符合的就按 Enter 鍵
+				//關閉對話框的指令如果符合的, 就按 Enter 鍵
 				var topLayerChildren = getAllButtons(topLayer);
 				if(topLayerChildren.length>0 && getAllButtons(topLayerChildren[0]).length>0) {
 					var eventEnterKeyup = new KeyboardEvent('keyup', {
@@ -173,18 +172,27 @@ findButton = function(txt) {
 					break;
 				}
 			}
-			continue;
+			continue; //戳戳樂只需要數字，所以不用轉拼音
+		} else if(typeof(b)=='object' && b!=null ) {
+			labelText = getLabelText(b);
 		}
 		if(labelText!='' && txt.length>=labelText.length) {
 			if(enableTransToPinyin && typeof(transToPinyin)=='function') {
 				//將中文轉為無調號的拼音
 				labelText = transToPinyin(labelText);
 				txt = transToPinyin(txt);
+				//console.log(labelText + ' : ' + txt);
 			}
 			//比對按鈕上的文字，如果是語音的一部份，就算答對
-			var re = new RegExp(labelText,'gi');
-			if(txt.match(re)) {
-				//console.log(speech.match(re));
+			var re = null;
+			try {
+				re = new RegExp(labelText,'gi');
+			} catch(error) {  };
+			if(re && txt.match(re)) {
+				if(HTML5FunAppName=='ghost') {
+					//ghost 的按鈕需再往下一層才能找出來
+					b = findMousedownButtons(getAllButtons(b))[0];
+				}
 				found = b;
 				break;
 			}
@@ -338,7 +346,7 @@ enableSpeech2Text = function(e) {
 		}
 		var btnColor = micButton.style['background-color'].toLowerCase();		//'Violet'  DodgerBlue
 		if(btnColor=='dodgerblue') {
-			if(HTML5FunAppName=='poke') {
+			if(HTML5FunAppName=='poke') {  //戳戳樂在按了 MIC 按鈕後，試著顯示格子左上角的編號
 				displayPokeNumbers();
 			}
 			try {
@@ -362,7 +370,7 @@ enableSpeech2Text = function(e) {
 }
 // text2num : convert English words to number
 // rf. https://stackoverflow.com/questions/11980087/javascript-words-to-numbers
-//
+//將英文轉為阿拉伯數字, strSource 中必須以 go 結尾
 function text2num(strSource) {
 	var Small = {
 		'zero': 0,
@@ -393,8 +401,8 @@ function text2num(strSource) {
 		'seventy': 70,
 		'eighty': 80,
 		'ninety': 90,
-		'for' : 4,
-		'to' : 2
+		'for' : 4,	//for == four
+		'to' : 2	//to == two
 	};
 	var Magnitude = {
 		'thousand':     1000,
@@ -565,8 +573,7 @@ var injection = function(callback) {
 	//先載入原有的 LimeJS 程式
 	if(typeof(callback)=='function') {
 		callback();	
-	}
-	
+	}	
 	//如果有支援語音辨識, 進行語音辨識初始化
 	speechRecognitionReady = (typeof(window.SpeechRecognition)=='function' || typeof(window.webkitSpeechRecognition)=='function' || typeof(window.mozSpeechRecognition)=='function' || typeof(window.msSpeechRecognition)=='function');
 	if(speechRecognitionReady) {

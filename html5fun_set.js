@@ -98,7 +98,7 @@ menu_items = [
 	, "html5_monster/assets/icon.png"
 	, "html5_monster/html5_monster.html"
 	, "archives/html5_monster.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2022/06/html5-fun-monster.html"
 	],
 	
 	[ "Bingo"

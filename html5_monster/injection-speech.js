@@ -13,6 +13,7 @@
 //		2022.06.12 trans Chinese to Pinyin , and using RegExp to check answers
 //		2022.06.15 support HTML5 poke
 //		2022.06.16 support HTML5 ghost
+//		2022.06.23 Bubble add commands trigger mouse events to close dialog
 //----------------------------------------------------------------------
 //是否將中文轉拼音
 var enableTransToPinyin = true;
@@ -190,14 +191,14 @@ findButton = function(txt) {
 			}
 			if((!re || !match) && enableTransToPinyin && typeof(transToPinyin)=='function') {
 				//將中文轉為無調號的拼音(以同音字再比對看看)
-				labelText = transToPinyin(labelText);
-				txt = transToPinyin(txt);
-				//console.log(labelText + ' : ' + txt);
+				var labelTextPinyin = transToPinyin(labelText);
+				var txtPinyin = transToPinyin(txt);
+				//console.log(labelTextPinyin + ' : ' + txtPinyin);
 				try {
-					re = new RegExp(labelText,'gi');
+					re = new RegExp(labelTextPinyin,'gi');
 				} catch(error) {  };
 				if(re) {
-					match = txt.match(re);
+					match = txtPinyin.match(re);
 				}
 			}
 			if(match) {
@@ -208,6 +209,40 @@ findButton = function(txt) {
 				}
 				found = b;
 				break;
+			} else if(txt.match(/回主選單$|重新挑戰$|繼續$|開始$|下一題$|下一個$|關閉$|芝麻關門$|抽下一個$|OK$|okay$|next one$/i)) {
+				//關閉對話框的指令如果符合的, 就按按鈕
+				//if(HTML5FunAppName=='bubble') {
+				var topLayerChildren = getAllButtons(topLayer);
+				//console.log(topLayerChildren);
+				if(topLayerChildren.length>0) {
+					//topLayerChildren = getAllButtons(topLayerChildren[0]);
+					topLayerChildren = findMousedownButtons(getAllButtons(getAllButtons(topLayer)[0]));
+					if(topLayerChildren.length>1) {
+						for(var t=0; t<topLayerChildren.length; t++) {
+							btnLabelText = getLabelText(topLayerChildren[t]);
+							re = null;
+							match = null;
+							try {
+								re = new RegExp(btnLabelText,'gi');
+							} catch(error) {  };
+							if(re) {
+								//比對按鈕上的文字，如果是語音的一部份，就算答對
+								match = txt.match(re);
+								if(match) {
+									topLayerChildren[t].dispatchEvent(eventType);
+									console.log('found '+t+' : '+btnLabelText);
+									break;
+								}
+									
+							}
+						}
+					} else {
+						if(topLayerChildren.length>0) { // && typeof(topLayerChildren[0].dispatchEvent)=='function') {
+							topLayerChildren[0].dispatchEvent(eventType);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

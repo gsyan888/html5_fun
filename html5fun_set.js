@@ -90,7 +90,7 @@ menu_items = [
 	, "html5_bubble/assets/icon.png"
 	, "html5_bubble/html5_bubble.html"
 	, "archives/html5_bubble.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2022/06/html5-fun-bubble.html"
 	],
 
 	[ "Monster 語詞大挑戰"

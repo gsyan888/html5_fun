@@ -237,6 +237,14 @@ menu_items = [
 	, ""
 	],
 	
+	[ "圓形計時器"
+	, "簡易的圓形計時器"
+	, "assets/icon-timer.png"
+	, "https://gsyan888.blogspot.com/2022/07/html5-circle-timer.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2022/07/html5-circle-timer.html"
+	],
+	
 	[ "筆順練習第二版"
 	, "國字、注音筆順練習小工具"
 	, "html5_stroke/assets/icon.png"

@@ -54,19 +54,6 @@ tts_language = 'en';  // en : 英語,   zh_tw : 中文
 tts_speed = 0.3;  //語音的速度 0 ~ 1 (可用小數)
 tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl='+tts_language+'&client=tw-ob&ttsspeed='+tts_speed+'&q=';
 
-//-------------------------------
-//用來偵測換行字元用的測試區塊
-//請勿更動
-//並且放在題庫設定區塊之前
-//-------------------------------
-//測試區塊開始
-CR_LF_test = function(){/*--這一行請勿更改--
-CR_LF testing block
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2,-9);
-CR_LF_First_Pos = CR_LF_test.indexOf('_LF')-'CR_LF'.indexOf('_LF');
-//測試區塊結束
-//-------------------------------
-
 
 //題庫
 //欄位分隔符號為兩個井字號(##)
@@ -1246,4 +1233,4 @@ letter_y/sounds/yet01.mp3##他尚未來到這裡。##He hasn't come here yet.
 letter_y/sounds/you04.mp3##保重。##Take good care of yourself.　
 letter_y/sounds/young01.mp3##年輕人協助長者過馬路。##The young man helps the old man cross the road.
 letter_z/sounds/zoo01.mp3##上星期六父母帶我去動物園。##My parents took me to the zoo last Saturday.
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2+(typeof(CR_LF_First_Pos)!='undefined' ? CR_LF_First_Pos:0),-9);
+-----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

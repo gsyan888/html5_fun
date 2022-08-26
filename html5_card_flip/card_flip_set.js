@@ -11,6 +11,16 @@ title = "大家一起來";
 //	0 : 以亂數抽題
 show_by_list = 1;
 
+//用來開啟對話框中連結的快速按鍵 key code (十進制)
+//預設使用空白鍵(32)
+//按鍵代碼參考 https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+keycode_to_open_link = 32;
+
+
+//用來開啟對話框中連結的快速按鍵 key code (十進制)
+//預設使用空白鍵(32)
+//按鍵代碼參考 https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+keycode_to_open_link = 32;
 
 //計分板上的組別名稱
 //不同組間用半形逗號分隔
@@ -18,19 +28,6 @@ show_by_list = 1;
 //如果不想出現計分板，這個參數就不做任何設定
 team_names = "第1組,第2組,第3組,第4組";
 
-
-//-------------------------------
-//用來偵測換行字元用的測試區塊
-//請勿更動
-//並且放在題庫設定區塊之前
-//-------------------------------
-//測試區塊開始
-CR_LF_test = function(){/*--這一行請勿更改--
-CR_LF testing block
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2,-9);
-CR_LF_First_Pos = CR_LF_test.indexOf('_LF')-'CR_LF'.indexOf('_LF');
-//測試區塊結束
-//-------------------------------
 
 
 //題庫欄位分隔符號
@@ -91,4 +88,4 @@ duck,4
 zoo,10
 
 
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2+(typeof(CR_LF_First_Pos)!='undefined' ? CR_LF_First_Pos:0),-9);
+-----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

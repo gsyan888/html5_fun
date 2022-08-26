@@ -17,11 +17,6 @@ show_by_list = 1;
 keycode_to_open_link = 32;
 
 
-//用來開啟對話框中連結的快速按鍵 key code (十進制)
-//預設使用空白鍵(32)
-//按鍵代碼參考 https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
-keycode_to_open_link = 32;
-
 //計分板上的組別名稱
 //不同組間用半形逗號分隔
 //最多可以有七組

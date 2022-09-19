@@ -21,8 +21,8 @@
 <body>
    	<script type="text/javascript">
 	//
+	setTimeout(function() {window.scrollTo(0, 1);}, 200);
 	setTimeout(function() { 
-		window.scrollTo(0, 1);
 		//
 		(function(name,callback){
 
@@ -131,7 +131,8 @@
 
 		})('speaking.js','speaking.start');
 
-		}, 100);
+		}, 300);
+		setTimeout(function() {alert('debug');}, 3000);
 		</script>
 </body>
 

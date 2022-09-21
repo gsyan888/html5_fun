@@ -3,19 +3,6 @@
 //-------------------------------
 
 
-//-------------------------------
-//用來偵測換行字元用的測試區塊
-//請勿更動
-//並且放在題庫設定區塊之前
-//-------------------------------
-//測試區塊開始
-CR_LF_test = function(){/*--這一行請勿更改--
-CR_LF testing block
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2,-9);
-CR_LF_First_Pos = CR_LF_test.indexOf('_LF')-'CR_LF'.indexOf('_LF');
-//測試區塊結束
-//-------------------------------
-
 
 //題庫欄位分隔符號
 fields_seperator = ',';
@@ -59,4 +46,4 @@ idiom_clue_sentence_part = function(){/*--這一行請勿更改--
 始亂終棄,男子誘惑女子做出違背禮法的行為，最後卻將她棄而不顧。,,1-3;1-12;1-6;1-3
 始作俑者,最初製作人俑來殉葬的人。後世用以比喻首創惡例的人。,,1-3;1-2;1-9;1-4
 
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2+(typeof(CR_LF_First_Pos)!='undefined' ? CR_LF_First_Pos:0),-9);
+-----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

@@ -8,4 +8,4 @@
 &data_folder_name=data&
 &file_list=sample-file-list.js&
 &logger_url=&
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2,-9);
+-----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

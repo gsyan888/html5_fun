@@ -12,4 +12,4 @@
 被子.png
 貓咪.mp3
 貓咪.png
------*/}.toString().slice("function(){/*--這一行請勿更改--".length+2,-9);
+-----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

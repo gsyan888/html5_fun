@@ -34,8 +34,8 @@ helpDialogTextAlign = 'left';
 //------------------------------
 //遊戲模式按鈕上的文字
 //------------------------------
-gameMode_1_Caption = '看英文‧說英文';
-gameMode_2_Caption = '看中文‧說英文';
+gameMode_1_Caption = '看英文\n說英文';
+gameMode_2_Caption = '看中文\n說英文';
 
 //------------------------------
 //語音辨識的參數

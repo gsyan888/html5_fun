@@ -1,3 +1,55 @@
+
+//------------------------------
+//啟始對話框的設定
+//------------------------------
+//標題字
+startupDialogCaption = 'HTML5 FUN Speaking';
+
+//說明文字(支援多行, 換行就加上「\n」
+startupDialogDescription = '☆\n★★★ 看看提示 ★★★\n☆\n\n☆\n★★★ 說說答案 ★★★\n☆';
+
+//按鈕上的文字
+startupDialogButtonCaption = '開始';
+
+//說明文字對齊的方式: left , right, center
+startupDialogTextAlign = 'center';
+
+
+//------------------------------
+//預設的遊戲說明對話框的設定
+//可在題庫設定檔中使用
+//------------------------------
+//標題字
+helpDialogCaption = 'HTML5 FUN Speaking';
+
+//說明文字(支援多行, 換行就加上「\n」
+helpDialogDescription = '1.觀察畫面中央的提示。\n\n2.按麥克風的按鈕，變紅色麥克風後，以英文說出提示的單字，或是拼出單字。\n\n3.按 Check 鈕，送出答案。';
+
+//按鈕上的文字
+helpDialogButtonCaption = '開始';
+
+//說明文字對齊的方式: left , right, center
+helpDialogTextAlign = 'left';
+
+//------------------------------
+//遊戲模式按鈕上的文字
+//------------------------------
+gameMode_1_Caption = '看英文‧說英文';
+gameMode_2_Caption = '看中文‧說英文';
+
+//------------------------------
+//語音辨識的參數
+//------------------------------
+speechRecognitionContinuous = false;	//是否一直保持監聽辨識的狀態
+speechRecognitionLang = 'en-US'; //'zh-TW'; //語音辨識的語言
+speechRecognitionInterimResults = true; //是否有辨識結果就立即語音回報
+
+//------------------------------
+//是否可用鍵盤輸入 (false:禁用, true:可用)
+//------------------------------
+enableKeyboardInput = false;
+
+
 //--------------------------------------------------------------
 // 音效設定
 //--------------------------------------------------------------

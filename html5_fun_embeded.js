@@ -31,6 +31,10 @@ var moduleScripts = {
   card_flip:{
     src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",
     name:"大家一起來"
+  },
+  speaking:{
+    src:"https://gsyan888.github.io/html5_fun/html5_speaking/speaking.js",
+    name:"Speaking"
   }  
 };
 //取得HTML5 FUN 程式的網址

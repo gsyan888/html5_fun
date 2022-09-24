@@ -20,7 +20,7 @@ seperator = '##';
 questionLines = function(){/*--這一行請勿更改--
 
 What's wrong?##怎麼了？
-Her foot hurts.##他的腳受傷了。
+Her foot hurts.##她的腳受傷了。
 I have a headache.##我頭痛。
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

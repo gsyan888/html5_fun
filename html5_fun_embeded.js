@@ -272,14 +272,51 @@ createPlayButton = function() {
 	  document.body.appendChild(playButton);
 	}
   }
+  /*
   playButton.innerHTML = `
 	<center>
 	<p>&nbsp;</p>
 	<p><button onclick="injection()" type="button">開始玩
   `+moduleScripts[moduleName].name+'</button></p>';	
+  */
+  playButton.innerHTML = `
+	<center>
+	<p>&nbsp;</p>
+	<p><button onclick="injection()" type="button" class="buttonPushable">
+	<span class="buttonFront">開始玩 HTML5 FUN 
+  `+moduleScripts[moduleName].name+'</span></button></p></center>';	
 }
 //
+appendButtonStyle = function() {
+  var style= document.createElement("style");
+  //(document.head || document.documentElement).appendChild(style);
+  document.body.appendChild(style);
+  var rule=`
+  /* 3D button */
+  .buttonPushable {
+    background: hsl(340deg 100% 32%);
+    border-radius: 12px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+  }
+  .buttonFront {
+    display: block;
+    padding: 12px 42px;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    background: hsl(345deg 100% 47%);
+    color: white;
+    transform: translateY(-6px);
+  }	
+  `;
+  style.innerHTML = rule;
+}
+//
+//
 //自動載入就執行 injection , 否則就新增一個 PLAY 按鈕
+appendButtonStyle();
 createPlayButton();
 //
 if(autoStart) {

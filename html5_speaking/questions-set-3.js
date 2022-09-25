@@ -15,7 +15,7 @@ order_by_random = true;
 helpDialogCaption = 'HTML5 FUN Speaking';
 
 //說明文字(支援多行, 換行就加上「\n」
-helpDialogDescription = '1.觀察畫面中央的提示。\n\n2.按麥克風的按鈕，變紅色麥克風後，以英文說出提示的單字，或是拼出單字。\n\n3.按 Check 鈕，送出答案。';
+helpDialogDescription = '1.觀察畫面中央的提示。\n\n2.按麥克風的按鈕，變紅色麥克風後，以 [中文] 說出提示的字句。\n\n3.按 Check 鈕，送出答案。';
 
 //按鈕上的文字
 helpDialogButtonCaption = '開始';
@@ -26,14 +26,14 @@ helpDialogTextAlign = 'left';
 //------------------------------
 //遊戲模式按鈕上的文字
 //------------------------------
-gameMode_1_Caption = '看英文\n說英文';	//模式1:題庫第1欄為題目和提示
-gameMode_2_Caption = '看中文\n說英文';	//模式2:題庫第1欄為題目，其它欄為提示
+gameMode_1_Caption = '看中文\n說中文';	//模式1:題庫第1欄為題目和提示
+gameMode_2_Caption = '看英文\n說中文';	//模式2:題庫第1欄為題目，其它欄為提示
 
 //------------------------------
 //語音辨識的參數
 //------------------------------
 speechRecognitionContinuous = false;	//是否一直保持監聽辨識的狀態
-speechRecognitionLang = 'en-US'; 		//語音辨識的語言 英文: 'en-US' , 中文: 'zh-TW'
+speechRecognitionLang = 'zh-TW'; 		//語音辨識的語言 英文: 'en-US' , 中文: 'zh-TW'
 speechRecognitionInterimResults = true; //是否有辨識結果就立即語音回報
 
 //------------------------------
@@ -41,7 +41,7 @@ speechRecognitionInterimResults = true; //是否有辨識結果就立即語音�
 //------------------------------
 enableKeyboardInput = false;
 
-
+//
 //---------------------------------------------------
 //【題庫設定】
 //---------------------------------------------------
@@ -53,14 +53,14 @@ seperator = '##';
 //【題目設定】
 //  一行一題, 
 //  欄位左起
-//    第一欄為英文
-//    第二欄為中文
+//    第一欄為中文(不要加標點符號, 注意同音字 ex.他/她/它/牠...)
+//    第二欄為英文
 //    第三欄為圖片檔的路徑
 //
 questionLines = function(){/*--這一行請勿更改--
 
-What's wrong?##怎麼了？
-Her foot hurts.##她的腳受傷了。
-I have a headache.##我頭痛。
+怎麼了##What's wrong?
+他的腳受傷了##His foot hurts.
+我頭痛##I have a headache.
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

@@ -1,3 +1,6 @@
+//=======================================================
+// HTML5 Speaking 啟始的設定檔
+//=======================================================
 
 //------------------------------
 //啟始對話框的設定
@@ -14,10 +17,9 @@ startupDialogButtonCaption = '開始';
 //說明文字對齊的方式: left , right, center
 startupDialogTextAlign = 'center';
 
-
 //------------------------------
 //預設的遊戲說明對話框的設定
-//可在題庫設定檔中使用
+//可能會被 [題庫設定] 的設定值取代
 //------------------------------
 //標題字
 helpDialogCaption = 'HTML5 FUN Speaking';
@@ -32,20 +34,24 @@ helpDialogButtonCaption = '開始';
 helpDialogTextAlign = 'left';
 
 //------------------------------
-//遊戲模式按鈕上的文字
+//預設的遊戲模式按鈕文字
+//可能會被 [題庫設定] 的設定值取代
 //------------------------------
-gameMode_1_Caption = '看英文\n說英文';
-gameMode_2_Caption = '看中文\n說英文';
+gameMode_1_Caption = '看英文\n說英文';	//模式1:題庫第1欄為題目和提示
+gameMode_2_Caption = '看中文\n說英文';	//模式2:題庫第1欄為題目，其它欄為提示
 
 //------------------------------
-//語音辨識的參數
+//預設的語音辨識參數
+//可能會被 [題庫設定] 的設定值取代
 //------------------------------
 speechRecognitionContinuous = false;	//是否一直保持監聽辨識的狀態
-speechRecognitionLang = 'en-US'; //'zh-TW'; //語音辨識的語言
+speechRecognitionLang = 'en-US'; 		//語音辨識的語言 英文: 'en-US' , 中文: 'zh-TW'
 speechRecognitionInterimResults = true; //是否有辨識結果就立即語音回報
 
 //------------------------------
-//是否可用鍵盤輸入 (false:禁用, true:可用)
+//預設的是否可用鍵盤輸入
+// (false:禁用, true:可用)
+//可能會被 [題庫設定] 的設定值取代
 //------------------------------
 enableKeyboardInput = false;
 

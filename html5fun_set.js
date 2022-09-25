@@ -21,6 +21,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2021/12/html5-stroke-parts.html"
 	],
 
+	[ "Speaking"
+	, "HTML5 Speaking"
+	, "html5_speaking/assets/icon.png"
+	, "html5_speaking/html5_speaking.html"
+	, "archives/html5_speaking.zip"
+	, "https://gsyan888.blogspot.com/2022/09/html5-speaking-blogger-embeded.html"
+	//"https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
+	],
+	
 	[ "筆順編輯器"
 	, "筆順造字小工具"
 	, "html5_strokeeditor/assets/icon.png"

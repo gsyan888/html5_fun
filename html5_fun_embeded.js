@@ -56,6 +56,12 @@ if(typeof(autoStart)!='boolean') {
 	autoStart = false;
   }
 }
+//取得背景顏色的參數
+var wrapperBackground = document.getElementById('injectionJS').getAttribute('background');
+if(typeof(wrapperBackground)=='undefined' || wrapperBackground==null) {
+	//wrapperBackground = '#F8F9F9';
+	wrapperBackground = '#ffffff';
+}
 //
 /**
 * 載外部的 .js , 並執行 callback 的指令
@@ -92,7 +98,7 @@ loadExternalScript = function(scriptSrc, callback)  {
 };
 //載入的程序
 injection = function() {
-  //
+   //先將捲軸捲到最上方，以免無法進行按下的動作
   window.scrollTo(0,0);
   //
   //新增的 div id
@@ -107,7 +113,7 @@ injection = function() {
   //The wrapper
   if(!document.getElementById(id.HTML5FunWrapper)) {
 	HTML5FunWrapper = document.createElement("div");
-	var style = 'background:#F8F9F9;position:fixed;height:100%;width:100%;left: 0;top: 0;z-index:10000;visibility:visible;';
+	var style = 'background:'+wrapperBackground+';position:fixed;height:100%;width:100%;left: 0;top: 0;z-index:10000;visibility:visible;';
 	HTML5FunWrapper.id = id.HTML5FunWrapper;
 	HTML5FunWrapper.setAttribute("style", style);
 	//HTML5FunWrapper.style.overflow = 'hidden';

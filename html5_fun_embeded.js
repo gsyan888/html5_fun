@@ -92,6 +92,9 @@ loadExternalScript = function(scriptSrc, callback)  {
 };
 //載入的程序
 injection = function() {
+  //
+  window.scrollTo(0,0);
+  //
   //新增的 div id
   const id = {HTML5FunWrapper:'HTML5FunWrapper', HTML5FunEmbeded:'HTML5FunEmbeded'};
 

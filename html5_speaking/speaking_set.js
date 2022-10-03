@@ -56,6 +56,29 @@ speechRecognitionInterimResults = true; //是否有辨識結果就立即語音�
 //------------------------------
 enableKeyboardInput = false;
 
+//
+//------------------------------
+//載入注音符號的字型
+//------------------------------
+//@font-face { font-family: "注音符號"; src: url('assets/bopomofo.woff') format('woff');
+var bopomofoFontUrl = 'assets/bopomofo.woff';
+if(typeof(HTML5FunScriptBaseURL)!='undefined') {
+	bopomofoFontUrl = HTML5FunScriptBaseURL+bopomofoFontUrl;
+}
+var bopomofoFont = new FontFace("注音符號", "url("+bopomofoFontUrl+")");
+isBpomofoFontLoaded = false;
+bopomofoFont.load().then(
+    font => {
+        document.fonts.add(font);
+		isBpomofoFontLoaded = true;
+		//alert('font loaded');
+    },
+    error => {
+        isBpomofoFontLoaded = false;
+		//alert(error);
+        console.log(error);
+    }
+)
 
 //--------------------------------------------------------------
 // 音效設定

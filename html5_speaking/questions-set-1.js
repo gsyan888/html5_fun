@@ -14,8 +14,8 @@ order_by_random = true;
 //標題字
 helpDialogCaption = 'HTML5 FUN Speaking';
 
-//說明文字(支援多行, 換行就加上「\n」
-helpDialogDescription = '1.觀察畫面中央的提示。\n\n2.按麥克風的按鈕，變紅色麥克風後，以英文說出提示的單字，或是拼出單字。\n\n3.按 Check 鈕，送出答案。';
+//說明文字(支援多行, 換行就加上「\n」)
+helpDialogDescription = '1.觀察畫面中央的提示。\n\n2.按麥克風的按鈕，看到 GO 後，以英文說出提示的字句。\n\n3.錯了就再重覆步驟2 (可按上方標題板聽示範語音)。';
 
 //按鈕上的文字
 helpDialogButtonCaption = '開始';

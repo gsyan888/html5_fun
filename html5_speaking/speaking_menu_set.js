@@ -31,5 +31,6 @@ menu_items = function(){/*--這一行請勿更改--
 範例 2 : 句子,questions-set-2.js
 範例 3 : 中文,questions-set-3.js
 範例 4 : 日文,questions-set-4.js
+範例 5 : 國字+注音,questions-set-5.js
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

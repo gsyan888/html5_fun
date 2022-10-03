@@ -14,8 +14,8 @@ order_by_random = true;
 //標題字
 helpDialogCaption = 'HTML5 FUN Speaking';
 
-//說明文字(支援多行, 換行就加上「\n」)
-helpDialogDescription = '1.觀察畫面中央的提示。\n\n2.按麥克風的按鈕，看到 GO 後，以英文說出提示的字句。\n\n3.錯了就再重覆步驟2 (可按上方標題板聽示範語音)。';
+//說明文字(支援多行, 換行就加上「\n」
+helpDialogDescription = '1.觀察畫面中央的提示。\n\n2.按麥克風的按鈕，看到 GO 後，以國語說出提示的字句。\n\n3.錯了就再重覆步驟2 (可按上方標題板聽示範語音)。';
 
 //按鈕上的文字
 helpDialogButtonCaption = '開始';
@@ -26,15 +26,15 @@ helpDialogTextAlign = 'left';
 //------------------------------
 //遊戲模式按鈕上的文字
 //------------------------------
-gameMode_1_Caption = '看英文\n說英文';	//模式1:題庫第1欄為問題，也是提示
-gameMode_2_Caption = '看英+中\n說英文';	//模式2:題庫第1欄為問題，第1欄和第2欄為提示
-gameMode_3_Caption = '看中文\n說英文';	//模式3:題庫第1欄為問題，第2欄和第3欄為提示
+gameMode_1_Caption = '看國字唸一唸';	//模式1:題庫第1欄為問題，也是提示
+gameMode_2_Caption = '看國+注唸一唸';	//模式2:題庫第1欄為問題，第1欄和第2欄為提示
+gameMode_3_Caption = '看注音唸一唸';	//模式3:題庫第1欄為問題，第2欄和第3欄為提示
 
 //------------------------------
 //語音辨識的參數
 //------------------------------
 speechRecognitionContinuous = false;	//是否一直保持監聽辨識的狀態
-speechRecognitionLang = 'en-US'; 		//語音辨識的語言 英文: 'en-US' , 中文: 'zh-TW'
+speechRecognitionLang = 'zh-TW'; 		//語音辨識的語言 英文: 'en-US' , 中文: 'zh-TW'
 speechRecognitionInterimResults = true; //是否有辨識結果就立即語音回報
 
 //------------------------------
@@ -48,7 +48,6 @@ ttsPlaybackRate = [1.0, 0.75, 0.5];
 //是否可用鍵盤輸入 (false:禁用, true:可用)
 //------------------------------
 enableKeyboardInput = false;
-
 
 //---------------------------------------------------
 //【題庫設定】
@@ -66,9 +65,14 @@ seperator = '##';
 //    第三欄為圖片檔的路徑
 //
 questionLines = function(){/*--這一行請勿更改--
-
-What's wrong?##怎麼了？
-Her foot hurts.##她的腳受傷了。
-I have a headache.##我頭痛。
-
+拔蘿蔔##ㄅㄚˊ ㄌㄨㄛˊ ˙ㄅㄛ##https://cdn.pixabay.com/photo/2018/06/15/15/38/radishes-3477102_960_720.jpg
+拔蘿蔔##ㄅㄚˊ ㄌㄨㄛˊ ˙ㄅㄛ##https://cdn.pixabay.com/photo/2018/06/15/15/38/radishes-3477102_960_720.jpg
+嘿呦嘿呦##ㄏㄟ ㄧㄡ ㄏㄟ ㄧㄡ##https://cdn.pixabay.com/photo/2020/04/25/20/26/team-5092607_960_720.jpg
+拔蘿蔔##ㄅㄚˊ ㄌㄨㄛˊ ˙ㄅㄛ##https://cdn.pixabay.com/photo/2018/06/15/15/38/radishes-3477102_960_720.jpg
+老鼠##ㄌㄠˇ ㄕㄨˇ##https://cdn.pixabay.com/photo/2017/10/07/11/24/wood-mouse-2826216_960_720.jpg
+白兔##ㄅㄞˊ ㄊㄨˋ##https://cdn.pixabay.com/photo/2017/03/25/09/56/easter-2173193_960_720.jpg
+來來來##ㄌㄞˊ ㄌㄞˊ ㄌㄞˊ##https://cdn.pixabay.com/photo/2021/11/09/10/36/boy-6781192_960_720.jpg
+貓咪##ㄇㄠ ㄇㄧ##https://cdn.pixabay.com/photo/2015/08/30/10/58/cat-914110_960_720.jpg
+黑狗##ㄏㄟ ㄍㄡˇ##https://cdn.pixabay.com/photo/2014/09/07/17/07/flatcoated-retriever-438010_960_720.jpg
+來來來##ㄌㄞˊ ㄌㄞˊ ㄌㄞˊ##https://cdn.pixabay.com/photo/2021/11/09/10/36/boy-6781192_960_720.jpg
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

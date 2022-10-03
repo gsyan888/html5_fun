@@ -5,7 +5,7 @@
 //------------------------------
 //出題時是否要以亂數來選題
 //------------------------------
-order_by_random = true;
+order_by_random = false;
 
 
 //------------------------------
@@ -60,19 +60,18 @@ seperator = '##';
 //【題目設定】
 //  一行一題, 
 //  欄位左起
-//    第一欄為英文
-//    第二欄為中文
-//    第三欄為圖片檔的路徑
+//    第一欄為問題
+//    第二欄為提示的文字
+//    第三欄為提示圖片檔的路徑
 //
 questionLines = function(){/*--這一行請勿更改--
-拔蘿蔔##ㄅㄚˊ ㄌㄨㄛˊ ˙ㄅㄛ##https://cdn.pixabay.com/photo/2018/06/15/15/38/radishes-3477102_960_720.jpg
-拔蘿蔔##ㄅㄚˊ ㄌㄨㄛˊ ˙ㄅㄛ##https://cdn.pixabay.com/photo/2018/06/15/15/38/radishes-3477102_960_720.jpg
-嘿呦嘿呦##ㄏㄟ ㄧㄡ ㄏㄟ ㄧㄡ##https://cdn.pixabay.com/photo/2020/04/25/20/26/team-5092607_960_720.jpg
-拔蘿蔔##ㄅㄚˊ ㄌㄨㄛˊ ˙ㄅㄛ##https://cdn.pixabay.com/photo/2018/06/15/15/38/radishes-3477102_960_720.jpg
-老鼠##ㄌㄠˇ ㄕㄨˇ##https://cdn.pixabay.com/photo/2017/10/07/11/24/wood-mouse-2826216_960_720.jpg
-白兔##ㄅㄞˊ ㄊㄨˋ##https://cdn.pixabay.com/photo/2017/03/25/09/56/easter-2173193_960_720.jpg
-來來來##ㄌㄞˊ ㄌㄞˊ ㄌㄞˊ##https://cdn.pixabay.com/photo/2021/11/09/10/36/boy-6781192_960_720.jpg
-貓咪##ㄇㄠ ㄇㄧ##https://cdn.pixabay.com/photo/2015/08/30/10/58/cat-914110_960_720.jpg
-黑狗##ㄏㄟ ㄍㄡˇ##https://cdn.pixabay.com/photo/2014/09/07/17/07/flatcoated-retriever-438010_960_720.jpg
-來來來##ㄌㄞˊ ㄌㄞˊ ㄌㄞˊ##https://cdn.pixabay.com/photo/2021/11/09/10/36/boy-6781192_960_720.jpg
+
+小鴨子##ㄒㄧㄠˇ ㄧㄚ ˙ㄗ##https://3.bp.blogspot.com/_3b2eDURH_zM/R-AB8hd-YII/AAAAAAAAASM/pL6tNqcv960/s1600/poem-97-03-18.jpg
+真可愛##ㄓㄣ ㄎㄜˇ ㄞˋ##https://cdn.pixabay.com/photo/2022/04/26/23/16/duckling-7159325_960_720.jpg
+嘴巴扁##ㄗㄨㄟˇ ㄅㄚ ㄅㄧㄢˇ##https://cdn.pixabay.com/photo/2019/10/27/12/29/duck-4581608_960_720.jpg
+呱呱叫##ㄍㄨㄚ ㄍㄨㄚ ㄐㄧㄠˋ##https://cdn.pixabay.com/photo/2014/04/02/10/41/duck-304234_960_720.png
+白色羽毛##ㄅㄞˊ ㄙㄜˋ ㄩˇ ㄇㄠˊ##https://cdn.pixabay.com/photo/2019/02/24/16/26/goose-4017946_960_720.jpg
+真漂亮##ㄓㄣ ㄆㄧㄠˋ ㄌㄧㄤˋ##https://cdn.pixabay.com/photo/2021/12/23/13/49/white-duck-6889369_960_720.jpg
+
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
+

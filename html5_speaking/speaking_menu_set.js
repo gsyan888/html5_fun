@@ -27,8 +27,8 @@ menu_fields_seperator = ',';
 //
 menu_items = function(){/*--這一行請勿更改--
 
-範例 1 : 單字,questions-set-1.js
-範例 2 : 句子,questions-set-2.js
+範例 1 : 英文單字,questions-set-1.js
+範例 2 : 英文句子,questions-set-2.js
 範例 3 : 中文,questions-set-3.js
 範例 4 : 日文,questions-set-4.js
 範例 5 : 國字+注音,questions-set-5.js

@@ -60,8 +60,8 @@ seperator = '##';
 //【題目設定】
 //  一行一題, 
 //  欄位左起
-//    第一欄為問題
-//    第二欄為提示的文字
+//    第一欄為問題 (本範例為國字, 不要加標點及其它符號)
+//    第二欄為提示的文字 (本範例為注音, 不同字的注音間加一個空格, 不要加標點及其它符號, 想換行就加上 \n )
 //    第三欄為提示圖片檔的路徑
 //
 questionLines = function(){/*--這一行請勿更改--
@@ -72,6 +72,12 @@ questionLines = function(){/*--這一行請勿更改--
 呱呱叫##ㄍㄨㄚ ㄍㄨㄚ ㄐㄧㄠˋ##https://cdn.pixabay.com/photo/2014/04/02/10/41/duck-304234_960_720.png
 白色羽毛##ㄅㄞˊ ㄙㄜˋ ㄩˇ ㄇㄠˊ##https://cdn.pixabay.com/photo/2019/02/24/16/26/goose-4017946_960_720.jpg
 真漂亮##ㄓㄣ ㄆㄧㄠˋ ㄌㄧㄤˋ##https://cdn.pixabay.com/photo/2021/12/23/13/49/white-duck-6889369_960_720.jpg
+
+小小鴨子真可愛##ㄒㄧㄠˇ ㄒㄧㄠˇ ㄧㄚ ˙ㄗ\n ㄓㄣ ㄎㄜˇ ㄞˋ##https://cdn.pixabay.com/photo/2022/04/26/23/16/duckling-7159325_960_720.jpg
+嘴巴扁扁呱呱叫##ㄗㄨㄟˇ ㄅㄚ ㄅㄧㄢˇ ㄅㄧㄢˇ\n ㄍㄨㄚ ㄍㄨㄚ ㄐㄧㄠˋ##https://cdn.pixabay.com/photo/2014/04/02/10/41/duck-304234_960_720.png
+白色羽毛真漂亮##ㄅㄞˊ ㄙㄜˋ ㄩˇ ㄇㄠˊ\n ㄓㄣ ㄆㄧㄠˋ ㄌㄧㄤˋ##https://cdn.pixabay.com/photo/2019/02/24/16/26/goose-4017946_960_720.jpg
+
+小小鴨子真可愛嘴巴扁扁呱呱叫白色羽毛真漂亮##ㄒㄧㄠˇ ㄒㄧㄠˇ ㄧㄚ ˙ㄗ ㄓㄣ ㄎㄜˇ ㄞˋ\nㄗㄨㄟˇ ㄅㄚ ㄅㄧㄢˇ ㄅㄧㄢˇ \nㄍㄨㄚ ㄍㄨㄚ ㄐㄧㄠˋ\n ㄅㄞˊ ㄙㄜˋ ㄩˇ ㄇㄠˊ \nㄓㄣ ㄆㄧㄠˋ ㄌㄧㄤˋ ##https://3.bp.blogspot.com/_3b2eDURH_zM/R-AB8hd-YII/AAAAAAAAASM/pL6tNqcv960/s1600/poem-97-03-18.jpg
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
 

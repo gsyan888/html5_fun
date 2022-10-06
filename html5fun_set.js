@@ -26,8 +26,7 @@ menu_items = [
 	, "html5_speaking/assets/icon.png"
 	, "html5_speaking/html5_speaking.html"
 	, "archives/html5_speaking.zip"
-	, "https://gsyan888.blogspot.com/2022/09/html5-speaking-blogger-embeded.html"
-	//"https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
+	, "https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
 	],
 	
 	[ "筆順編輯器"

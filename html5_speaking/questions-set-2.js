@@ -67,6 +67,11 @@ seperator = '##';
 //
 questionLines = function(){/*--這一行請勿更改--
 
+Hi!##嗨！
+Hello!##哈囉！
+How's the weather today?##今天天氣是如何？
+Have a good time.##(祝你)有一個好時光。
+Do you want some coffee?##你想要一些咖啡嗎？
 What's wrong?##怎麼了？
 Her foot hurts.##她的腳受傷了。
 I have a headache.##我頭痛。

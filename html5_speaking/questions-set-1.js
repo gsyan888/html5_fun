@@ -65,14 +65,12 @@ seperator = '##';
 //    第三欄為提示圖片檔的路徑
 //
 questionLines = function(){/*--這一行請勿更改--
-dog##小狗
+
 cat##貓
-cow##牛
 mouse##老鼠
 chicken##雞
 monkey##猴子
 tiger##老虎
-goat##羊
 horse##馬
-hippo##河馬
+
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

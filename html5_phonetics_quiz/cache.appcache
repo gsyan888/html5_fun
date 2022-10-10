@@ -1,22 +1,28 @@
 CACHE MANIFEST
 
-# Updated on: 2022-09-21 11:28:00
+# Updated on: 2022-10-10 18:57:00
 
 
 #----------以下為檔案清單------------
 
 phonetics_quiz.js
 phonetab.js
-sample-set-2.js
-sample-set-1.js
-sample-file-list.js
 phonetics_quiz_menu_set.js
+
+question-set-1.js
+question-set-2.js
+question-set-3.js
+
+assets/bopomofo.woff
+
 assets/startup.png
 assets/startup-ipad-p.png
 assets/startup-ipad-l.png
-assets/sound_click.mp3
-assets/menu_icon.png
 assets/icon.png
+
+assets/menu_icon.png
+
+assets/sound_click.mp3
 assets/good3.mp3
 assets/good2.mp3
 assets/good1.mp3
@@ -26,19 +32,15 @@ assets/bad3.mp3
 assets/bad2.mp3
 assets/bad1.mp3
 assets/bad0.mp3
-data/貓咪.png
-data/貓咪.mp3
-data/被子.png
-data/被子.mp3
-data/杯子.png
-data/杯子.mp3
-data/斑馬.png
-data/斑馬.mp3
-data/帽子.png
-data/帽子.mp3
-data/山羊.mp3
-data/小狗.png
-data/小狗.mp3
+
+data/cat.png
+data/cat.mp3
+data/cup.png
+data/cup.mp3
+data/hat.png
+data/hat.mp3
+data/dog.png
+data/dog.mp3
 
 NETWORK:
 *

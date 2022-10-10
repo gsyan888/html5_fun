@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.01.21 13:16:00 
+ * - update 2022.10.10 19:04:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -35,6 +35,10 @@ var moduleScripts = {
   speaking:{
     src:"https://gsyan888.github.io/html5_fun/html5_speaking/speaking.js",
     name:"Speaking"
+  },
+  phonetics_quiz:{
+    src:"https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/phonetics_quiz.js",
+    name:"注音高手"
   }  
 };
 //取得HTML5 FUN 程式的網址

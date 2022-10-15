@@ -218,7 +218,7 @@ menu_items = [
 	, "html5_phonetics_quiz/assets/icon.png"
 	, "html5_phonetics_quiz/html5_phonetics_quiz.html"
 	, "archives/html5_phonetics_quiz.zip"
-	, "https://gsyan888.blogspot.com/2014/02/html5-phoneticsquiz.html"
+	, "https://gsyan888.blogspot.com/2022/10/html5-phoneticsquiz-2022.html"
 	],
 
 	[ "remoteClick遙控器"

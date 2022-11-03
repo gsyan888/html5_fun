@@ -1,7 +1,7 @@
 /**
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
- * - update 2022.10.10 19:04:00 
+ * - update 2022.11.02 22:29:00 
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -216,6 +216,11 @@ closeApp = function(e) {
   } catch(error) {  };
   //移除
   removeHTML5FunEmbeded();
+  
+  /* 如果有設定關閉後要執行的程序, 就執行 */
+  if(typeof(callbackAfterClosed)=='function') {
+    callbackAfterClosed();
+  }
 }
 //
 //刪除指定元件內所有的 child nodes

@@ -81,6 +81,16 @@ mp3_folder = 'mp3';
 image_file_extension = '.png';
 
 //---------------------------------
+//圖片載入幾秒逾時不候(超過時間變文字)
+//---------------------------------
+imageLoadingTimeout = 1.5;
+
+//---------------------------------
+//聲音載入幾秒逾時不候(超過時間用合成語音)
+//---------------------------------
+audioLoadingTimeout = 2;
+
+//---------------------------------
 //記錄作答情形程式的 URL (可不使用)
 //---------------------------------
 //logger = 'https://script.google.com/macros/s/AKfycbz477Pkc0YmE3f0RQ1Ht5U0ABdT3i2ARx4upluTFwJf2B2EmTg1/exec';

@@ -577,6 +577,9 @@ loadJsToScriptInnerHTML = function(id, src) {
 setThisValue = function(elm) {
   if(typeof(elm.parentNode.lastChild.value)!='undefined' && elm.parentNode.lastChild.value!=null) {
     elm.parentNode.lastChild.value = elm.innerText;
+	if(typeof(update_settingJS)=='function') {
+		update_settingJS();
+	}
   }
 };
 

@@ -1,18 +1,17 @@
 CACHE MANIFEST
 
-# Updated on: 2022-11-07 01:16:00
+# Updated on: 2022-11-07 15:10:00
 
 
 #----------以下為檔案清單------------
 
 listening.js
-sample_chinese_set.js
-sample_chinese_mp3_list.js
-sample_listening_set.txt
-sample_listening_set.js
-sample_images_list.txt
-sample_images_list.js
+listening_set.js
+questions-set-1.js
+questions-set-2.js
+questions-set-3.js
 listening_menu_set.js
+
 mp3/monkey.mp3
 mp3/horse.mp3
 mp3/egg.mp3
@@ -20,6 +19,7 @@ mp3/dog.mp3
 mp3/cow.mp3
 mp3/chicken.mp3
 mp3/cat.mp3
+
 images/monkey.png
 images/horse.png
 images/egg.png
@@ -27,6 +27,7 @@ images/dog.png
 images/cow.png
 images/chicken.png
 images/cat.png
+
 assets/startup.png
 assets/startup-ipad-p.png
 assets/startup-ipad-l.png

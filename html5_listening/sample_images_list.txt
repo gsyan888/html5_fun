@@ -1,7 +1,0 @@
-cat.png
-chicken.png
-cow.png
-dog.png
-egg.png
-horse.png
-monkey.png

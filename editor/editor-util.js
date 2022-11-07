@@ -278,7 +278,12 @@ decodeJS = function (code) {
 
 /* 由按下的物件捲動到步驟? 的位置 */
 jumpTo = function (from, to) {
-  var offset = document.getElementById('step' + to).offsetTop - from.offsetTop;
+  if(!isNaN(to)) {
+	  to = document.getElementById('step' + to);
+  } else if(typeof(to)=='string') {
+	  to = document.getElementById(to);
+  }
+  var offset = to.offsetTop - from.offsetTop;
   var y = offset + from.offsetTop - window.scrollY - from.offsetHeight / 4;
 
   window.scrollBy({

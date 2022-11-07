@@ -176,7 +176,6 @@ function(){/*---=====Template=====
 	}
   }
   
-  //
   //在畫面 playButton 新增一個 PLAY 的按鈕
   html5FunCreatePlayButton = function() {
     //新增按鈕
@@ -228,10 +227,9 @@ function(){/*---=====Template=====
     style.innerHTML = rule;
   }
   
-  //
   //新增一個 PLAY 按鈕
   html5FunAppendButtonStyle();
   html5FunCreatePlayButton();
-  //  
+
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*---=====Template=====".length+1,-9)
 ];

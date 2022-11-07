@@ -663,6 +663,23 @@ varInit = function() {
     }
 };
 
+/* 顯示或隱藏語法產生器 */
+editorOnOff = function(elm, id) {
+  if(typeof(id)=='undefined' || id==null) {
+    id = 'editorWrapper';
+  }
+  document.getElementById(id).classList.toggle('hidden');
+  var txt = elm.innerText;
+  if(/開啟/.test(txt)) {
+    elm.innerText = txt.replace(/開啟/, '關閉');
+    elm.style.opacity = 0.5;
+    elm.style.border = '1px dashed';
+  } else {
+    elm.innerText = txt.replace(/關閉/, '開啟');
+    elm.style.opacity = 1;
+    elm.style.border = '1px solid';
+};
+
 /*
  按完右上角的叉叉後，將畫面捲回輸出的區塊
  */

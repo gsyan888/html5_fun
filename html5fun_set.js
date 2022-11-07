@@ -146,7 +146,7 @@ menu_items = [
 	, "html5_listening/assets/icon.png"
 	, "html5_listening/html5_listening.html"
 	, "archives/html5_listening.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2022/11/html5-listening.html"
 	],
 
 	[ "漢字五子棋"

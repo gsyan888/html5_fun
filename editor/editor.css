@@ -245,6 +245,9 @@ pre code span.line::before {
 .hidden {
   display: none;
 }
+.btn {
+  cursor: pointer;
+}
 #sourceCode {
   width:98%;
 }

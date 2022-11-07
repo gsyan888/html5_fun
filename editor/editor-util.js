@@ -678,6 +678,7 @@ editorOnOff = function(elm, id) {
     elm.innerText = txt.replace(/關閉/, '開啟');
     elm.style.opacity = 1;
     elm.style.border = '1px solid';
+  }
 };
 
 /*

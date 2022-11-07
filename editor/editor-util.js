@@ -1,3 +1,12 @@
+/*
+ *=====================================================
+ * HTML5 FUN Blogger、網頁嵌入語法產生器
+ * 欄位輸入、輸出界面處理工具
+ * 2022.10.19 by gsyan (https://gsyan888.blogspot.com/)
+ * update : 2022.11.08
+ *=====================================================
+ */
+ 
 /* 取得指定id script tag 中的各屬性，並組合為字串 */
 getJSheadAttributes = function (id) {
   const attributes = document.getElementById(id).attributes;
@@ -109,6 +118,7 @@ showJSCode = function (n) {
           html = html.replace(/\</g, '&amp;lt;').replace(/>/g, '&amp;gt;').replace(/\\/g, '\\\\');
           /* 使用 Template2 變成 Google Sites 嵌入的語法 */
           html = getTemplate(2).replace('<!-- 這裡插入編過碼的語法 -->', html);
+		  /* \\` 變成 \` 不然無法置換變數 */ 		  
 		  html = html.replace(/\\\\`/g, '\\`');
           /* 修正最後一個 </srcipt> 多了一個反斜線 */
           html = html.replace(/&amp;lt;\\\\\//g, '&amp;lt;\/').replace(/<\\\//g, '</');
@@ -274,7 +284,7 @@ encodeJS = function (id) {
 };
 decodeJS = function (code) {
   return decodeURIComponent(atob(code).normalise_to_unicode().crypt_symmetric());
-}
+};
 
 /* 由按下的物件捲動到步驟? 的位置 */
 jumpTo = function (from, to) {
@@ -291,7 +301,7 @@ jumpTo = function (from, to) {
     left: 0,
     behavior: 'smooth'
   });
-}
+};
 
 /*
  將設定的區塊 settingJS 去掉尾巴的函數後

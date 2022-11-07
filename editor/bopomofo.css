@@ -1,0 +1,354 @@
+#logoContent {
+  position: relative;
+}
+#logo {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  display: block;
+  height: 50px;
+  width: 50px;
+  border-radius: 0.25em;
+}		
+.BoPoMoFoWrapper {
+ text-align: center;
+ width: 100%;
+ padding: 0;
+ margin: 0;
+}
+.stage {
+  border:dashed orange 1px;
+  border-radius:3em;
+  margin: 0.5em 1.5em;
+  padding: 1em 0.125em;
+  padding-bottom: 2em;
+}
+.stage1 {
+  /* background:#AED6F1; */
+  border:dashed #9B59B6 1px;
+}
+.stage2 {
+  /* background:#ABEBC6; */
+  border:dashed #E74C3C  2px;
+}
+.stage3 {
+  /* background:#F9E79F ; */
+  border:dashed #1ABC9C  3px;
+}
+.selectorCloseBtn {
+ float:right;
+ font-size:1.5em;
+ font-family: Garamond, "Apple Garamond"; 
+ display:inline-block;
+ padding:0px 4px 0px 4px; 
+ background: #ccccff;
+ position:absolute;
+ top:0;
+ right:0;
+ border-radius: 0.25em;
+ margin: 0.5em;
+ z-index:999; 
+}
+.copyBtn {
+ float: right;
+ margin: 1em;
+ padding: 0.5em;
+ border-radius: 4em;
+ transform: translate(0%, 75%)
+}
+.ph {
+ color: green;
+}
+.ph-red {
+ color: red;
+ font-weight: 900;
+}
+.ph-warning {
+ color: #cc0066;
+ font-weight: 900;
+}
+.phSelector {
+ border: 1px dashed;
+ border-radius: 2em;
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ margin: auto;
+ padding: 2em;
+ text-align: center;
+ transform: translate(-50%, -50%);
+ background-color: #ff99cc;
+ opacity: 0.85;
+}
+.phItem {
+ width: 5em;
+ border: 1px, dashed;
+ border-radius: 1em;
+ background-color: yellow;
+ text-align: center;
+ font-family:  "注音符號";
+ margin: 1.5em;
+ padding: 0.5em;
+}
+ 
+.questionLines{
+  font-family:  "注音符號";
+  text-align: left;
+  resize: both;
+  padding:  0.75em;
+  line-height: 1.6em;
+  font-size: 1.2em;
+  width: 430px;
+  height: 6em;
+  padding-left: 1em;
+  margin: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  overflow: scroll;
+}
+.output {
+  border: 1px dashed;
+  over-flow: scroll;
+  width: 90%;
+  height: 11em;
+  margin: auto;
+}
+.nowrap {
+  white-space:nowrap;
+}
+.shadowbox {
+  width: 25em;
+  height: 3em;
+  margin: 12px 10px 24px 10px;
+  border: 1px solid #333;
+  box-shadow: 8px 8px 5px #444;
+  padding: 8px 12px;
+  background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);
+  text-align:left;
+}
+#labels {
+  display: inline-block;
+  width: 24em;
+  height: 2.5em;
+}
+.label {
+  display: inline-block;
+  width: 32%;
+  height: 90%;
+  margin: 4px 0px 4px 0px;
+  text-align: center;
+  vertical-align: middle;  
+}
+span.L0 {
+  background-color: #2ECC71;
+}
+span.L1 {
+  background-color: #EC7063;
+}
+span.L2 {
+  background-color: #3498DB;
+}
+  
+  
+
+.itemButton {
+  border-radius: 1em;
+  border: 1px dashed;
+  margin: 1em; 
+  padding: 0.125em; 
+  width: 18em;
+}
+.itemSelected {
+  background-color: #66ccff;
+  color:#3366ff;
+  font-weight: 1000;
+  border:1px solid;
+}
+  
+.stepButton {
+  display: inline-block;
+  vertical-align: middle; 
+  border-radius: 50em;
+  border: 1px solid yellow;
+  margin: 1em;
+  padding: 1.5em 0.25em 0em 0.25em;
+  width: 4em;
+  height: 3em;
+  text-align: center;
+  font-weight: normal;
+  font-size: 1em;
+  opacity: 1;
+  }
+.step1 {
+  background-color: #5DADE2;  
+  color: blue;
+  }
+.step2 {
+  background-color: #F1948A;
+  color: #993399;
+  }
+.step3 {
+  background-color: #52BE80;
+  color: #006666;
+  }
+  
+/* Add Lines Numbers CSS source: https://www.prowaretech.com/Computer/JavaScript/AddLineNumbersToPre */
+pre {
+    background-color: inherit;
+    color: inherit;
+    font-size: 11px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-family: Consolas,'Lucida Console','Courier New',Courier,monospace;
+    line-height: 12px;
+}
+pre code {
+	display: block;
+    overflow-x: auto;
+    background: #000;
+    color: #d6deeb;
+	text-align: left;
+	
+    tab-size: 4;
+    counter-reset: linecounter;
+    padding: 15px 5px 21px 5px;
+    font-family: Consolas,'Lucida Console','Courier New',Courier,monospace;
+    line-height: 12px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+pre code span.line {
+    counter-increment: linecounter;
+}
+pre code span.line::before {
+    content: counter(linecounter);
+    color: #ca6f00;
+    width: 30px;
+    display: inline-block;
+    border-right: 1px solid #777;
+    padding-right: 3px;
+    margin-right: 3px;
+    text-align: right;
+}
+  
+  
+#export {
+  width:36px;
+  height:36px;
+  transform: translate(600%, -120%);
+  background:url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj07pRjjCC1jHK0BvjN29VJymHuFFAvM94sxr9P0hn9-17myaZQiZQU8GV7Myqa8SYcZQrU0ShcqJMceOKgkde4GuyESF6VPBH2FaRSUyd_DWIFre33nUg5iTMTBrJphob0acsDw7SLkMWeKv-Bl4VLbBZMbzsmN7WtGKSU3h4Nz6MCy77kiiVFv_z4/s36/icon-save-36x36.png");
+  
+  }
+
+/* for editor and questionLines */  
+
+  .editor{
+    text-align: left;	  
+    resize: both;
+    width: 880px; /* 390px; */
+    height:21em;
+    border:1px solid;
+    border-radius: 0.5em;
+    line-height: 2em;
+    padding: 0.125em 1.5em 0.125em 3.25em;
+    margin: 0.25em;
+    overflow: scroll;
+    white-space:nowrap;
+  }
+
+  .editor li {
+   line-height: 36px;
+    margin-top: 0.25em;
+  }
+  .editor li::marker {
+    color: blue;
+    font-size: 1.5em;
+    font-weight: 1000;
+  }
+  .editor img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover; /* contain; */ /* scale-down; */
+    padding: 2px;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    transform: translate(0, 1em);
+  }
+  .editor span {
+    border: 1px dashed;
+    padding: 0.25em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+  .separator {
+    width:1em;
+    width:1em;
+    border: 1px dashed #76D7C4   !important;
+    border-radius: 3em;
+    opacity: 0.75;
+  }
+  .updateBtn {
+    float: right;
+    margin: 1em;
+    padding: 0.5em;
+    border-radius: 4em;
+    transform: translate(-50%, 0%)
+  }
+  .iconDescription {
+    margin: auto;
+    padding: 0 0.5em 0em 0.5em;
+    border: 0px dashed;
+    border-radius: 1.25em;
+  }
+  .iconDescription img {
+    width: 24px;
+    height: 24px;
+    border: 1px solid;
+    border-radius: 3em;
+    object-fit: cover; /* contain; */ /* scale-down; */
+    padding: 2px;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    transform: translate(0, 1em);
+  }
+
+#otherOptions {
+  border: 1px dashed lightgrey;
+  border-radius: 2em;
+  width: 95%;
+}
+.setting {
+  margin: 2.5em 1em;
+}
+.setting textarea {
+  padding: 0.75em;
+  width: 80%;
+  height: 8em;
+}
+.setting input {
+  text-align: center;
+  font-size: 1.1em;
+  padding: 0.25em;
+  margin-top: 0.25em;
+}
+.setting [type=checkbox] {	
+ height: 1.4em; 
+ width: 1.4em;
+ transform: translate(0, 25%);
+}
+.bold {
+ font-weight: 900;
+}
+.otherOptionsBtn {
+  width: 300px;
+  text-align: center;
+  padding: 0.5em;
+  border: 1px dashed gray;
+  border-radius: 2em;
+  background-color: lightgrey;
+  opacity: 0.6;
+}
+.hidden {
+  display: none;
+}
+#sourceCode {
+  width:98%;
+}

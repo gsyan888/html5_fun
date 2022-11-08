@@ -512,6 +512,38 @@ get_file_content = function(text_url, callback, param) {
 }; 
 
 /*
+載入指定的 script
+ */
+loadJsFromExternalScript = function (scriptSrc, callback) {
+  var scriptToAdd = document.createElement('script'); /* 建立一個 scriptElement	*/
+  scriptToAdd.setAttribute('type', 'text/javascript');
+  scriptToAdd.setAttribute('charset', 'utf-8');
+  scriptToAdd.setAttribute('src', scriptSrc);
+  /* 載入成功時 */
+  scriptToAdd.onload = scriptToAdd.onreadystatechange = function () {
+    if (!scriptToAdd.readyState || scriptToAdd.readyState === "loaded" || scriptToAdd.readyState === "complete") {
+      scriptToAdd.onload = scriptToAdd.onreadystatechange = null;
+      document.getElementsByTagName('head')[0].removeChild(scriptToAdd); /* 載入後移除 */
+      if (typeof(callback) == 'function') {
+        callback(); /* 執行指定的函數 */
+      }
+    };
+  };
+  /* 無法載入時, 將設定用預設值 */
+  scriptToAdd.onerror = function () {
+    scriptToAdd.onerror = null; /* 將事件移除 */
+    document.getElementsByTagName('head')[0].removeChild(scriptToAdd); /* 移除 script */
+    if (typeof callback == 'function') {
+      callback(); /* 執行指定的函數 */
+    }
+  }
+
+  /* 在 head 的最前頭加上前述的 scriptElement */
+  var docHead = document.getElementsByTagName("head")[0];
+  docHead.insertBefore(scriptToAdd, docHead.firstChild);
+};
+
+/*
  重新載入 <script> 的 innerHTML
  不適合用 src 指定路徑的
  */

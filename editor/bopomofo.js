@@ -2,20 +2,92 @@
  *=====================================================
  * HTML5 FUN 國字加注音暨語文高手題庫語法產生器
  * 2022.10.31 by gsyan (https://gsyan888.blogspot.com/)
- * update : 2022.11.08
+ * update : 2022.11.09
  *=====================================================
  */
 
 /* 要載入的注音國字對照表檔案名稱 */
-var dictFilename = 'https://gsyan888.github.io/html5_fun/assets/dict_revised.js';
+/*
+ //本典
+ var dictFilename = 'https://gsyan888.github.io/html5_fun/editor/assets/dict_revised.js';
+*/
+/* 簡編版 */
+var dictFilename = 'https://gsyan888.github.io/html5_fun/editor/assets/dict_concised.js';
 
 /* 注音符號字體檔 */
 var bopomofoFontUrl = 'https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/assets/bopomofo.woff';
+
 
 var allPhSymbol = "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦˊˇˋ˙";
 
 /* 題庫類型 */
 var qType = 4;
+
+/*
+由字典檔中找出少掉的單字讀音(簡編版才有)
+ */
+appendTheLostPhToDictLines = function () {
+  if (typeof(dictFilename)=='string' && dictFilename != 'dict_concised.js') {
+    return;
+  }
+  var pattern = '^([^,]+),([^,]+),([^,]+),\\d+\\n';
+  var re = new RegExp(pattern, 'gm');
+  var list = {};
+  var fields,
+  f1,
+  f2,
+  ch,
+  lines,
+  newLine;
+
+  lines = dictLines.replace(/\r/g, '').split('\n');
+  for (var i = 0; i < lines.length; i++) {
+    fields = lines[i].split(',');
+    ch = fields[0];
+    if (typeof(ch) != 'undefined' && ch.length > 1) {
+      ch = ch.replace(/，/g, '').split('');
+      f1 = fields[1];
+      f2 = fields[2];
+      if (typeof(f1) == 'string' && f1.replace(/\s/g, '') != '') {
+        f1 = f1.split(/\s+/);
+        if (typeof(f2) == 'string' && f2.replace(/\s/g, '') != '') {
+          f2 = f2.split(/\s+/);
+          for (var j = 0; j < f1.length; j++) {
+            if (typeof(f1[j]) == 'string' && f1[j].length > 1 && !(/ㄦ$/.test(f1[j])) && f1[j].replace(/\s/g, '') != '' && typeof(f2[j]) == 'string' && f2[j].replace(/\s/g, '') != '' && f1[j] != f2[j] && typeof(ch[j]) != 'undefined') {
+              newLine = ch[j] + ',' + f2[j];
+              if (typeof(list[newLine]) == 'undefined') {
+                if (!(dictLines.match(new RegExp(newLine, 'm')))) {
+                  list[newLine] = newLine + ',,0'; //+lines[i];
+                }
+              }
+            }
+          }
+        } else {
+          for (var j = 0; j < f1.length; j++) {
+            if (typeof(f1[j]) == 'string' && f1[j].length > 1 && !(/ㄦ$/.test(f1[j])) && f1[j].replace(/\s/g, '') != '' && typeof(ch[j]) == 'string') {
+              newLine = ch[j] + ',' + f1[j];
+              if (typeof(list[newLine]) == 'undefined') {
+                if (!(dictLines.match(new RegExp(newLine, 'm')))) {
+                  list[newLine] = newLine + ',,0'; // + lines[i];
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  var ksort = function (src) {
+    const keys = Object.keys(src);
+    keys.sort();
+    return keys.reduce((target, key) => {
+      target[key] = src[key];
+      return target;
+    }, {});
+  };
+  console.log(Object.values(ksort(list)).join('\n'));
+  //dictLines += Object.values(ksort(list)).join('\n');
+};
 
 /*
 載入注音符號的字型
@@ -134,6 +206,7 @@ setQType = function (value) {
  */
 getPhrasePh = function (str) {
   var match,
+  fields,
   re,
   output,
   ph;
@@ -142,7 +215,8 @@ getPhrasePh = function (str) {
   re = new RegExp('^' + escapeRegExpString(str) + ',(.*),', 'gm');
   if (match = dictLines.match(re)) {
     for (var j = 0; j < match.length; j++) {
-      ph.push((match[j].split(',')[1]).trim());
+      fields = match[j].split(',');
+      ph.push((fields.length>3&&fields[2]!=''?fields[2]:fields[1]).trim());
     }
   }
 
@@ -732,10 +806,8 @@ convert = function () {
 
   var chPunc = decodeHTML('，、。；．？！︰「」『』…～＄％＠＆＃＊‧【】《》（）＜＞◎○●⊕⊙△▲☆★◇◆□');
   var punc = '!()-[]{};:\'"\\,<>./?@#$%^&*_~' + chPunc;
-  var notChinese = 'a-zA-Z0-9' + escapeRegExpString(punc);
-  /* /^([^a-zA-Z0-9,;\s\'\"\#\*\(\)\.\-\+\=\&\!\:]+)(.*)/  */
+  var notChinese = 'a-zA-Z0-9' + escapeRegExpString(punc)+'\\s'; /* 加上空白 */
   var reTermAtLeft = new RegExp('^([^' + notChinese + ']+)(.*)');
-  /* /^([a-zA-Z0-9,;\s\'\"\#\*\(\)\.\-\+\=\&\!\:]+)(.*)/ */
   var reTermAtRight = new RegExp('^([' + notChinese + ']+)(.*)');
   var output = '';
   var outputPh = '';
@@ -754,6 +826,7 @@ convert = function () {
       if ((match = line.match(reTermAtLeft))) {
         term = match[1];
         line = match[2] ? match[2] : '';
+
         /* 以語詞查注音 */
         ph = getPhrasePh(term);
         if (ph == '') {

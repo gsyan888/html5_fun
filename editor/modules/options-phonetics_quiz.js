@@ -1,5 +1,7 @@
 var editorOptions = {
-  speaking: {
+	
+  phonetics_quiz: {
+	  
     caption: "注音高手",
 	
     filenames: [

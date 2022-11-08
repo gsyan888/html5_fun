@@ -5,7 +5,7 @@ var editorOptions = {
     caption: "注音高手",
 	
     filenames: [
-      "https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/questions-set-1.js"
+      "https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/question-set-1.js"
     ],
 	
     enableOpenInNewWindow: false,

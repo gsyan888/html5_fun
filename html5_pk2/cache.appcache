@@ -1,6 +1,6 @@
 CACHE MANIFEST
 
-# Updated on: 2022-09-21 11:28:00
+# Updated on: 2022-11-10 02:13:00
 
 
 #----------以下為檔案清單------------
@@ -26,6 +26,14 @@ data/b01-2.js
 data/b01-1.js
 data/9x9.js
 data/9x9-divide.js
+
+data/math-add-1-1.js
+data/math-add-2-1.js
+data/math-add-2-2.js
+data/math-sub-1-1.js
+data/math-sub-2-1.js
+data/math-sub-2-2.js
+
 assets/startup.png
 assets/startup-ipad-p.png
 assets/startup-ipad-l.png

@@ -3,7 +3,7 @@ CACHE MANIFEST
 #----------------------------------------------
 # 下面這一行不要移除，有修改資料，記得把時間改一下
 #----------------------------------------------
-# Updated on: 2022-09-21 11:28:00
+# Updated on: 2022-11-10 02:13:00
 #
 
 #----------------------------------------------
@@ -23,6 +23,15 @@ data/b01-3.js
 data/b02-1.js
 data/b02-2.js
 data/b02-3.js
+
+data/math-add-1-1.js
+data/math-add-2-1.js
+data/math-add-2-2.js
+data/math-sub-1-1.js
+data/math-sub-2-1.js
+data/math-sub-2-2.js
+
+
 
 samples/sample-1.js
 samples/sample-2-1.js

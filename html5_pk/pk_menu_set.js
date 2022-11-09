@@ -1,6 +1,15 @@
 menu_title='PK大賽';
 menu_items = new Array(
   "九九乘法,data/9x9.js"
+  
+, "加法(一位數加一位數),data/math-add-1-1.js"
+, "加法(兩位數加一位數),data/math-add-2-1.js"
+, "加法(兩位數加兩位數),data/math-add-2-2.js"
+, "減法(一位數減一位數),data/math-sub-1-1.js"
+, "減法(兩位數減一位數),data/math-sub-2-1.js"
+, "減法(兩位數減兩位數),data/math-sub-2-2.js"
+  
+  
 , "除法入門級,data/9x9-divide.js"  
 
 , "二位小數加法,data/decimal_add.js"

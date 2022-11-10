@@ -40,6 +40,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/phonetics_quiz.js",
     name:"注音高手"
   },
+  pk2:{
+    src:"https://gsyan888.github.io/html5_fun/html5_pk2/pk2.js",
+    name:"PK2"
+  },
   listening:{
     src:"https://gsyan888.github.io/html5_fun/html5_listening/listening.js",
     name:"聽音辨字六選一"

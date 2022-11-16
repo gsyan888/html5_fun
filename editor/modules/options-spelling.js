@@ -14,7 +14,10 @@ var editorOptions = {
         "text",
         "上方看板的標題字"],
 		
- 
+       "blanks_total_number": [
+        "text",
+        "每題要拿掉幾個字母當填空"],
+
       "order_by_random": [
         "checkbox",
         "是否使用亂數抽題目",
@@ -40,11 +43,7 @@ var editorOptions = {
         "text",
         "語音播放的速度",
 		"(1.0 正常, 0.5 慢速, 2.0 兩倍速)"],
-		
-      "blanks_total_number": [
-        "text",
-        "每題要拿掉幾個字母當填空"],
-				
+						
       "questionLines": [
         "textarea",
         "題庫"]

@@ -21,7 +21,7 @@ var editorOptions = {
 
       "gameMode_1_Caption": [
         "text",
-        "遊戲模式按鈕 1 上的文字"
+        "遊戲模式按鈕 1 上的文字",
 		"(題庫第1欄為問題，也是文字提示)"],
 
       "gameMode_2_Caption": [

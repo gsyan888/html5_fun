@@ -44,9 +44,13 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_pk2/pk2.js",
     name:"PK2"
   },
+  sentence:{
+    src:"https://gsyan888.github.io/html5_fun/html5_sentence/sentence.js",
+    name:"造句靈感產生器"
+  },
   listening:{
     src:"https://gsyan888.github.io/html5_fun/html5_listening/listening.js",
-    name:"聽音辨字六選一"
+    name:"聽音辨字"
   }  
 };
 //取得HTML5 FUN 程式的網址

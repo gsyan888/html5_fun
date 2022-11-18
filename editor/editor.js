@@ -1128,10 +1128,10 @@ editorDragAndDropEventsInit();
 
 /* 調整兩個輸入區的大小 */
 
-var editorJS = document.getElementById('editorJS');
+var JSObj = document.getElementById('settingJS');
 
-if (typeof(editorJS) != 'undefined' && editorJS != null) {
-  var width = editorJS.parentNode.clientWidth;
+if (typeof(JSObj) != 'undefined' && JSObj != null) {
+  var width = JSObj.parentNode.clientWidth;
   document.getElementById(editorId).style.width = (width - 100) + 'px';
   document.getElementById(questionLinesId).style.width = (width - 40) + 'px';
 }

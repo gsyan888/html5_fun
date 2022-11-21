@@ -48,6 +48,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_sentence/sentence.js",
     name:"造句靈感產生器"
   },
+  charades:{
+    src:"https://gsyan888.github.io/html5_fun/html5_charades/charades.js",
+    name:"我說你猜"
+  },
   listening:{
     src:"https://gsyan888.github.io/html5_fun/html5_listening/listening.js",
     name:"聽音辨字"

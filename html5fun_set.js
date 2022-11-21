@@ -29,12 +29,12 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
 	],
 	
-	[ "筆順編輯器"
-	, "筆順造字小工具"
-	, "html5_strokeeditor/assets/icon.png"
-	, "html5_strokeeditor/html5_strokeeditor.html"
+	[ "我說你猜"
+	, "比手畫腳，比一比猜一猜"
+	, "html5_charades/assets/icon.png"
+	, "html5_charades/html5_charades.html"
+	, "archives/html5_charades.zip"
 	, ""
-	, "https://gsyan888.blogspot.com/2019/04/html5-stroke-editor.html"
 	],
 
 	[ "PK大賽"
@@ -51,6 +51,14 @@ menu_items = [
 	, "html5_pk2/html5_pk2.html"
 	, "archives/html5_pk2.zip"
 	, "https://gsyan888.blogspot.com/2013/12/html5-pk2.html"
+	],
+
+	[ "筆順編輯器"
+	, "筆順造字小工具"
+	, "html5_strokeeditor/assets/icon.png"
+	, "html5_strokeeditor/html5_strokeeditor.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2019/04/html5-stroke-editor.html"
 	],
 
 	[ "English1200"
@@ -162,7 +170,7 @@ menu_items = [
 	, "html5_sentence/assets/icon.png"
 	, "html5_sentence/html5_sentence.html"
 	, "archives/html5_sentence.zip"
-	, "https://gsyan888.blogspot.com/2014/07/html5-sentence.html"
+	, "https://gsyan888.blogspot.com/2022/11/html5-sentence-blogger-embeded.html"
 	],
 	
 	[ "對對碰"

@@ -34,7 +34,7 @@ menu_items = [
 	, "html5_charades/assets/icon.png"
 	, "html5_charades/html5_charades.html"
 	, "archives/html5_charades.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2022/11/html5-charades.html"
 	],
 
 	[ "PK大賽"

@@ -6,7 +6,8 @@
  需事先建立好 <OL>(id: editor)，及 <textarea>(id: questionLines)
  */
 const fieldsSeparator = "##"; /* 欄位分隔符號 */
-const autoSplitPattern = ' '; /* 當發現文字和媒體路徑相連時,自動填入的文字(空字串就不處理) */
+//const autoSplitPattern = ' '; /* 當發現文字和媒體路徑相連時,自動填入的文字(空字串就不處理) */
+const autoSplitPattern = '~~'; /* 當發現文字和媒體路徑相連時,自動填入的文字(空字串就不處理) */
 
 const editorId = "editor"; /* 圖形編輯區 id */
 const questionLinesId = "questionLines"; /* 文字編輯區 id */
@@ -20,7 +21,8 @@ var iconThumbnail = assetsBaseURL+"icon-thumbnail.png";
 
 var base64Images = [];
 
-var lineDefaultValue = Array(3+1).join(fieldsSeparator); /* repeat FS 3 times */
+//var lineDefaultValue = Array(3+1).join(fieldsSeparator); /* repeat FS 3 times */
+var lineDefaultValue = fieldsSeparator;
 
 /* 在游標處插入分隔符號 */
 insertSeparator = function () {
@@ -1128,10 +1130,10 @@ editorDragAndDropEventsInit();
 
 /* 調整兩個輸入區的大小 */
 
-var JSObj = document.getElementById('settingJS');
+var editorJS = document.getElementById('editorJS');
 
-if (typeof(JSObj) != 'undefined' && JSObj != null) {
-  var width = JSObj.parentNode.clientWidth;
+if (typeof(editorJS) != 'undefined' && editorJS != null) {
+  var width = editorJS.parentNode.clientWidth;
   document.getElementById(editorId).style.width = (width - 100) + 'px';
   document.getElementById(questionLinesId).style.width = (width - 40) + 'px';
 }

@@ -36,6 +36,14 @@ var editorOptions = {
       "colorFont": [
         "text",
         "卡片上文字的顏色"],
+
+      "keyNameCorrect": [
+        "text",
+        "正確時的快速按鍵名稱"],
+
+      "keyNamePass": [
+        "text",
+        "跳過時的快速按鍵名稱"],
 						
       "questionLines": [
         "textarea",

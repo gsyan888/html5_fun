@@ -2,6 +2,14 @@
 //題庫設定檔的檔名(*.js)
 question_set_filename = "question_set.js";
 
+
+//------------------------------
+//出題時是否要以亂數來選題
+//  true :亂數出題   false :按題庫順序
+//------------------------------
+order_by_random = true;
+
+
 //字卡的相關設定
 card_border = 1;					//邊框粗細
 card_border_color = "#a52a2a";		//邊框顏色

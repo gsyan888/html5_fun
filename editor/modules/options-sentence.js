@@ -10,6 +10,12 @@ var editorOptions = {
 	
     options: {
 		
+      "order_by_random": [
+        "checkbox",
+        "抽卡片時是否要以亂數來抽",
+        "勾選:亂數隨機抽 &nbsp;&nbsp; 未勾選:按題庫順序",
+        "以亂數來隨機抽卡片"],
+
       "sound_enable": [
         "checkbox",
         "是否使用翻卡音效",

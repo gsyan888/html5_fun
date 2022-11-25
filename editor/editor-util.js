@@ -97,7 +97,12 @@ showJSCode = function (n) {
       /* =========== Google Sites 需要是完整的網頁語法 ===== */
       var elm = document.getElementById('forGoogleSites');
       var forGoogleSites = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
-      if (forGoogleSites) {
+	  
+	  /* Classroomscreen */
+	  var elm = document.getElementById('forClassroomScreen');
+	  var forClassroomScreen = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
+		  
+      if (forGoogleSites || forClassroomScreen) {
         html = decodeHTML(html);
 
          /*
@@ -109,7 +114,7 @@ showJSCode = function (n) {
         /* 使用 Template1 將原來的語法加上 HTML 的頭尾 */
         html = getTemplate(1).replace('<!-- 這裡插入原本的語法 -->', html);
 		
-		if(!enableOpenInNewWindow) {
+		if(!enableOpenInNewWindow || forClassroomScreen) {
 		  html = html.replace(/isInIFrame = \\`\$\{isInIFrame\}\\`;\s*\n/, '');
 		  html = html.replace(/\\\//g, '/');
 		} else {
@@ -130,6 +135,10 @@ showJSCode = function (n) {
 
     }
     html = decodeHTML(html);
+	
+	if(forClassroomScreen) {
+		html = '<iframe src="'+toDataURI(html,'text/html')+'"></iframe>';
+	}
 
     html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); //.replace(/\u00a0/g, ' ');
     html = html.replace(/^(.*)$/mg, "<span class=\"line\">$1</span>");
@@ -660,7 +669,7 @@ varInit = function() {
       elm = document.getElementById(id);
       type = typeof(window[id]);
       value = window[id];
-	  
+
 	  var optionValue = editorOptions[modulename].options[id];
 
       if (typeof(elm)=='undefined' || elm==null) {

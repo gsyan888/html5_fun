@@ -73,9 +73,11 @@ convertToEditor = function (fromTarget, toTarget) {
 參數: id (<OL>的 id)
 回傳: 字串
  */
+
 convertToLines = function (id) {
+
   if(typeof(autoSplitPattern)=='undefined' || autoSplitPattern==null) {
-    var autoSplitPattern = '';
+    autoSplitPattern = '';
   }
 
   if (typeof(id) != 'string') {
@@ -254,6 +256,9 @@ inputChangeHandler = function (node) {
     value = lineDefaultValue; /* '######'; */
   }
 
+  //將素材媒體分隔符號換成跳格 2022.11.26 加入
+  value = value.replace((new RegExp(autoSplitPattern, 'g')), '\t');
+  
   /* value = value.replace(/&nbsp;/g, ' '); */
 
   /* match = value.match(/^(<[^>]+>)((?:.)*?)(<\/[^>]+>$)/); */

@@ -16,6 +16,10 @@ var editorOptions = {
         "勾選:亂數出題 &nbsp;&nbsp; 未勾選:按題庫順序",
         "以亂數來出題"],
 
+      "preview_col_number": [
+        "text",
+        "預覽時以幾欄呈現所有題目"],
+		
       "timer_items": [
         "text",
         "計時器每回合的秒數設定選項",

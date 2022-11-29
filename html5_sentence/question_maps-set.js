@@ -13,13 +13,13 @@ order_by_random = true;
 //抽選時是否要用翻牌的動畫
 //  true :使用翻牌方式   false :使用抽換方式
 //------------------------------
-is_flip_mode = true;
+is_flip_mode = false;
 
 //------------------------------
 //呈現抽換動畫時每張的間隔時間
 //時間單位為毫秒 ms (1/1000秒)
 //------------------------------
-shuffle_delay = 150;
+shuffle_delay = 250;
 
 
 //---------------------------------------------------
@@ -84,12 +84,9 @@ seperator2 = '~~';
 // ex. 圖片上再顯示文字( 小狗~~dog.png )
 //
 questionLines = function(){/*--這一行請勿更改--
-什麼人物##大雄##胖虎##靜香##哆拉A夢##小夫
-什麼時間##早上##放學後##吃飽後
-什麼地點##公園##操場##馬路上
-什麼動作##舉手##吐舌頭##拿
-什麼事情##扮鬼臉##看書##跑步##野餐
-國語某一課的語詞##樹ㄕㄨˋ 蔭ㄧㄣˋ##毫ㄏㄠˊ 不ㄅㄨˋ ##曉ㄒㄧㄠˇ 得˙ㄉㄜ##樹ㄕㄨˋ 墩ㄉㄨㄣ ##枴ㄍㄨㄞˇ 杖ㄓㄤˋ
+
+MAPS####maps/01.png##maps/02.png##maps/03.png##maps/04.png##maps/05.png##maps/06.png##maps/07.png##maps/08.png##maps/09.png##maps/10.png##maps/11.png##maps/12.png##maps/13.png##maps/14.png##maps/15.png##maps/16.png##maps/17.png##maps/18.png##maps/19.png##maps/20.png##maps/21.png##maps/22.png
+
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
 
 

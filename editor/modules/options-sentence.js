@@ -16,6 +16,17 @@ var editorOptions = {
         "勾選:亂數隨機抽 &nbsp;&nbsp; 未勾選:按題庫順序",
         "以亂數來隨機抽卡片"],
 
+      "is_flip_mode": [
+        "checkbox",
+        "抽選時是否要用翻牌的動畫",
+        "勾選:使用翻牌方式 &nbsp;&nbsp; 未勾選:使用抽換方式",
+        "使用翻牌的動畫"],
+
+      "shuffle_delay": [
+        "text",
+        "呈現抽換動畫時每張的間隔時間",
+        "時間單位為毫秒 ms (1/1000秒)"],
+
       "sound_enable": [
         "checkbox",
         "是否使用翻卡音效",

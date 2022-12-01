@@ -32,6 +32,12 @@ var editorOptions = {
         "呈現抽換動畫時每張的間隔時間",
         "時間單位為毫秒 ms (1/1000秒)"],
 
+      "sound_player_autoplay": [
+        "checkbox",
+        "題目中的聲音是否自動播放",
+        "勾選:自動播放 &nbsp;&nbsp; 未勾選:按按鈕後播放",
+        "自動播放題目的聲音"],
+
       "sound_enable": [
         "checkbox",
         "是否使用翻卡音效",

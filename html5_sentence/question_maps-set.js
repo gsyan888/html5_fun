@@ -34,7 +34,7 @@ score_goal = 0;
 //---------------------------------------------------
 
 //邊框粗細
-card_border = 1;
+card_border = 0;
 
 //邊框顏色
 card_border_color = "#a52a2a";
@@ -96,7 +96,7 @@ seperator2 = '~~';
 //
 questionLines = function(){/*--這一行請勿更改--
 
-MAPS##maps/01.png~~南投縣.tts##maps/02.png~~基隆市.tts##maps/03.png~~台北市.tts##maps/04.png~~新北市.tts##maps/05.png~~桃園市.tts##maps/06.png~~新竹縣.tts##maps/07.png~~新竹市.tts##maps/08.png~~苗栗縣.tts##maps/09.png~~台中市.tts##maps/10.png~~彰化縣.tts##maps/11.png~~雲林縣.tts##maps/12.png~~嘉義縣.tts##maps/13.png~~嘉義市.tts##maps/14.png~~台南市.tts##maps/15.png~~高雄市.tts##maps/16.png~~屏東縣.tts##maps/17.png~~台東縣.tts##maps/18.png~~花蓮縣.tts##maps/19.png~~宜蘭縣.tts##maps/20.png~~澎湖縣.tts##maps/21.png~~金門縣.tts##maps/22.png~~連江縣.tts
+臺灣行政區地圖(圖片來源:搜秀資源網)##maps/01.png~~南投縣.tts##maps/02.png~~基隆市.tts##maps/03.png~~台北市.tts##maps/04.png~~新北市.tts##maps/05.png~~桃園市.tts##maps/06.png~~新竹縣.tts##maps/07.png~~新竹市.tts##maps/08.png~~苗栗縣.tts##maps/09.png~~台中市.tts##maps/10.png~~彰化縣.tts##maps/11.png~~雲林縣.tts##maps/12.png~~嘉義縣.tts##maps/13.png~~嘉義市.tts##maps/14.png~~台南市.tts##maps/15.png~~高雄市.tts##maps/16.png~~屏東縣.tts##maps/17.png~~台東縣.tts##maps/18.png~~花蓮縣.tts##maps/19.png~~宜蘭縣.tts##maps/20.png~~澎湖縣.tts##maps/21.png~~金門縣.tts##maps/22.png~~連江縣馬祖列島.tts
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
 

@@ -10,6 +10,18 @@ question_set_filename = "question_set.js";
 order_by_random = true;
 
 
+//----------------
+//Google TTS 文字轉語音的設定
+//----------------
+tts_language = 'zh-TW';  //跟語音辨識的語言一樣 英文: 'en-US' , 中文: 'zh-TW'
+
+tts_speed = 0.3;  //語音的速度 0 ~ 1 (可用小數)
+
+tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=${tts_language}&client=tw-ob&ttsspeed=${tts_speed}&q=';
+
+
+
+
 //字卡的相關設定
 card_border = 1;					//邊框粗細
 card_border_color = "#a52a2a";		//邊框顏色

@@ -117,14 +117,17 @@ function(){/*---=====Template=====
     var js = encodeURI(document.getElementById(id).innerHTML);
     return btoa(js.normalise_to_ascii().crypt_symmetric());
   };
+  
   html5FunDecodeJS = function(code) {
     return decodeURIComponent(atob(code).normalise_to_unicode().crypt_symmetric());
-  }
+  };
+  
   html5FunDecodeAndUpdateJS = function(id, code) {
     if(typeof(id)=='string' && typeof(code)=='string') {
     	document.getElementById(id).innerHTML = html5FunDecodeJS(code);
     }
-  }
+  };
+  
   html5FunReloadSettingJS = function() {
 	var settingJS = document.getElementById("settingJS");
 	if(typeof(settingJS)!='undefined' && settingJS != null) {
@@ -149,7 +152,8 @@ function(){/*---=====Template=====
 			},100);
 		}
 	}    
-  }
+  };
+  
   html5FunLoadEmbededJS = function() {
 	var scriptTag = document.createElement('script');
     scriptTag.type = "text/javascript";
@@ -160,7 +164,7 @@ function(){/*---=====Template=====
     scriptTag.setAttribute('modulename', "${modulename}");
 	var head = document.getElementsByTagName('head')[0];
 	head.appendChild(scriptTag);
-  }
+  };
     
   html5FunPlayGame = function() {
     var code = prompt('請輸入遊戲代碼');
@@ -174,7 +178,7 @@ function(){/*---=====Template=====
     } else {
 		alert('代碼不對哦~~');
 	}
-  }
+  };
   
   //在畫面 playButton 新增一個 PLAY 的按鈕
   html5FunCreatePlayButton = function() {
@@ -190,7 +194,7 @@ function(){/*---=====Template=====
 	    document.body.appendChild(playButton);
 	  }
     }
-    playButton.innerHTML = `
+    playButton.innerHTML = \`
       <center>
       <p>&nbsp;</p>
       <p>
@@ -199,13 +203,13 @@ function(){/*---=====Template=====
       </button>
       </p>
       </center>	
-    `
-  }
+    \`;
+  };
 
   html5FunAppendButtonStyle = function() {
     var style= document.createElement("style");
     document.body.appendChild(style);
-    var rule=`
+    var rule=\`
       .buttonPushable {
         background: hsl(140deg 100% 32%);
         border-radius: 12px;
@@ -223,9 +227,9 @@ function(){/*---=====Template=====
         color: #339900;
         transform: translateY(-6px);
       }	
-    `;
+    \`;
     style.innerHTML = rule;
-  }
+  };
   
   //新增一個 PLAY 按鈕
   html5FunAppendButtonStyle();

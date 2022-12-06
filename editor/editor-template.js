@@ -194,7 +194,7 @@ function(){/*---=====Template=====
 	    document.body.appendChild(playButton);
 	  }
     }
-    playButton.innerHTML = \`
+    playButton.innerHTML = `
       <center>
       <p>&nbsp;</p>
       <p>
@@ -203,13 +203,13 @@ function(){/*---=====Template=====
       </button>
       </p>
       </center>	
-    \`;
+    `;
   };
 
   html5FunAppendButtonStyle = function() {
     var style= document.createElement("style");
     document.body.appendChild(style);
-    var rule=\`
+    var rule=`
       .buttonPushable {
         background: hsl(140deg 100% 32%);
         border-radius: 12px;
@@ -227,7 +227,7 @@ function(){/*---=====Template=====
         color: #339900;
         transform: translateY(-6px);
       }	
-    \`;
+    `;
     style.innerHTML = rule;
   };
   

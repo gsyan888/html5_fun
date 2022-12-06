@@ -17,7 +17,7 @@ getJSheadAttributes = function (id) {
     str += ' ' + name + '="' + value + '"';
   }
   return "<script" + str + ">";
-}
+};
 
 /* 
  顯示指定 id 的 javascript 內容 
@@ -64,6 +64,16 @@ showJSCode = function (n) {
       var html = getJSheadAttributes(jsID[1]) + document.getElementById(jsID[1]).innerHTML + jsFoot + "\n";
       break;
     case 2: /* 查看並複製所有語法 */
+
+      /* 先取得輸出語法的選項 */
+      /* Google Sites */
+      var elm = document.getElementById('forGoogleSites');
+      var forGoogleSites = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
+	  
+	  /* Classroomscreen */
+	  var elm = document.getElementById('forClassroomScreen');
+	  var forClassroomScreen = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
+	
       var gameCode = document.getElementById('gameCode').value; /* 編碼模式時的密碼 */
 
       /* 先將 settingJS 中的題庫設定更新 */
@@ -86,21 +96,26 @@ showJSCode = function (n) {
         gameCode = btoa(encodeURI(gameCode).normalise_to_ascii().crypt_symmetric());
 
         var encodedJS = btoa(encodeURI(html).normalise_to_ascii().crypt_symmetric()); //encode
+
         /* var cryptJS = document.getElementById('cryptJS').innerHTML; */
         /* html = cryptJS.match(/(\/\*-{10}\s)((?:.|\n|\r)*?)(-{10}\*\/)/m)[2]; */
         html = getTemplate(3).replace(/\$\{modulename\}/i, modulename);
+        if (typeof(forGoogleSites)=='boolean' && forGoogleSites) {
+          if (typeof(enableOpenInNewWindow)=='boolean' && enableOpenInNewWindow) {
+            html = html.replace(/(playButton\.innerHTML\s*=\s*)\`([^\`]+)\`;/im, '$1\\\`$2\\\`;');
+            html = html.replace(/(var\s+rule\s*=\s*)\`([^\`]+)\`;/im, '$1\\\`$2\\\`;');				
+		    /* 在 Google Sites 中, 另新視窗的模式, 150ms 後，自動按輸入遊戲碼的按鈕, 可以少一個程序 */
+		    html = html.replace(/(playButton\.innerHTML\s*=\s*.*[^\`]+\`;)/im, '$1'+'\n    setTimeout(html5FunPlayGame, 150);');
+          }
+        }
+
         html = html.replace(/(var\s+html5FunGameCode\s+=\s)([^\n]+)(\n)/m, '$1 "' + gameCode + '"; $3');
         html = html.replace(/(var\s+html5FunJsCode\s+=\s)([^\n]+)(\n)/m, '$1 "' + encodedJS + '"; $3');
+
         html = getJSheadAttributes(jsID[0]) + html + jsFoot;
       }
 
       /* =========== Google Sites 需要是完整的網頁語法 ===== */
-      var elm = document.getElementById('forGoogleSites');
-      var forGoogleSites = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
-	  
-	  /* Classroomscreen */
-	  var elm = document.getElementById('forClassroomScreen');
-	  var forClassroomScreen = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
 		  
       if (forGoogleSites || forClassroomScreen) {
         html = decodeHTML(html);
@@ -163,7 +178,7 @@ showJSCode = function (n) {
     }
   }
 
-}
+};
 
 /*
  複製指定物件的文字到剪貼簿中 (此部份與 editor.js 中的重覆, 但先保留)
@@ -257,7 +272,7 @@ update_settingJS = function () {
 
     }
   }
-}
+};
 
 
 /*
@@ -269,10 +284,10 @@ update_settingJS = function () {
  */
 String.prototype.normalise_to_ascii = function () {
   return unescape(encodeURIComponent(this));
-}
+};
 String.prototype.normalise_to_unicode = function () {
   return decodeURIComponent(escape(this));
-}
+};
 String.prototype.crypt_symmetric = function (key) {
   var me = this + ""; /* unlink reference */
   key = Number(String(Number(key))) === key ? Number(key) : 13; /* optionaly provide key for symmetric-like-""encryption"". */
@@ -444,7 +459,7 @@ base64_encode = function (data) {
 
   return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
 
-}
+};
 
 /*
  由題庫設定檔中，找出所有的變數名稱，及註解中的文字
@@ -477,7 +492,7 @@ getAllVarNames = function(data) {
     }
   }
   return [names, captions];
-}
+};
 
 get_file_content = function(text_url, callback, param) {
   if (window.XMLHttpRequest) {     
@@ -772,7 +787,7 @@ decodeHTML = function(html) {
     var txt = document.createElement("textarea");
     txt.innerHTML = html;
     return txt.value;
-}
+};
 //將指定清單中的變都先進行 HTML 解碼(文字型態的才需要)
 var decodeList = ['questionLines', 'topTitle', 'helpDialogCaption', 'helpDialogDescription', 'helpDialogButtonCaption', 'gameMode_1_Caption', 'gameMode_2_Caption', 'gameMode_3_Caption'];
 for(var i=0; i<decodeList.length; i++) {

@@ -86,6 +86,7 @@ function openInNewWindow() {
 
 ,
 
+
 function(){/*---=====Template=====
   
   
@@ -167,17 +168,46 @@ function(){/*---=====Template=====
   };
     
   html5FunPlayGame = function() {
-    var code = prompt('請輸入遊戲代碼');
-  
-    if( typeof(code) != 'undefined' && code != null && typeof(html5FunGameCode)=='string' && html5FunGameCode!='' &&  btoa(code.normalise_to_ascii().crypt_symmetric()) == html5FunGameCode ) {      
-      if(typeof(html5FunJsCode)=='string' && html5FunJsCode.length>0) {
-	    html5FunDecodeAndUpdateJS('settingJS', html5FunJsCode);
-        html5FunReloadSettingJS();
-        html5FunLoadEmbededJS();
-	  }
-    } else {
-		alert('代碼不對哦~~');
-	}
+    //var code = prompt('請輸入遊戲代碼');
+    const inputElement = document.getElementById('prompt-input');
+    const buttonElement = document.getElementById('prompt-button');
+    const containerElement = document.getElementById('prompt-container');
+    const getCodeTriggerBtn = document.getElementById('getCodeTriggerBtn');
+
+    containerElement['style']['display'] = 'block';
+    getCodeTriggerBtn['style']['display'] = 'none';
+
+    buttonElement.addEventListener('click', getCode = function(e) {
+      const code = inputElement.value;
+      	  	  
+      // 在這裡使用 inputValue 這個變數
+      // 來取得使用者輸入的值
+      if( typeof(code) != 'undefined' && code != null && typeof(html5FunGameCode)=='string' && html5FunGameCode!='' &&  btoa(code.normalise_to_ascii().crypt_symmetric()) == html5FunGameCode ) {
+        buttonElement.removeEventListener('click', getCode);
+        if(typeof(html5FunJsCode)=='string' && html5FunJsCode.length>0) {
+	      html5FunDecodeAndUpdateJS('settingJS', html5FunJsCode);
+          html5FunReloadSettingJS();
+          html5FunLoadEmbededJS();
+          //0.5秒後試著按 Play 鈕
+          setTimeout(function() {
+            if(document.querySelector('#playButton')) {
+              if(btn = document.querySelector('.buttonPushable')) {
+                btn.click();
+              }
+            }
+          }, 750);
+        }
+      } else {
+		  //如果是輸入狀態就顯示錯誤訊息，否則讓輸入對話框消失
+	      if(!(/代碼不對哦/i.test(document.getElementById('prompt-input').innerHTML))) {
+			document.getElementById('prompt-input').outerHTML = '<h2 id="prompt-input">代碼不對哦！請再想想。</h2>';
+		  } else {
+			document.getElementById('prompt-input').outerHTML = '<input id="prompt-input" type="text" />';
+		    containerElement['style']['display'] = 'none';
+		    getCodeTriggerBtn['style']['display'] = 'block';
+		  }
+	  }	  
+    });
   };
   
   //在畫面 playButton 新增一個 PLAY 的按鈕
@@ -195,10 +225,16 @@ function(){/*---=====Template=====
 	  }
     }
     playButton.innerHTML = `
+      <div id="prompt-container" style="display:none;">
+        <h1>請輸入遊戲代碼</h1>
+        <input id="prompt-input" type="text" />
+        <button id="prompt-button">確定</button>
+      </div>
+
       <center>
       <p>&nbsp;</p>
       <p>
-      <button onclick="html5FunPlayGame();" type="button" class="buttonPushable">
+      <button id="getCodeTriggerBtn" onclick="html5FunPlayGame();" type="button" class="buttonPushable">
 	    <span class="buttonFront">輸入代碼載入遊戲</span>
       </button>
       </p>
@@ -226,7 +262,42 @@ function(){/*---=====Template=====
         background: hsl(145deg 100% 47%);
         color: #339900;
         transform: translateY(-6px);
-      }	
+      }
+      #prompt-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height:200px;
+        transform: translate(-50%, -50%);
+        background-color: #F39C12;
+        opacity: 0.8;
+        padding: 20px;
+        border: 1px solid black;
+        border-radius: 2em;
+        text-align: center;
+      }
+      #prompt-container button {
+        position:absolute;
+        bottom: 0.25em;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 2em;
+        padding: 0.5em 1em 0.5em 1em;
+        font-size:1em;
+      }
+      #prompt-container input {
+        padding: 0.5em 1em 0.5em 1em;
+        font-size:1em;
+        text-align: center;
+        width:50%;
+      }
+      #prompt-container h1 {
+        color: white;
+      }
+      #prompt-container h2 {
+        color: red;
+      }
     `;
     style.innerHTML = rule;
   };

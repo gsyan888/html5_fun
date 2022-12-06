@@ -130,16 +130,23 @@ showJSCode = function (n) {
         html = getTemplate(1).replace('<!-- 這裡插入原本的語法 -->', html);
 		
 		if(!enableOpenInNewWindow || forClassroomScreen) {
+
 		  html = html.replace(/isInIFrame = \\`\$\{isInIFrame\}\\`;\s*\n/, '');
 		  html = html.replace(/\\\//g, '/');
+
 		} else {
+
           html = html.replace(/autostart="false"/, 'autostart="true"');
+
           /* &符號必須轉為 &amp; \ 必須轉為 \\ 才能用 */
           html = html.replace(/\</g, '&amp;lt;').replace(/>/g, '&amp;gt;').replace(/\\/g, '\\\\');
+
           /* 使用 Template2 變成 Google Sites 嵌入的語法 */
-          html = getTemplate(2).replace('<!-- 這裡插入編過碼的語法 -->', html);
+          html = getTemplate(2).replace('<!-- 這裡插入編過碼的語法 -->', html).replace('<!-- 這裡插入開始玩按鈕的字樣 -->', '開始玩 HTML5 FUN '+editorOptions[modulename].caption);
+
 		  /* \\` 變成 \` 不然無法置換變數 */ 		  
 		  html = html.replace(/\\\\`/g, '\\`');
+
           /* 修正最後一個 </srcipt> 多了一個反斜線 */
           html = html.replace(/&amp;lt;\\\\\//g, '&amp;lt;\/').replace(/<\\\//g, '</');
 		}

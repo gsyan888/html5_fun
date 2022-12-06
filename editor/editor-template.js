@@ -45,7 +45,7 @@ if(typeof(isInIFrame)!='undefined' && isInIFrame) {
 ,
 
 function(){/*---=====Template=====
-<div id="playButton"  style="width:100%;margin:3em 0em;text-align:center;"><button class="buttonPushable"  onclick="openInNewWindow();" type="button"><span class="buttonFront">開始玩 HTML5 Speaking</span></button></div>
+<div id="playButton"  style="width:100%;margin:3em 0em;text-align:center;"><button class="buttonPushable"  onclick="openInNewWindow();" type="button"><span class="buttonFront"><!-- 這裡插入開始玩按鈕的字樣 --></span></button></div>
 <style>
 .buttonPushable {
   background: hsl(140deg 100% 32%);

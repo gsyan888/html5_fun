@@ -183,7 +183,9 @@ function(){/*---=====Template=====
       // 在這裡使用 inputValue 這個變數
       // 來取得使用者輸入的值
       if( typeof(code) != 'undefined' && code != null && typeof(html5FunGameCode)=='string' && html5FunGameCode!='' &&  btoa(code.normalise_to_ascii().crypt_symmetric()) == html5FunGameCode ) {
-        buttonElement.removeEventListener('click', getCode);
+ 		buttonElement.removeEventListener('click', getCode);
+		document.removeEventListener('keyup', keyHandler);
+
         if(typeof(html5FunJsCode)=='string' && html5FunJsCode.length>0) {
 	      html5FunDecodeAndUpdateJS('settingJS', html5FunJsCode);
           html5FunReloadSettingJS();
@@ -208,6 +210,11 @@ function(){/*---=====Template=====
 		  }
 	  }	  
     });
+	document.addEventListener('keyup', keyHandler = function(e) {
+		if(e.keyCode==13 && document.getElementById('prompt-input').value!='') {
+			getCode();
+		}
+	});	
   };
   
   //在畫面 playButton 新增一個 PLAY 的按鈕

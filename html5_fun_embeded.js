@@ -210,7 +210,7 @@ gameStart = function() {
 	var closeBtn = document.createElement('div')
 	closeBtn.id = 'closeBtn';
 	closeBtn.setAttribute('style', 'position:absolute;top:0;right:0;z-index:9998;');
-	var style = 'float:right;font-size:1.5em;font-family: Garamond, "Apple Garamond"; display:inline-block;padding:0px 4px 0px 4px; background:#D5F5E3;';
+	var style = 'float:right;font-size:1.5em;font-family: Garamond, "Apple Garamond"; display:inline-block;padding:0px 4px 0px 4px; background:#D5F5E3;opacity:0.75;';
 	closeBtn.innerHTML="<span id='close' ontouchstart='closeApp(event)' onmousedown='closeApp(event)' style='"+style+"'>&times;</span>";
 	HTML5FunEmbeded.firstChild.appendChild(closeBtn);
 	//

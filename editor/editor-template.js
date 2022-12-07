@@ -177,14 +177,32 @@ function(){/*---=====Template=====
     containerElement['style']['display'] = 'block';
     getCodeTriggerBtn['style']['display'] = 'none';
 
+    if(typeof(inputElement)!='undefined' && inputElement!=null) {
+      inputElement.focus();
+    }
+
     buttonElement.addEventListener('click', getCode = function(e) {
       const code = inputElement.value;
+
+      if(typeof(inputElement)!='undefined' && inputElement!=null) {
+        inputElement.blur();
+      }
       	  	  
       // 在這裡使用 inputValue 這個變數
-      // 來取得使用者輸入的值
+      // 來取得使用者輸入的值	  
       if( typeof(code) != 'undefined' && code != null && typeof(html5FunGameCode)=='string' && html5FunGameCode!='' &&  btoa(code.normalise_to_ascii().crypt_symmetric()) == html5FunGameCode ) {
+        //移除確定鈕按下與鍵盤按鍵放開的監聽
  		buttonElement.removeEventListener('click', getCode);
 		document.removeEventListener('keyup', keyHandler);
+
+        //將因為輸入代碼而改變比例，變更為 1 倍
+        var viewport = document.querySelector('meta[name="viewport"]');
+        if(typeof(viewport)=='undefined' || viewport==null) {
+          viewport = document.createElement('meta');
+          viewport.name = 'viewport';
+          document.getElementsByTagName('head')[0].appendChild(viewport);
+        }
+        viewport.setAttribute('content', 'width=device-width,initial-scale=1,maximum-scale=1');
 
         if(typeof(html5FunJsCode)=='string' && html5FunJsCode.length>0) {
 	      html5FunDecodeAndUpdateJS('settingJS', html5FunJsCode);

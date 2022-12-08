@@ -94,7 +94,9 @@ bopomofoFont.load().then(
 //預設的替換規則
 //--------------------------------------------------------------
 replace_rules_list = [
- "((meters|meter)|m)"
+ "((too|two|to)|too|two|to)"
+ 
+,"((meters|meter)|m)"
 ,"((kilometers|kilometer)|km)"
 ,"((decimeters|decimeter)|dm)"
 ,"((centimeters|centimeter)|cm)"

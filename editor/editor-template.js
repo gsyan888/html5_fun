@@ -20,6 +20,7 @@ function(){/*---=====Template=====
 <head>
   <title>HTML5 FUN<\/title>
   <meta http-equiv="Content-Type" content="application\/xhtml+xml; charset=UTF-8" \/>
+  <meta name="viewport" content="initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no">
 <\/head>  
 <body>
 
@@ -78,8 +79,12 @@ decodeHTML = function(html) {
 };
 function openInNewWindow() {
   var w = window.open("", "HTML5 FUN", "width="+screen.width+", height="+screen.height);
-  var output = decodeHTML('<body>'+html+'</body>');
-  w.document.write(output);
+  var output = '<head>';
+  output += '<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />';
+  output += '<meta name="viewport" content="initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no">';
+  output += '</head>'
+  output += '<body>'+html+'</body>';
+  w.document.write(decodeHTML(output));
 };
 <\/script>
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*---=====Template=====".length+1,-9)
@@ -194,15 +199,6 @@ function(){/*---=====Template=====
         //移除確定鈕按下與鍵盤按鍵放開的監聽
  		buttonElement.removeEventListener('click', getCode);
 		document.removeEventListener('keyup', keyHandler);
-
-        //將因為輸入代碼而改變比例，變更為 1 倍
-        var viewport = document.querySelector('meta[name="viewport"]');
-        if(typeof(viewport)=='undefined' || viewport==null) {
-          viewport = document.createElement('meta');
-          viewport.name = 'viewport';
-          document.getElementsByTagName('head')[0].appendChild(viewport);
-        }
-        viewport.setAttribute('content', 'width=device-width,initial-scale=1,maximum-scale=1');
 
         if(typeof(html5FunJsCode)=='string' && html5FunJsCode.length>0) {
 	      html5FunDecodeAndUpdateJS('settingJS', html5FunJsCode);

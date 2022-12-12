@@ -123,11 +123,11 @@ updateMenuList = function(idPrefix, config) {
 var leftSideMenuConfig = {
 
 	'班級網站' :[
-		'黑皮2017', 'http://happy-world-2017.blogspot.tw/',
-		'黑皮2015', 'http://happy-world-2015.blogspot.tw/',
-		'黑皮2013', 'http://happy-world-2013.blogspot.tw/',
-		'黑皮2011', 'http://happyworld11.blogspot.com/',
-		'黑皮2009', 'http://happyworld2009.blogspot.com/',
+		'黑皮2017', 'https:////happy-world-2017.blogspot.tw/',
+		'黑皮2015', 'https:////happy-world-2015.blogspot.tw/',
+		'黑皮2013', 'https:////happy-world-2013.blogspot.tw/',
+		'黑皮2011', 'https:////happyworld11.blogspot.com/',
+		'黑皮2009', 'https:////happyworld2009.blogspot.com/',
 		'黑皮2007', 'happy96/index.html',
 		'黑皮2005', 'happy94/index.html'
 	],
@@ -167,7 +167,7 @@ var mainMenuConfig = {
 		'm0n0wall', 'os/m0n0wall.html',
 		'BartPE', 'os/bartpe/bartpe.html',
 		'Wiimote電子白板', 'wiimote-whiteboard/index.html',
-		'拉哩拉雜', 'http://gsyan888.blogspot.com/search/label/%E8%B3%87%E8%A8%8A%E5%A4%A9%E5%9C%B0',
+		'拉哩拉雜', 'https:////gsyan888.blogspot.com/search/label/%E8%B3%87%E8%A8%8A%E5%A4%A9%E5%9C%B0',
 	],
 	
 	'我的著作' :[
@@ -183,7 +183,7 @@ updateMenuList('leftSideMenu', leftSideMenuConfig);
 updateMenuList('mainMenu', mainMenuConfig);
 
 //get posts from blogger
-var rssURL = 'http://gsyan888.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=10';
+var rssURL = 'https:////gsyan888.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=10';
 loadJsFromExternalScript(rssURL, function(ok) {	
 	if(ok<0) {
 		//Blogger RSS retrieve failure

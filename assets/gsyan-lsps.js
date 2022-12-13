@@ -141,11 +141,14 @@ var leftSideMenuConfig = {
 	],
 	
 	'New' :[
-		'', '',
-		'', '',
-		'', '',
-		'', '',
-		'', ''
+		'HTML5 FUN 精選集', 'https://gsyan888.blogspot.com/2022/10/html5-fun-collection.html',
+		'Speaking', 'https://gsyan888.blogspot.com/2022/09/html5-speaking.html',
+		'我說你猜:比手畫腳', 'https://gsyan888.blogspot.com/2022/11/html5-charades.html',
+		'臺灣地圖隨選器', 'https://gsyan888.blogspot.com/2022/12/html5-images-preload.html',
+		'聽音辨字', 'https://gsyan888.blogspot.com/2022/11/html5-listening.html',
+		'注音高手', 'https://gsyan888.blogspot.com/2022/10/html5-phoneticsquiz-2022.html',
+		'造句靈感產生器', 'https://gsyan888.blogspot.com/2022/11/html5-sentence-blogger-embeded.html',
+		'語文高手題庫&國字加注音產生器', 'https://gsyan888.blogspot.com/2022/11/html5-bopomofo-format-generator.html'
 	]
 	
 };

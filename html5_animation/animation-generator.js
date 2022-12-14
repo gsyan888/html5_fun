@@ -716,14 +716,14 @@ ${(new XMLSerializer).serializeToString(document.getElementById('HTML5FunStyle')
 &lt;div id="HTML5FunWrapper"&gt;
 &lt;div id="imageSprite"&gt;&lt;img id="imageCanvas" src="${document.getElementById("imageCanvas").toDataURL("image/png")}"&gt;&lt;/img&gt;&lt;/div&gt;
 &lt;div id="gratingSprite"  title="拖曳柵欄看動畫"&gt;&lt;img id="gratingCanvas" src="${document.getElementById("gratingCanvas").toDataURL("image/png")}"&gt;&lt;/img&gt;
-&lt;button aria-label="close" class="gratingCloseButton" onclick="setVisibility(0);" title="關閉"&gt;X&lt;/button&gt;
+&lt;button aria-label="close" class="btn gratingCloseButton" onclick="setVisibility(0);" title="關閉"&gt;X&lt;/button&gt;
 &lt;/div&gt;
 
 &lt;div class="toggleSwitch" title="自動播放動畫開關"&gt;
 &lt;label class="switch"&gt;&lt;input id="autoPlayCheckbox" type="checkbox" checked onchange="setAutoPlay(this.checked)";&gt;&lt;span class="switchSlider round"&gt;&lt;/span&gt;&lt;/label&gt;
 &lt;img id="autoPlayIcon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAIVAAACFQEa0KbfAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAzVJREFUaIHt2EuIVmUcx/HPTCNKWNg9F7Upw6AiooRWEWSbpNykQXZZuahN0IVgKmgThLpOwcSkKAS74WQhVipSA7Yo3XSZJi+bFhlpipWOLZ4zzOnMc67ved9X4/3Cn3k5z//5n99/znP5Pw8DBgw4XxnCoxjDfnyEVRjup6i6XIT3cC5i2zDSbQELcFmBza8Y52nxJKbtmVZVR/ijRMDOinG+KYlzsK6wup/wCcwpaP+1YpybS9pvrBin70wo/iJH6gbs1wrxQUn7+3UDDjUUkuZSPI6bMLfE923sFRaNr7A44jOBJTjWgrbKDGO34mGStgkhcbgCm3A6aTuNLbiqd/JneFL1JKbtE1ySijEHVypeRErJG1rvYlFO20asT8R8j4UN3nsQz+PTBn2j5C2/R4XdN8bvyd9RzZKAW7ADP2IcP+A1nG0Yr/Fkv174GvMyz8/g28yzuYLwMp7DuoZ6GrNFfPy/EfF9Mcc3ayfNHs7DQiE5ju/wkha3jNuFIZAVchzXZHyvTZ5XXQh2p4Q+kIjP+rzQViJv5YgYjfi+WSOJaVuDXQXt420lsj0S/Cez58sd4l+uU9vRViJPRYIvi/iVbZSnlNdcsT73tJXIEF4RlsxfxM8OD1cQ9Sruwt8VkxhTXjW3yjxMlog6hIsT/5dLfPfj3t7Jn2G0RNg5rEj559Vrh7Fanyr0hTgREZW2LyL9rsPXSftveFZ5Jd1VNitO4h/cWtB/vnaOFh1xp/Lldqxv6ioyhD2qrT4bdFiyd5NH1NsPPhfOIK1RNB5XJjZ9CBrx3wNRmhuE42sdJvEQDtTsV4tVOi8lJrEWUwU+x5NkusaXHSYxhfuSWCvwZ4Hv2W4mU1R9VrGNmXi3Ka6rdnUrkeWaV64Twj1wlsvxWU6fqletueSd2T/EUjwo7NZFi8JJofAjDKHXzZzr0xwTblDuj7S1dgnRKw6Y/TX+wtX9FFWXu8WH1dZ+imrCJvFEYkPtvGWBMJeySfyspTK9V7X+Y2YOUmk2CHvOBcP/YpIvFp8b77T5kl4Mrbw75PU9eHerjJh9Y7iv7Zfk/bfaZAofC+ePU8IF2+rk94ABA3rEvyDd4vAC3nAbAAAAAElFTkSuQmCC" /&gt;
 &lt;/div&gt;
-&lt;button class="closeButton" aria-label="close" title="關閉" onclick="setVisibility(0);"&gt;X&lt;/button&gt;
+&lt;button class="btn closeButton" aria-label="close" title="關閉" onclick="setVisibility(0);"&gt;X&lt;/button&gt;
 
 &lt;div class='footer'&gt;
 &lt;div class='left'&gt;&lt;a href='https://gsyan888.blogspot.com/' target='_blank' title='HTML5 FUN::Grating Animation::BY GSYAN'&gt;Create By::HTML5 FUN::GRATING ANIMATION GENERATOR::&lt;/a&gt;&lt;/div&gt;

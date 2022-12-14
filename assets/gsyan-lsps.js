@@ -148,7 +148,8 @@ var leftSideMenuConfig = {
 		'聽音辨字', 'https://gsyan888.blogspot.com/2022/11/html5-listening.html',
 		'注音高手', 'https://gsyan888.blogspot.com/2022/10/html5-phoneticsquiz-2022.html',
 		'造句靈感產生器', 'https://gsyan888.blogspot.com/2022/11/html5-sentence-blogger-embeded.html',
-		'語文高手題庫&國字加注音產生器', 'https://gsyan888.blogspot.com/2022/11/html5-bopomofo-format-generator.html'
+		'語文高手題庫&國字加注音產生器', 'https://gsyan888.blogspot.com/2022/11/html5-bopomofo-format-generator.html',
+		'柵欄動畫產生器', 'https://gsyan888.blogspot.com/2022/12/html5-grating-animation-generator.html'
 	]
 	
 };

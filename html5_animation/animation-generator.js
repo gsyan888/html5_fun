@@ -739,6 +739,7 @@ var scenceWidth = window.innerWidth&&document.documentElement.clientWidth?Math.m
 var scenceHeight = window.innerHeight&&document.documentElement.clientHeight?Math.min(window.innerHeight, document.documentElement.clientHeight):window.innerHeight||document.documentElement.clientHeight||document.getElementsByTagName('body')[0].clientHeight;
 var imageSprite = document.getElementById('imageSprite');
 var gratingSprite = document.getElementById('gratingSprite');
+var gratingShape = '${gratingShape}';
 var canvas_width, canvas_height;
 var demoDelay = ${demoDelay};
 ${setMouseEventsToGratingSprite.toString()}

@@ -242,7 +242,7 @@ menu_items = [
 	, "html5_animation/assets/icon.png"
 	, "html5_animation/html5_animation.html"
 	, "archives/html5_animation.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2022/12/html5-grating-animation-generator.html"
 	],
 
 	[ "填字遊戲"

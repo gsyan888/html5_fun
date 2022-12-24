@@ -341,7 +341,8 @@ appendButtonStyle = function() {
     border-radius: 12px;
     font-size: 1.25rem;
     background: hsl(345deg 100% 47%);
-    color: white;
+  	color: #F4D03F;  /* white; */
+    border: 1px dotted hsl(340deg 100% 32%);	
     transform: translateY(-6px);
   }	
   `;

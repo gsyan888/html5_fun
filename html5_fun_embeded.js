@@ -344,7 +344,13 @@ appendButtonStyle = function() {
   	color: #F4D03F;  /* white; */
     border: 1px dotted hsl(340deg 100% 32%);	
     transform: translateY(-6px);
-  }	
+  }
+  /* 解決文字計算長度受 Blogger CSS 的影響 */
+  body {
+    word-break: revert;
+    word-wrap: revert;
+  }
+
   `;
   style.innerHTML = rule;
 }

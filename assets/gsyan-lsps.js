@@ -142,6 +142,7 @@ var leftSideMenuConfig = {
 	
 	'New' :[
 		'HTML5 FUN 精選集', 'https://gsyan888.blogspot.com/2022/10/html5-fun-collection.html',
+		'幸運999', 'https://gsyan888.blogspot.com/2023/01/html5-math-spin-999.html',
 		'分數小教具', 'https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html',
 		'Speaking', 'https://gsyan888.blogspot.com/2022/09/html5-speaking.html',
 		'我說你猜:比手畫腳', 'https://gsyan888.blogspot.com/2022/11/html5-charades.html',

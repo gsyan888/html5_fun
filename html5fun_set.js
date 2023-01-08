@@ -53,6 +53,22 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2013/12/html5-pk2.html"
 	],
 
+	[ "幸運999"
+	, "排數字比大小的遊戲"
+	, "html5_math/assets/icon-spin999.png"
+	, "https://gsyan888.blogspot.com/2023/01/html5-math-spin-999.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2023/01/html5-math-spin-999.html"
+	],
+	
+	[ "真分數小教具"
+	, "真分數的小教具"
+	, "html5_math/assets/icon-fraction.png"
+	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
+	],
+	
 	[ "筆順編輯器"
 	, "筆順造字小工具"
 	, "html5_strokeeditor/assets/icon.png"

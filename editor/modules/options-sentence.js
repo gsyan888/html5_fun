@@ -71,6 +71,12 @@ var editorOptions = {
       "card_label_font": [
         "text",
         "卡片內文字的字體"],
+
+      "tts_language": [
+        "text",
+        "TTS語音合成的語言代碼",
+        "(例: 英文 <span class=\"btn\" onclick=\"setThisValue(this);\">en-US</span>  、中文 <span class=\"btn\" onclick=\"setThisValue(this);\">zh-TW</span>  、日文 <span class=\"btn\" onclick=\"setThisValue(this);\">ja-JP</span>  、韓文 <span class=\"btn\" onclick=\"setThisValue(this);\">ko-KR</span> <a href=\"https: //cloud.google.com/speech-to-text/docs/languages\" target=\"_blank\">查代碼</a>"
+      ],
 						
       "questionLines": [
         "textarea",

@@ -857,7 +857,7 @@ convert = function () {
 downloadHTMLFile = function() {
 	var obj = document.getElementById('sourceCode');
 	var forGoogleSitesCheckedOldValue = document.getElementById('forGoogleSites').checked;
-	var enableOpenInNewWindowOldValue = enableOpenInNewWindow;
+	var enableOpenInNewWindowOldValue = (typeof(enableOpenInNewWindow)!='undefined'?enableOpenInNewWindow:false);
 	document.getElementById('forGoogleSites').checked = true;
 	enableOpenInNewWindow = false;
 	document.getElementById('showCodeBtn2').innerText = labelText[2].replace(/隱藏/, '查看');
@@ -873,7 +873,7 @@ exportHTMLFile = function (exportString) {
   /* 檔名後面加上日期時間，變成 html-modulename-20xx-xx-xx.html */
   var dateNow = new Date();
   var dateStr = dateNow.toISOString().split('T')[0];
-  var filename = 'html5-'+(modulename?modulename+'-':'')+ dateStr + '.html';
+  var filename = 'html5-'+(typeof(modulename)!='undefined'?modulename+'-':'')+ dateStr + '.html';
 
   /* 以 DataURI 的格式編碼 */
   var dataURI = toDataURI(exportString, 'text/html');

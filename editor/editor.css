@@ -129,7 +129,7 @@ pre code span.line::before {
   position: absolute;
   width:36px;
   height:36px;
-  transform: translate(700%, -120%);
+  transform: translate(20%, -120%);
   background:url("https://gsyan888.github.io/html5_fun/editor/assets/icon-html-save-36x36.png");
   background-repeat: no-repeat;
   

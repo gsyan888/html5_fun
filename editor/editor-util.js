@@ -334,6 +334,42 @@ jumpTo = function (from, to) {
   });
 };
 
+/* 下載可單獨執行的網頁檔案, 將 Google Sites 用的嵌入語法以檔案的方式下載 */
+downloadHTMLFile = function() {
+	var obj = document.getElementById('sourceCode');
+	var forGoogleSitesCheckedOldValue = document.getElementById('forGoogleSites').checked;
+	var enableOpenInNewWindowOldValue = enableOpenInNewWindow;
+	document.getElementById('forGoogleSites').checked = true;
+	enableOpenInNewWindow = false;
+	document.getElementById('showCodeBtn2').innerText = labelText[2].replace(/隱藏/, '查看');
+	showJSCode(2);
+	var html = decodeHTML(obj.innerText||obj.textContent);
+	exportHTMLFile(html);
+	/* 恢復為原有的狀態 */
+	showJSCode(2);
+	document.getElementById('forGoogleSites').checked = forGoogleSitesCheckedOldValue;
+	enableOpenInNewWindow = enableOpenInNewWindowOldValue;
+};
+exportHTMLFile = function (exportString) {
+  /* 檔名後面加上日期時間，變成 html-modulename-20xx-xx-xx.html */
+  var dateNow = new Date();
+  var dateStr = dateNow.toISOString().split('T')[0];
+  var filename = 'html5-'+(modulename?modulename+'-':'')+ dateStr + '.html';
+
+  /* 以 DataURI 的格式編碼 */
+  var dataURI = toDataURI(exportString, 'text/html');
+
+  /* 將資料變成超連結，並觸發它的 click，自動下載檔案 */
+  var anchor = document.createElement('a');
+  anchor.setAttribute('download', filename);
+  anchor.setAttribute('href', dataURI);
+  anchor.setAttribute('target', '_blank');
+  document.body.appendChild(anchor);
+  anchor.click();
+  /* anchor.parentNode.removeChild(anchor); */
+  document.body.removeChild(anchor);
+};
+
 /*
  將設定的區塊 settingJS 去掉尾巴的函數後
  將設定值輸出成 DataURI base64 編碼

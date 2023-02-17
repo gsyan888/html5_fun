@@ -122,10 +122,18 @@ pre code span.line::before {
   width:36px;
   height:36px;
   transform: translate(600%, -120%);
-  background:url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj07pRjjCC1jHK0BvjN29VJymHuFFAvM94sxr9P0hn9-17myaZQiZQU8GV7Myqa8SYcZQrU0ShcqJMceOKgkde4GuyESF6VPBH2FaRSUyd_DWIFre33nUg5iTMTBrJphob0acsDw7SLkMWeKv-Bl4VLbBZMbzsmN7WtGKSU3h4Nz6MCy77kiiVFv_z4/s36/icon-save-36x36.png");
+  background:url("https://gsyan888.github.io/html5_fun/editor/assets/icon-save-36x36.png");
+  background-repeat: no-repeat;
+  }
+.html-download {
+  position: absolute;
+  width:36px;
+  height:36px;
+  transform: translate(700%, -120%);
+  background:url("https://gsyan888.github.io/html5_fun/editor/assets/icon-html-save-36x36.png");
+  background-repeat: no-repeat;
   
   }
-
 /* for editor and questionLines */  
   .questionLines{
     text-align: left;

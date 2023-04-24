@@ -55,7 +55,11 @@ var moduleScripts = {
   listening:{
     src:"https://gsyan888.github.io/html5_fun/html5_listening/listening.js",
     name:"聽音辨字"
-  }  
+  },
+  match:{
+    src:"https://gsyan888.github.io/html5_fun/html5_match/match.js",
+    name:"對對碰"
+  }
 };
 //取得HTML5 FUN 程式的網址
 var moduleName = document.getElementById('injectionJS').getAttribute('moduleName');

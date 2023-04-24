@@ -248,18 +248,18 @@ update_settingJS = function () {
           }
 
         } else {
-
+			
           if (typeof(window[id]) == 'string') {
             window[id] = elm.value.trim(); /* 字串先去掉前後的空格 */
             valueString = "'" + window[id] + "'";
-
+          } else if(typeof(window[id])=='number') {
+            valueString = elm.value;
+            window[id] = Number(elm.value);
           } else {
-
             window[id] = elm.value;
             valueString = window[id];
-
           }
-
+		  
         }
 
         if (id == 'questionLines') {

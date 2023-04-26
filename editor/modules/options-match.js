@@ -18,15 +18,11 @@ var editorOptions = {
         "text",
         "文字的字體名稱"],
 
-      "showNumber": [
-        "checkbox",
-        "是否顯示格子的編號",
-        "勾選:顯示編號 &nbsp;&nbsp; 未勾選:無編號",
-        "顯示格子的編號"],
-
-      "numberLabelFontSizeScale": [
+      "tts_language": [
         "text",
-        "編號大小(相對於格子的比例)"],
+        "TTS語音合成的語言代碼",
+        "(例: 英文 <span class=\"btn\" onclick=\"setThisValue(this);\">en-US</span>  、中文 <span class=\"btn\" onclick=\"setThisValue(this);\">zh-TW</span>  、日文 <span class=\"btn\" onclick=\"setThisValue(this);\">ja-JP</span>  、韓文 <span class=\"btn\" onclick=\"setThisValue(this);\">ko-KR</span> <a href=\"https: //cloud.google.com/speech-to-text/docs/languages\" target=\"_blank\">查代碼</a>"
+      ],	  
 
       "scoreAdd": [
         "text",
@@ -45,6 +41,16 @@ var editorOptions = {
       "momorySeconds": [
         "text",
         "等幾秒才蓋牌"],
+		
+      "showNumber": [
+        "checkbox",
+        "是否顯示格子的編號",
+        "勾選:顯示編號 &nbsp;&nbsp; 未勾選:無編號",
+        "顯示格子的編號"],
+
+      "numberLabelFontSizeScale": [
+        "text",
+        "編號大小(相對於格子的比例)"],
 
       "card_selected_border_color": [
         "text",

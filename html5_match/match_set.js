@@ -69,6 +69,11 @@ card_back_color = '#006666';
 //------------------------------
 card_back_text_color = '#ffffff';
 
+//------------------------------
+//Google TTS 文字轉語音的設定
+//語言代碼:  'en-US' 'zh-TW'
+//------------------------------
+tts_language = 'en-US';
 
 //---------------------------------------------------
 // [題庫設定]
@@ -84,14 +89,14 @@ fields_seperator = '##';
 //
 // 每一行即是一個問題(一對牌組)
 // 每一個問題中以題庫欄位分隔符號分為兩欄(兩張牌)
-// 牌卡目前支援的素材有：文字、圖片
+// 牌卡目前支援的素材有：文字、圖片、聲音
 //
 questionLines = function(){/*--這一行請勿更改--
-CAT##samples/cat.png
-CHICKEN##samples/chicken.png
-COW##samples/cow.png
-DOG##samples/dog.png
-HORSE##samples/horse.png
-MONKEY##samples/monkey.png
+CHICKEN##chicken.tts
+MONKEY##monkey.tts
+HORSE##horse.tts
+COW##https://gsyan888.github.io/html5_fun/html5_match/samples/cow.png
+DOG##https://gsyan888.github.io/html5_fun/html5_match/samples/dog.png
+CAT##https://gsyan888.github.io/html5_fun/html5_match/samples/cat.png
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
 

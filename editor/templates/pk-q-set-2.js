@@ -101,7 +101,7 @@ getOneQuestion = function(tools) {
 			ngArray = [];
 			var ngRandom = tools.makeRandomIndex(0, question_lines.length-1);
 			for(var i=0; i<ngRandom.length; i++) {
-				if(i!=qIndex) {
+				if(ngRandom[i]!=qIndex) {
 					line = question_lines[ngRandom[i]];
 					fields = getValidValues(line.split(seperator));
 					if(typeof(fields)!='undefined' && fields!=null && fields.length>1) {

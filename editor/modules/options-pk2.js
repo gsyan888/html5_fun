@@ -3,7 +3,8 @@ var editorOptions = {
     caption: "PK2:四人PK",
 	
     filenames: [
-      "https://gsyan888.github.io/html5_fun/html5_pk2/questions-set-1.js"
+      "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-1.js",
+	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-2.js"
     ],
 	
     enableOpenInNewWindow: false,

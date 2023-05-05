@@ -68,7 +68,11 @@ if(typeof(questionLines)!='undefined' && questionLines!=null) {
 	} else {
 		question_lines = getValidValues(questionLines);
 	}
+	//初始亂數取題的變數
+	delete questionCurrendIndex;
+	delete questionIndexRandom;	
 }
+//抽取一題，並製作成遊戲需要的格式
 getOneQuestion = function(tools) {
 	var question,
 		answer,
@@ -79,7 +83,9 @@ getOneQuestion = function(tools) {
 	if(typeof(question_lines)!='undefined' && question_lines!=null && question_lines.length>0) {
 		//以亂數取用某一題題目，用完了再重新取用
 		if(typeof questionCurrendIndex == 'undefined' 
+			|| questionCurrendIndex == null
 			|| typeof questionIndexRandom == 'undefined'
+			|| questionIndexRandom == null
 			|| questionCurrendIndex >= question_lines.length	) {
 			
 			questionIndexRandom = tools.makeRandomIndex(0, question_lines.length-1);

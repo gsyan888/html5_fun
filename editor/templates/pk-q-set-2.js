@@ -70,7 +70,11 @@ if(typeof(questionLines)!='undefined' && questionLines!=null) {
 	} else {
 		question_lines = getValidValues(questionLines);
 	}
+	//初始亂數取題的變數
+	delete questionCurrendIndex;
+	delete questionIndexRandom;
 }
+//抽取一題，並製作成遊戲需要的格式
 getOneQuestion = function(tools) {
 	var question,
 		answer,
@@ -81,13 +85,15 @@ getOneQuestion = function(tools) {
 	if(typeof(question_lines)!='undefined' && question_lines!=null && question_lines.length>0) {
 		//以亂數取用某一題題目，用完了再重新取用
 		if(typeof questionCurrendIndex == 'undefined' 
+			|| questionCurrendIndex == null
 			|| typeof questionIndexRandom == 'undefined'
+			|| questionIndexRandom == null
 			|| questionCurrendIndex >= question_lines.length	) {
 			
 			questionIndexRandom = tools.makeRandomIndex(0, question_lines.length-1);
 			questionCurrendIndex = 0;
 		}
-		//以亂數取得一筆題庫
+		//以亂數取得一筆題庫當題幹及正確選項
 		var qIndex = questionIndexRandom[questionCurrendIndex++];
 		var line = question_lines[qIndex];
 		//以欄位分隔符號將各欄分開
@@ -98,9 +104,11 @@ getOneQuestion = function(tools) {
 			//對的答案
 			okArray = [fields[1]]; //單選的正解
 			//錯的答案
+			//利用題庫中的其它題的答案當作錯誤的選項
 			ngArray = [];
 			var ngRandom = tools.makeRandomIndex(0, question_lines.length-1);
 			for(var i=0; i<ngRandom.length; i++) {
+				//不是正解那題就拿來當錯誤的選項
 				if(ngRandom[i]!=qIndex) {
 					line = question_lines[ngRandom[i]];
 					fields = getValidValues(line.split(seperator));

@@ -66,11 +66,12 @@ var editorOptions = {
 
       "card_back_color": [
         "text",
-        "蓋牌時的背景顏色"],
+        "牌未選取時的背景顏色",
+		"可以設多個色碼，用逗號分隔(例如每題兩張牌時: #006666, #2E86C1 )"],
 
       "card_back_text_color": [
         "text",
-        "蓋牌時的文字顏色"],
+        "牌未選取時文字的顏色"],
 	  
       "questionLines": [
         "textarea",

@@ -66,11 +66,11 @@ var editorOptions = {
 
       "card_back_color": [
         "text",
-        "蓋牌時文字的顏色"],
+        "蓋牌時的背景顏色"],
 
       "card_back_text_color": [
         "text",
-        "蓋牌時的背景顏色"],
+        "蓋牌時的文字顏色"],
 	  
       "questionLines": [
         "textarea",

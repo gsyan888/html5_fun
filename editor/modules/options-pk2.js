@@ -4,7 +4,7 @@ var editorOptions = {
 	
     filenames: [
       "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-1.js",
-	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-2.js"
+	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-2.js",
 	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-3.js"
     ],
 	

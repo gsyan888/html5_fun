@@ -22,8 +22,14 @@ var editorOptions = {
 
       "helpText": [
         "text",
-        "開始比賽前, 說明對話框的說明文字"],	  
-	  
+        "開始比賽前, 說明對話框的說明文字"],
+
+      "preview_enable": [
+        "checkbox",
+        "語文高手題型是否預覽題目",
+        "勾選:作答前先預覽 &nbsp;&nbsp; 未勾選:不預覽",
+        "啟用預覽功能"],		
+		
       "questionLines": [
         "textarea",
         "題庫"]

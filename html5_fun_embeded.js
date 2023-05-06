@@ -224,6 +224,9 @@ gameStart = function() {
 	  HTML5FunWrapper.style['z-index'] = 10000;
 	  HTML5FunWrapper.style.visibility = "visible";
 	}
+  } else {	  
+	removeHTML5FunEmbeded();
+	console.log('程式執行失敗!');
   }
 }
 //

@@ -326,7 +326,10 @@ createPlayButton = function() {
 }
 //
 appendButtonStyle = function() {
+  if(document.getElementById("HTML5FUN-3D-BUTTON")) 
+	  return;
   var style= document.createElement("style");
+  style.id = "HTML5FUN-3D-BUTTON";
   //(document.head || document.documentElement).appendChild(style);
   document.body.appendChild(style);
   var rule=`

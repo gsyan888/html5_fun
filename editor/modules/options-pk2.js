@@ -1,11 +1,12 @@
 var editorOptions = {
   pk2: {
-    caption: "PK2:四人PK",
+    caption: "PK2:四人競賽",
 	
     filenames: [
       "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-1.js",
 	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-2.js",
-	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-3.js"
+	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-3.js",
+	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-4.js"
     ],
 	
     enableOpenInNewWindow: false,

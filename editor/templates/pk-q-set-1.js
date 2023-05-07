@@ -67,7 +67,10 @@ getValidValues = function(data) {
 question_lines = [];
 if(typeof(questionLines)!='undefined' && questionLines!=null) {
 	//一行行分解
-	if(typeof(questionLines)=='string') {
+	if(typeof(questionLines)=='string') {		
+		if(typeof(decodeHTML)=='function') {
+			questionLines = decodeHTML(questionLines); //試著對文字解碼
+		}
 		var lines = questionLines.replace(/\r/g, '\n').split(/\n+/);
 		question_lines = getValidValues(lines);
 	} else {

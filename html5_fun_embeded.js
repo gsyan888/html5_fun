@@ -56,6 +56,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_listening/listening.js",
     name:"聽音辨字"
   },
+  ghost:{
+    src:"https://gsyan888.github.io/html5_fun/html5_ghost/ghost.js",
+    name:"打鬼特攻隊"
+  },
   match:{
     src:"https://gsyan888.github.io/html5_fun/html5_match/match.js",
     name:"對對碰"

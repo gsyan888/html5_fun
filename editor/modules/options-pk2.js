@@ -15,11 +15,11 @@ var editorOptions = {
 
       "optionsTotal": [
         "text",
-        "共有幾個選項"],
+        "最多有幾個選項(PK2最多5個)"],
 
       "optionColTotal": [
         "text",
-        "一列有幾個選項"],
+        "一列有幾個選項(PK用, PK2無用)"],
 
       "helpText": [
         "text",

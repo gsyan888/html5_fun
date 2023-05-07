@@ -13,14 +13,6 @@ var editorOptions = {
 	
     options: {
 
-      "optionsTotal": [
-        "text",
-        "共有幾個選項"],
-
-      "optionColTotal": [
-        "text",
-        "一列有幾個選項"],
-
       "helpText": [
         "text",
         "開始挑戰前, 說明對話框的說明文字"],

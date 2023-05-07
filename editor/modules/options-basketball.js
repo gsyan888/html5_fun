@@ -1,6 +1,6 @@
 var editorOptions = {
   basketball: {
-    caption: "籃球高手",
+    caption: "投籃高手",
 	
     filenames: [
       "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-1.js",
@@ -15,15 +15,11 @@ var editorOptions = {
 
       "optionsTotal": [
         "text",
-        "共有幾個選項"],
-
-      "optionColTotal": [
-        "text",
-        "一列有幾個選項"],
+        "最多幾個選項(最多5個)"],
 
       "helpText": [
         "text",
-        "開始比賽前, 說明對話框的說明文字"],
+        "開始挑戰前, 說明對話框的說明文字"],
 
       "preview_enable": [
         "checkbox",

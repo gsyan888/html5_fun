@@ -19,7 +19,11 @@ var editorOptions = {
 
       "optionsTotal": [
         "text",
-        "最多幾個選項"],
+        "總共幾個選項"],
+
+      "optionColTotal": [
+        "text",
+        "橫向有幾個選項"],
 		
       "questionLines": [
         "textarea",

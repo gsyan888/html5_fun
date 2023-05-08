@@ -28,6 +28,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_basketball/basketball.js",
     name:"投籃高手"
   },  
+  baseball:{
+    src:"https://gsyan888.github.io/html5_fun/html5_baseball/baseball.js",
+    name:"王牌投手"
+  },  
   card_flip:{
     src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",
     name:"大家一起來"

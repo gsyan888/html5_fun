@@ -58,7 +58,8 @@ var moduleScripts = {
   },
   shark:{
     src:"https://gsyan888.github.io/html5_fun/html5_shark/shark.js",
-    name:"搶救公主"
+    name:"搶救公主",
+	style: "background:#00bbff !important;background:-webkit-gradient(radial, 50% 50%, 10, 50% 50%, 850, from(#99ffff), to(#2f5c1b), color-stop(.6,#00bbff))  !important;background: -moz-radial-gradient(center 45deg, circle farthest-side, #99ffff 0%, #00bbff 60%, #2f5c1b 100%) !important;"
   },  
   charades:{
     src:"https://gsyan888.github.io/html5_fun/html5_charades/charades.js",
@@ -77,11 +78,17 @@ var moduleScripts = {
     name:"對對碰"
   }
 };
+var customStyle = null;
 //取得HTML5 FUN 程式的網址
 var moduleName = document.getElementById('injectionJS').getAttribute('moduleName');
 if(typeof(moduleName)!='undefined' && moduleName!=null) {	
   if(moduleScripts[moduleName]) {
+	
 	HTML5FunScript = moduleScripts[moduleName].src;
+	
+	if(typeof(moduleScripts[moduleName].style)!='undefined' && moduleScripts[moduleName].style!=null) {
+		customStyle = moduleScripts[moduleName].style;
+	}
   } else  {
 	HTML5FunScript = null;
   }
@@ -105,7 +112,11 @@ if(typeof(wrapperBackground)=='undefined' || wrapperBackground==null) {
 //取得額外 style 自串的參數
 var wrapperStyle = document.getElementById('injectionJS').getAttribute('style');
 if(typeof(wrapperStyle)=='undefined' || wrapperStyle==null) {
+  if(typeof(customStyle)!='undefined' && customStyle!=null) {
+	wrapperStyle = customStyle;
+  } else {
 	wrapperStyle = '';
+  }
 }
 //
 /**

@@ -644,7 +644,7 @@ reloadJS = function(id) {
  重新載入 injectionJS (html5_fun_embeded.js)
  modulename: HTML5 FUN 的模組名稱 (定義在 html5_fun_embeded.js)
  */ 
-reloadEmbededJS = function(modulename) {
+reloadEmbededJS = function(modulename, attributes) {
   var parentNode;
   var oldJS = document.getElementById('injectionJS');
   if(typeof(oldJS)!='undefined' && oldJS!=null) {
@@ -659,6 +659,12 @@ reloadEmbededJS = function(modulename) {
   scriptTag.id = 'injectionJS';
   scriptTag.src = "https://gsyan888.github.io/html5_fun/html5_fun_embeded.js";
   scriptTag.setAttribute('autostart', "false");
+  if(typeof(attributes)=='object' && attributes!=null) {
+	var keys = Object.keys(attributes);
+	for(var i=0; i<keys.length; i++) {
+		scriptTag.setAttribute(keys[i], attributes[keys[i]]);
+	}
+  }
   scriptTag.setAttribute('modulename', modulename);
   parentNode.appendChild(scriptTag);
 };

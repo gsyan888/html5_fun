@@ -102,6 +102,11 @@ if(typeof(wrapperBackground)=='undefined' || wrapperBackground==null) {
 	//wrapperBackground = '#F8F9F9';
 	wrapperBackground = '#ffffff';
 }
+//取得額外 style 自串的參數
+var wrapperStyle = document.getElementById('injectionJS').getAttribute('style');
+if(typeof(wrapperStyle)=='undefined' || wrapperStyle==null) {
+	wrapperStyle = '';
+}
 //
 /**
 * 載外部的 .js , 並執行 callback 的指令
@@ -153,7 +158,7 @@ injection = function() {
   //The wrapper
   if(!document.getElementById(id.HTML5FunWrapper)) {
 	HTML5FunWrapper = document.createElement("div");
-	var style = 'background:'+wrapperBackground+';position:fixed;height:100%;width:100%;left: 0;top: 0;z-index:10000;visibility:visible;';
+	var style = 'background:'+wrapperBackground+';position:fixed;height:100%;width:100%;left: 0;top: 0;z-index:10000;visibility:visible;'+wrapperStyle;
 	HTML5FunWrapper.id = id.HTML5FunWrapper;
 	HTML5FunWrapper.setAttribute("style", style);
 	//HTML5FunWrapper.style.overflow = 'hidden';

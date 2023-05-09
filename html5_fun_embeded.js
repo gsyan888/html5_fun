@@ -56,6 +56,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_sentence/sentence.js",
     name:"造句靈感產生器"
   },
+  shark:{
+    src:"https://gsyan888.github.io/html5_fun/html5_shark/shark.js",
+    name:"搶救公主"
+  },  
   charades:{
     src:"https://gsyan888.github.io/html5_fun/html5_charades/charades.js",
     name:"我說你猜"

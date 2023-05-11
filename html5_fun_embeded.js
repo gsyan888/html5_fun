@@ -61,6 +61,10 @@ var moduleScripts = {
     name:"搶救公主",
 	style: "background:#00bbff !important;background:-webkit-gradient(radial, 50% 50%, 10, 50% 50%, 850, from(#99ffff), to(#2f5c1b), color-stop(.6,#00bbff))  !important;background: -moz-radial-gradient(center 45deg, circle farthest-side, #99ffff 0%, #00bbff 60%, #2f5c1b 100%) !important;"
   },  
+  bingo:{
+    src:"https://gsyan888.github.io/html5_fun/html5_bingo/bingo.js",
+    name:"BINO賓果"
+  },
   charades:{
     src:"https://gsyan888.github.io/html5_fun/html5_charades/charades.js",
     name:"我說你猜"

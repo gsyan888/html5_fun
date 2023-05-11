@@ -18,10 +18,30 @@ var editorOptions = {
     
 	"options": {
 		
-      "helpText": [
+      "question_field_number": [
         "text",
-        "開始挑戰前, 說明對話框的說明文字"],
+        "指定題幹在第幾欄位(由 0 起算)"],
 		
+      "answer_field_number": [
+        "text",
+        "指定答案在第幾欄位(由 0 起算)"],
+
+      "auto_replace_answer": [
+        "checkbox",
+        "是否自動將題幹有答案的字串用括號置換",
+        "勾選:將答案刪除,換成括號 &nbsp;&nbsp; 未勾選:保持原內容",
+        "自動處理題庫的填空"],		
+
+      "phonics_field_number": [
+        "text",
+        "注音符號在第幾欄位(由 0 起算)",
+		"(成語題型的額外欄位)"],
+
+      "description_field_number": [
+        "text",
+        "解釋在第幾欄位(由 0 起算)",
+		"(成語題型的額外欄位)"],
+
       "questionLines": [
         "textarea",
         "題庫"]

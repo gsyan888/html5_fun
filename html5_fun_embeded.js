@@ -51,7 +51,7 @@ var moduleScripts = {
   pk2:{
     src:"https://gsyan888.github.io/html5_fun/html5_pk2/pk2.js",
     name:"PK2"
-  },
+  },  
   sentence:{
     src:"https://gsyan888.github.io/html5_fun/html5_sentence/sentence.js",
     name:"造句靈感產生器"
@@ -72,16 +72,30 @@ var moduleScripts = {
   ghost:{
     src:"https://gsyan888.github.io/html5_fun/html5_ghost/ghost.js",
     name:"打鬼特攻隊"
-  },
+  },  
   match:{
     src:"https://gsyan888.github.io/html5_fun/html5_match/match.js",
     name:"對對碰"
   }
 };
+
 var customStyle = null;
-//取得HTML5 FUN 程式的網址
+
+//取得HTML5 FUN embed 模組名稱參數
 var moduleName = document.getElementById('injectionJS').getAttribute('moduleName');
+
 if(typeof(moduleName)!='undefined' && moduleName!=null) {	
+  //本機偵錯用，將程式路徑改為 ../XXX/html5_XXX/XXX.js
+  if(typeof(debug)!='undefined' && debug!=null && debug && typeof(moduleName)=='string') {
+    console.log(`debug: ${debug}`);
+    var src = `../${moduleName}/html5_${moduleName}/${moduleName}.js`;
+    if(typeof(moduleScripts[moduleName])=='undefined' || moduleScripts[moduleName]==null) {
+	  moduleScripts[moduleName] = {name:moduleName.toUpperCase()};
+    }
+    moduleScripts[moduleName].src = src;
+  }
+
+  //取得HTML5 FUN 程式的網址
   if(moduleScripts[moduleName]) {
 	
 	HTML5FunScript = moduleScripts[moduleName].src;
@@ -331,6 +345,7 @@ createPlayButton = function() {
   //先檢查模組是否存在	
   if(HTML5FunScript==null) {
 	console.log('HTML5FunScript not found.');
+	alert('HTML5FunScript not found.');
 	return false;
   }
   //新增按鈕

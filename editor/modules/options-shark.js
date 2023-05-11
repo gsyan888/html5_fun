@@ -2,11 +2,19 @@ var editorOptions = {
   shark: {
     caption: "搶救公主",
 	
-    filenames: [
-      "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-1.js",
-	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-2.js",
-	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-3.js",
-	  "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-4.js"
+    "templates": [{
+        "name": "出題光碟格式: 題幹##解答##選項1##選項2##選項3##選項4",
+        "path": "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-1.js"
+      }, {
+        "name": "兩欄式題庫: 題目##答案",
+        "path": "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-2.js"
+      }, {
+        "name": "三欄式題庫: 題目##正確1~正確2##錯誤1~~錯誤2~~錯誤3",
+        "path": "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-3.js"
+      }, {
+        "name": "語文高手題庫: 同音字、多音字或形近字",
+        "path": "https://gsyan888.github.io/html5_fun/editor/templates/pk-q-set-4.js"
+      }
     ],
 	
     enableOpenInNewWindow: false,

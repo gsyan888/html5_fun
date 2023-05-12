@@ -80,6 +80,10 @@ var moduleScripts = {
   match:{
     src:"https://gsyan888.github.io/html5_fun/html5_match/match.js",
     name:"對對碰"
+  },
+  monster: {
+    src:"https://gsyan888.github.io/html5_fun/html5_monster/monster.js",
+    "name": "詞語大挑戰"
   }
 };
 

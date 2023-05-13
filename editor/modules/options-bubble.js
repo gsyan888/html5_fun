@@ -8,10 +8,13 @@ var editorOptions = {
       }, {
         "name": "量詞找名詞: 量詞##名詞對1~名詞對2##名詞錯1~~名詞錯2~~名詞錯3##解說",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/bubble-q-set-2.js"
-      }, {
+      }
+	  /*
+	  , {
         "name": "字詞填空: ##正確1~正確2##錯誤1~~錯誤2~~錯誤3##解說",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/bubble-q-set-3.js"
       }
+	  */
     ],
     
 	"enableOpenInNewWindow": false,
@@ -29,10 +32,8 @@ var editorOptions = {
 		
       "question_type": [
         "text",
-        "題目類型",
-		"0: 無論題幹或對,錯選項都不加數字",
-		"1: 隨選一個數字加到題庫的題幹欄位中",
-		"2: 隨選一個數字加到題庫對的選項和錯的選項欄位中"],
+        "題目類型: 隨選數字加到哪一個欄位",
+		"[0]都不加數字  [1]加到題幹  [2]加到選項(泡泡)"],
 
       "question_number_string": [
         "text",

@@ -32,6 +32,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_baseball/baseball.js",
     name:"王牌投手"
   },  
+  bubble:{
+    src:"https://gsyan888.github.io/html5_fun/html5_bubble/bubble.js",
+    name:"戳泡泡Bubble"
+  },
   card_flip:{
     src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",
     name:"大家一起來"
@@ -83,7 +87,7 @@ var moduleScripts = {
   },
   monster: {
     src:"https://gsyan888.github.io/html5_fun/html5_monster/monster.js",
-    "name": "詞語大挑戰"
+    "name": "大嘴Monster"
   }
 };
 

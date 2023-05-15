@@ -64,9 +64,9 @@ gdata.io.handleScriptLoaded = function(result) {
 	//postContent = postContent.replace(/(<br \/>)/ig,"\r\n"); 	
 	//postContent = postContent.replace(/(<([^>]+)>)/ig,""); 
 	//postContent = postContent.replace(/(\r\n)/ig,"<br />"); 
-	postContent = postContent.replace(/<br \/>|<br>/ig,"\n"); 	
-	postContent = postContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<[^>]+>/g, '').replace(/\r|\t/g, '').replace(/\n+/g, '\n');
-	postContent = postContent.replace(/\n/ig,"<br />"); 
+	postContent = postContent.replace(/\n|\r|\t/g, '').replace(/<br \/>|<br>/ig,"\n"); 	
+	postContent = postContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<[^>]+>/g, '').replace(/\n+/g, '\n');
+	postContent = postContent.replace(/\n+/ig,"<br />"); 
 	//keep 150 words to be summary
 	postContent = postContent.substr(0,150);
 	html.push('<div class="head_bg">');

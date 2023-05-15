@@ -5,12 +5,12 @@ caption = "HTML5 FUN BY GSYan";
 //caption , description, icon, demoURL, archiiveURL, blogURL
 //
 menu_items = [ 
-	[ "幾A幾B"
-	, "AB Game 幾A幾B猜謎遊戲"
-	, "html5_ab_game/assets/icon.png"
-	, "html5_ab_game/html5_ab_game.html"
+	[ "烘焙機"
+	, "HTML5 FUN : Homepage 遊戲式題庫烘焙機"
+	, "editor/assets/icon.png"
+	, "https://gsyan888.blogspot.com/2023/05/html5-fun-homepage.html"
 	, ""
-	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
+	, "https://gsyan888.blogspot.com/2023/05/html5-fun-homepage.html"
 	],
 	
 	[ "筆順練習第三版"
@@ -67,6 +67,14 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
+	],
+	
+	[ "幾A幾B"
+	, "AB Game 幾A幾B猜謎遊戲"
+	, "html5_ab_game/assets/icon.png"
+	, "html5_ab_game/html5_ab_game.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
 	],
 	
 	[ "筆順編輯器"

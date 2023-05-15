@@ -61,9 +61,12 @@ gdata.io.handleScriptLoaded = function(result) {
 	var postPublished = postEntry.published.$t;
 	postPublished = postPublished.substr(0,4)+'年'+postPublished.substr(5,2)+'月'+postPublished.substr(8,2)+'日';
 	//keep <br /> & remove other HTML tag
-	postContent = postContent.replace(/(<br \/>)/ig,"\r\n"); 
-	postContent = postContent.replace(/(<([^>]+)>)/ig,""); 
-	postContent = postContent.replace(/(\r\n)/ig,"<br />"); 
+	//postContent = postContent.replace(/(<br \/>)/ig,"\r\n"); 	
+	//postContent = postContent.replace(/(<([^>]+)>)/ig,""); 
+	//postContent = postContent.replace(/(\r\n)/ig,"<br />"); 
+	postContent = postContent.replace(/<br \/>|<br>/ig,"\n"); 	
+	postContent = postContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '').replace(/<[^>]+>/g, '').replace(/\r|\t/g, '').replace(/\n+/g, '\n');
+	postContent = postContent.replace(/\n/ig,"<br />"); 
 	//keep 150 words to be summary
 	postContent = postContent.substr(0,150);
 	html.push('<div class="head_bg">');

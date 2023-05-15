@@ -5,6 +5,7 @@ caption = "HTML5 FUN BY GSYan";
 //caption , description, icon, demoURL, archiiveURL, blogURL
 //
 menu_items = [ 
+	/*
 	[ "烘焙機"
 	, "HTML5 FUN : Homepage 遊戲式題庫烘焙機"
 	, "editor/assets/icon.png"
@@ -12,7 +13,7 @@ menu_items = [
 	, ""
 	, "https://gsyan888.blogspot.com/2023/05/html5-fun-homepage.html"
 	],
-	
+	*/
 	[ "筆順練習第三版"
 	, "Stroke Parts"
 	, "html5_stroke_parts/assets/icon.png"

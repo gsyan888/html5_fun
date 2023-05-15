@@ -1,10 +1,19 @@
 var editorOptions = {
   sentence: {
-    caption: "造句靈感產生器",
+    caption: "造句靈感產生器+圖片圖隨選器",
 	
     filenames: [
       "https://gsyan888.github.io/html5_fun/html5_sentence/question_set.js"
     ],
+
+    "templates": [{
+        "name": "造句靈感產生器模式: 多組卡片翻牌範例",
+        "path": "https://gsyan888.github.io/html5_fun/html5_sentence/question_set.js"
+      }, {
+        "name": "圖片圖隨選器模式: 單組圖卡抽換範例",
+        "path": "https://gsyan888.github.io/html5_fun/html5_sentence/question_maps-set.js"
+      }
+    ],	
 	
     enableOpenInNewWindow: false,
 	

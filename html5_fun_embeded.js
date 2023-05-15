@@ -2,6 +2,7 @@
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
  * - update 2022.11.06 21:21:00 
+ * - update 2023.05.15 15:06:00
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -180,6 +181,26 @@ loadExternalScript = function(scriptSrc, callback)  {
 };
 //載入的程序
 injection = function() {
+  //讓 play button lost focus : 呼叫 blur(), 以免按空白鍵也觸發
+  var elm = document.getElementById('playButton');
+  if(typeof(elm)!='undefined' && elm!=null) {
+    var btn = elm.getElementsByTagName('button');
+    if(typeof(btn)!='undefined' && btn!=null && btn.length>0) {
+      btn[0].blur();
+    }
+  }
+  //避免短時間內連續執行，有發現重覆執行就暫停 double check (照說 blur() 就有效了)
+  if(typeof(window['injectionEnable']) == 'undefined' || window['injectionEnable']==null) {
+    window['injectionEnable'] = true;
+	window['injectionEnableTimeout'] = setTimeout(function(){delete window['injectionEnable']; console.log('duplication check end.');}, 1000);
+  } else {
+	//清掉前一次的，重新計算時間
+	clearTimeout(injectionEnableTimeout);
+	window['injectionEnableTimeout'] = setTimeout(function(){delete window['injectionEnable']; console.log('duplication check end.');}, 1000);
+	console.log('duplicatly run , wait a moment.');
+	return;
+  }
+  
    //先將捲軸捲到最上方，以免無法進行按下的動作
   window.scrollTo(0,0);
   //

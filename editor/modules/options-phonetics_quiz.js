@@ -8,6 +8,18 @@ var editorOptions = {
       "https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/question-set-1.js"
     ],
 	
+    "templates": [{
+        "name": "使用合成語音",
+        "path": "https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/question-set-2.js"
+      }, {
+        "name": "不用選國字、國字變框",
+        "path": "https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/question-set-3.js"
+      }, {
+        "name": "使用自訂圖片與自訂聲音",
+        "path": "https://gsyan888.github.io/html5_fun/html5_phonetics_quiz/question-set-1.js"
+      }
+    ],
+	
     enableOpenInNewWindow: false,
 	
     options: {

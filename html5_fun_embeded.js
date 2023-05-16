@@ -2,7 +2,7 @@
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
  * - update 2022.11.06 21:21:00 
- * - update 2023.05.15 15:06:00
+ * - update 2023.05.16 22:30:00
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -89,7 +89,11 @@ var moduleScripts = {
   monster: {
     src:"https://gsyan888.github.io/html5_fun/html5_monster/monster.js",
     "name": "大嘴Monster"
-  }
+  },
+  unscramble: {
+    src:"https://gsyan888.github.io/html5_fun/html5_unscramble/unscramble.js",
+    "name": "重組遊戲"
+  }  
 };
 
 var customStyle = null;

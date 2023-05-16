@@ -155,7 +155,7 @@ split_seperator = "~~";
 //
 //
 questionLines = function(){/*--這一行請勿更改--
-h~~a~~p~~p~~y##快樂##images/happy.png
+h~~a~~p~~p~~y##快樂##https://gsyan888.github.io/html5_fun/html5_unscramble/images/happy.png
 a~~n~~g~~r~~y##生氣
 c~~r~~y##哭泣
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

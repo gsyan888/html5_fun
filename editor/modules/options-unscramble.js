@@ -1,18 +1,18 @@
 var editorOptions = {
   unscramble: {
-    caption: "重組遊弃",
+    caption: "重組遊戲",
 	
     "templates": [{
         "name": "英文句子，以空格分單字卡重組",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-1.js"
       }, {
-        "name": "英文單字，以 ~~ 分割為字母重組",
+        "name": "英文單字，以 ~~ 分割為字母卡片重組",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-2.js"
       }, {
-        "name": "中文句子，以空格分割字詞重組",
+        "name": "中文句子，以空格分割字詞為卡片重組",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-3.js"
       }, {
-        "name": "英文單字，以字的長度(一個字)分割為字母重組",
+        "name": "英文單字、以字的長度(一個字)分割為字母卡片重組",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-4.js"
       }
     ],
@@ -29,11 +29,13 @@ var editorOptions = {
 		
       "number_of_questions": [
         "text",
-        "隨機出題時, 由題庫選出幾題來作答 (小於 0 表示使用所有題目)"],
+        "隨機出題時, 由題庫選出幾題來作答",
+		"小於 0 表示使用題庫中的所有題目"],
 
       "card_swap_mode": [
         "text",
-        "字卡交換方式 <br>( 0 :用拖曳的方式換位置,  1 :按卡片交換位置 "],
+        "字卡交換方式",
+		"0 :用拖曳的方式換位置,  1 :按卡片交換位置 "],
 
       "enableSubmitButton": [
         "checkbox",
@@ -101,7 +103,7 @@ var editorOptions = {
       "split_seperator": [
         "text",
         "句子分割符號",
-		"以此符號將題目的句子切割為子字串當重組的字卡<br>(需要不勾選 split_by_length)"],
+		"以此符號將題目的句子切割為子字串當重組的字卡<br>(需要設定為「以切割符號來切割題庫第一欄位」)"],
 
       "questionLines": [
         "textarea",

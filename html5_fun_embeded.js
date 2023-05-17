@@ -41,6 +41,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_card_flip/card_flip.js",
     name:"大家一起來"
   },
+  crossword: {
+    src:"https://gsyan888.github.io/html5_fun/html5_crossword/crossword.js",
+    "name": "填字遊戲"
+  },
   speaking:{
     src:"https://gsyan888.github.io/html5_fun/html5_speaking/speaking.js",
     name:"Speaking"

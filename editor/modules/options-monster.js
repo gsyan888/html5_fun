@@ -3,7 +3,7 @@ var editorOptions = {
     "caption": "詞語大挑戰",
 	
     "templates": [{
-        "name": "三欄式題庫: 題目##正確1~正確2##錯誤1~~錯誤2~~錯誤3",		
+        "name": "三欄式題庫: 題目##正確1~~正確2##錯誤1~~錯誤2~~錯誤3",		
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/monster-q-set.js"
       }
     ],

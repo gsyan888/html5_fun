@@ -275,7 +275,7 @@ menu_items = [
 	, "html5_crossword/assets/icon.png"
 	, "html5_crossword/html5_crossword.html"
 	, "archives/html5_crossword.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2023/05/html5-crossword.html"
 	],
 	
 	[ "圓形計時器"

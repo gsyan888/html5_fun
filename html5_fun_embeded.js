@@ -98,7 +98,7 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_unscramble/unscramble.js",
     "name": "重組遊戲"
   },  
-  math_whiteboard: {
+  "math.whiteboard": {
     src:"https://gsyan888.github.io/html5_fun/html5_math/math.whiteboard.js",
     "name": "數學小白板"
   },

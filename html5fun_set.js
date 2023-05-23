@@ -14,6 +14,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2023/05/html5-fun-homepage.html"
 	],
 	*/
+
+	[ "數學小白板"
+	, "數學小白板，有多種元件可使用"
+	, "html5_math/assets/icon.png"
+	, "https://gsyan888.blogspot.com/2023/05/html5-math-whiteboard.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2023/05/html5-math-whiteboard.html"
+	],
+	
 	[ "筆順練習第三版"
 	, "Stroke Parts"
 	, "html5_stroke_parts/assets/icon.png"

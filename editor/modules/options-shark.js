@@ -33,7 +33,7 @@ var editorOptions = {
         "text",
         "最多顯示幾個選項"],
 
-      "auto_show_options": [
+      "numberKeyPadEnabled": [
         "checkbox",
         "是否用虛擬數字鍵盤輸入答案",
         "勾選:使用虛擬鍵盤 &nbsp;&nbsp; 未勾選:隱藏虛擬鍵盤",

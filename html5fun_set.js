@@ -111,6 +111,14 @@ menu_items = [
 	, ""
 	],
 
+	[ "足球高手"
+	, ""
+	, "html5_football/assets/icon.png"
+	, "html5_football/html5_football.html"
+	, "archives/html5_football.zip"
+	, ""
+	],
+
 	[ "投籃高手"
 	, ""
 	, "html5_basketball/assets/icon.png"

@@ -23,7 +23,7 @@ var editorOptions = {
 
       "optionsTotal": [
         "text",
-        "最多幾個選項(最多5個)"],
+        "最多幾個選項(最多4個)"],
 
       "scoreToAdd": [
         "text",

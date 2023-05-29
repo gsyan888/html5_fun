@@ -33,6 +33,7 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_baseball/baseball.js",
     name:"王牌投手"
   },  
+ 
   bubble:{
     src:"https://gsyan888.github.io/html5_fun/html5_bubble/bubble.js",
     name:"戳泡泡Bubble"
@@ -45,6 +46,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_crossword/crossword.js",
     "name": "填字遊戲"
   },
+  football:{
+    src:"https://gsyan888.github.io/html5_fun/html5_football/football.js",
+    name:"足球高手"
+  }, 
   speaking:{
     src:"https://gsyan888.github.io/html5_fun/html5_speaking/speaking.js",
     name:"Speaking"

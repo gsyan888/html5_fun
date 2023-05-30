@@ -31,9 +31,13 @@ preview_enable = false;
 //欄位分隔符號為兩個井字號(##)
 seperator = '##';
 
+//------------------------------
+//題目的欄位: 1 或 2 (1 為左欄, 2為右欄)
+//------------------------------
+fieldIndexNumberOfQuestion = 1;
 
 //
-//【題目設定】
+// [題目設定]
 //  兩欄式題庫
 //  由眾多題目中，自動產生選項
 //
@@ -52,6 +56,7 @@ questionLines = function(){/*--這一行請勿更改--
 馬##horse
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
+
 
 
 /******************************************************************
@@ -92,6 +97,16 @@ getOneQuestion = function(tools) {
 		okArray,
 		ngArray,
 		questionAndOptions;
+	var fieldIndexNumberOfAnswer = 1; //答案的欄位(由0起算)
+	//修正有問題的欄位序號
+	if(typeof(fieldIndexNumberOfQuestion)=='undefined' || fieldIndexNumberOfQuestion==null || isNaN(fieldIndexNumberOfQuestion) || fieldIndexNumberOfQuestion!=2) {
+		fieldIndexNumberOfQuestion = 0;
+	} else {
+		fieldIndexNumberOfQuestion = 1;
+	}
+	if(fieldIndexNumberOfQuestion==1) {
+		fieldIndexNumberOfAnswer = 0;
+	}	
 	if(typeof(question_lines)!='undefined' && question_lines!=null && question_lines.length>0) {
 		//以亂數取用某一題題目，用完了再重新取用
 		if(typeof questionCurrendIndex == 'undefined' 
@@ -110,9 +125,9 @@ getOneQuestion = function(tools) {
 		var fields = getValidValues(line.split(seperator));
 		if(fields.length>=2) {
 			//題幹
-			question = fields[0];
+			question = fields[fieldIndexNumberOfQuestion];
 			//對的答案
-			okArray = [fields[1]]; //單選的正解
+			okArray = [fields[fieldIndexNumberOfAnswer]]; //單選的正解
 			//錯的答案
 			//利用題庫中的其它題的答案當作錯誤的選項
 			ngArray = [];
@@ -123,7 +138,7 @@ getOneQuestion = function(tools) {
 					line = question_lines[ngRandom[i]];
 					fields = getValidValues(line.split(seperator));
 					if(typeof(fields)!='undefined' && fields!=null && fields.length>1) {
-						ngArray.push(fields[1]);
+						ngArray.push(fields[fieldIndexNumberOfAnswer]);
 						if(ngArray.length>=optionsTotal) {
 							break;
 						}

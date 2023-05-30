@@ -21,6 +21,10 @@ var editorOptions = {
 	
     options: {
 
+      "title": [
+        "text",
+        "上方看板的標題字"],
+
       "optionsTotal": [
         "text",
         "最多幾個選項(最多4個)"],

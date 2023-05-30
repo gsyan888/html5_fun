@@ -20,6 +20,10 @@ var editorOptions = {
     enableOpenInNewWindow: false,
 	
     options: {
+		
+      "title": [
+        "text",
+        "上方看板的標題字"],
 
       "optionsTotal": [
         "text",

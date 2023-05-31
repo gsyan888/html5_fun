@@ -116,7 +116,7 @@ menu_items = [
 	, "html5_football/assets/icon.png"
 	, "html5_football/html5_football.html"
 	, "archives/html5_football.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
 	],
 
 	[ "投籃高手"
@@ -124,7 +124,7 @@ menu_items = [
 	, "html5_basketball/assets/icon.png"
 	, "html5_basketball/html5_basketball.html"
 	, "archives/html5_basketball.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
 	],
 
 	[ "打鬼遊戲"

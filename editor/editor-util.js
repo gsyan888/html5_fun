@@ -250,7 +250,7 @@ update_settingJS = function () {
         } else {
 			
           if (typeof(window[id]) == 'string') {
-            if(elm.value.replace(/\s/g)!='') {  /* 為避免設定值就是空格, 先確定有值才去頭尾空格 */
+            if(elm.value.replace(/\s/g, '')!='') {  /* 為避免設定值就是空格, 先確定有值才去頭尾空格 */
 			  window[id] = elm.value.trim(); /* 字串先去掉前後的空格 */
             } else {
 			  window[id] = elm.value;

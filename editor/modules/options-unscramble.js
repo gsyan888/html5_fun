@@ -6,14 +6,14 @@ var editorOptions = {
         "name": "英文句子，以空格分單字卡重組",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-1.js"
       }, {
+        "name": "英文單字、以字的長度(一個字元)分割為字母卡片重組",
+        "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-4.js"
+      }, {
         "name": "英文單字，以 ~~ 分割為字母卡片重組",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-2.js"
       }, {
         "name": "中文句子，以空格分割字詞為卡片重組",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-3.js"
-      }, {
-        "name": "英文單字、以字的長度(一個字)分割為字母卡片重組",
-        "path": "https://gsyan888.github.io/html5_fun/editor/templates/unscramble-q-set-4.js"
       }
     ],
 	

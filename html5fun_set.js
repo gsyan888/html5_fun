@@ -79,6 +79,14 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
 	],
 	
+	[ "青蛙過河"
+	, "Frog 青蛙過河"
+	, "html5_frog/assets/icon.png"
+	, "html5_frog/html5_frog.html"
+	, "archives/html5_frog.zip"
+	, ""
+	],
+	
 	[ "幾A幾B"
 	, "AB Game 幾A幾B猜謎遊戲"
 	, "html5_ab_game/assets/icon.png"
@@ -87,14 +95,6 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
 	],
 	
-	[ "王牌投手"
-	, ""
-	, "html5_baseball/assets/icon.png"
-	, "html5_baseball/html5_baseball.html"
-	, "archives/html5_baseball.zip"
-	, ""
-	],
-
 	[ "足球高手"
 	, ""
 	, "html5_football/assets/icon.png"
@@ -109,6 +109,14 @@ menu_items = [
 	, "html5_basketball/html5_basketball.html"
 	, "archives/html5_basketball.zip"
 	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
+	],
+
+	[ "王牌投手"
+	, ""
+	, "html5_baseball/assets/icon.png"
+	, "html5_baseball/html5_baseball.html"
+	, "archives/html5_baseball.zip"
+	, ""
 	],
 
 	[ "填字遊戲"

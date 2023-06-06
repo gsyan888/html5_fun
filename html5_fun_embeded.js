@@ -50,6 +50,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_football/football.js",
     name:"足球高手"
   }, 
+  frog:{
+    src:"https://gsyan888.github.io/html5_fun/html5_frog/frog.js",
+    name:"青蛙過河"
+  }, 
   speaking:{
     src:"https://gsyan888.github.io/html5_fun/html5_speaking/speaking.js",
     name:"Speaking"

@@ -1,0 +1,55 @@
+menu_title = "四上選單";
+menu_items = new Array(
+
+  "康軒四上01形近字,data/k07-01-1.js"
+, "康軒四上01多音字,data/k07-01-3.js"
+, "康軒四上02形近字,data/k07-02-1.js"
+, "康軒四上02多音字,data/k07-02-3.js"
+, "康軒四上03形近字,data/k07-03-1.js"
+, "康軒四上04形近字,data/k07-04-1.js"
+, "康軒四上04同音字,data/k07-04-2.js"
+, "康軒四上04多音字,data/k07-04-3.js"
+, "康軒四上05形近字,data/k07-05-1.js"
+, "康軒四上05多音字,data/k07-05-3.js"
+, "康軒四上06形近字,data/k07-06-1.js"
+, "康軒四上06多音字,data/k07-06-3.js"
+, "康軒四上07形近字,data/k07-07-1.js"
+, "康軒四上07多音字,data/k07-07-3.js"
+, "康軒四上08形近字,data/k07-08-1.js"
+, "康軒四上08多音字,data/k07-08-3.js"
+, "康軒四上09形近字,data/k07-09-1.js"
+, "康軒四上10形近字,data/k07-10-1.js"
+, "康軒四上10多音字,data/k07-10-3.js"
+, "康軒四上11形近字,data/k07-11-1.js"
+, "康軒四上11多音字,data/k07-11-3.js"
+, "康軒四上12形近字,data/k07-12-1.js"
+, "康軒四上12多音字,data/k07-12-3.js"
+, "康軒四上13形近字,data/k07-13-1.js"
+, "康軒四上13多音字,data/k07-13-3.js"
+, "康軒四上14形近字,data/k07-14-1.js"
+, "康軒四上14多音字,data/k07-14-3.js"
+
+, "九九乘法,data/9x9.js"
+, "除法入門級,data/9x9-divide.js"  
+
+, "分數加法入門級,data/fraction_add.js"
+, "分數加法高手級,data/fraction_add2.js"
+, "分數減法,data/fraction_sub.js"
+, "分數乘法入門級,data/fraction_multiplication-1.js"
+
+, "量詞找名詞生手級,data/b01-1.js"
+, "量詞找名詞入門級,data/b01-2.js"
+, "量詞找名詞高手級,data/b01-3.js"
+, "名詞找量詞生手級,data/b02-1.js"
+, "名詞找量詞入門級,data/b02-2.js"
+, "名詞找量詞高手級,data/b02-3.js"
+
+, "範例1,samples/sample-1.js"
+, "範例2-1,samples/sample-2-1.js"
+, "範例2-2,samples/sample-2-2.js"
+, "範例2-3,samples/sample-2-3.js"
+, "範例3,samples/sample-3.js"
+, "範例4,samples/sample-4.js"
+
+
+);

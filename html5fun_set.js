@@ -84,7 +84,7 @@ menu_items = [
 	, "html5_frog/assets/icon.png"
 	, "html5_frog/html5_frog.html"
 	, "archives/html5_frog.zip"
-	, ""
+	, "https://gsyan888.blogspot.com/2023/06/html5-frog.html"
 	],
 	
 	[ "幾A幾B"

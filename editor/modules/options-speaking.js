@@ -6,6 +6,24 @@ var editorOptions = {
       "https://gsyan888.github.io/html5_fun/html5_speaking/questions-set-1.js"
     ],
 	
+    "templates": [{
+        "name": "範例 1 : 英文單字",
+        "path": "https://gsyan888.github.io/html5_fun/html5_speaking/questions-set-1.js"
+      }, {
+        "name": "範例 2 : 英文句子",
+        "path": "https://gsyan888.github.io/html5_fun/html5_speaking/questions-set-2.js"
+      }, {
+        "name": "範例 3 : 中文",
+        "path": "https://gsyan888.github.io/html5_fun/html5_speaking/questions-set-3.js"
+      }, {
+        "name": "範例 4 : 日文",
+        "path": "https://gsyan888.github.io/html5_fun/html5_speaking/questions-set-4.js"
+      }, {
+        "name": "範例 5 : 國字+注音",
+        "path": "https://gsyan888.github.io/html5_fun/html5_speaking/questions-set-5.js"
+      }
+    ],
+	
     enableOpenInNewWindow: true,
 	
     options: {

@@ -43,7 +43,8 @@ var editorOptions = {
 
       "audioAutoPlayLoop": [
         "text",
-        "語音自動播放的次數(大於1才會重播)"],
+        "語音自動播放的次數",
+		"(大於1才會重播)"],
 
       "audioAutoPlayDelay": [
         "text",

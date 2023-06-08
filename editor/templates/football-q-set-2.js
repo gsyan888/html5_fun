@@ -37,9 +37,9 @@ preview_enable = false;
 seperator = '##';
 
 //------------------------------
-//題目的欄位: 1 或 2 (1 為左欄, 2為右欄)
+//題目的欄位: 0 或 1 (0 為左欄, 1為右欄)
 //------------------------------
-fieldIndexNumberOfQuestion = 1;
+fieldIndexNumberOfQuestion = 0;
 
 //
 // [題目設定]
@@ -104,7 +104,7 @@ getOneQuestion = function(tools) {
 		questionAndOptions;
 	var fieldIndexNumberOfAnswer = 1; //答案的欄位(由0起算)
 	//修正有問題的欄位序號
-	if(typeof(fieldIndexNumberOfQuestion)=='undefined' || fieldIndexNumberOfQuestion==null || isNaN(fieldIndexNumberOfQuestion) || fieldIndexNumberOfQuestion!=2) {
+	if(typeof(fieldIndexNumberOfQuestion)=='undefined' || fieldIndexNumberOfQuestion==null || isNaN(fieldIndexNumberOfQuestion) || fieldIndexNumberOfQuestion!=1) {
 		fieldIndexNumberOfQuestion = 0;
 	} else {
 		fieldIndexNumberOfQuestion = 1;

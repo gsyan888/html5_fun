@@ -19,7 +19,7 @@ numberOfOptionsPerRow = 2;
 auto_show_options = true;
 
 //------------------------------
-//每回合最多抽幾題題目
+//每回合最多抽幾題題目(題庫題目總數大於此數時才有作用)
 //------------------------------
 numberOfQuestionsPerRound = 10;
 

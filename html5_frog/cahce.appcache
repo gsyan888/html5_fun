@@ -3,7 +3,7 @@ CACHE MANIFEST
 #----------------------------------------------
 # 下面這一行不要移除，有修改資料，記得把時間改一下
 #----------------------------------------------
-# Updated on: 2023.06.09 00:40:00
+# Updated on: 2023.06.09 19:11:00
 #
 
 #----------------------------------------------
@@ -76,6 +76,7 @@ assets/icon-arrow.png
 assets/icon-frog.png
 assets/icon-lotus.png
 assets/icon-splat.png
+assets/icon-hint.png
 
 
 NETWORK:

@@ -28,7 +28,7 @@ var editorOptions = {
       "scoreToMinus": [
         "text",
         "答錯時扣幾分"],
-
+/*
       "theNumberOfQuestions": [
         "text",
         "總共出多少題(可不設定)",
@@ -38,7 +38,7 @@ var editorOptions = {
         "text",
         "青蛙的圖案路徑(可不設定)",
 		"未設定時，使用預設的圖案"],
-		
+*/		
       "questionLines": [
         "textarea",
         "題庫"]

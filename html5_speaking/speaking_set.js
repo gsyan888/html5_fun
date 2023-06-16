@@ -95,6 +95,7 @@ bopomofoFont.load().then(
 //--------------------------------------------------------------
 replace_rules_list = [
  "((too|two|to)|too|two|to)"
+,"(minus|-)"
  
 ,"((meters|meter)|m)"
 ,"((kilometers|kilometer)|km)"

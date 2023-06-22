@@ -237,7 +237,7 @@ injection = function() {
   //The wrapper
   if(!document.getElementById(id.HTML5FunWrapper)) {
 	HTML5FunWrapper = document.createElement("div");
-	var style = 'background:'+wrapperBackground+';position:fixed;height:100%;width:100%;left: 0;top: 0;z-index:10000;visibility:visible;'+wrapperStyle;
+	var style = 'background:'+wrapperBackground+';position:fixed;height:100%;width:100%;left: 0;top: 0;z-index:99999999;visibility:visible;'+wrapperStyle;
 	HTML5FunWrapper.id = id.HTML5FunWrapper;
 	HTML5FunWrapper.setAttribute("style", style);
 	//HTML5FunWrapper.style.overflow = 'hidden';
@@ -321,7 +321,7 @@ gameStart = function() {
 	//將遊戲放到最上層
 	HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
 	if(typeof(HTML5FunWrapper)!='undefined' && HTML5FunWrapper!=null) {
-	  HTML5FunWrapper.style['z-index'] = 10000;
+	  HTML5FunWrapper.style['z-index'] = 99999999;
 	  HTML5FunWrapper.style.visibility = "visible";
 	}
   } else {	  

@@ -75,7 +75,7 @@ getValidValues = function(data) {
 };
 //轉換題庫為陣列，並檢查內容
 question_lines = [];
-if(typeof(questionLines)!='undefined' && questionLines!=null) {
+if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
 	//一行行分解
 	if(typeof(questionLines)=='string') {
 		if(typeof(decodeHTML)=='function') {

@@ -69,7 +69,7 @@ getValidValues = function (data) {
 };
 //轉換題庫為陣列，並檢查內容
 question_lines = [];
-if (typeof(questionLines) != 'undefined' && questionLines != null) {
+if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
   var lines;
   //一行行分解
   if (typeof(questionLines) == 'string') {
@@ -89,7 +89,7 @@ if (typeof(questionLines) != 'undefined' && questionLines != null) {
     var fields = getValidValues(line.split(seperator));
     var question = [];
     var ngArray = [];
-    if (fields.length >= 4 && !isNaN(fields[1])) {
+    if (!(fields.length < 4 || isNaN(fields[1]))) {
       //題幹
       question.push(fields[0]);
       //對的答案

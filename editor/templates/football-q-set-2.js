@@ -79,7 +79,7 @@ getValidValues = function(data) {
 }; 
 //轉換題庫為陣列，並檢查內容
 question_lines = [];
-if(typeof(questionLines)!='undefined' && questionLines!=null) {
+if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
 	//一行行分解
 	if(typeof(questionLines)=='string') {
 		if(typeof(decodeHTML)=='function') {
@@ -112,7 +112,7 @@ getOneQuestion = function(tools) {
 	if(fieldIndexNumberOfQuestion==1) {
 		fieldIndexNumberOfAnswer = 0;
 	}	
-	if(typeof(question_lines)!='undefined' && question_lines!=null && question_lines.length>0) {
+	if(!(typeof(questionLines)=='undefined' || questionLines==null || question_lines.length<1)) {
 		//以亂數取用某一題題目，用完了再重新取用
 		if(typeof questionCurrendIndex == 'undefined' 
 			|| questionCurrendIndex == null
@@ -142,7 +142,7 @@ getOneQuestion = function(tools) {
 				if(ngRandom[i]!=qIndex) {
 					line = question_lines[ngRandom[i]];
 					fields = getValidValues(line.split(seperator));
-					if(typeof(fields)!='undefined' && fields!=null && fields.length>1) {
+					if(!(typeof(fields)=='undefined' || fields==null || fields.length<=1)) {
 						ngArray.push(fields[fieldIndexNumberOfAnswer]);
 						if(ngArray.length>=optionsTotal) {
 							break;

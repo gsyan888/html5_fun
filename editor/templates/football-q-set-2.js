@@ -1,5 +1,5 @@
 ﻿//=======================================================
-// HTML5 FUN 題庫設定檔 football (兩欄式題庫)
+// HTML5 FUN 題庫設定檔 football,basketball (兩欄式題庫)
 //=======================================================
 
 ///基本設定
@@ -37,9 +37,14 @@ preview_enable = false;
 seperator = '##';
 
 //------------------------------
-//題目的欄位: 0 或 1 (0 為左欄, 1為右欄)
+//多個選項的分隔符號(兩欄式題庫用不到，但還是留著)
 //------------------------------
-fieldIndexNumberOfQuestion = 0;
+seperator2 = '~~';
+
+//------------------------------
+//題幹的欄位: 0 或 1 (0 為左欄, 1為右欄)
+//------------------------------
+fieldIndexNumberOfQuestion = 1;
 
 //
 // [題目設定]
@@ -79,7 +84,7 @@ getValidValues = function(data) {
 }; 
 //轉換題庫為陣列，並檢查內容
 question_lines = [];
-if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
+if(typeof(questionLines)!='undefined' && questionLines!=null) {
 	//一行行分解
 	if(typeof(questionLines)=='string') {
 		if(typeof(decodeHTML)=='function') {
@@ -94,75 +99,17 @@ if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
 	delete questionCurrendIndex;
 	delete questionIndexRandom;
 }
+//題幹Q、正解O、錯X的選項在題庫中的排列順序
+question_format = 'QOX';  //題幹,對的,錯的
+if(typeof(fieldIndexNumberOfQuestion)=='undefined' || fieldIndexNumberOfQuestion==null || isNaN(fieldIndexNumberOfQuestion) || fieldIndexNumberOfQuestion!=1) {
+	fieldIndexNumberOfQuestion = 0;
+	question_format = 'QOX';  //題幹,對的,錯的
+} else {
+	fieldIndexNumberOfQuestion = 1;
+	question_format = 'OQX';  //對的,題幹,錯的
+}
+
 //抽取一題，並製作成遊戲需要的格式
 getOneQuestion = function(tools) {
-	var question,
-		answer,
-		answerAt,
-		okArray,
-		ngArray,
-		questionAndOptions;
-	var fieldIndexNumberOfAnswer = 1; //答案的欄位(由0起算)
-	//修正有問題的欄位序號
-	if(typeof(fieldIndexNumberOfQuestion)=='undefined' || fieldIndexNumberOfQuestion==null || isNaN(fieldIndexNumberOfQuestion) || fieldIndexNumberOfQuestion!=1) {
-		fieldIndexNumberOfQuestion = 0;
-	} else {
-		fieldIndexNumberOfQuestion = 1;
-	}
-	if(fieldIndexNumberOfQuestion==1) {
-		fieldIndexNumberOfAnswer = 0;
-	}	
-	if(!(typeof(questionLines)=='undefined' || questionLines==null || question_lines.length<1)) {
-		//以亂數取用某一題題目，用完了再重新取用
-		if(typeof questionCurrendIndex == 'undefined' 
-			|| questionCurrendIndex == null
-			|| typeof questionIndexRandom == 'undefined'
-			|| questionIndexRandom == null
-			|| questionCurrendIndex >= question_lines.length	) {
-			
-			questionIndexRandom = tools.makeRandomIndex(0, question_lines.length-1);
-			questionCurrendIndex = 0;
-		}
-		//以亂數取得一筆題庫當題幹及正確選項
-		var qIndex = questionIndexRandom[questionCurrendIndex++];
-		var line = question_lines[qIndex];
-		//以欄位分隔符號將各欄分開
-		var fields = getValidValues(line.split(seperator));
-		if(fields.length>=2) {
-			//題幹
-			question = fields[fieldIndexNumberOfQuestion];
-			//對的答案
-			okArray = [fields[fieldIndexNumberOfAnswer]]; //單選的正解
-			//錯的答案
-			//利用題庫中的其它題的答案當作錯誤的選項
-			ngArray = [];
-			var ngRandom = tools.makeRandomIndex(0, question_lines.length-1);
-			for(var i=0; i<ngRandom.length; i++) {
-				//不是正解那題就拿來當錯誤的選項
-				if(ngRandom[i]!=qIndex) {
-					line = question_lines[ngRandom[i]];
-					fields = getValidValues(line.split(seperator));
-					if(!(typeof(fields)=='undefined' || fields==null || fields.length<=1)) {
-						ngArray.push(fields[fieldIndexNumberOfAnswer]);
-						if(ngArray.length>=optionsTotal) {
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-	//重組成物件,準備回傳
-	if(typeof(question)!='undefined' 
-		&& typeof(okArray)!='undefined' 
-		&& typeof(ngArray)!='undefined'
-		&& question!=null && okArray!=null && ngArray!=null) {
-			
-		questionAndOptions = {};
-		questionAndOptions.question = question;		//題幹
-		questionAndOptions.optionsOK = okArray;		//答案
-		questionAndOptions.optionsNG = ngArray;		//錯的選項		
-		//console.log(questionAndOptions);
-	}
-	return questionAndOptions;
+	return tools.getOneQuestion(question_lines, [seperator, seperator2], question_format);
 };

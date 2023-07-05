@@ -6,7 +6,7 @@ var editorOptions = {
         "name": "出題光碟格式(單選題): 題幹##解答##選項1##選項2##選項3##選項4",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/frog-q-set-1.js"
       }, {
-        "name": "兩欄式題庫(單選題), 自動產生錯的選項): 題目##答案",
+        "name": "兩欄式題庫(單選題, 自動產生錯的選項): 題目##答案",
         "path": "https://gsyan888.github.io/html5_fun/editor/templates/frog-q-set-2.js"
       }, {
         "name": "三欄式題庫(多選題): 題目##正確1~~正確2##錯誤1~~錯誤2~~錯誤3",

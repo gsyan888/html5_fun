@@ -304,10 +304,10 @@ gameStart = function() {
 	window.scrollTo(0,0);
 	//禁用捲軸的功能
 	window.onscroll = function () { window.scrollTo(0, 0); };
-	//執行 xxx.start
-	window[moduleName].start();
 	//讓遊戲全畫面
 	document.body.style.overflow = 'hidden';
+	//執行 xxx.start
+	window[moduleName].start();
 	//
 	//右上角加一個關閉的按鈕
 	HTML5FunEmbeded = document.getElementById("HTML5FunEmbeded");

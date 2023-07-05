@@ -39,6 +39,23 @@ var editorOptions = {
         "青蛙的圖案路徑(可不設定)",
 		"未設定時，使用預設的圖案"],
 
+      "tts_language": [
+        "text",
+        "TTS語音合成的語言代碼",
+        "(例: 英文 <span class=\"btn\" onclick=\"setThisValue(this);\">en-US</span>  、中文 <span class=\"btn\" onclick=\"setThisValue(this);\">zh-TW</span>  、日文 <span class=\"btn\" onclick=\"setThisValue(this);\">ja-JP</span>  、韓文 <span class=\"btn\" onclick=\"setThisValue(this);\">ko-KR</span> <a href=\"https: //cloud.google.com/speech-to-text/docs/languages\" target=\"_blank\">查代碼</a>"
+      ],
+
+      "tts_speed": [
+        "text",
+        "語音的速度",
+		"0 ~ 1 (可用小數)"],
+		
+      "question_text_speaking_enabled": [
+        "checkbox",
+        "題幹是文字題時，是否用 TTS 念出文字",
+        "勾選:念出文字 &nbsp;&nbsp; 未勾選:不使用此功能",
+        "念出題目的文字"],
+
       "questionLines": [
         "textarea",
         "題庫"]

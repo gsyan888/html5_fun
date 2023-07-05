@@ -13,6 +13,24 @@ menuSettingFilename = 'frog_menu_set.js';
 optionsTotal = 5;
 
 //------------------------------
+//Google TTS 文字轉語音的設定
+//語言代碼:  'en-US' 'zh-TW'
+//------------------------------
+tts_language = 'en-US';
+
+//語音的速度 0 ~ 1 (可用小數)
+tts_speed = 0.75;  
+
+//組合後的 TTS 基本網址(不要修改)
+tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=${tts_language}&client=tw-ob&ttsspeed=${tts_speed}&q=';
+
+//------------------------------
+//題幹是文字題時，是否用 TTS 念出文字
+//  true :念出文字   false :不使用此功能
+//------------------------------
+question_text_speaking_enabled = false;
+
+//------------------------------
 //答對時加幾分
 //------------------------------
 scoreToAdd = 10;		

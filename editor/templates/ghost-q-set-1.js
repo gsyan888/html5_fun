@@ -89,36 +89,37 @@ getValidValues = function (data) {
 };
 //轉換題庫為陣列，並檢查內容
 question_lines = [];
+
 if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
-  var lines;
+  var qlines;
   //一行行分解
   if (typeof(questionLines) == 'string') {
     if (typeof(decodeHTML) == 'function') {
       questionLines = decodeHTML(questionLines); //試著對文字解碼
     }
-    lines = questionLines.replace(/\r/g, '\n').split(/\n+/);
+    qlines = questionLines.replace(/\r/g, '\n').split(/\n+/);
   } else {
-    lines = questionLines.slice();
+    qlines = questionLines.slice();
   }
-  lines = getValidValues(lines);
+  qlines = getValidValues(qlines);
   question_lines = [];
   //將出題光碟格式轉為三欄式題庫(題目##答案##錯1~~錯2~~錯3)
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
+  for (var lineIndex = 0; lineIndex < qlines.length; lineIndex++) {
+    var qline = qlines[lineIndex];
     //以欄位分隔符號將各欄分開
-    var fields = getValidValues(line.split(seperator));
+    var fields = getValidValues(qline.split(seperator));
     var question = [];
     var ngArray = [];
-    if (fields.length >= 4 && !isNaN(fields[1])) {
+    if (!(fields.length < 4 || isNaN(fields[1]))) {
       //題幹
       question.push(fields[0]);
       //對的答案
       answerAt = 1 + Number(fields[1]);
       question.push(fields[answerAt]);
       //錯的選項
-      for (var n = 2; n < fields.length; n++) {
-        if (n !== answerAt) {
-          ngArray.push(fields[n]);
+      for (var fieldIndex = 2; fieldIndex < fields.length; fieldIndex++) {
+        if (fieldIndex !== answerAt) {
+          ngArray.push(fields[fieldIndex]);
         }
       }
       question.push(ngArray.join(seperator2));
@@ -130,6 +131,7 @@ if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
   delete questionIndexRandom;
   //console.log(question_lines);
 }
+
 //抽取一題，並製作成遊戲需要的格式(PK系列使用)
 getOneQuestion = function (tools) {
   //三欄式題庫使用 pk 系列內建的函數來隨選題目

@@ -122,6 +122,8 @@ convertToLines = function (id) {
 
             if (/title\s*=\s*\"[^\"]+\.mp3\"/i.test(p1)) {
               replacement = p1.match(/title\s*=\s*\"([^\"]+\.mp3)\"/i)[1];
+            } else if (/title\s*=\s*\"[^\"]+\.tts\"/i.test(p1)) {
+              replacement = p1.match(/title\s*=\s*\"([^\"]+\.tts)\"/i)[1];
             } else if (/title\s*=\s*\"data\:audio\/mpeg\;base64[^\"]+\"/i.test(p1)) {
               replacement = p1.match(/title\s*=\s*\"(data\:audio\/mpeg\;base64[^\"]+)\"/i)[1];
             } else if (match = p1.match(/title\s*=\s*\"id-(\d+)\"/i)) {
@@ -468,7 +470,7 @@ replaceWithAudioTag = function (txt) {
   // /(\s|^\>)?(([^\s|\>]+\.mp3)|((https\:\/\/voca\.ro|https\:\/\/vocaroo\.com)\/\w{12}))/i
    */
 
-  var rePattern = '(\\s|^\\>)?(([^\\s|\\>]+\\.mp3)|((https\\:\\/\\/voca\\.ro|https\\:\\/\\/vocaroo\\.com)\\/\\w{12}))';
+  var rePattern = '(\\s|^\\>)?(([^\\s|\\>]+\\.mp3)|([^\\s|\\>]+\\.tts)|((https\\:\\/\\/voca\\.ro|https\\:\\/\\/vocaroo\\.com)\\/\\w{12}))';
 
   var imgTagFound = false;
 
@@ -478,8 +480,10 @@ replaceWithAudioTag = function (txt) {
 
     if (/title\s*=\s*\"[^\"]+\.mp3/i.test(p2)) { /* 已加過音檔者，不能再加 */
       return p0;
+    } else if (/title\s*=\s*\"[^\"]+\.tts/i.test(p2)) { /* 已加過音檔者，不能再加 */
+      return p0;
     } else {
-      var url = /\.mp3/i.test(p2) ? p2 : vocarooMp3Base + (p2.substr(p2.lastIndexOf('/')) + '?my.mp3');
+      var url = /\.mp3|\.tts/i.test(p2) ? p2 : vocarooMp3Base + (p2.substr(p2.lastIndexOf('/')) + '?my.mp3');
       return '<img src="' + iconMicRed + '" title="' + url + '">';
     }
   });

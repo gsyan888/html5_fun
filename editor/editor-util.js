@@ -217,7 +217,11 @@ update_settingJS = function () {
   var settingJS = document.getElementById('settingJS');
 
   if (typeof(settingJS) != 'undefined') {
-
+    /* 重置顯示原始碼的三個按鈕上的文字, 隱藏原始碼 */
+    if(typeof(labelText)!='undefined' && labelText!=null && typeof(labelTextResetAndHideSourceCode)=='function') {
+      labelTextResetAndHideSourceCode();
+    }
+    
     for (var i = 0; i < varNameAndIdList.length; i++) {
 
       var valueString = '';
@@ -761,7 +765,7 @@ varInit = function() {
           option = window[id]? 'checked' : '';
 		  inputLabel = optionValue.length>3 ? optionValue[3] : '';
         } else if(type=='text') {
-          option = 'size="'+(isNaN(value)? (value.length*1.5>30? 30: Math.round(value.length*1.5)) : 5)+'"';
+          option = 'size="'+(isNaN(value)? (value.length*1.5>30? 30: Math.round(value.length*1.5)) : 10)+'"';
         }
         counter++;
 		if (type=='textarea') {

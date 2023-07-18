@@ -66,8 +66,16 @@ questionLines = function(){/*--這一行請勿更改--
 //去掉空的
 getValidValues = function(data) {
 	var values = [];
+	var rePattern = '\\s';
+	if(typeof(seperator)=='string') {
+		rePattern += '|'+seperator;
+	}
+	if(typeof(seperator2)=='string') {
+		rePattern += '|'+seperator2;
+	}
+	var reObj = new RegExp(rePattern, 'g');
 	for(var i=0; i<data.length; i++) {
-		if((data[i].replace(/\s/g, ''))!='') {
+		if((data[i].replace(reObj, ''))!='') {
 			values.push(data[i].trim());
 		}
 	}

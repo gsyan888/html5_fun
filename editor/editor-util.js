@@ -707,9 +707,14 @@ setThisValue = function(elm) {
 };
 
 /* 其它選項按鈕的切換 */
-showOtherOptions = function(btn) {
-  document.getElementById('otherOptions').classList.toggle('hidden');
-  if(/設定/.test(btn.textContent)) {
+showOtherOptions = function(btn, isHidden) {
+  if(typeof(isHidden)=='boolean') {
+    document.getElementById('otherOptions').classList.toggle('hidden', isHidden);
+  } else {
+    isHidden = document.getElementById('otherOptions').classList.toggle('hidden');
+  }
+  /* if(/設定/.test(btn.textContent)) { */
+  if(!isHidden) {
     btn.textContent = '按這裡收合其它選項';
     btn.style['background-color'] = '#ffcc66';
   } else {

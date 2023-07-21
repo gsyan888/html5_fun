@@ -390,9 +390,15 @@ exportJsFile = function () {
   var filename = 'questions-set-' + dateStr + '.js';
 
   /* 去掉 settingJS questionLines 以後的尾巴 */
+  /*
   var qRe = new RegExp(/(\*--這一行請勿更改--\"\.length\+1,-9\);\n)(.*)/sm)
   var exportString = decodeHTML(document.getElementById('settingJS').innerHTML).replace(qRe, '$1\n\n');
-
+  */
+  /* 去掉網站中才需要的解碼函數 */
+  var footerKeyStr = '//\n//\n//\n//=======================================================\n//以下為執行程式,不需要修改\n';
+  var footerRe = new RegExp('('+escapeRegExpString(decodeHTML(footerKeyStr))+')(.*)', 'sm');
+  var exportString = decodeHTML(document.getElementById('settingJS').innerHTML).replace(footerRe, '');
+  
   /* 在設定檔的最前面加上匯出時間 */
   exportString = '//\n//匯出時間 : ' + dateNow + '\n//\n' + exportString;
 
@@ -834,6 +840,13 @@ callbackAfterClosed = function() {
 };
 
 /*
+將 RegExp 中的保留符號先加上反斜線
+ */
+escapeRegExpString = function (str) {
+  return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
+
+/*
  附加到 setttingJS 後面的函數
  主要是用來將 innerHTML 解碼為一般的字元
  檢查是否要修改 meata 的 referrer 為 no-referrer
@@ -852,8 +865,8 @@ decodeHTML = function(html) {
 };
 //將指定清單中的變都先進行 HTML 解碼(文字型態的才需要)
 var decodeList = ['questionLines', 'topTitle', 'helpDialogCaption', 'helpDialogDescription', 'helpDialogButtonCaption', 'gameMode_1_Caption', 'gameMode_2_Caption', 'gameMode_3_Caption'];
-for(var i=0; i<decodeList.length; i++) {
-  var varName = decodeList[i];
+for(var nIndex=0; nIndex<decodeList.length; nIndex++) {
+  var varName = decodeList[nIndex];
   if(typeof(window[varName])=='string') {
     window[varName] = decodeHTML(window[varName]);
   }
@@ -863,9 +876,9 @@ for(var i=0; i<decodeList.length; i++) {
 *\/
 var metaReferrer = null;
 var meta = document.getElementsByTagName('meta');
-for(var i=0; i<meta.length; i++) { 
-  if(meta[i].name=="referrer") {
-    metaReferrer = meta[i];
+for(var nIndex=0; nIndex<meta.length; nIndex++) { 
+  if(meta[nIndex].name=="referrer") {
+    metaReferrer = meta[nIndex];
     break;
   };
 }

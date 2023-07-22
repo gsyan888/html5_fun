@@ -44,7 +44,7 @@ seperator2 = '~~';
 //------------------------------
 //題幹的欄位: 0 或 1 (0 為左欄, 1為右欄)
 //------------------------------
-fieldIndexNumberOfQuestion = 1;
+fieldIndexNumberOfQuestion = 0;
 
 //
 // [題目設定]

@@ -1,30 +1,25 @@
 ﻿//=======================================================
-// HTML5 FUN 題庫設定檔 football,basketball (兩欄式題庫)
+// HTML5 FUN 題庫設定檔 baseball 王牌投手 (三欄式題庫)
 //=======================================================
 
-///基本設定
+//基本設定
 //------------------------------
-//上方看板的標題字
+//共有幾個選項
 //------------------------------
-title = '足球高手';
+optionsTotal = 9;
 
 //------------------------------
-//共有幾個選項(足球高手最多4個, 籃球高手最多5個)
+//一列有幾個選項(pk, 王牌投手用)
 //------------------------------
-optionsTotal = 4;
+optionColTotal = 3;
 
 //------------------------------
-//答對時加幾分
+//開始比賽前, 說明對話框的說明文字
 //------------------------------
-scoreToAdd = 10;		
+helpText = "請找出正確的答案。";
 
 //------------------------------
-//答錯時扣幾分
-//------------------------------
-scoreToMinus = -5;	
-
-//------------------------------
-//是否預覽題目(僅適用於同音字,多音字或形近字)
+//是否預覽題目(適用於投籃高手同音字,多音字或形近字)
 //------------------------------
 preview_enable = false;
 
@@ -37,36 +32,27 @@ preview_enable = false;
 seperator = '##';
 
 //------------------------------
-//多個選項的分隔符號(兩欄式題庫用不到，但還是留著)
+//多個選項的分隔符號
 //------------------------------
 seperator2 = '~~';
 
-//------------------------------
-//題幹的欄位: 0 或 1 (0 為左欄, 1為右欄)
-//------------------------------
-fieldIndexNumberOfQuestion = 0;
-
 //
-// [題目設定]
-//  兩欄式題庫
-//  由眾多題目中，自動產生選項
-//
+//【題目設定】
+//  
 //  一行一題, 
-//  欄位左起
-//    第一欄為題幹
-//    第二欄為答案
+//  三欄式題庫，每一題以欄位分隔符號(##)分隔為三欄
+//    [例] 題幹##正確選項##錯誤選項
+//
+//  正確選項及錯誤選項可再利用選項分隔符號(~~)分隔多個
+//    [例] 題幹##正確1~~正確2##錯誤1~~錯誤2~~錯誤3
+//
 //
 questionLines = function(){/*--這一行請勿更改--
 
-小狗##dog
-杯子##cup
-帽子##hat
-貓咪##cat
-牛##cow
-馬##horse
+他的惡作劇，讓大家(　)。##很生氣~~很討厭~~受不了~~發火##開心~~佩服~~喜歡~~喜愛~~感動
+大自然的優美景色，叫人(　)。##開心~~驚訝~~喜歡~~喜愛~~感動~~感覺舒暢##臉色變青~~發抖~~手腳發軟~~昏倒~~尖叫
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
-
 
 
 /******************************************************************
@@ -89,10 +75,10 @@ getValidValues = function(data) {
 		}
 	}
 	return values;
-}; 
+};
 //轉換題庫為陣列，並檢查內容
 question_lines = [];
-if(typeof(questionLines)!='undefined' && questionLines!=null) {
+if(!(typeof(questionLines)=='undefined' || questionLines==null)) {
 	//一行行分解
 	if(typeof(questionLines)=='string') {
 		if(typeof(decodeHTML)=='function') {
@@ -105,19 +91,11 @@ if(typeof(questionLines)!='undefined' && questionLines!=null) {
 	}
 	//初始亂數取題的變數
 	delete questionCurrendIndex;
-	delete questionIndexRandom;
+	delete questionIndexRandom;		
 }
-//題幹Q、正解O、錯X的選項在題庫中的排列順序
-question_format = 'QOX';  //題幹,對的,錯的
-if(typeof(fieldIndexNumberOfQuestion)=='undefined' || fieldIndexNumberOfQuestion==null || isNaN(fieldIndexNumberOfQuestion) || fieldIndexNumberOfQuestion!=1) {
-	fieldIndexNumberOfQuestion = 0;
-	question_format = 'QOX';  //題幹,對的,錯的
-} else {
-	fieldIndexNumberOfQuestion = 1;
-	question_format = 'OQX';  //對的,題幹,錯的
-}
-
 //抽取一題，並製作成遊戲需要的格式
 getOneQuestion = function(tools) {
-	return tools.getOneQuestion(question_lines, [seperator, seperator2], question_format);
+	//三欄式題庫使用 pk 系列內建的函數來隨選題目
+	return tools.getOneQuestion(question_lines, [seperator, seperator2]);
 };
+

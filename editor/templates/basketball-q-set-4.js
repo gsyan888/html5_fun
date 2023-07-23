@@ -1,17 +1,17 @@
 ﻿//=======================================================
-// HTML5 FUN 題庫設定檔 football,basketball (兩欄式題庫)
+// HTML5 FUN 題庫設定檔 football,basketball (國語同音字、多音字及形近字)
 //=======================================================
 
-///基本設定
+//基本設定
 //------------------------------
 //上方看板的標題字
 //------------------------------
-title = '足球高手';
+title = '投籃高手';
 
 //------------------------------
 //共有幾個選項(足球高手最多4個, 籃球高手最多5個)
 //------------------------------
-optionsTotal = 4;
+optionsTotal = 5;
 
 //------------------------------
 //答對時加幾分
@@ -26,7 +26,8 @@ scoreToMinus = -5;
 //------------------------------
 //是否預覽題目(僅適用於同音字,多音字或形近字)
 //------------------------------
-preview_enable = false;
+preview_enable = true;
+
 
 //
 //---------------------------------------------------
@@ -36,37 +37,20 @@ preview_enable = false;
 //欄位分隔符號為兩個井字號(##)
 seperator = '##';
 
-//------------------------------
-//多個選項的分隔符號(兩欄式題庫用不到，但還是留著)
-//------------------------------
-seperator2 = '~~';
-
-//------------------------------
-//題幹的欄位: 0 或 1 (0 為左欄, 1為右欄)
-//------------------------------
-fieldIndexNumberOfQuestion = 0;
-
 //
-// [題目設定]
-//  兩欄式題庫
-//  由眾多題目中，自動產生選項
-//
+//【題目設定】
 //  一行一題, 
-//  欄位左起
-//    第一欄為題幹
-//    第二欄為答案
+//  語文高手題庫支援同音字、多音字及形近字
+//  題庫可以利用 [雄:HTML5:語文高手題庫&國字加注音產生器] 製作
+//    https://gsyan888.blogspot.com/2022/11/html5-bopomofo-format-generator.html
 //
 questionLines = function(){/*--這一行請勿更改--
 
-小狗##dog
-杯子##cup
-帽子##hat
-貓咪##cat
-牛##cow
-馬##horse
+伶 玲,ㄌㄧㄥˊ伶 ㄌㄧˋ俐,ㄍㄨ孤 ㄌㄧㄥˊ伶 ㄌㄧㄥˊ伶,ㄌㄧㄥˊ玲 ㄌㄨㄥˊ瓏
+ㄈㄥˋ ㄈㄥˊ,ㄇㄣˊ門 ㄈㄥˋ縫,ㄌㄧㄝˋ裂 ㄈㄥˋ縫,ㄒㄧㄝˊ鞋 ㄈㄥˋ縫,ㄈㄥˊ縫 ㄖㄣˋ紉,ㄈㄥˊ縫 ㄓˋ製,ㄈㄥˊ縫 ㄏㄜˊ合
+ㄇㄨˋ募 ㄇㄨˋ幕 ㄇㄨˋ慕 ㄇㄨˋ墓,ㄇㄨˋ募 ㄎㄨㄢˇ款,ㄇㄨˋ募 ㄐㄩㄢ捐,ㄐㄧㄝ揭 ㄇㄨˋ幕,ㄎㄞ開 ㄇㄨˋ幕,ㄒㄧㄢˋ羨 ㄇㄨˋ慕,ㄧㄤˇ仰 ㄇㄨˋ慕,ㄙㄠˇ掃 ㄇㄨˋ墓,ㄇㄨˋ墓 ㄅㄟ碑
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
-
 
 
 /******************************************************************
@@ -75,24 +59,16 @@ questionLines = function(){/*--這一行請勿更改--
 //去掉空的
 getValidValues = function(data) {
 	var values = [];
-	var rePattern = '\\s';
-	if(typeof(seperator)=='string') {
-		rePattern += '|'+seperator;
-	}
-	if(typeof(seperator2)=='string') {
-		rePattern += '|'+seperator2;
-	}
-	var reObj = new RegExp(rePattern, 'g');
 	for(var i=0; i<data.length; i++) {
-		if((data[i].replace(reObj, ''))!='') {
+		if((data[i].replace(/\s/g, ''))!='') {
 			values.push(data[i].trim());
 		}
 	}
 	return values;
-}; 
+};
 //轉換題庫為陣列，並檢查內容
 question_lines = [];
-if(typeof(questionLines)!='undefined' && questionLines!=null) {
+if(!(typeof(questionLines)=='undefined' || questionLines==null)) {	
 	//一行行分解
 	if(typeof(questionLines)=='string') {
 		if(typeof(decodeHTML)=='function') {
@@ -105,19 +81,11 @@ if(typeof(questionLines)!='undefined' && questionLines!=null) {
 	}
 	//初始亂數取題的變數
 	delete questionCurrendIndex;
-	delete questionIndexRandom;
+	delete questionIndexRandom;		
 }
-//題幹Q、正解O、錯X的選項在題庫中的排列順序
-question_format = 'QOX';  //題幹,對的,錯的
-if(typeof(fieldIndexNumberOfQuestion)=='undefined' || fieldIndexNumberOfQuestion==null || isNaN(fieldIndexNumberOfQuestion) || fieldIndexNumberOfQuestion!=1) {
-	fieldIndexNumberOfQuestion = 0;
-	question_format = 'QOX';  //題幹,對的,錯的
-} else {
-	fieldIndexNumberOfQuestion = 1;
-	question_format = 'OQX';  //對的,題幹,錯的
-}
-
 //抽取一題，並製作成遊戲需要的格式
 getOneQuestion = function(tools) {
-	return tools.getOneQuestion(question_lines, [seperator, seperator2], question_format);
+	//語文高手使用 pk 系列內建的函數來隨選題目(指定類型為"語文高手")
+	return tools.getOneQuestion(question_lines, "語文高手");
 };
+

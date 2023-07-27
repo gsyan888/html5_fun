@@ -29,6 +29,14 @@ var editorOptions = {
         "text",
         "答錯時扣幾分"],
 
+      "holdTime": [
+        "text",
+        "選項出現後,停留的秒數"],
+
+      "timerStartSeconds": [
+        "text",
+        "一題必須在幾秒鐘內找到答案"],
+
      "tts_language": [
         "text",
         "念題目時，TTS語音合成的語言代碼",

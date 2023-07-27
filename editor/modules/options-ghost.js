@@ -35,7 +35,8 @@ var editorOptions = {
 
       "timerStartSeconds": [
         "text",
-        "一題必須在幾秒鐘內找到答案"],
+        "一關(題)必須在幾秒鐘內找到答案",
+		"複選題需要的時間較長，單選題可設短一點"],
 
      "tts_language": [
         "text",

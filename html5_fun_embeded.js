@@ -106,6 +106,10 @@ var moduleScripts = {
   unscramble: {
     src:"https://gsyan888.github.io/html5_fun/html5_unscramble/unscramble.js",
     "name": "重組遊戲"
+  },
+  gomoku: {
+    src:"https://gsyan888.github.io/html5_fun/html5_gomoku/gomoku.js",
+    "name": "漢字五子棋"
   },  
   "math_whiteboard": {
     src:"https://gsyan888.github.io/html5_fun/html5_math/math.whiteboard.js",

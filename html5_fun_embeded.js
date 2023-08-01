@@ -110,7 +110,11 @@ var moduleScripts = {
   gomoku: {
     src:"https://gsyan888.github.io/html5_fun/html5_gomoku/gomoku.js",
     "name": "漢字五子棋"
-  },  
+  },
+  poke: {
+    src:"https://gsyan888.github.io/html5_fun/html5_poke/poke.js",
+    "name": "戳戳樂"
+  },
   "math_whiteboard": {
     src:"https://gsyan888.github.io/html5_fun/html5_math/math.whiteboard.js",
     "name": "數學小白板"

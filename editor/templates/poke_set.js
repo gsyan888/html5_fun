@@ -15,9 +15,9 @@ font = '標楷體 , BiauKai';
 
 //------------------------------
 // 是否在格子的左上角顯示格子的編號
-// 0: 不顯示  1:顯示編號
+// false: 不顯示  true:顯示編號
 //------------------------------
-showNumber = 0;
+showNumber = false;
 
 //------------------------------
 //格子左上角編號的字形大小
@@ -73,12 +73,12 @@ tts_speed = 0.75;
 //----------------------------------
 //欄位分隔符號為兩個井字號(##), paper用的也是這個
 //----------------------------------
-seperator = '##';
+fields_seperator = '##';
 
 //------------------------------
 //題目素材分隔符號
 //------------------------------
-seperator2 = '~~';
+media_seperator = '~~';
 
 //
 //[題庫設定]
@@ -104,5 +104,6 @@ https://gsyan888.github.io/html5_fun/html5_poke/sample/eye.mp3
 圖片中的動物英文是什麼？~~https://gsyan888.github.io/html5_fun/html5_poke/sample/cat.png
 聽聽看，它的中文該怎麼說？~~dog.en-US.tts
 聽聽看，在圖上找出語音說的部位~~眼睛.zh-TW.tts~~https://gsyan888.github.io/html5_fun/html5_poke/sample/cat.png
+https://www.youtube.com/watch?v=N880o8og3vo&start=1&end=26
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

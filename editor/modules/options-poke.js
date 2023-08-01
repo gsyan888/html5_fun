@@ -4,7 +4,7 @@ var editorOptions = {
 	
     "templates": [{
         "name": "預設範本",
-        "path": "https://gsyan888.github.io/html5_fun/editor/templates/poke-set.js"
+        "path": "https://gsyan888.github.io/html5_fun/editor/templates/poke_set.js"
       }
     ],
 	

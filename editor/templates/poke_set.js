@@ -11,7 +11,7 @@ title = '戳戳樂';
 //------------------------------
 // 文字的字體名稱
 //------------------------------
-font = "'標楷體' , 'BiauKai'";
+font = '標楷體 , BiauKai';
 
 //------------------------------
 // 是否在格子的左上角顯示格子的編號
@@ -101,7 +101,7 @@ questionLines = function(){/*--這一行請勿更改--
 eyes 的中文是什麼？
 https://gsyan888.github.io/html5_fun/html5_poke/sample/cat.png
 https://gsyan888.github.io/html5_fun/html5_poke/sample/eye.mp3
-圖片中的動物英文是什麼？~~sample/cat.png
+圖片中的動物英文是什麼？~~https://gsyan888.github.io/html5_fun/html5_poke/sample/cat.png
 聽聽看，它的中文該怎麼說？~~dog.en-US.tts
 聽聽看，在圖上找出語音說的部位~~眼睛.zh-TW.tts~~https://gsyan888.github.io/html5_fun/html5_poke/sample/cat.png
 

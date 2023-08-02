@@ -81,7 +81,7 @@ questionLines = function(){/*--這一行請勿更改--
 
 文字+圖片##圖片中的動物英文是什麼？~~https://gsyan888.github.io/html5_fun/html5_wheel/sample/cat.png
 文字+英文合成語音##聽聽看，它的中文該怎麼說？~~dog.en-US.tts
-文字+中文合成語音+圖片##聽聽看，在圖上找出語音說的部位~~眼睛.zh-TW.tts~~https://gsyan888.github.io/html5_fun/html5_wheel/sample/cat.png
+文字+中文合成語音+圖片##聽聽看，在圖上指出語音說的部位~~眼睛.zh-TW.tts~~https://gsyan888.github.io/html5_fun/html5_wheel/sample/cat.png
 
 Youtube影片題##https://www.youtube.com/watch?v=N880o8og3vo&start=1&end=26
 

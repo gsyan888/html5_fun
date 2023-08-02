@@ -115,6 +115,10 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_poke/poke.js",
     "name": "戳戳樂"
   },
+  wheel: {
+    src:"https://gsyan888.github.io/html5_fun/html5_wheel/wheel.js",
+    "name": "幸運轉輪"
+  },
   "math_whiteboard": {
     src:"https://gsyan888.github.io/html5_fun/html5_math/math.whiteboard.js",
     "name": "數學小白板"

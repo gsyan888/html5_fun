@@ -56,7 +56,7 @@ blackborder = 5
 //------------------------------
 //Google TTS 文字轉語音的設定
 //------------------------------
-//合成語音的語言代碼:  'en-US' 'zh-TW'
+//合成語音的預設語言代碼:  'en-US' 'zh-TW'
 //------------------------------
 tts_language = 'zh-TW';
 
@@ -93,7 +93,10 @@ media_seperator = '~~';
 //    目前支援的素材有：
 //      - 文字
 //      - 圖片檔
-//      - 聲音檔: .mp3, .tts (例如念英文 dog.en-US.tts)
+//      - 聲音檔: .mp3
+//      - 合成語音: .tts 
+//        念英文: dog.en-US.tts  
+//        念中文: 小狗.zh-TW.tts
 //      - 影片: .mp4, Youtube影片
 //
 questionLines = function(){/*--這一行請勿更改--

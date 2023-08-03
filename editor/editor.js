@@ -819,9 +819,20 @@ document.getElementById(editorId).addEventListener('paste', function (e) {
     window.clipboardData
      ? window.clipboardData.getData('Text')
      : '';
-
-  txt = txt.replace(/\t/g, fieldsSeparator); /* 試著將 tab 轉為分隔符號(試算表) */
-
+  if( typeof(editorOptions)!='undefined' && typeof(modulename)!='undefined'
+      && typeof(editorOptions[modulename])!='undefined'
+      && typeof(editorOptions[modulename].enableDoubleTabConvert)=='boolean'
+      && editorOptions[modulename].enableDoubleTabConvert
+	  ) {
+    /* enableDoubleTabConvert=true */
+    /* 試著將 兩個tab 轉為分隔符號(試算表) */
+    /* 將 tab 轉為素材分隔符號(試算表) */
+    txt = txt.replace(/\t{2}/g, fieldsSeparator); 
+    txt = txt.replace(/\t/g, autoSplitPattern);
+  } else {
+    /* 試著將 tab 轉為分隔符號(試算表) */
+    txt = txt.replace(/\t/g, fieldsSeparator); 
+  }
   var lines = txt.replace(/\r/g, '').split(/\n/);
   for (var i = 0; i < lines.length; i++) {
     if (lines[i].replace(/\s/g, '') === '') {

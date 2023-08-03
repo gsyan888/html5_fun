@@ -9,7 +9,8 @@ var editorOptions = {
     ],
 	
     enableOpenInNewWindow: false,
-	
+	enableDoubleTabConvert: true,
+		
     options: {
 		
       "show_by_list": [

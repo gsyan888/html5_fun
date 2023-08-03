@@ -9,6 +9,7 @@ var editorOptions = {
     ],
 	
     enableOpenInNewWindow: false,
+	enableDoubleTabConvert: true,
 	
     options: {
 		

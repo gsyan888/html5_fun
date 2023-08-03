@@ -819,6 +819,9 @@ document.getElementById(editorId).addEventListener('paste', function (e) {
     window.clipboardData
      ? window.clipboardData.getData('Text')
      : '';
+  txt = txt.replace(/\r/g, '\n').replace(/\n+/g, '\n'); /* 去掉多餘的換行 */
+  txt = txt.replace(/\t+\n|\t+$/g, '\n'); /* 將行末的跳格都去掉 */
+  txt = txt.trim();	/* 去掉頭尾的換行字元及空白 */
   if( typeof(editorOptions)!='undefined' && typeof(modulename)!='undefined'
       && typeof(editorOptions[modulename])!='undefined'
       && typeof(editorOptions[modulename].enableDoubleTabConvert)=='boolean'

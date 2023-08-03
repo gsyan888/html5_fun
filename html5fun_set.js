@@ -183,13 +183,13 @@ menu_items = [
 	, "archives/html5_card_flip.zip"
 	, "https://gsyan888.blogspot.com/2021/03/html5-card-flip.html"
 	],
-
-	[ "樂透機"
-	, ""
-	, "html5_lotto/assets/icon.png"
-	, "html5_lotto/html5_lotto.html"
-	,"archives/html5_lotto.zip"
-	,"https://gsyan888.blogspot.com/2012/11/html5-lotto.html"
+	
+	[ "注音高手"
+	, "誰是注音拼音高手"
+	, "html5_phonetics_quiz/assets/icon.png"
+	, "html5_phonetics_quiz/html5_phonetics_quiz.html"
+	, "archives/html5_phonetics_quiz.zip"
+	, "https://gsyan888.blogspot.com/2022/10/html5-phoneticsquiz-2022.html"
 	],
 
 	[ "英文單字高手"
@@ -208,14 +208,16 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/11/html5-listening.html"
 	],
 
-	[ "漢字五子棋"
-	, ""
-	, "html5_gomoku/assets/icon.png"
-	, "html5_gomoku/html5_gomoku.html"
-	, "archives/html5_gomoku.zip"
-	, "https://gsyan888.blogspot.com/2021/03/html5-gomoku.html"
+
+	[ "重組遊戲"
+	, "UNSCRAMBLE"
+	, "html5_unscramble/assets/icon.png"
+	, "html5_unscramble/html5_unscramble.html"
+	, "archives/html5_unscramble.zip"
+	, "https://gsyan888.blogspot.com/2019/04/html5-unscramble.html"
 	],
 	
+
 	[ "TPET造句靈感產生器"
 	, "翻卡即時創作"
 	, "html5_sentence/assets/icon.png"
@@ -232,12 +234,12 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2021/06/html5-match.html"
 	],
 
-	[ "抽號碼機"
-	, ""
-	, "html5_number_selector/assets/icon.png"
-	, "html5_number_selector/html5_number_selector.html"
-	, "archives/html5_number_selector.zip"
-	, "https://gsyan888.blogspot.com/2012/11/html5-numberselector.html"
+	[ "戳戳樂"
+	, "戳戳樂、洞洞樂、抽抽看"
+	, "html5_poke/assets/icon.png"
+	, "html5_poke/html5_poke.html"
+	, "archives/html5_poke.zip"
+	, "https://gsyan888.blogspot.com/2021/06/html5-poke.html"
 	],
 
 	[ "幸運輪"
@@ -247,7 +249,31 @@ menu_items = [
 	, "archives/html5_wheel.zip"
 	, "https://gsyan888.blogspot.com/2017/09/html5-wheel.html"
 	],
+
+	[ "樂透機"
+	, ""
+	, "html5_lotto/assets/icon.png"
+	, "html5_lotto/html5_lotto.html"
+	,"archives/html5_lotto.zip"
+	,"https://gsyan888.blogspot.com/2012/11/html5-lotto.html"
+	],
+		
+	[ "remoteClick遙控器"
+	, "remoteClick遙控器"
+	, "html5_remoteClick/assets/icon.png"
+	, "html5_remoteClick/html5_remoteClick.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2021/06/html5-remoteclick.html"
+	],
 	
+	[ "抽號碼機"
+	, ""
+	, "html5_number_selector/assets/icon.png"
+	, "html5_number_selector/html5_number_selector.html"
+	, "archives/html5_number_selector.zip"
+	, "https://gsyan888.blogspot.com/2012/11/html5-numberselector.html"
+	],
+
 	[ "Draw Names 抽籤"
 	, ""
 	, "html5_drawnames/assets/icon.png"
@@ -255,37 +281,13 @@ menu_items = [
 	, "archives/html5_drawnames.zip"
 	, ""
 	],
-		
-	[ "戳戳樂"
-	, "戳戳樂、洞洞樂、抽抽看"
-	, "html5_poke/assets/icon.png"
-	, "html5_poke/html5_poke.html"
-	, "archives/html5_poke.zip"
-	, "https://gsyan888.blogspot.com/2021/06/html5-poke.html"
-	],
 
-	[ "重組遊戲"
-	, "UNSCRAMBLE"
-	, "html5_unscramble/assets/icon.png"
-	, "html5_unscramble/html5_unscramble.html"
-	, "archives/html5_unscramble.zip"
-	, "https://gsyan888.blogspot.com/2019/04/html5-unscramble.html"
-	],
-	
-	[ "注音高手"
-	, "誰是注音拼音高手"
-	, "html5_phonetics_quiz/assets/icon.png"
-	, "html5_phonetics_quiz/html5_phonetics_quiz.html"
-	, "archives/html5_phonetics_quiz.zip"
-	, "https://gsyan888.blogspot.com/2022/10/html5-phoneticsquiz-2022.html"
-	],
-
-	[ "remoteClick遙控器"
-	, "remoteClick遙控器"
-	, "html5_remoteClick/assets/icon.png"
-	, "html5_remoteClick/html5_remoteClick.html"
+	[ "漢字五子棋"
 	, ""
-	, "https://gsyan888.blogspot.com/2021/06/html5-remoteclick.html"
+	, "html5_gomoku/assets/icon.png"
+	, "html5_gomoku/html5_gomoku.html"
+	, "archives/html5_gomoku.zip"
+	, "https://gsyan888.blogspot.com/2021/03/html5-gomoku.html"
 	],
 	
 	[ "Animation"

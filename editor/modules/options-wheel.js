@@ -13,6 +13,12 @@ var editorOptions = {
 	
     options: {
 		
+      "enableRedraw": [
+        "checkbox",
+        "抽過的是否可以重抽",
+        "勾選:可重抽 &nbsp;&nbsp; 未勾選:抽過的剔除",
+        "抽過的可以重抽"],
+
       "wheel_items_text_align": [
         "text",
         "扇形上面的文字對齊方向",

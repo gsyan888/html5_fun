@@ -45,7 +45,7 @@ mediaFolder = 'data';
 // 以欄位分隔符號分隔不同的檔名
 // 預設的小精靈圖案取自 openclipart (https://openclipart.org/)
 //------------------------------
-paper = 'alien.png,angel.png,base.png,billy.png,borg.png,bricky.png,camouflage.png,candy.png,chef.png';
+paper = 'alien.png##angel.png##base.png##billy.png##borg.png##bricky.png##camouflage.png##candy.png##chef.png';
 
 //------------------------------
 // 每一格的黑色外框線粗細大小
@@ -56,7 +56,7 @@ blackborder = 5
 //------------------------------
 //Google TTS 文字轉語音的設定
 //------------------------------
-//合成語音的語言代碼:  'en-US' 'zh-TW'
+//合成語音預設的語言代碼:  'en-US' 'zh-TW'
 //------------------------------
 tts_language = 'zh-TW';
 
@@ -73,12 +73,12 @@ tts_speed = 0.75;
 //----------------------------------
 //欄位分隔符號為兩個井字號(##), paper用的也是這個
 //----------------------------------
-fields_seperator = ',';
+fields_seperator = '##';
 
 //------------------------------
-//素材分隔符號, 分隔文字,圖片,聲音,影片
+//素材分隔符號(~~), 分隔文字,圖片,聲音,影片
 //------------------------------
-media_seperator	= '#';
+media_seperator	= '~~';
 
 
 //
@@ -94,7 +94,10 @@ media_seperator	= '#';
 //    目前支援的素材有：
 //      - 文字
 //      - 圖片檔
-//      - 聲音檔: .mp3, .tts (例如念英文 dog.en-US.tts)
+//      - 聲音檔: .mp3
+//      - 合成語音: .tts 
+//        念英文: dog.en-US.tts  
+//        念中文: 小狗.zh-TW.tts
 //      - 影片: .mp4, Youtube影片
 //
 questionLines = function(){/*--這一行請勿更改--
@@ -102,9 +105,9 @@ questionLines = function(){/*--這一行請勿更改--
 eye 的中文是什麼？
 sample/cat.png
 sample/eye.mp3
-圖片中的動物英文是什麼？#sample/cat.png
-聽聽看，它的中文該怎麼說？#eye.en-US.tts
-聽聽看，在圖中出找出指定的部位#sample/cat.png#眼睛.zh-TW.tts
+圖片中的動物英文是什麼？~~sample/cat.png
+聽聽看，它的中文該怎麼說？~~eye.en-US.tts
+聽聽看，在圖中出找出指定的部位~~sample/cat.png~~眼睛.zh-TW.tts
 https://www.youtube.com/watch?v=N880o8og3vo&start=1&end=26
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);

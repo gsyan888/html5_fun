@@ -125,6 +125,17 @@ var moduleScripts = {
   },
 };
 
+
+//取得網址中的某一個參數(已編碼過的)
+getUrlParam = function( name ){
+	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+	var regexS = "[\\?&]"+name+"=([^&#]*)";  
+	var regex = new RegExp( regexS );  
+	var results = regex.exec( window.location.href ); 
+	if( results == null )    return "";  
+	else    return results[1];
+}
+
 var customStyle = null;
 
 //取得HTML5 FUN embed 模組名稱參數
@@ -163,6 +174,16 @@ if(typeof(autoStart)!='boolean') {
 	autoStart = false;
   }
 }
+//試著由網址中取得 autoStart 的參數
+var autoStartURI = getUrlParam('autoStart').toLowerCase();
+if(autoStartURI!='') {
+  if(autoStartURI=='true') {
+    autoStart = true;
+  } else if(autoStartURI=='false') {
+    autoStart = false;
+  }
+}
+
 //取得背景顏色的參數
 var wrapperBackground = document.getElementById('injectionJS').getAttribute('background');
 if(typeof(wrapperBackground)=='undefined' || wrapperBackground==null) {
@@ -178,6 +199,7 @@ if(typeof(wrapperStyle)=='undefined' || wrapperStyle==null) {
 	wrapperStyle = '';
   }
 }
+
 //
 /**
 * 載外部的 .js , 並執行 callback 的指令

@@ -126,11 +126,11 @@ var moduleScripts = {
 };
 
 
-//取得網址中的某一個參數(已編碼過的)
+//取得網址中的某一個參數, 名稱不分大小寫, 內容已編碼過的
 getUrlParam = function( name ){
 	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
 	var regexS = "[\\?&]"+name+"=([^&#]*)";  
-	var regex = new RegExp( regexS );  
+	var regex = new RegExp(regexS, 'i');  
 	var results = regex.exec( window.location.href ); 
 	if( results == null )    return "";  
 	else    return results[1];

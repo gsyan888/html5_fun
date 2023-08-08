@@ -74,6 +74,15 @@ showJSCode = function (n) {
 	  var elm = document.getElementById('forClassroomScreen');
 	  var forClassroomScreen = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
 	
+	  /* Google SpreadSheets */
+	  var elm = document.getElementById('forSpreadSheets');
+	  var forSpreadSheets = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
+	  if(forSpreadSheets) {
+	    /* 使用試算表時，暫不能啟用另兩個選項 */
+	    forGoogleSites = false;
+	    forClassroomScreen = false;
+	  }
+	
       var gameCode = document.getElementById('gameCode').value; /* 編碼模式時的密碼 */
 
       /* 先將 settingJS 中的題庫設定更新 */
@@ -161,7 +170,11 @@ showJSCode = function (n) {
 	if(forClassroomScreen) {
 		html = '<iframe src="'+toDataURI(html,'text/html')+'"></iframe>';
 	}
-
+    
+	if(forSpreadSheets) {
+	  html = base64_encode(utf16to8(html)); /* 要貼試算表的資料必須先轉碼 */
+	}
+	
     html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); //.replace(/\u00a0/g, ' ');
     html = html.replace(/^(.*)$/mg, "<span class=\"line\">$1</span>");
     obj.innerHTML = '<pre><code>' + html + '</code></pre>';

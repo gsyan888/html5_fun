@@ -1,0 +1,597 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>HTML5 FUN::Game Launcher</title>
+	<meta name="Author" content="gsyan, 顏國雄, 2023.08.08">
+	<meta name="referrer" content="no-referrer" />
+	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+</head>
+
+<body>
+
+
+<h1 style="text-align:center;">HTML5 FUN::自製遊戲啟動器</h1>
+
+<div id="step2" class="stage resultBlock">
+	<div class="playBtnWrapper"></div>
+	<h2  onclick="copyAndSelectToClipboard('gameURL');">遊戲網址<br><span style="font-size:11px;">(按一下複製)</span></h2>
+	<div id="gameURL" class="gameURL" onclick="copyAndSelectToClipboard('gameURL');"></div>
+</div>
+
+<div style="text-align:center;">
+<p><a href="https://gsyan888.blogspot.com/2022/10/html5-fun-collection.html">HTML5 FUN Game Launcher::程式 by 雄 gsyan::遊戲題庫使用者自訂</a></p>
+</div>
+
+<style>
+.stage {
+  border:dashed orange 2px;
+  border-radius:3em;
+  text-align:center;
+  margin: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.inputBox {
+  border-radius: 1em;
+  border: 1px dashed gray;
+  line-height: 2em;
+  margin: auto;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding: 1em;
+  text-align: center;
+  width: 25em;
+}
+.inputBox input {
+  padding: 0.5em;
+  text-align: center;
+}
+.paramBox {
+  display: none;
+  width: 15em;
+}
+.submitBtn {
+  background: rgb(204, 255, 51);
+  border-radius: 1em;
+  border: 1px solid;
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: auto;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+  padding: 0.25em; 
+  width: 90%;
+  text-align:center;
+}
+.resultBlock {
+  display:none;
+}
+.gameURL {
+  border-radius: 1em;
+  border: 1px dashed gray;
+  line-height: 2em;
+  margin: auto;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding: 1em;
+  text-align: center;
+  width: 90%;
+}
+.playBtnWrapper {
+  margin: auto;
+  margin-bottom: 2em;
+}
+</style>
+
+<script>
+//取得網址中的某一個參數, 名稱不分大小寫, 內容已編碼過的
+getUrlParam = function( name ){
+	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+	var regexS = "[\\?&]"+name+"=([^&#]*)";  
+	var regex = new RegExp(regexS, 'i');  
+	var results = regex.exec( window.location.href ); 
+	if( results == null )    return "";  
+	else    return results[1];
+};
+
+parseSheetID = function(url) {
+	var id = '';
+	if(url!='') {
+	  if(/\/d\/([^\/]+)\//.test(url)) {
+		id = window['RegExp']['lastParen'];	
+	  } else if(url.length>30) {
+		id = url;
+	  }
+	}
+	return id;
+};
+sheetOnChangeHandler = function(elm) {
+  var id = parseSheetID(elm.value);
+  if(id!='') {
+    elm.value = id;
+  }
+  var boxList = document.querySelectorAll('.paramBox');
+  for(var i=0; i<boxList.length; i++) {
+    if(id!='') {
+	  boxList[i].style.display = 'block';
+    } else {
+	  boxList[i].style.display = 'none';
+    }
+  }
+};
+submitOnClickHandler = function() {
+  var resultBlock = document.querySelector('.resultBlock');
+  var id = parseSheetID(document.getElementById('sheet').value);
+  var sheetName = document.getElementById('sheetName').value.trim();
+  var gameID = document.getElementById('gameID').value.trim();
+  var url  = getSheetQueryURL(id, sheetName, gameID, 'isTest');
+  resultBlock.style.display = 'none';
+  if(url!='') {
+	setTimeout(function() {
+      resultBlock.style.display = 'block';
+      var gameURL = 'https://gsyan888.github.io/html5_fun/game_launcher.html'; //window.location.href;
+      gameURL = new URL(gameURL);
+      gameURL.hash = ''
+      gameURL.search = ''	
+	  gameURL = gameURL.toString()+`?sheet=${id}&sheetname=${sheetName}&gameid=${gameID}&`;
+      document.querySelector('.gameURL').innerHTML = gameURL;
+	  autostart = false;
+	  loadFromScript(url);
+	  jumpToAnother(1, 2);
+	}, 100);
+  }
+};
+/* 由按下的物件捲動到步驟? 的位置 */
+jumpToAnother = function (from, to) {
+  if(!isNaN(to)) {
+	  to = document.getElementById('step' + to);
+  } else if(typeof(to)=='string') {
+	  to = document.getElementById(to);
+  }
+  if(!isNaN(from)) {
+	  from = document.getElementById('step' + from);
+  } else if(typeof(from)=='string') {
+	  from = document.getElementById(from);
+  }  
+  var offset = to.offsetTop - from.offsetTop;
+  var y = offset + from.offsetTop - window.scrollY - from.offsetHeight / 4;
+
+  window.scrollBy({
+    top: y,
+    left: 0,
+    behavior: 'smooth'
+  });
+};
+/*
+ 複製指定物件的文字到剪貼簿中 (此部份與 editor.js 中的重覆, 但先保留)
+ Credit : 
+   https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
+ target : 如果是字串，就當作是物件的 id, 再轉為物件
+ */
+copyAndSelectToClipboard = function (target) {
+  if (typeof(target) == 'string') {
+    target = document.getElementById(target);
+  }
+  if (typeof(target)!='undefined' && target!=null) {
+    var range = document.createRange();
+    range.selectNode(target);
+    window.getSelection().removeAllRanges(); /* clear current selection */
+    window.getSelection().addRange(range); /* to select text */
+    document.execCommand("copy");
+    setTimeout(function () {
+      window.getSelection().removeAllRanges(); /* to deselect */
+    }, 300);
+  }
+};
+
+/*
+//var base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
+//
+//https://spreadsheets.google.com/tq?
+//tqx=out:html
+//tqx=out:csv
+//&gid=0
+//&key=
+//&tq=
+//
+//var sheetName = '工作表1';
+//sheetName = encodeURIComponent(sheetName);
+//gameID = 'frog-gsyan';
+//query = encodeURIComponent(`Select * where (A contains '${gameID}')`);
+//url = `${base}&sheet=${sheetName}&tq=${query}&`;
+*/
+
+getSheetQueryURL = function(id, sheetName, gameID, isTest) {
+  var url = '';
+  var msg = '';
+  if(typeof(id)!='string' || id.length<30) {
+    msg = '請輸入並檢查一下試算表的共用連結網址或文件代碼後，再試一次';
+  } else if(typeof(sheetName)!='string' || sheetName.replace(/\s/g, '')=='') {
+    msg = '請輸入試算表「工作表名稱」後，再試一次';
+  } else if(typeof(gameID)!='string' || gameID.replace(/\s/g, '')=='') {
+    msg = '請輸入要載入遊戲的「遊戲取用代碼」後，再試一次'; 
+  } else {
+    window['gameID'] = gameID;
+    //sheetName = encodeURIComponent(sheetName);
+    //var query = `Select * where (A contains "${gameID}")`;
+	var query = `Select * where A = '${gameID}'`;
+	query = encodeURIComponent(query);
+    var base = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?`;
+    url = `${base}&sheet=${sheetName}&tq=${query}&`;
+  }
+  if(msg!='' && typeof(isTest)!='undefined') {
+    alert(msg);
+  }
+  return url;
+};
+
+//-------------------------------------------------
+//
+//-------------------------------------------------
+base64_decode = function(data) {
+  // From: http://phpjs.org/functions
+  // +   original by: Tyler Akins (http://rumkin.com)
+  // +   improved by: Thunder.m
+  // +      input by: Aman Gupta
+  // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // +   bugfixed by: Onno Marsman
+  // +   bugfixed by: Pellentesque Malesuada
+  // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // +      input by: Brett Zamir (http://brett-zamir.me)
+  // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // *     example 1: base64_decode('S2V2aW4gdmFuIFpvbm5ldmVsZA==');
+  // *     returns 1: 'Kevin van Zonneveld'
+  // mozilla has this native
+  // - but breaks in 2.0.0.12!
+  //if (typeof this.window['atob'] === 'function') {
+  //    return atob(data);
+  //}
+  var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
+    ac = 0,
+    dec = "",
+    tmp_arr = [];
+
+  if (!data) {
+    return data;
+  }
+
+  data += '';
+
+  do { // unpack four hexets into three octets using index points in b64
+    h1 = b64.indexOf(data.charAt(i++));
+    h2 = b64.indexOf(data.charAt(i++));
+    h3 = b64.indexOf(data.charAt(i++));
+    h4 = b64.indexOf(data.charAt(i++));
+
+    bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
+
+    o1 = bits >> 16 & 0xff;
+    o2 = bits >> 8 & 0xff;
+    o3 = bits & 0xff;
+
+    if (h3 == 64) {
+      tmp_arr[ac++] = String.fromCharCode(o1);
+    } else if (h4 == 64) {
+      tmp_arr[ac++] = String.fromCharCode(o1, o2);
+    } else {
+      tmp_arr[ac++] = String.fromCharCode(o1, o2, o3);
+    }
+  } while (i < data.length);
+
+  dec = tmp_arr.join('');
+
+  return dec;
+};
+//-------------------------------------------------
+//
+//-------------------------------------------------
+base64_encode = function(data) {
+  // http://kevin.vanzonneveld.net
+  // +   original by: Tyler Akins (http://rumkin.com)
+  // +   improved by: Bayron Guevara
+  // +   improved by: Thunder.m
+  // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // +   bugfixed by: Pellentesque Malesuada
+  // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // +   improved by: Rafa? Kukawski (http://kukawski.pl)
+  // *     example 1: base64_encode('Kevin van Zonneveld');
+  // *     returns 1: 'S2V2aW4gdmFuIFpvbm5ldmVsZA=='
+  // mozilla has this native
+  // - but breaks in 2.0.0.12!
+  //if (typeof this.window['btoa'] === 'function') {
+  //    return btoa(data);
+  //}
+  var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
+    ac = 0,
+    enc = "",
+    tmp_arr = [];
+
+  if (!data) {
+    return data;
+  }
+
+  do { // pack three octets into four hexets
+    o1 = data.charCodeAt(i++);
+    o2 = data.charCodeAt(i++);
+    o3 = data.charCodeAt(i++);
+
+    bits = o1 << 16 | o2 << 8 | o3;
+
+    h1 = bits >> 18 & 0x3f;
+    h2 = bits >> 12 & 0x3f;
+    h3 = bits >> 6 & 0x3f;
+    h4 = bits & 0x3f;
+
+    // use hexets to index into b64, and append result to encoded string
+    tmp_arr[ac++] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
+  } while (i < data.length);
+
+  enc = tmp_arr.join('');
+
+  var r = data.length % 3;
+
+  return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
+
+}
+//-------------------------------------------------
+//
+//-------------------------------------------------
+/* utf.js - UTF-8 <=> UTF-16 convertion
+ *
+ * Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>
+ * Version: 1.0
+ * LastModified: Dec 25 1999
+ * This library is free.  You can redistribute it and/or modify it.
+ */
+
+/*
+ * Interfaces:
+ * utf8 = utf16to8(utf16);
+ * utf16 = utf16to8(utf8);
+ */
+
+utf16to8 = function(str) {
+    var out, i, len, c;
+
+    out = "";
+    len = str.length;
+    for(i = 0; i < len; i++) {
+	c = str.charCodeAt(i);
+	if ((c >= 0x0001) && (c <= 0x007F)) {
+	    out += str.charAt(i);
+	} else if (c > 0x07FF) {
+	    out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+	    out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));
+	    out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+	} else {
+	    out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));
+	    out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));
+	}
+    }
+    return out;
+};
+
+utf8to16 = function(str) {
+  var out, i, len, c;
+  var char2, char3;
+
+  out = "";
+  len = str.length;
+  i = 0;
+  while(i < len) {
+    c = str.charCodeAt(i++);
+    switch(c >> 4) {
+      case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+        // 0xxxxxxx
+        out += str.charAt(i-1);
+        break;
+      case 12: case 13:
+        // 110x xxxx   10xx xxxx
+        char2 = str.charCodeAt(i++);
+        out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+        break;
+      case 14:
+        // 1110 xxxx  10xx xxxx  10xx xxxx
+        char2 = str.charCodeAt(i++);
+        char3 = str.charCodeAt(i++);
+        out += String.fromCharCode(((c & 0x0F) << 12) |
+        ((char2 & 0x3F) << 6) |
+        ((char3 & 0x3F) << 0));
+        break;
+    }
+  }
+  return out;
+};
+/*
+ 重新載入 injectionJS (html5_fun_embeded.js)
+ modulename: HTML5 FUN 的模組名稱 (定義在 html5_fun_embeded.js)
+ */ 
+reloadInjectionJS = function(modulename, attributes, debug) {
+  var parentNode;
+  var oldJS = document.getElementById('injectionJS');
+  if(typeof(oldJS)!='undefined' && oldJS!=null) {
+    parentNode = oldJS.parentNode;
+    oldJS.parentNode.removeChild(oldJS);
+	if(typeof(attributes)=='undefined') {
+		var attributes = {};
+		for(var index=0; index<oldJS.attributes.length; index++) {		
+			var  obj = oldJS.attributes[index];
+			attributes[obj['name']] = obj['value'];
+		}
+	}
+  } else {
+    parentNode = document.getElementsByTagName('head')[0];
+  }
+  var scriptTag = document.createElement('script');
+  scriptTag.type = "text/javascript";
+  scriptTag.charset = "utf-8";
+  scriptTag.id = 'injectionJS';
+  scriptTag.src = (debug ? "./" : "https://gsyan888.github.io/html5_fun/")+"html5_fun_embeded.js";
+  scriptTag.setAttribute('autostart', "false");
+  if(typeof(attributes)=='object' && attributes!=null) {
+	var keys = Object.keys(attributes);
+	for(var i=0; i<keys.length; i++) {
+		scriptTag.setAttribute(keys[i], attributes[keys[i]]);
+	}
+  }
+  if(typeof(modulename)=='string') {
+	scriptTag.setAttribute('modulename', modulename);
+  }
+  if(typeof(autostart)=='boolean') {
+	scriptTag.setAttribute('autostart', `${autostart}`);	//自動啟動遊戲
+  }
+  parentNode.appendChild(scriptTag);
+};
+
+
+//將文字檔取回後，去掉頭尾變純 JSON 字串
+//此方法必須在網路上執行才不會因為 CORS 而被瀏覽器擋下來
+fetchSheetData = function(url, callback) {
+  fetch(url)
+    .then(res => res.text())
+    .then(rep => {
+      //console.log(rep);
+      //Google Spreadsheet 回傳的是 JavaScript callback function
+      //所以要先去掉前註解,及函數的頭尾，只留 JSON 字串
+      const jsonData = JSON.parse(rep.substring(47).slice(0, -2));
+      console.log(jsonData);
+	  if(typeof(callback)=='function') {
+		callback(jsonData);
+	  }
+      return;
+	});
+};
+
+loadFromScript = function(scriptSrc, callback)  {
+	var nocacheVal = '?nocache=' + new Date().getTime();	//為了避免 cache 的問題,在檔名後加亂數
+	var scriptToAdd = document.createElement('script');		//建立一個 scriptElement
+	
+	scriptToAdd.setAttribute('type','text/javascript');
+	scriptToAdd.setAttribute('charset','utf-8');
+	//scriptToAdd.setAttribute('src', scriptSrc + nocacheVal);	//避免 cache 時用的
+	scriptToAdd.setAttribute('src', scriptSrc);
+	//載入成功時
+	scriptToAdd.onload = scriptToAdd.onreadystatechange = function() {
+		if (!scriptToAdd.readyState || scriptToAdd.readyState === "loaded" || scriptToAdd.readyState === "complete") {
+			scriptToAdd.onload = scriptToAdd.onreadystatechange = null;
+			document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//將變數載入後移除 script
+			if(typeof(callback)=='function') {
+				callback();	//執行指定的函數
+			}
+        };
+	};
+	//無法載入時, 將設定用預設值
+	scriptToAdd.onerror = function() {
+		scriptToAdd.onerror = null;	//將事件移除
+		document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//移除 script
+		if( typeof callback == 'function' ) {
+			callback();	//執行指定的函數
+		} else {
+			var msg = '無法載入遊戲設定。';
+			var resultBlock = document.querySelector('.resultBlock');
+			if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+				msg += '\n\n請確認一下:\n\n* 試算表共用連結的網址是否正確，\n\n* 是否開放任何人都可以檢視。';
+				resultBlock.style.display = 'none';			
+			}
+			setTimeout(function() {
+				alert(msg);
+			}, 100);
+		}
+	}
+	
+	//在 head 的最前頭加上前述的 scriptElement
+	var docHead = document.getElementsByTagName("head")[0];
+	docHead.insertBefore(scriptToAdd, docHead.firstChild);
+};
+
+/* 
+ 回傳時是呼叫 google.visualization.Query.setResponse 
+ 所以將資料傳來時要執的程序放裡面
+ */
+if(typeof(google)=='undefined') { google = {}; }
+if(typeof(google.visualization)=='undefined') { google.visualization = {}; }
+if(typeof(google.visualization.Query)=='undefined') { google.visualization.Query = {};}
+google.visualization.Query.setResponse = function(data) {
+  console.log(data);
+  var isOK = false;
+  if(typeof(data['status'])=='string' && data['status']=='ok') {
+    if(typeof(data['table']['rows'])!='undefined' && data['table']['rows']!=null && data['table']['rows'].length>0) {
+      if(data['table']['rows'][0]['c'][0]['v']==window['gameID']) {
+        var value = data['table']['rows'][0]['c'][1]['v'];
+        value = utf8to16(base64_decode(value));
+        if(/settingJS|injectionJS/.test(value)) {
+          isOK = true;
+          document.querySelector('.playBtnWrapper').innerHTML = value;
+          reloadInjectionJS();
+        }
+      }
+    } 
+  }
+  if(!isOK) {
+    var msg = '抱歉，找不到指定的遊戲，或是無法載入遊戲設定。';
+    var resultBlock = document.querySelector('.resultBlock');
+    if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+      msg += '\n\n請確認一下「工作表名稱」及欄A的「取用代碼」是否正確';
+      resultBlock.style.display = 'none';			
+    }
+	setTimeout(function() {
+      alert(msg);
+	}, 100);
+  }
+};
+
+var sheetId = '1efjHkAkKId9uMb_amH_MWWDrV3m37aZqghSdGyh3Tzg';
+var sheetId = '';
+
+var sheetURI = parseSheetID(getUrlParam('sheet'));
+if(sheetURI!='') {
+  sheetId = sheetURI;
+}
+
+var sheetName = '工作表1';
+var sheetNameURI = parseSheetID(getUrlParam('sheetName'));
+if(sheetNameURI!='') {
+  sheetName = sheetNameURI;
+}
+
+var gameID = getUrlParam('gameID');
+
+if(sheetId=='' || gameID=='') {
+  var msg = '未指定題庫，無法載入遊戲';
+  var elm = document.getElementById('step1');
+  if(!elm) {
+    elm = document.getElementById('step2');
+    if(elm) {
+	  elm.innerHTML = `<h1>${msg}</h1>`;
+	  elm.style.display = 'block';
+    }
+  }
+} else {
+  /* 設定為載後後自動開啟遊戲 */  
+  autostart = true;
+  
+  /* 取得查詢試算表指定欄位的網址 */
+  url = getSheetQueryURL(sheetId, sheetName, gameID);
+  
+  /* 查詢、取得遊戲設定，並啟動遊戲 */
+  loadFromScript(url);
+  
+  /* 將右上角的關閉按鈕拿掉 */  
+  setTimeout(function() {
+    var btn = document.getElementById('closeBtn');
+	if(typeof(btn)!='undefined' && btn!=null) {
+	  btn.style.display = 'none';
+	}
+  }, 3000);
+}
+//document.addEventListener('DOMContentLoaded', loadFromScript);
+
+
+
+
+</script>
+</body>
+</html>

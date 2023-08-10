@@ -217,6 +217,7 @@ getSheetQueryURL = function(id, sheetName, gameID, gameIdAt, isTest) {
 	if(typeof(gameIdAt)!='string' || gameIdAt=='') {
 	  gameIdAt = 'A';
 	}
+	gameIdAt = gameIdAt.toUpperCase()
     //sheetName = encodeURIComponent(sheetName);
     //var query = `Select * where (A contains "${gameID}")`;
 	var query = `SELECT * WHERE ${gameIdAt} = '${gameID}'`;
@@ -561,7 +562,7 @@ if(sheetURI!='') {
 var sheetName = parseSheetID(getUrlParam('sheetName'));
 
 var gameID = getUrlParam('gameID');
-var gameIdAt = getUrlParam('idAt');
+var gameIdAt = getUrlParam('idAt').toUpperCase();
 
 if(gameID=='') {
   var msg = '未指定題庫，無法載入遊戲';

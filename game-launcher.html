@@ -126,7 +126,7 @@ submitOnClickHandler = function() {
   var id = parseSheetID(document.getElementById('sheet').value);
   var sheetName = document.getElementById('sheetName').value.trim();
   var gameID = document.getElementById('gameID').value.trim();
-  var url  = getSheetQueryURL(id, sheetName, gameID, 'isTest');
+  var url  = getSheetQueryURL(id, sheetName, gameID, '', 'isTest');
   resultBlock.style.display = 'none';
   if(url!='') {
 	setTimeout(function() {
@@ -203,23 +203,27 @@ copyAndSelectToClipboard = function (target) {
 //url = `${base}&sheet=${sheetName}&tq=${query}&`;
 */
 
-getSheetQueryURL = function(id, sheetName, gameID, isTest) {
+getSheetQueryURL = function(id, sheetName, gameID, gameIdAt, isTest) {
   var url = '';
   var msg = '';
   if(typeof(id)!='string' || id.length<30) {
     msg = '請輸入並檢查一下試算表的共用連結網址或文件代碼後，再試一次';
-  } else if(typeof(sheetName)!='string' || sheetName.replace(/\s/g, '')=='') {
-    msg = '請輸入試算表「工作表名稱」後，再試一次';
+    //} else if(typeof(sheetName)!='string' || sheetName.replace(/\s/g, '')=='') {
+    //  msg = '請輸入試算表「工作表名稱」後，再試一次';
   } else if(typeof(gameID)!='string' || gameID.replace(/\s/g, '')=='') {
     msg = '請輸入要載入遊戲的「遊戲取用代碼」後，再試一次'; 
   } else {
     window['gameID'] = gameID;
+	if(typeof(gameIdAt)!='string' || gameIdAt=='') {
+	  gameIdAt = 'A';
+	}
     //sheetName = encodeURIComponent(sheetName);
     //var query = `Select * where (A contains "${gameID}")`;
-	var query = `Select * where A = '${gameID}'`;
+	var query = `SELECT * WHERE ${gameIdAt} = '${gameID}'`;
 	query = encodeURIComponent(query);
-    var base = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?`;
-    url = `${base}&sheet=${sheetName}&tq=${query}&`;
+    url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?`;
+    url += (typeof(sheeName)=='string' && sheeName.replace(/\s/g, '')!=''? 'sheet='+sheetName:'');
+	url += '&tq='+query+'&';
   }
   if(msg!='' && typeof(isTest)!='undefined') {
     alert(msg);
@@ -519,9 +523,11 @@ google.visualization.Query.setResponse = function(data) {
   console.log(data);
   var isOK = false;
   if(typeof(data['status'])=='string' && data['status']=='ok') {
-    if(typeof(data['table']['rows'])!='undefined' && data['table']['rows']!=null && data['table']['rows'].length>0) {
-      if(data['table']['rows'][0]['c'][0]['v']==window['gameID']) {
-        var value = data['table']['rows'][0]['c'][1]['v'];
+    if(typeof(data['table']['rows'])!='undefined' && data['table']['rows']!=null && data['table']['rows'].length>0) {	
+	  var gameIdIndex = gameIdAt.toUpperCase().charCodeAt(0)-'A'.charCodeAt(0);
+	  gameIdIndex = (gameIdIndex>=0 && gameIdIndex<data['table']['rows'][0]['c'].length?gameIdIndex:0);
+      if(data['table']['rows'][0]['c'][gameIdIndex]['v']==window['gameID']) {
+        var value = data['table']['rows'][0]['c'][gameIdIndex+1]['v'];
         value = utf8to16(base64_decode(value));
         if(/settingJS|injectionJS/.test(value)) {
           isOK = true;
@@ -552,15 +558,12 @@ if(sheetURI!='') {
   sheetId = sheetURI;
 }
 
-var sheetName = '工作表1';
-var sheetNameURI = parseSheetID(getUrlParam('sheetName'));
-if(sheetNameURI!='') {
-  sheetName = sheetNameURI;
-}
+var sheetName = parseSheetID(getUrlParam('sheetName'));
 
 var gameID = getUrlParam('gameID');
+var gameIdAt = getUrlParam('idAt');
 
-if(sheetId=='' || gameID=='') {
+if(gameID=='') {
   var msg = '未指定題庫，無法載入遊戲';
   var elm = document.getElementById('step1');
   if(!elm) {
@@ -575,7 +578,7 @@ if(sheetId=='' || gameID=='') {
   autostart = true;
   
   /* 取得查詢試算表指定欄位的網址 */
-  url = getSheetQueryURL(sheetId, sheetName, gameID);
+  url = getSheetQueryURL(sheetId, sheetName, gameID, gameIdAt);
   
   /* 查詢、取得遊戲設定，並啟動遊戲 */
   loadFromScript(url);

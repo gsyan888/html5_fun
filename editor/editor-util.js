@@ -75,9 +75,9 @@ showJSCode = function (n) {
 	  var forClassroomScreen = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
 	
 	  /* Google SpreadSheets */
-	  var elm = document.getElementById('forSpreadSheets');
-	  var forSpreadSheets = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
-	  if(forSpreadSheets) {
+	  var elm = document.getElementById('forSpreadSheet');
+	  var forSpreadSheet = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
+	  if(forSpreadSheet) {
 	    /* 使用試算表時，暫不能啟用另兩個選項 */
 	    forGoogleSites = false;
 	    forClassroomScreen = false;
@@ -125,7 +125,7 @@ showJSCode = function (n) {
       }
 
       /* =========== Google Sites 需要是完整的網頁語法 ===== */
-		  
+      
       if (forGoogleSites || forClassroomScreen) {
         html = decodeHTML(html);
 
@@ -137,13 +137,13 @@ showJSCode = function (n) {
          */
         /* 使用 Template1 將原來的語法加上 HTML 的頭尾 */
         html = getTemplate(1).replace('<!-- 這裡插入原本的語法 -->', html);
-		
-		if(!enableOpenInNewWindow || forClassroomScreen) {
+        
+        if(!enableOpenInNewWindow || forClassroomScreen) {
 
-		  html = html.replace(/isInIFrame = \\`\$\{isInIFrame\}\\`;\s*\n/, '');
-		  html = html.replace(/\\\//g, '/');
+          html = html.replace(/isInIFrame = \\`\$\{isInIFrame\}\\`;\s*\n/, '');
+          html = html.replace(/\\\//g, '/');
 
-		} else {
+        } else {
 
           html = html.replace(/autostart="false"/, 'autostart="true"');
 
@@ -153,12 +153,12 @@ showJSCode = function (n) {
           /* 使用 Template2 變成 Google Sites 嵌入的語法 */
           html = getTemplate(2).replace('<!-- 這裡插入編過碼的語法 -->', html).replace('<!-- 這裡插入開始玩按鈕的字樣 -->', '開始玩 HTML5 FUN '+editorOptions[modulename].caption);
 
-		  /* \\` 變成 \` 不然無法置換變數 */ 		  
-		  html = html.replace(/\\\\`/g, '\\`');
+          /* \\` 變成 \` 不然無法置換變數 */ 		  
+          html = html.replace(/\\\\`/g, '\\`');
 
           /* 修正最後一個 </srcipt> 多了一個反斜線 */
           html = html.replace(/&amp;lt;\\\\\//g, '&amp;lt;\/').replace(/<\\\//g, '</');
-		}
+        }
       }
       /* =========== Google Sites 網頁語法加料完成 ===== */
 
@@ -166,15 +166,21 @@ showJSCode = function (n) {
 
     }
     html = decodeHTML(html);
-	
-	if(forClassroomScreen) {
-		html = '<iframe src="'+toDataURI(html,'text/html')+'"></iframe>';
-	}
     
-	if(forSpreadSheets) {
-	  html = base64_encode(utf16to8(html)); /* 要貼試算表的資料必須先轉碼 */
-	}
-	
+    if(forClassroomScreen) {
+      html = '<iframe src="'+toDataURI(html,'text/html')+'"></iframe>';
+    }
+    
+    if(forSpreadSheet) {
+      html = base64_encode(utf16to8(html)); /* 要貼試算表的資料必須先轉碼 */
+      if(typeof(forSpreadSheetCallback)=='function') {
+        var  value = forSpreadSheetCallback(html); /* 有後續處理的程式, 先處理 */
+        if(typeof(value)=='string' && value.replace(/\s/g, '')!='') {
+          html = value;
+        }
+      }
+    }
+    
     html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); //.replace(/\u00a0/g, ' ');
     html = html.replace(/^(.*)$/mg, "<span class=\"line\">$1</span>");
     obj.innerHTML = '<pre><code>' + html + '</code></pre>';

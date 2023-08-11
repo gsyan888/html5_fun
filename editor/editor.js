@@ -506,6 +506,7 @@ replaceWithBlankIcon = function (txt) {
  // https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
  target : 如果是字串，就當作是物件的 id, 再轉為物件
  */
+/*
 copyAndSelectToClipboard = function (target) {
   if (typeof(target) == 'string') {
     target = document.getElementById(target);
@@ -513,14 +514,15 @@ copyAndSelectToClipboard = function (target) {
   if (typeof(target)!='undefined' && target!=null) {
     var range = document.createRange();
     range.selectNode(target);
-    window.getSelection().removeAllRanges(); /* clear current selection */
-    window.getSelection().addRange(range); /* to select text */
+    window.getSelection().removeAllRanges(); // clear current selection 
+    window.getSelection().addRange(range); 	//to select text 
     document.execCommand("copy");
     setTimeout(function () {
-      window.getSelection().removeAllRanges(); /* to deselect */
+      window.getSelection().removeAllRanges(); // to deselect
     }, 300);
   }
 };
+*/
 
 /*
  //在游標處插入字串

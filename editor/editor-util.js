@@ -74,7 +74,7 @@ showJSCode = function (n) {
 	  var elm = document.getElementById('forClassroomScreen');
 	  var forClassroomScreen = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
 	
-	  /* Google SpreadSheets */
+	  /* Google SpreadSheet */
 	  var elm = document.getElementById('forSpreadSheet');
 	  var forSpreadSheet = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
 	  if(forSpreadSheet) {
@@ -207,7 +207,7 @@ showJSCode = function (n) {
 };
 
 /*
- 複製指定物件的文字到剪貼簿中 (此部份與 editor.js 中的重覆, 但先保留)
+ 複製指定物件的文字到剪貼簿中 (editor.js 中重覆的已註解)
  Credit : 
    https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
  target : 如果是字串，就當作是物件的 id, 再轉為物件
@@ -217,11 +217,28 @@ copyAndSelectToClipboard = function (target) {
     target = document.getElementById(target);
   }
   if (typeof(target)!='undefined' && target!=null) {
-    var range = document.createRange();
-    range.selectNode(target);
-    window.getSelection().removeAllRanges(); /* clear current selection */
-    window.getSelection().addRange(range); /* to select text */
-    document.execCommand("copy");
+    if(/input|textarea/i.test(target.tagName)) {
+	  /* input, textarea 直接複製 */
+	  target.select();
+      document.execCommand("copy");
+	} else {
+	  /* 利用 textarea 達到只複製文字的目的 */
+      var tempElm = document.createElement('textarea');
+      tempElm.style = 'width:1;height:1;border:0;';
+	  //tempElm.innerHTML = target.innerHTML;
+	  tempElm.textContent = target.textContent;
+	  document.body.append(tempElm);
+	  tempElm.select();
+      document.execCommand("copy");
+	  tempElm.remove();
+	  tempElm = null;
+	  /* 改選取原來的物件, 這樣後面取消選取時才有閃一下的效果 */
+      var range = document.createRange();
+      range.selectNode(target);
+      window.getSelection().removeAllRanges(); /* clear current selection */
+      window.getSelection().addRange(range); /* to select text */
+	}
+	/* 稍間隔才取消選取, 有閃一下的效果 */
     setTimeout(function () {
       window.getSelection().removeAllRanges(); /* to deselect */
     }, 300);

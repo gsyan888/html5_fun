@@ -175,11 +175,28 @@ copyAndSelectToClipboard = function (target) {
     target = document.getElementById(target);
   }
   if (typeof(target)!='undefined' && target!=null) {
-    var range = document.createRange();
-    range.selectNode(target);
-    window.getSelection().removeAllRanges(); /* clear current selection */
-    window.getSelection().addRange(range); /* to select text */
-    document.execCommand("copy");
+    if(/input|textarea/i.test(target.tagName)) {
+	  /* input, textarea 直接複製 */
+	  target.select();
+      document.execCommand("copy");
+	} else {
+	  /* 利用 textarea 達到只複製文字的目的 */
+      var tempElm = document.createElement('textarea');
+      tempElm.style = 'width:1;height:1;border:0;';
+	  //tempElm.innerHTML = target.innerHTML;
+	  tempElm.textContent = target.textContent;
+	  document.body.append(tempElm);
+	  tempElm.select();
+      document.execCommand("copy");
+	  tempElm.remove();
+	  tempElm = null;
+	  /* 改選取原來的物件, 這樣後面取消選取時才有閃一下的效果 */
+      var range = document.createRange();
+      range.selectNode(target);
+      window.getSelection().removeAllRanges(); /* clear current selection */
+      window.getSelection().addRange(range); /* to select text */
+	}
+	/* 稍間隔才取消選取, 有閃一下的效果 */
     setTimeout(function () {
       window.getSelection().removeAllRanges(); /* to deselect */
     }, 300);
@@ -217,7 +234,7 @@ getSheetQueryURL = function(id, sheetName, gameID, gameIdAt, isTest) {
 	if(typeof(gameIdAt)!='string' || gameIdAt=='') {
 	  gameIdAt = 'A';
 	}
-	gameIdAt = gameIdAt.toUpperCase()
+	window['gameIdAt'] = gameIdAt.toUpperCase()
     //sheetName = encodeURIComponent(sheetName);
     //var query = `Select * where (A contains "${gameID}")`;
 	var query = `SELECT * WHERE ${gameIdAt} = '${gameID}'`;
@@ -528,9 +545,19 @@ google.visualization.Query.setResponse = function(data) {
 	  var gameIdIndex = gameIdAt.toUpperCase().charCodeAt(0)-'A'.charCodeAt(0);
 	  gameIdIndex = (gameIdIndex>=0 && gameIdIndex<data['table']['rows'][0]['c'].length?gameIdIndex:0);
       if(data['table']['rows'][0]['c'][gameIdIndex]['v']==window['gameID']) {
-        var value = data['table']['rows'][0]['c'][gameIdIndex+1]['v'];
+        //var value = data['table']['rows'][0]['c'][gameIdIndex+1]['v'];
+		//將多欄的遊戲資料合併
+		var total = data['table']['rows'][0]['c'].length;
+		var value = '';
+		for(var i=gameIdIndex+1; i<total; i++) {
+		  if(typeof(data['table']['rows'][0]['c'][i])!='undefined' && data['table']['rows'][0]['c'][i]!=null) {
+		    if(typeof(data['table']['rows'][0]['c'][i]['v'])=='string') {
+		      value += data['table']['rows'][0]['c'][i]['v'].trim();
+			}
+		  }
+		}
         value = utf8to16(base64_decode(value));
-        if(/settingJS|injectionJS/.test(value)) {
+        if(/settingJS|injectionJS|html5_fun_embeded.js/.test(value)) {
           isOK = true;
           document.querySelector('.playBtnWrapper').innerHTML = value;
           reloadInjectionJS();
@@ -542,7 +569,7 @@ google.visualization.Query.setResponse = function(data) {
     var msg = '抱歉，找不到指定的遊戲，或是無法載入遊戲設定。';
     var resultBlock = document.querySelector('.resultBlock');
     if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
-      msg += '\n\n請確認一下「工作表名稱」及欄A的「取用代碼」是否正確';
+      msg += '\n\n請確認一下「工作表名稱」及「欄'+gameIdAt.toUpperCase()+'」的「取用代碼」是否正確';
       resultBlock.style.display = 'none';			
     }
 	setTimeout(function() {

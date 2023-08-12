@@ -81,7 +81,7 @@ var moduleScripts = {
   },  
   bingo:{
     src:"https://gsyan888.github.io/html5_fun/html5_bingo/bingo.js",
-    name:"BINO賓果"
+    name:"BINGO賓果"
   },
   charades:{
     src:"https://gsyan888.github.io/html5_fun/html5_charades/charades.js",

@@ -86,64 +86,115 @@
 </style>
 
 <script>
-//取得網址中的某一個參數, 名稱不分大小寫, 內容已編碼過的
-getUrlParam = function( name ){
-	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
-	var regexS = "[\\?&]"+name+"=([^&#]*)";  
-	var regex = new RegExp(regexS, 'i');  
-	var results = regex.exec( window.location.href ); 
-	if( results == null )    return "";  
-	else    return results[1];
+/**
+ *--------------------------------------
+ * 網頁表單處理
+ *--------------------------------------
+ */
+
+/**
+ * 進行遊戲程式區初始化
+ */
+gameInitialize = function() {
+  var playBtnWrapper = document.querySelector('.playBtnWrapper');
+
+  if(typeof(playBtnWrapper)!='undefined' && playBtnWrapper!=null) {
+    playBtnWrapper.innerHTML = '';
+  }
+
+  //clear all injectionJS
+  var jsList = document.querySelectorAll('#injectionJS');
+  if(typeof(jsList)!='undefined' && jsList!=null) {
+    for(var i=0; i<jsList.length; i++) {
+	  jsList[i].remove();
+	}
+  }
 };
 
-parseSheetID = function(url) {
-	var id = '';
-	if(url!='') {
-	  if(/\/d\/([^\/]+)\//.test(url)) {
-		id = window['RegExp']['lastParen'];	
-	  } else if(url.length>30) {
-		id = url;
-	  }
-	}
-	return id;
-};
-sheetOnChangeHandler = function(elm) {
-  var id = parseSheetID(elm.value);
-  if(id!='') {
-    elm.value = id;
-  }
+/**
+ * 欄位輸入變更時, 檢查網址,並換成 Google Drive 檔案的 id
+ * @param {Object} url 網址
+ */
+fileURL_onBlurHandler = function(elm) {
+  elm.value = elm.value.trim();
+  var id = getGoogleDriveFileId(elm.value);
   var boxList = document.querySelectorAll('.paramBox');
-  for(var i=0; i<boxList.length; i++) {
-    if(id!='') {
-	  boxList[i].style.display = 'block';
-    } else {
-	  boxList[i].style.display = 'none';
-    }
+  var resultBlock = document.querySelector('.resultBlock');
+  
+  if(id!='') {
+    //elm.value = id;
+  }
+  if(typeof(boxList)!='undefined' && boxList!=null) {
+    for(var i=0; i<boxList.length; i++) {	
+      if(id!='' && isGoogleSheet(elm.value)) {
+	    boxList[i].style.display = 'block';
+      } else {
+	    boxList[i].style.display = 'none';
+      }
+	}
+  }
+  if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+    resultBlock.style.display = 'none';
   }
 };
+/**
+ * 按送出紐後要處理的程序
+ */
 submitOnClickHandler = function() {
   var resultBlock = document.querySelector('.resultBlock');
-  var id = parseSheetID(document.getElementById('sheet').value);
-  var sheetName = document.getElementById('sheetName').value.trim();
-  var gameID = document.getElementById('gameID').value.trim();
-  var url  = getSheetQueryURL(id, sheetName, gameID, '', 'isTest');
-  resultBlock.style.display = 'none';
-  if(url!='') {
-	setTimeout(function() {
-      resultBlock.style.display = 'block';
-      var gameURL = 'https://gsyan888.github.io/html5_fun/game_launcher.html'; //window.location.href;
-      gameURL = new URL(gameURL);
-      gameURL.hash = ''
-      gameURL.search = ''	
-	  gameURL = gameURL.toString()+`?sheet=${id}&sheetname=${sheetName}&gameid=${gameID}&`;
-      document.querySelector('.gameURL').innerHTML = gameURL;
-	  autostart = false;
-	  loadFromScript(url);
-	  jumpToAnother(1, 2);
-	}, 100);
+  var playBtnWrapper = document.querySelector('.playBtnWrapper');
+  var fileURL = document.getElementById('fileURL').value.trim();
+  var id = getGoogleDriveFileId(fileURL);
+  
+  //清空 playBtnWrapper, injectionJS
+  gameInitialize();
+
+  if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+    resultBlock.style.display = 'none';
   }
+  
+  if(isGoogleSheet(fileURL)) {
+    //給的網址是試算表的，遊戲設定存放試算表者    
+    var sheetName = document.getElementById('sheetName').value.trim();
+    var gameID = document.getElementById('gameID').value.trim();
+    var gameIdAt = document.getElementById('gameIdAt').value.trim();
+    var url  = getSheetQueryURL(id, sheetName, gameID, gameIdAt, 'isTest');
+    if(url!='') {
+	  setTimeout(function() {
+	    if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+          resultBlock.style.display = 'block';
+		}
+		
+		var gameURL = getGameURL(id, sheetName, gameID, gameIdAt);
+		try {
+          document.querySelector('.gameURL').innerHTML = gameURL;
+		}catch(e) {console.log(e); };
+	    autostart = false;
+	    getSpreadSheetQueryResponse(url, loadJavascriptAndStartGame);
+	    jumpToAnother(1, 2);
+	  }, 100);
+    }
+  }	else if(id!=''){
+	var gameURL = getGameURL(id);
+	setTimeout(function() {
+      if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+        resultBlock.style.display = 'block';
+	  }
+	  try {
+        document.querySelector('.gameURL').innerHTML = gameURL;
+	  }catch(e) {console.log(e);};
+      autostart = false;
+      fetchFileFromGoogleDrive(fileURL, replaceHtmlAndStartGame);
+      jumpToAnother(1, 2);
+    }, 10);
+  } 
 };
-/* 由按下的物件捲動到步驟? 的位置 */
+/*  */
+/**
+ * 由按下的物件捲動到步驟? 的位置
+ * @param {Number} from 由哪一步驟起跳, 如果是字串, 就當作是物件的 id
+ * @return {Number} to 跳到哪一步驟, 如果是字串, 就當作是物件的 id
+ */
 jumpToAnother = function (from, to) {
   if(!isNaN(to)) {
 	  to = document.getElementById('step' + to);
@@ -164,11 +215,104 @@ jumpToAnother = function (from, to) {
     behavior: 'smooth'
   });
 };
-/*
- 複製指定物件的文字到剪貼簿中 (此部份與 editor.js 中的重覆, 但先保留)
- Credit : 
-   https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
- target : 如果是字串，就當作是物件的 id, 再轉為物件
+
+/**
+ *--------------------------------------
+ * 工具區
+ *--------------------------------------
+ */
+
+/**
+ * 取得指定網址中的某一個參數(已編碼過的)
+ * @param {String} 要取得內容的參數名稱
+ * @param {String} url 網址
+ * @return {String} 內容
+ */
+getUrlParam = function(name, url) {
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  var regex = new RegExp(regexS, 'i');  
+  var results = regex.exec((typeof(url)=='string'?url:window.location.href)); 
+  if(results==null) return "";  
+  else return results[1];
+};
+/**
+ * 由網址解析出 Google Drive 檔案的 id
+ * @param {String} url 網址
+ * @return {String} id
+ */
+getGoogleDriveFileId = function(url) {
+  var id = '';  
+  if(!(/^https\:\/\//i.test(url))) {
+    id = url.trim();
+  } else if(match=url.match(/\/d\/([^\/]{20}[^\/]+)\//) ) {
+    //parse URL format /d/xxxxxxxxxxx/
+    id = match[1];
+  } else {
+	id = getUrlParam('id', url);
+  }
+  return id;
+};
+/**
+ * 由網址判斷是否為 Google 試算表
+ * @param {String} url 網址
+ * @return {Boolean} true: is SpreadSheet
+ */
+isGoogleSheet = function(url) {
+  return (/sheet/i.test(url));
+};
+/**
+ * 重新載入 injectionJS (html5_fun_embeded.js)
+ * @param {String} modulename HTML5 FUN 的模組名稱 (定義在 html5_fun_embeded.js)
+ * @param {Object} attributes 自訂的 script tag attributes
+ * @param {Boolean} debug 是否開啟偵模式
+ */
+reloadInjectionJS = function(modulename, attributes, debug) {
+  console.log('debug: reload injectionJS');
+  
+  var parentNode;
+  var oldJS = document.getElementById('injectionJS');
+  if(typeof(oldJS)!='undefined' && oldJS!=null) {
+    parentNode = oldJS.parentNode;
+    oldJS.parentNode.removeChild(oldJS);
+	if(typeof(attributes)=='undefined') {
+		var attributes = {};
+		for(var index=0; index<oldJS.attributes.length; index++) {		
+			var  obj = oldJS.attributes[index];
+			attributes[obj['name']] = obj['value'];
+		}
+	}
+  } else {
+    parentNode = document.getElementsByTagName('head')[0];
+  }
+
+  var scriptTag = document.createElement('script');
+  scriptTag.type = "text/javascript";
+  scriptTag.charset = "utf-8";
+  scriptTag.id = 'injectionJS';
+  scriptTag.src = (debug ? "./" : "https://gsyan888.github.io/html5_fun/")+"html5_fun_embeded.js";
+  scriptTag.setAttribute('autostart', "false");
+  if(typeof(attributes)=='object' && attributes!=null) {
+	var keys = Object.keys(attributes);
+	for(var i=0; i<keys.length; i++) {
+		scriptTag.setAttribute(keys[i], attributes[keys[i]]);
+	}
+  }
+  if(typeof(modulename)=='string') {
+	scriptTag.setAttribute('modulename', modulename);
+  }
+  if(typeof(autostart)=='boolean') {
+	scriptTag.setAttribute('autostart', `${autostart}`);	//自動啟動遊戲
+  }
+  parentNode.appendChild(scriptTag);
+};
+
+/**
+ * 複製指定物件的文字到剪貼簿中
+ * Credit : 
+ *  https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
+ *
+ * @param {Object} target 如果是字串，就當作是物件的 id, 再轉為物件
  */
 copyAndSelectToClipboard = function (target) {
   if (typeof(target) == 'string') {
@@ -202,56 +346,38 @@ copyAndSelectToClipboard = function (target) {
     }, 300);
   }
 };
-
-/*
-//var base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
-//
-//https://spreadsheets.google.com/tq?
-//tqx=out:html
-//tqx=out:csv
-//&gid=0
-//&key=
-//&tq=
-//
-//var sheetName = '工作表1';
-//sheetName = encodeURIComponent(sheetName);
-//gameID = 'frog-gsyan';
-//query = encodeURIComponent(`Select * where (A contains '${gameID}')`);
-//url = `${base}&sheet=${sheetName}&tq=${query}&`;
-*/
-
-getSheetQueryURL = function(id, sheetName, gameID, gameIdAt, isTest) {
-  var url = '';
-  var msg = '';
-  if(typeof(id)!='string' || id.length<30) {
-    msg = '請輸入並檢查一下試算表的共用連結網址或文件代碼後，再試一次';
-    //} else if(typeof(sheetName)!='string' || sheetName.replace(/\s/g, '')=='') {
-    //  msg = '請輸入試算表「工作表名稱」後，再試一次';
-  } else if(typeof(gameID)!='string' || gameID.replace(/\s/g, '')=='') {
-    msg = '請輸入要載入遊戲的「遊戲取用代碼」後，再試一次'; 
+/**
+ * 取得遊戲啟動的網址
+ * @param {String} id Google Drive文件 ID
+ * @param {String} sheetName 工作表名稱
+ * @param {String} gameID 遊戲取用代碼
+ * @param {String} gameIdAt 遊戲取用代碼在哪一欄, 未指定就用 A
+ * @return {String} 遊戲啟動的網址
+ */
+getGameURL = function(id, sheetName, gameID, gameIdAt) {
+  var gameURL = 'https://gsyan888.github.io/html5_fun/game-launcher.html'; //window.location.href;
+  gameURL = new URL(gameURL);
+  gameURL.hash = '';
+  gameURL.search = '';
+  if(typeof(id)=='string' && typeof(gameID)!='string') {
+    //由 Google Drive 載入 .html , .js 檔案的
+    gameURL = gameURL.toString()+'?id='+id+'&';
   } else {
-    window['gameID'] = gameID;
-	if(typeof(gameIdAt)!='string' || gameIdAt=='') {
-	  gameIdAt = 'A';
-	}
-	window['gameIdAt'] = gameIdAt.toUpperCase()
-    //sheetName = encodeURIComponent(sheetName);
-    //var query = `Select * where (A contains "${gameID}")`;
-	var query = `SELECT * WHERE ${gameIdAt} = '${gameID}'`;
-	query = encodeURIComponent(query);
-    url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?`;
-    url += (typeof(sheeName)=='string' && sheeName.replace(/\s/g, '')!=''? 'sheet='+sheetName:'');
-	url += '&tq='+query+'&';
-  }
-  if(msg!='' && typeof(isTest)!='undefined') {
-    alert(msg);
-  }
-  return url;
+    //設定存放試算表的
+    gameURL = gameURL.toString()+'?sheet='+id;
+    gameURL += (typeof(sheetName)=='string' && sheetName.replace(/\s/g, '')!=''?'&sheetname='+sheetName:'');
+    gameURL += '&gameid='+gameID+'&';
+    gameURL += (typeof(gameIdAt)=='string'?'&idAt='+gameIdAt.toUpperCase()+'&':'');
+  }	
+  return gameURL;
 };
 
-//-------------------------------------------------
-//
-//-------------------------------------------------
+
+/**
+ * 將 base64 編碼的資料解碼
+ * @param {String} data 以base64編碼過的內容
+ * @return {String} 解碼後的內容
+ */
 base64_decode = function(data) {
   // From: http://phpjs.org/functions
   // +   original by: Tyler Akins (http://rumkin.com)
@@ -307,9 +433,11 @@ base64_decode = function(data) {
 
   return dec;
 };
-//-------------------------------------------------
-//
-//-------------------------------------------------
+/**
+ * 將資料以 base64 編碼
+ * @param {String} 未碼過的內容
+ * @return {String} base64編碼後的內容
+ */
 base64_encode = function(data) {
   // http://kevin.vanzonneveld.net
   // +   original by: Tyler Akins (http://rumkin.com)
@@ -376,6 +504,11 @@ base64_encode = function(data) {
  * utf16 = utf16to8(utf8);
  */
 
+/**
+ * UTF-16 conver to UTF-8
+ * @param {String} str UTF-16 string
+ * @return {String} UTF-8 string
+ */
 utf16to8 = function(str) {
     var out, i, len, c;
 
@@ -396,7 +529,11 @@ utf16to8 = function(str) {
     }
     return out;
 };
-
+/**
+ * Convert UTF-8 to UTF-16
+ * @param {String} str UTF-8 string
+ * @return {String} UTF-16 string
+ */
 utf8to16 = function(str) {
   var out, i, len, c;
   var char2, char3;
@@ -428,50 +565,76 @@ utf8to16 = function(str) {
   }
   return out;
 };
-/*
- 重新載入 injectionJS (html5_fun_embeded.js)
- modulename: HTML5 FUN 的模組名稱 (定義在 html5_fun_embeded.js)
- */ 
-reloadInjectionJS = function(modulename, attributes, debug) {
-  var parentNode;
-  var oldJS = document.getElementById('injectionJS');
-  if(typeof(oldJS)!='undefined' && oldJS!=null) {
-    parentNode = oldJS.parentNode;
-    oldJS.parentNode.removeChild(oldJS);
-	if(typeof(attributes)=='undefined') {
-		var attributes = {};
-		for(var index=0; index<oldJS.attributes.length; index++) {		
-			var  obj = oldJS.attributes[index];
-			attributes[obj['name']] = obj['value'];
-		}
-	}
+
+
+/**
+ *--------------------------------------
+ * Google 試算表查詢相關
+ *--------------------------------------
+ */
+
+/**
+//var base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
+//
+//https://spreadsheets.google.com/tq?
+//tqx=out:html
+//tqx=out:csv
+//&gid=0
+//&key=
+//&tq=
+//
+//var sheetName = '工作表1';
+//sheetName = encodeURIComponent(sheetName);
+//gameID = 'frog-gsyan';
+//query = encodeURIComponent(`Select * where (A contains '${gameID}')`);
+//url = `${base}&sheet=${sheetName}&tq=${query}&`;
+ */
+
+/**
+ * 將試算表文件 ID, 工作表名稱, 遊戲取用代碼組成資料查詢網址
+ * @param {String} id 試算表文件 ID
+ * @param {String} sheetName 工作表名稱
+ * @param {String} gameID 遊戲取用代碼
+ * @param {String} gameIdAt 遊戲取用代碼在哪一欄, 未指定就用 A
+ * @param {String} isTest 純檢查欄位是否齊全, 有缺就顯示錯誤
+ * @return {String} 資料查詢的網址
+ */
+getSheetQueryURL = function(id, sheetName, gameID, gameIdAt, isTest) {
+  var url = '';
+  var msg = '';
+  if(typeof(id)!='string' || id.length<30) {
+    msg = '請輸入並檢查一下試算表的共用連結網址或文件代碼後，再試一次';
+    //} else if(typeof(sheetName)!='string' || sheetName.replace(/\s/g, '')=='') {
+    //  msg = '請輸入試算表「工作表名稱」後，再試一次';
+  } else if(typeof(gameID)!='string' || gameID.replace(/\s/g, '')=='') {
+    msg = '請輸入要載入遊戲的「遊戲取用代碼」後，再試一次'; 
   } else {
-    parentNode = document.getElementsByTagName('head')[0];
-  }
-  var scriptTag = document.createElement('script');
-  scriptTag.type = "text/javascript";
-  scriptTag.charset = "utf-8";
-  scriptTag.id = 'injectionJS';
-  scriptTag.src = (debug ? "./" : "https://gsyan888.github.io/html5_fun/")+"html5_fun_embeded.js";
-  scriptTag.setAttribute('autostart', "false");
-  if(typeof(attributes)=='object' && attributes!=null) {
-	var keys = Object.keys(attributes);
-	for(var i=0; i<keys.length; i++) {
-		scriptTag.setAttribute(keys[i], attributes[keys[i]]);
+    window['gameID'] = gameID;
+	if(typeof(gameIdAt)!='string' || gameIdAt=='') {
+	  gameIdAt = 'A';
 	}
+	window['gameIdAt'] = gameIdAt.toUpperCase()
+    //sheetName = encodeURIComponent(sheetName);
+    //var query = `Select * where (A contains "${gameID}")`;
+	var query = `SELECT * WHERE ${gameIdAt} = '${gameID}'`;
+	query = encodeURIComponent(query);
+    url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?`;
+    //url += (typeof(sheetName)=='string' && sheetName.replace(/\s/g, '')!=''? 'sheet='+encodeURIComponent(sheetName):'');
+	url += (typeof(sheetName)=='string' && sheetName.replace(/\s/g, '')!=''? 'sheet='+sheetName:'');
+	url += '&tq='+query+'&';
   }
-  if(typeof(modulename)=='string') {
-	scriptTag.setAttribute('modulename', modulename);
+  if(msg!='' && typeof(isTest)!='undefined') {
+    alert(msg);
   }
-  if(typeof(autostart)=='boolean') {
-	scriptTag.setAttribute('autostart', `${autostart}`);	//自動啟動遊戲
-  }
-  parentNode.appendChild(scriptTag);
+  return url;
 };
-
-
-//將文字檔取回後，去掉頭尾變純 JSON 字串
-//此方法必須在網路上執行才不會因為 CORS 而被瀏覽器擋下來
+/**
+ * 向試算表查詢資料
+ * 將文字檔取回後，去掉頭尾變純 JSON 字串
+ * 此方法必須在網路上執行才不會因為 CORS 而被瀏覽器擋下來
+ * @param {String} url 試算表查詢資料的網址
+ * @param {Function} callback 查完資料後要執行的程序
+ */
 fetchSheetData = function(url, callback) {
   fetch(url)
     .then(res => res.text())
@@ -487,57 +650,67 @@ fetchSheetData = function(url, callback) {
       return;
 	});
 };
-
-loadFromScript = function(scriptSrc, callback)  {
-	var nocacheVal = '?nocache=' + new Date().getTime();	//為了避免 cache 的問題,在檔名後加亂數
-	var scriptToAdd = document.createElement('script');		//建立一個 scriptElement
-	
-	scriptToAdd.setAttribute('type','text/javascript');
-	scriptToAdd.setAttribute('charset','utf-8');
-	//scriptToAdd.setAttribute('src', scriptSrc + nocacheVal);	//避免 cache 時用的
-	scriptToAdd.setAttribute('src', scriptSrc);
-	//載入成功時
-	scriptToAdd.onload = scriptToAdd.onreadystatechange = function() {
-		if (!scriptToAdd.readyState || scriptToAdd.readyState === "loaded" || scriptToAdd.readyState === "complete") {
-			scriptToAdd.onload = scriptToAdd.onreadystatechange = null;
-			document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//將變數載入後移除 script
-			if(typeof(callback)=='function') {
-				callback();	//執行指定的函數
-			}
-        };
-	};
-	//無法載入時, 將設定用預設值
-	scriptToAdd.onerror = function() {
-		scriptToAdd.onerror = null;	//將事件移除
-		document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//移除 script
-		if( typeof callback == 'function' ) {
-			callback();	//執行指定的函數
-		} else {
-			var msg = '無法載入遊戲設定。';
-			var resultBlock = document.querySelector('.resultBlock');
-			if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
-				msg += '\n\n請確認一下:\n\n* 試算表共用連結的網址是否正確，\n\n* 是否開放任何人都可以檢視。';
-				resultBlock.style.display = 'none';			
-			}
-			setTimeout(function() {
-				alert(msg);
-			}, 100);
-		}
-	}
-	
-	//在 head 的最前頭加上前述的 scriptElement
-	var docHead = document.getElementsByTagName("head")[0];
-	docHead.insertBefore(scriptToAdd, docHead.firstChild);
-};
-
-/* 
- 回傳時是呼叫 google.visualization.Query.setResponse 
- 所以將資料傳來時要執的程序放裡面
+/**
+ * JSONP 以新增 script 的方式，來執行試算表的查詢後的函數
+ * callback 變成查詢後執行的函數，這樣參數可以取得試算表的查詢結果
+ *
+ * @param {String} url 試算表的共用必須任何人都可以檢視
+ * @param {Function} callback 查到資料後要執的程序
  */
-if(typeof(google)=='undefined') { google = {}; }
-if(typeof(google.visualization)=='undefined') { google.visualization = {}; }
-if(typeof(google.visualization.Query)=='undefined') { google.visualization.Query = {};}
-google.visualization.Query.setResponse = function(data) {
+getSpreadSheetQueryResponse = function(url, callback)  {
+  var nocacheVal = '?nocache=' + new Date().getTime();	//為了避免 cache 的問題,在檔名後加亂數
+  var scriptToAdd = document.createElement('script');		//建立一個 scriptElement
+  //console.log(decodeURIComponent(url));
+  //delete spreadSheetQueryData; //先清除儲存試算表查詢結果用的變數
+  //JSONP 呼叫 callback
+  if(typeof(google)=='undefined') { google = {}; }
+  if(typeof(google.visualization)=='undefined') { google.visualization = {}; }
+  if(typeof(google.visualization.Query)=='undefined') { google.visualization.Query = {};}
+  google.visualization.Query.setResponse = callback;
+
+  scriptToAdd.setAttribute('type','text/javascript');
+  scriptToAdd.setAttribute('charset','utf-8');
+  //scriptToAdd.setAttribute('src', url + nocacheVal);	//避免 cache 時用的
+  scriptToAdd.setAttribute('src', url);
+  //載入成功時
+  scriptToAdd.onload = scriptToAdd.onreadystatechange = function() {
+    if (!scriptToAdd.readyState || scriptToAdd.readyState === "loaded" || scriptToAdd.readyState === "complete") {
+      scriptToAdd.onload = scriptToAdd.onreadystatechange = null;
+      document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//將變數載入後移除 script
+      //if(typeof(callback)=='function') {
+      //	callback();	//執行指定的函數
+      //}
+    };
+  };
+  //無法載入時, 將設定用預設值
+  scriptToAdd.onerror = function() {
+    scriptToAdd.onerror = null;	//將事件移除
+    document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//移除 script
+    if( typeof callback == 'function' ) {
+      callback();	//執行指定的函數
+    } else {
+      var msg = '無法載入遊戲設定.';
+      var resultBlock = document.querySelector('.resultBlock');
+      if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+        msg += '\n\n請確認一下:\n\n* 試算表共用連結的網址是否正確, \n\n* 是否開放任何人都可以檢視.';
+        resultBlock.style.display = 'none';			
+      }
+      setTimeout(function() {
+        alert(msg);
+      }, 100);
+    }
+  }
+
+  //在 head 的最前頭加上前述的 scriptElement
+  var docHead = document.getElementsByTagName("head")[0];
+  docHead.insertBefore(scriptToAdd, docHead.firstChild);
+};
+/**
+ * 以 JSONP 的方式向試算表查詢資料
+ * @param {String} srcriptSrc 試算表查詢資料的網址
+ * @param {Function} callback 查完資料後要執行的程序
+ */
+loadJavascriptAndStartGame = function(data) {
   console.log(data);
   var isOK = false;
   if(typeof(data['status'])=='string' && data['status']=='ok') {
@@ -578,21 +751,181 @@ google.visualization.Query.setResponse = function(data) {
   }
 };
 
-var sheetId = '1efjHkAkKId9uMb_amH_MWWDrV3m37aZqghSdGyh3Tzg';
-var sheetId = '';
+/**
+ *--------------------------------------
+ * 以存放 Google Drive 的檔案來啟動遊戲
+ *--------------------------------------
+ */
 
-var sheetURI = parseSheetID(getUrlParam('sheet'));
+/**
+ * 將網址轉換為 Google Drive 檔案直接下載的網址
+ * @param {String} url 原始網址
+ * @return {String} 轉換好的網址, 非 Google Drive 的檔案傳回空字串
+ */
+getGoogleDriveFileDownloadURL = function(url) {
+  var id = getGoogleDriveFileId(url);  
+  if(id!='') {
+    var resourcekey = getUrlParam('resourcekey', url);
+	url = 'https://drive.google.com/uc?export=view&id='+id;
+	url += '&confirm=t&'; //加上 confirm=t 就不會出現確認的頁面, .js 才能下載
+    url += (resourcekey!=''?'&resourcekey='+resourcekey:'');
+  } else {
+    url = '';
+  }
+  return url;
+};
+/**
+ * 由 Google Drive 下載檔案(透過 corsproxy 避開 CORS 限制)
+ * @param {String} url 要下載的 Google Drive 檔案公開網址
+ * @param {Function} callback 下載後要執行的程序
+ */
+fetchFileFromGoogleDrive = function(url, callback) {
+  // var url = 'https://drive.google.com/uc?export=view&id='+id+'&confirm=t&';
+  var fileDownloadURL = getGoogleDriveFileDownloadURL(url);
+  //var fileDownloadURL = url;
+  if(fileDownloadURL!='') {
+    url = 'https://corsproxy.io/?'+fileDownloadURL;
+    fetch(url)
+      .then(res => {
+        //console.log(res);
+        if(res) {
+          if(res.ok) {
+            //如果有下載到資料, corsproxy 會設定 ok=true
+            return res.text()
+          } else {
+            if(typeof(callback)=='function') {
+              callback('', 'HTML5 FUN 的檔案下載失敗, 無法繼續。錯誤代碼: '+res.status);
+            } else {
+              return '';
+            }
+          }
+        }
+      })
+      .then(rep => {
+        //console.log(rep);
+        if(rep && typeof(callback)=='function') {
+          callback(rep);
+        } else {
+          console.log(rep);
+        }			
+      });
+  } else {
+	if(typeof(callback)=='function') {
+      callback("", '網址有問題, 無法繼續');
+	} else {
+      alert('網址有問題, 無法繼續');
+	}
+  }	  
+};
+
+/**
+ *--------------------------------------
+ * 將下載檔案的資料填入頁面並啟啟遊戲
+ *--------------------------------------
+ */
+
+/**
+ * 新增或更新 id 為 settingJS 的 script 內容
+ * @param {String} html JavaScript 的程式內容
+ */
+appendSettingJS = function(html) {
+  console.log('debug: append settingJS');
+  
+  var parentNode;
+  var oldJS = document.getElementById('settingJS');
+  if(typeof(oldJS)!='undefined' && oldJS!=null) {
+    parentNode = oldJS.parentNode;
+    oldJS.parentNode.removeChild(oldJS);
+  } else {
+	parentNode = document.querySelector('.playBtnWrapper');
+	if(typeof(parentNode)!='undefined' && parentNode!=null) {
+	  parentNode.innerHTML = '';
+	} else {
+	  parentNode = document.getElementsByTagName('body')[0];
+	}
+  }
+  var scriptTag = document.createElement('script');
+  scriptTag.type = "text/javascript";
+  scriptTag.charset = "utf-8";
+  scriptTag.id = 'settingJS';
+  scriptTag.innerHTML = html;
+  parentNode.appendChild(scriptTag);
+};
+
+/**
+ * 新增或修改整個網頁內容, 或是更新 script 的程式內容
+ * @param {String} html 要更新的內容
+ * @param {String} errorMsg 自訂的錯誤訊息
+ */
+replaceHtmlAndStartGame = function(html, errorMsg) {
+  var match;
+  window['html'] = html;
+  if(/<html/i.test(html) && /id\s*=\s*[\'\"]settingJS[\'\"]/.test(html) && (match=html.match(/<head>((?:.|\n|\r)*?)<\/head>/im))) {
+    //遊戲網頁
+    var head = match[1];
+    if(match = html.match(/<body>((?:.|\n|\r)*?)<\/body>/im)) {
+      var body = match[1];
+      //console.log('deubg: updae HEAD');
+      //document.head.innerHTML = head;
+      console.log('deubg: updae BODY');
+	  var parentNode = document.querySelector('.playBtnWrapper');	  
+	  if(typeof(parentNode)!='undefined' && parentNode!=null) {
+	    parentNode.innerHTML = body;
+	  } else {
+	    document.body.innerHTML = body;
+	  }
+    }
+  } else if(match = html.match(/\/\**\s+\*\s+modulename\:\s*((?:.|\n|\r)*?)\n\s+\*\s+template\:\s*((?:.|\n|\r)*?)\n/im)) { 
+    //遊戲設定檔
+    //取出設定檔註解中的參數 modulename, template
+    var modulenameInJs = match[1];
+    var templateInJs = match[2];
+  } else if(match = html.match(/\/\/\s*HTML5\s*FUN\s*題庫設定檔\s*([^\s]+)\s/im)) {
+    //遊戲設定檔(舊格式)
+    var modulenameInJs = match[1].toLowerCase();
+    var templateInJs = 'unknow';
+  }
+  if(typeof(head)=='string' && head.replace(/\s/g, '')!=''
+    && typeof(body)=='string' && body.replace(/\s/g, '')!='') {
+    //if(typeof(injection)=='function') {
+	//  injection();
+	//} else {
+      console.log('deubg: run reload');
+      reloadInjectionJS();
+	//}
+  } else if(typeof(modulenameInJs)=='string' && typeof(templateInJs)=='string') {
+    console.log('deubg: append setting and run reload');
+	appendSettingJS(html);
+    reloadInjectionJS(modulenameInJs);	
+  } else {
+	if(typeof(errorMsg)=='string') {
+      alert(errorMsg);
+	} else {
+      alert('找不到 HTML5 FUN 的設定, 無法繼續');
+	}
+  }
+};
+
+var fileId = '';
+
+var fileIdURI = getUrlParam('id');
+var sheetURI = getUrlParam('sheet');
 if(sheetURI!='') {
-  sheetId = sheetURI;
+  //為了相容已經做好的, sheet 參數也可以代表 id
+  fileId = sheetURI;
+} else if(fileIdURI!='') {
+  fileId = fileIdURI;
 }
 
-var sheetName = parseSheetID(getUrlParam('sheetName'));
+var sheetName = getUrlParam('sheetName');
 
 var gameID = getUrlParam('gameID');
-var gameIdAt = getUrlParam('idAt').toUpperCase();
 
-if(gameID=='') {
-  var msg = '未指定題庫，無法載入遊戲';
+var gameIdAt = getUrlParam('idAt').toUpperCase();
+console.log(gameIdAt);
+
+if(fileId=='') {
+  var msg = '未指定題庫, 無法載入遊戲';
   var elm = document.getElementById('step1');
   if(!elm) {
     elm = document.getElementById('step2');
@@ -605,12 +938,19 @@ if(gameID=='') {
   /* 設定為載後後自動開啟遊戲 */  
   autostart = true;
   
-  /* 取得查詢試算表指定欄位的網址 */
-  url = getSheetQueryURL(sheetId, sheetName, gameID, gameIdAt);
-  
-  /* 查詢、取得遊戲設定，並啟動遊戲 */
-  loadFromScript(url);
-  
+  if(fileId!='' && gameID!='') {
+    /* 設定存放試算表的遊戲 */	
+	
+    /* 取得查詢試算表指定欄位的網址 */
+    url = getSheetQueryURL(fileId, sheetName, gameID, gameIdAt);
+	
+    /* 查詢、取得遊戲設定，並啟動遊戲 */
+    getSpreadSheetQueryResponse(url, loadJavascriptAndStartGame);
+  } else {
+    /* 設定存放檔案的遊戲 */
+	console.log(fileId);
+    fetchFileFromGoogleDrive(fileId, replaceHtmlAndStartGame);
+  }
   /* 將右上角的關閉按鈕拿掉 */  
   setTimeout(function() {
     var btn = document.getElementById('closeBtn');
@@ -619,10 +959,6 @@ if(gameID=='') {
 	}
   }, 3000);
 }
-//document.addEventListener('DOMContentLoaded', loadFromScript);
-
-
-
 
 </script>
 </body>

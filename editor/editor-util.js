@@ -435,11 +435,21 @@ exportJsFile = function () {
   var footerRe = new RegExp('('+escapeRegExpString(decodeHTML(footerKeyStr))+')(.*)', 'sm');
   var exportString = decodeHTML(document.getElementById('settingJS').innerHTML).replace(footerRe, '');
   
-  /* 在設定檔的最前面加上匯出時間 */
-  exportString = '//\n//匯出時間 : ' + dateNow + '\n//\n' + exportString;
+  /* 在設定檔的最前面加上匯出模組名稱、樣版、時間 */
+  /* 取得題庫樣版檔的路徑 */
+  try {
+    var templateURL = getSettingFilename(editorOptions[modulename], templateSelected);
+  } catch(e) {console.log(e); };
+  if(typeof(templateURL) != 'string') {
+    templateURL = '';
+  }
+  var remarkHeader = '/**\n * modulename: ' + modulename;
+  remarkHeader += '\n * template: '+templateURL.replace('https://gsyan888.github.io/html5_fun/', '');
+  remarkHeader += '\n * date: ' + dateNow;
+  remarkHeader += '\n */\n';
 
   /* 以 DataURI 的格式編碼 */
-  var dataURI = toDataURI(exportString, 'text/javascript');
+  var dataURI = toDataURI(remarkHeader+exportString, 'text/javascript');
 
   /* 將資料變成超連結，並觸發它的 click，自動下載檔案 */
   var anchor = document.createElement('a');

@@ -21,6 +21,7 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2023/05/html5-math-whiteboard.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2023/05/html5-math-whiteboard.html"
+	, ""
 	],
 	
 	[ "筆順練習第三版"
@@ -29,6 +30,7 @@ menu_items = [
 	, "html5_stroke_parts/html5_stroke_parts.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2021/12/html5-stroke-parts.html"
+	, ""
 	],
 
 	[ "Speaking"
@@ -37,6 +39,7 @@ menu_items = [
 	, "html5_speaking/html5_speaking.html"
 	, "archives/html5_speaking.zip"
 	, "https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
+	, "speaking"
 	],
 	
 	[ "我說你猜"
@@ -45,6 +48,7 @@ menu_items = [
 	, "html5_charades/html5_charades.html"
 	, "archives/html5_charades.zip"
 	, "https://gsyan888.blogspot.com/2022/11/html5-charades.html"
+	, "charades"
 	],
 
 	[ "PK大賽"
@@ -53,6 +57,7 @@ menu_items = [
 	, "html5_pk/html5_pk.html"
 	, "archives/html5_pk.zip"
 	, "https://gsyan888.blogspot.com/2012/11/html5-pk.html"
+	, "pk"
 	],
 
 	[ "PK2:四人PK"
@@ -61,6 +66,7 @@ menu_items = [
 	, "html5_pk2/html5_pk2.html"
 	, "archives/html5_pk2.zip"
 	, "https://gsyan888.blogspot.com/2013/12/html5-pk2.html"
+	, "pk2"
 	],
 
 	[ "幸運999"
@@ -69,6 +75,7 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2023/01/html5-math-spin-999.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2023/01/html5-math-spin-999.html"
+	, ""
 	],
 	
 	[ "真分數小教具"
@@ -77,6 +84,7 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
+	, ""
 	],
 	
 	[ "青蛙過河"
@@ -85,6 +93,7 @@ menu_items = [
 	, "html5_frog/html5_frog.html"
 	, "archives/html5_frog.zip"
 	, "https://gsyan888.blogspot.com/2023/06/html5-frog.html"
+	, "frog"
 	],
 	
 	[ "幾A幾B"
@@ -93,6 +102,7 @@ menu_items = [
 	, "html5_ab_game/html5_ab_game.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
+	, ""
 	],
 	
 	[ "足球高手"
@@ -101,6 +111,7 @@ menu_items = [
 	, "html5_football/html5_football.html"
 	, "archives/html5_football.zip"
 	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
+	, "football"
 	],
 
 	[ "投籃高手"
@@ -109,6 +120,7 @@ menu_items = [
 	, "html5_basketball/html5_basketball.html"
 	, "archives/html5_basketball.zip"
 	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
+	, "basketball"
 	],
 
 	[ "王牌投手"
@@ -117,6 +129,7 @@ menu_items = [
 	, "html5_baseball/html5_baseball.html"
 	, "archives/html5_baseball.zip"
 	, ""
+	, "baseball"
 	],
 
 	[ "填字遊戲"
@@ -125,6 +138,7 @@ menu_items = [
 	, "html5_crossword/html5_crossword.html"
 	, "archives/html5_crossword.zip"
 	, "https://gsyan888.blogspot.com/2023/05/html5-crossword.html"
+	, "crossword"
 	],
 		
 	[ "English1200"
@@ -133,6 +147,7 @@ menu_items = [
 	, "html5_english1200/html5_english1200.html"
 	, "archives/html5_english1200.zip"
 	, "https://gsyan888.blogspot.com/2019/06/html5-english-1200.html"
+	, "english1200"
 	],
 	
 
@@ -142,6 +157,7 @@ menu_items = [
 	, "html5_ghost/html5_ghost.html"
 	, "archives/html5_ghost.zip"
 	, "https://gsyan888.blogspot.com/2012/12/html5-ghost.html"
+	, "ghost"
 	],
 
 	[ "搶救公主"
@@ -150,6 +166,7 @@ menu_items = [
 	, "html5_shark/html5_shark.html"
 	, "archives/html5_shark.zip"
 	, ""
+	, "shark"
 	],
 
 	[ "量詞大挑戰"
@@ -158,6 +175,7 @@ menu_items = [
 	, "html5_bubble/html5_bubble.html"
 	, "archives/html5_bubble.zip"
 	, "https://gsyan888.blogspot.com/2022/06/html5-fun-bubble.html"
+	, "bubble"
 	],
 
 	[ "Monster 語詞大挑戰"
@@ -166,6 +184,7 @@ menu_items = [
 	, "html5_monster/html5_monster.html"
 	, "archives/html5_monster.zip"
 	, "https://gsyan888.blogspot.com/2022/06/html5-fun-monster.html"
+	, "monster"
 	],
 	
 	[ "Bingo"
@@ -174,6 +193,7 @@ menu_items = [
 	, "html5_bingo/html5_bingo.html"
 	, "archives/html5_bingo.zip"
 	, "https://gsyan888.blogspot.com/2017/10/html5-bingo.html"
+	, "bingo"
 	],
 
 	[ "大家一起來"
@@ -182,6 +202,7 @@ menu_items = [
 	, "html5_card_flip/html5_card_flip.html"
 	, "archives/html5_card_flip.zip"
 	, "https://gsyan888.blogspot.com/2021/03/html5-card-flip.html"
+	, "card_flip"
 	],
 	
 	[ "注音高手"
@@ -190,6 +211,7 @@ menu_items = [
 	, "html5_phonetics_quiz/html5_phonetics_quiz.html"
 	, "archives/html5_phonetics_quiz.zip"
 	, "https://gsyan888.blogspot.com/2022/10/html5-phoneticsquiz-2022.html"
+	, "phonetics_quiz"
 	],
 
 	[ "英文單字高手"
@@ -198,6 +220,7 @@ menu_items = [
 	, "html5_spelling/html5_spelling.html"
 	, "archives/html5_spelling.zip"
 	, "https://gsyan888.blogspot.com/2014/08/html5-spelling.html"
+	, "spelling"
 	],
 
 	[ "聽音辨字六選一"
@@ -206,6 +229,7 @@ menu_items = [
 	, "html5_listening/html5_listening.html"
 	, "archives/html5_listening.zip"
 	, "https://gsyan888.blogspot.com/2022/11/html5-listening.html"
+	, "listening"
 	],
 
 
@@ -215,6 +239,7 @@ menu_items = [
 	, "html5_unscramble/html5_unscramble.html"
 	, "archives/html5_unscramble.zip"
 	, "https://gsyan888.blogspot.com/2019/04/html5-unscramble.html"
+	, "unscramble"
 	],
 	
 
@@ -224,6 +249,7 @@ menu_items = [
 	, "html5_sentence/html5_sentence.html"
 	, "archives/html5_sentence.zip"
 	, "https://gsyan888.blogspot.com/2022/11/html5-sentence-blogger-embeded.html"
+	, "sentence"
 	],
 	
 	[ "對對碰"
@@ -232,6 +258,7 @@ menu_items = [
 	, "html5_match/html5_match.html"
 	, "archives/html5_match.zip"
 	, "https://gsyan888.blogspot.com/2021/06/html5-match.html"
+	, "match"
 	],
 
 	[ "戳戳樂"
@@ -240,6 +267,7 @@ menu_items = [
 	, "html5_poke/html5_poke.html"
 	, "archives/html5_poke.zip"
 	, "https://gsyan888.blogspot.com/2021/06/html5-poke.html"
+	, "poke"
 	],
 
 	[ "幸運輪"
@@ -248,6 +276,7 @@ menu_items = [
 	, "html5_wheel/html5_wheel.html"
 	, "archives/html5_wheel.zip"
 	, "https://gsyan888.blogspot.com/2017/09/html5-wheel.html"
+	, "wheel"
 	],
 
 	[ "樂透機"
@@ -256,6 +285,7 @@ menu_items = [
 	, "html5_lotto/html5_lotto.html"
 	,"archives/html5_lotto.zip"
 	,"https://gsyan888.blogspot.com/2012/11/html5-lotto.html"
+	, "lotto"
 	],
 		
 	[ "remoteClick遙控器"
@@ -264,6 +294,7 @@ menu_items = [
 	, "html5_remoteClick/html5_remoteClick.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2021/06/html5-remoteclick.html"
+	, ""
 	],
 	
 	[ "抽號碼機"
@@ -280,6 +311,7 @@ menu_items = [
 	, "html5_drawnames/html5_drawnames.html"
 	, "archives/html5_drawnames.zip"
 	, ""
+	, ""
 	],
 
 	[ "漢字五子棋"
@@ -288,6 +320,7 @@ menu_items = [
 	, "html5_gomoku/html5_gomoku.html"
 	, "archives/html5_gomoku.zip"
 	, "https://gsyan888.blogspot.com/2021/03/html5-gomoku.html"
+	, "gomoku"
 	],
 	
 	[ "Animation"
@@ -304,6 +337,7 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/07/html5-circle-timer.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2022/07/html5-circle-timer.html"
+	, ""
 	],
 
 	[ "筆順編輯器"
@@ -312,6 +346,7 @@ menu_items = [
 	, "html5_strokeeditor/html5_strokeeditor.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2019/04/html5-stroke-editor.html"
+	, ""
 	],
 	
 	[ "筆順練習第二版"
@@ -320,6 +355,7 @@ menu_items = [
 	, "html5_stroke/html5_stroke.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2013/12/html5-stroke.html"
+	, ""
 	],
 	
 	[ "AR Numbers"
@@ -327,6 +363,7 @@ menu_items = [
 	, "html5_ar_numbers/assets/icon.png"
 	, "html5_ar_numbers/html5_ar_numbers.html"
 	, "archives/html5_ar_numbers.zip"
+	, ""
 	, ""
 	]
 

@@ -47,6 +47,10 @@ fieldIndexNumberOfQuestion = 0;
 //    第一欄為題幹
 //    第二欄為答案
 //
+//  支援的素材: (不能混合使用)
+//    * 文字: 一般文字, 國字加注音, 分數格式
+//    * 圖片: .png .jpg .gif .svg
+//
 questionLines = function(){/*--這一行請勿更改--
 
 小狗##dog

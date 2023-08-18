@@ -151,14 +151,20 @@ split_seperator = " ";
 // [題庫]
 //
 // 一行一題, 
+//
 // 每一行由欄位分隔符號分為兩個欄位
+//
 // 第一欄為題目句子(可再利用符號或長度來分割)
+//
 // 第 2, 3, 4欄以後可指定使用以三種素材(也可不使用)
-//   文字(例如英文題目的中譯)
-//   音檔路徑
-//   圖檔路徑
+//   * 文字(例如英文題目的中譯)
+//   * 音檔路徑
+//   * 圖檔路徑
+//
+// 本範例以 [空格] 來切割句子為字詞卡
 //
 questionLines = function(){/*--這一行請勿更改--
+
 What's wrong?##怎麼了？
 My leg hurts.##我的腳受傷了
 His hands hurt.##他的手受傷了。
@@ -169,5 +175,6 @@ She has a runny nose.##她流鼻水。
 My eyes hurt.##mp3/8.mp3
 Her arm hurts.##mp3/9.mp3
 His ear hurts.##mp3/10.mp3
+
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
 

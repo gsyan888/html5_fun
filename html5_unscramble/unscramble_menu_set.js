@@ -19,9 +19,10 @@ menu_title='UNSCRAMBLE';		//選單標題
 //
 menu_items = new Array(
 //------------------------------------下一行開始為選單增加項目
- '設定範例(英文句子),question_set_example-1.js'
-,'設定範例(英文單字),question_set_example-2.js'
-,'設定範例(中文句子),question_set_example-3.js' 
-,'設定範例(英文單字以長度切),question_set_example-4.js' 
+ '設定範例(英文句子以空格切),question_set_example-1.js'
+,'設定範例(英文單字以長度切),question_set_example-2.js' 
+,'設定範例(英文單字以~~切),question_set_example-3.js'
+,'設定範例(中文句子以空格切),question_set_example-4.js' 
+,'設定範例(中文句子以~~切),question_set_example-5.js' 
 //------------------------------------選單選項結束,以下請勿修改
 );

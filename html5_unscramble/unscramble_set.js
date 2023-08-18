@@ -10,8 +10,8 @@ menu_setting_filename = "unscramble_menu_set.js";	//選單設定檔檔名
 //
 answer_block_y = 768*0.33;	//作答區的 y 座標
 
-audioPlayer_x = 80;			//語音播放器的 x 座標
-audioPlayer_y = 768-80;		//語音播放器的 y 座標
+audioPlayer_x = 1024-40;			//語音播放器的 x 座標
+audioPlayer_y = 768-70;		//語音播放器的 y 座標
 
 text_hint_x = 1024/2;		//提示文字區的 x 座標
 text_hint_y = 768*0.7;		//提示文字區的 y 座標

@@ -66,6 +66,10 @@ showJSCode = function (n) {
     case 2: /* 查看並複製所有語法 */
 
       /* 先取得輸出語法的選項 */
+      /* autostart enabed? */
+	  var elm = document.getElementById('autostartEnabled');
+	  var autostartEnabled = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
+	  
       /* Google Sites */
       var elm = document.getElementById('forGoogleSites');
       var forGoogleSites = elm != null && typeof(elm.checked) != 'undefined' && elm.checked != null ? elm.checked : false;
@@ -123,7 +127,10 @@ showJSCode = function (n) {
 
         html = getJSheadAttributes(jsID[0]) + html + jsFoot;
       }
-
+      /* 將 autostart 設為 true , 載入後自動進入遊戲 */
+      if(autostartEnabled) {
+        html = html.replace(/autostart="false"/, 'autostart="true"');
+      }
       /* =========== Google Sites 需要是完整的網頁語法 ===== */
       
       if (forGoogleSites || forClassroomScreen) {

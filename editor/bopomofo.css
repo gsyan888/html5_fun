@@ -361,3 +361,14 @@ pre code span.line::before {
 #sourceCode {
   width:98%;
 }
+
+
+.game-selector {
+  background-color: yellow;
+  border-radius: 1em; 
+  padding: 0.5em;
+  cursor:pointer;
+  font-size:1.2em;
+ }
+.game-selector option {
+ }

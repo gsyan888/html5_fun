@@ -20,6 +20,8 @@ tts_speed = 0.3;  //語音的速度 0 ~ 1 (可用小數)
 tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=${tts_language}&client=tw-ob&ttsspeed=${tts_speed}&q=';
 
 
+//短網址資料庫網址
+spreadSheetURL = 'https://docs.google.com/spreadsheets/d/1NhBX_H02tLWzEA8ThNJm3EOz4prRleT8-edkd_S-m3E/edit?usp=sharing';
 
 
 //字卡的相關設定

@@ -96,6 +96,15 @@ menu_items = [
 	, "frog"
 	],
 	
+	[ "圓面積小教具"
+	, "利用切割圓來推導面積公式小教具"
+	, "html5_math/assets/icon-circle-area.png"
+	, "https://gsyan888.blogspot.com/2023/11/html5-circle-area.html?autostart=true"
+	, ""
+	, "https://gsyan888.blogspot.com/2023/11/html5-circle-area.html"
+	, ""
+	],
+	
 	[ "幾A幾B"
 	, "AB Game 幾A幾B猜謎遊戲"
 	, "html5_ab_game/assets/icon.png"

@@ -331,7 +331,16 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2021/03/html5-gomoku.html"
 	, "gomoku"
 	],
-	
+
+	[ "雷達圖產生器"
+	, "自訂參數後產生雷達圖"
+	, "assets/icon-radar-chart.png"
+	, "https://gsyan888.blogspot.com/2023/11/html5-radar-chart.html?autostart=true"
+	, ""
+	, "https://gsyan888.blogspot.com/2023/11/html5-radar-chart.html"
+	, ""
+	],
+		
 	[ "Animation"
 	, "線上玩柵欄動畫"
 	, "html5_animation/assets/icon.png"

@@ -31,9 +31,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="293.44931"
-     inkscape:cy="287.79246"
+     inkscape:zoom="0.85725"
+     inkscape:cx="377.95276"
+     inkscape:cy="284.04783"
      inkscape:window-width="1360"
      inkscape:window-height="746"
      inkscape:window-x="-8"
@@ -46,9 +46,9 @@
      id="layer1"
      transform="translate(530.93696,242.5039)"><g
        id="g3012"><path
-         id="path234"
+         id="path234-1"
          style="fill:#cccccc;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stop-color:#000000"
-         d="m -460.61375,-195.7382 a 60,60 0 0 0 -59.99995,60.00047 30,30 0 0 1 29.99972,-30.00023 30,30 0 0 1 30.00023,30.00023 h 59.99996 a 60,60 0 0 0 -59.99996,-60.00047 z" /><path
+         d="m -460.60959,-195.7382 a 60,60 0 0 0 -59.99995,60.00047 30,30 0 0 1 29.99971,-30.00023 30,30 0 0 1 30.00024,29.9899 30,30 0 0 1 29.99972,-29.98939 30,30 0 0 1 29.99197,29.30623 60,60 0 0 0 -59.99169,-59.30698 z" /><path
          style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:4, 4;stroke-dashoffset:0;stroke-opacity:1"
          d="m -518.49991,-135.94476 c 120,0 120,0 120,0"
          id="path1733" /><circle
@@ -57,6 +57,12 @@
          cx="-490.39835"
          cy="-135.94467"
          r="3" /><circle
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9, 3;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+         id="path3973-8"
+         cx="430.82913"
+         cy="-135.94467"
+         r="3"
+         transform="scale(-1,1)" /><circle
          style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:9, 3;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
          id="path3973-0"
          cx="-460.61658"

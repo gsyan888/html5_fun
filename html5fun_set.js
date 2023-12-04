@@ -105,6 +105,15 @@ menu_items = [
 	, ""
 	],
 	
+	[ "東拼西湊"
+	, "以用來載入圖片並進行剪截、拼貼、塗鴉的小教具"
+	, "html5_math/assets/icon-crop.png"
+	, "https://gsyan888.blogspot.com/2023/12/html5-crop.html?autostart=true"
+	, ""
+	, "https://gsyan888.blogspot.com/2023/12/html5-crop.html"
+	, ""
+	],
+	
 	[ "幾A幾B"
 	, "AB Game 幾A幾B猜謎遊戲"
 	, "html5_ab_game/assets/icon.png"

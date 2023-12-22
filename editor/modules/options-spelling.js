@@ -43,7 +43,11 @@ var editorOptions = {
         "text",
         "語音播放的速度",
 		"(1.0 正常, 0.5 慢速, 2.0 兩倍速)"],
-						
+
+      "logger_url": [
+        "text",
+        "上載成績記錄用的網址"],
+
       "questionLines": [
         "textarea",
         "題庫"]

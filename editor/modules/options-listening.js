@@ -106,6 +106,10 @@ var editorOptions = {
         "聲音載入幾秒逾時不候",
         "(超過時間用合成語音)"],
 
+      "logger_url": [
+        "text",
+        "上載成績記錄用的網址"],
+
       "questionLines": [
         "textarea",
         "題庫"]

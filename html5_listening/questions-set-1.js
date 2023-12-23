@@ -93,7 +93,7 @@ audioLoadingTimeout = 2;
 //---------------------------------
 //記錄作答情形程式的 URL (可不使用)
 //---------------------------------
-//logger = 'https://script.google.com/macros/s/AKfycbz477Pkc0YmE3f0RQ1Ht5U0ABdT3i2ARx4upluTFwJf2B2EmTg1/exec';
+logger_url = '';
 
 //---------------------------------
 //媒體(圖片、聲音)檔名清單

@@ -1,7 +1,8 @@
 //-------------------------------------------
 //傳送成績的 JavaScript
 //-------------------------------------------
-sendScore = function(logger_url, score) {
+var responseJsonData;
+html5FunSendScore = function(logger_url, score) {
 	//console.log(logger_url, score);		
 	if(/https:\/\/docs\.google\.com\/forms\/d\/e\//.test(logger_url)) {
 		//使用 Google Form 記錄成績
@@ -28,9 +29,9 @@ sendScore = function(logger_url, score) {
 			}			
 			loadSettingFromExternalScript(url, function(result) {			
 				//由 Google Apps Script 傳回的資料以 base64 encode
-				if(typeof(jsonData)!='undefined' && jsonData!=null && typeof(jsonData.dataBase64) == 'string') {
-					console.log(Base64.decode(jsonData.dataBase64));
-				//	var result = Base64.decode(jsonData.dataBase64);
+				if(typeof(responseJsonData)!='undefined' && responseJsonData!=null && typeof(responseJsonData.dataBase64) == 'string') {
+					console.log(Base64.decode(responseJsonData.dataBase64));
+				//	var result = Base64.decode(responseJsonData.dataBase64);
 				//	result = result.replace("\ufeff", ""); //去掉 UTF-8 BOM
 				//	if(typeof(callback) == 'function') {
 				//		callback(result);
@@ -81,9 +82,8 @@ loadSettingFromExternalScript = function(scriptSrc, callback)  {
 //-------------------------------------------------
 //由網路抓完的資料後要呼叫的 function
 //-------------------------------------------------
-var jsonData;
 getJsonData = function(data) {
-	jsonData = data;	//將抓回的資料餵給 settingData
+	responseJsonData = data;	//將抓回的資料餵給 settingData
 }
 
 /*

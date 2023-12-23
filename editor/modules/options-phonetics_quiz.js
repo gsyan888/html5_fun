@@ -46,6 +46,10 @@ var editorOptions = {
         "題目中是否顯示國字",
         "勾選:顯示國字 &nbsp;&nbsp; 未勾選:國字變成空格",
         "顯示國字"],
+
+      "logger_url": [
+        "text",
+        "上傳成績記錄用的網址"],
 		
       "questionLines": [
         "textarea",

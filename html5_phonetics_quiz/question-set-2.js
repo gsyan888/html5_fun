@@ -35,7 +35,7 @@ questions_to_answer = 10;
 //------------------------------
 //接收作答記錄的程式網址
 //------------------------------
-//logger_url = 'https://script.google.com/macros/s/AKfycbyNdwRPFmCvA63NynyS_mFD60wNa10KPXSPVl3iYC5zBIbZGotM/exec';
+logger_url = '';
 
 //
 //---------------------------------------------------

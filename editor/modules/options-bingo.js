@@ -36,6 +36,12 @@ var editorOptions = {
         "text",
         "一列有幾個選項"],
 
+      "enableBingoStar": [
+        "checkbox",
+        "是否在正中央加一個星號(奇數個選項時)",
+        "勾選:加星號 &nbsp;&nbsp; 未勾選:完全不加星號",
+        "奇數個選項時，加星號"],		
+
       "tts_language": [
         "text",
         "念題目時，TTS語音合成的語言代碼",

@@ -32,6 +32,10 @@ var editorOptions = {
         "勾選:將答案刪除,換成括號 &nbsp;&nbsp; 未勾選:保持原內容",
         "自動處理題庫的填空"],		
 
+      "optionColTotal": [
+        "text",
+        "一列有幾個選項"],
+
       "tts_language": [
         "text",
         "念題目時，TTS語音合成的語言代碼",

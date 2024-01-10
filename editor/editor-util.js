@@ -319,9 +319,9 @@ update_settingJS = function () {
           settingJS.innerHTML = settingJS.innerHTML.replace(qRE, '$1' + "\n" + questionLines + "\n" + '$2');
         } else {
           if (id == 'helpDialogDescription') {
-            var qRE = new RegExp('(' + id + '\\s?=)(?:.|\\n|\\r)*?(;\\n)', 'm');
+            var qRE = new RegExp('(' + id + '\\s*=)(?:.|\\n|\\r)*?(;\\n)', 'm');
           } else {
-            var qRE = new RegExp('(' + id + '\\s?=)(?:.|\\n|\\r)*?(;)', 'm');
+            var qRE = new RegExp('(' + id + '\\s*=)(?:.|\\n|\\r)*?(;)', 'm');
           }
           settingJS.innerHTML = settingJS.innerHTML.replace(qRE, '$1 ' + valueString + '$2');
         }

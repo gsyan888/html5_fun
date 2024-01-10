@@ -14,7 +14,9 @@ menu_title='BINGO';		//選單標題
 //
 menu_items = new Array(
 //------------------------------------下一行開始為選單增加項目
-  '三下國語第01課,data-h-3-2/bingo-h-3-2-01.js'
+  '◎回主選單,bingo_menu_set.js,menu'
+  
+, '三下國語第01課,data-h-3-2/bingo-h-3-2-01.js'
 , '三下國語第02課,data-h-3-2/bingo-h-3-2-02.js'
 , '三下國語第03課,data-h-3-2/bingo-h-3-2-03.js'
 , '三下國語第04課,data-h-3-2/bingo-h-3-2-04.js'

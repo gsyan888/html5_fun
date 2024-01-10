@@ -12,17 +12,20 @@ menu_title='BINGO';		//選單標題
 //   第一個欄位：選單選項名稱
 //   第二個欄位：按下該選項以後會載入的題庫設定檔的路徑
 //
-//   第三個欄位：類型，
-//   			 如果未指定，為題庫檔案;
-//   			 如果設為 menu ，表示為選單設定檔案
-//
 menu_items = new Array(
 //------------------------------------下一行開始為選單增加項目
-  '◎九九乘法,data-9x9/bingo_menu_set-9x9.js,menu'
-, '◎翰林版四上國語1-14課成語,data-h-4-1/bingo_menu_set-h-4-1.js,menu'
-, '◎翰林版三上國語1-14課成語,data-h-3-1/bingo_menu_set-h-3-1.js,menu'
-, '◎翰林版三下國語1-14課成語,data-h-3-2/bingo_menu_set-h-3-2.js,menu'
-
-, '設定範例(展示各種素材),bingo_question_example.js'
+  '◎回主選單,bingo_menu_set.js,menu'
+, '乘法 1,data-9x9/bingo-9x9-01.js'
+, '乘法 2,data-9x9/bingo-9x9-02.js'
+, '乘法 3,data-9x9/bingo-9x9-03.js'
+, '乘法 4,data-9x9/bingo-9x9-04.js'
+, '乘法 5,data-9x9/bingo-9x9-05.js'
+, '乘法 6,data-9x9/bingo-9x9-06.js'
+, '乘法 7,data-9x9/bingo-9x9-07.js'
+, '乘法 8,data-9x9/bingo-9x9-08.js'
+, '乘法 9,data-9x9/bingo-9x9-09.js'
+, '乘法 10,data-9x9/bingo-9x9-10.js'
+, '乘法 1～10,data-9x9/bingo-9x9.js'
+, '◎回主選單,bingo_menu_set.js,menu'
 //------------------------------------選單選項結束,以下請勿修改
 );

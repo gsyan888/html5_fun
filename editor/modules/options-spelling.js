@@ -38,6 +38,14 @@ var editorOptions = {
       "number_of_points_for_one_question": [
         "text",
         "答對一題加幾分"],
+
+      "number_of_points_deduct": [
+        "text",
+        "答錯一題扣幾分"],
+
+      "number_of_points_goal": [
+        "text",
+        "總分達到多少時結束遊戲(大於 0 時才有作用)"],
 		
       "audioPlaybackRate": [
         "text",

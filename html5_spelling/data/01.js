@@ -66,6 +66,13 @@ timer = 60;
 //答對一題加幾分
 number_of_points_for_one_question = 10;
 
+//答錯一題扣幾分
+number_of_points_deduct = 0;
+
+//總分達到多少時結束遊戲(大於 0 時才有作用)
+number_of_points_goal = 0;
+
+
 //語音播放的速度 (1.0 正常, 0.5 慢速, 2.0 兩倍速)
 audioPlaybackRate = 1.0; 
 

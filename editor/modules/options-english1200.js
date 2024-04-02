@@ -36,6 +36,27 @@ var editorOptions = {
         "勾選:亂數隨機選題 &nbsp;&nbsp; 未勾選:按題庫順序出題",
         "以亂數隨機出題"],
 
+      "item_button1_caption": [
+        "text",
+        "選單按鈕1上的文字",
+		"(聽音找第1欄位, 空白表示不出現按鈕1)"],
+
+      "item_button2_caption": [
+        "text",
+        "選單按鈕2上的文字",
+		"(聽音找第2欄位, 空白表示不出現按鈕2)"],
+
+      "item_button3_caption": [
+        "text",
+        "選單按鈕3上的文字",
+		"(看第2欄位找第1欄位, 空白表示不出現按鈕3)"],
+
+      "item_button4_caption": [
+        "text",
+        "選單按鈕4上的文字",
+		"(看第1欄位找第2欄位, 空白表示不出現按鈕4)"],
+
+
       "audioPlaybackRate": [
         "text",
         "語音播放的速度",

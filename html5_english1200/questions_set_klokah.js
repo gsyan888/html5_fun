@@ -1,11 +1,6 @@
 ﻿//上方標題欄的標題
 caption = "九族E樂園";
 
-//遊戲模式選單按鈕上的文字
-item_button1_caption = "聽音找族語";	//第1個按鈕
-item_button2_caption = "聽音找中文";	//第2個按鈕
-item_button3_caption = "看中文找族語";	//第3個按鈕
-item_button4_caption = "看族語找中文";	//第3個按鈕
 
 //下方資料出處的文字
 credit_caption = "資料&MP3來源: https://web.klokah.tw";		
@@ -29,6 +24,21 @@ numberOfQuestionsPerRound = 10;
 //出題時選擇題目的方式 true:亂數選題  false:按題庫順序
 select_questions_in_random = true; 
 
+//------------------------------
+//選單按鈕上的文字，空白表示不出現按鈕
+//------------------------------
+
+//按鈕1: 聽音找第1欄位
+item_button1_caption = "聽音找族語";
+
+//按鈕2: 聽音找第2欄位 
+item_button2_caption = "聽音找中文";
+
+//按鈕3: 看第2欄位找第1欄位
+item_button3_caption = "看中文找族語";
+
+//按鈕4: 看第1欄位找第2欄位
+item_button4_caption = "看族語找中文";
 
 
 //是否使用 TTS 的語音

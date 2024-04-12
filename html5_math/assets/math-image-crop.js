@@ -437,6 +437,24 @@ function updateCloseBtnPosition(hintDelay) {
   setTimeout(function() {
 	showFadeOutMessage(btn, '按 X 可以換圖片', 0, size*1.5);
   }, hintDelay);
+  
+  /* 方格紙背景, 參考載入的圖片尺寸大小製作 */
+  var gridPaper = document.getElementById('gridPaper');
+  var enableGrid = document.getElementById('enableGrid');
+  var gridColTotal = document.getElementById('gridColTotal');
+  if(typeof(gridPaper)!='undefined' && gridPaper!=null) {
+    if(typeof(enableGrid)!='undefined' && enableGrid!=null && enableGrid.checked && typeof(gridColTotal)!='undefined' && gridColTotal!=null) {    
+      gridPaper.style.width = canvas.width+'px';
+      gridPaper.style.height = canvas.height+'px';
+      var colTotal = Number(gridColTotal.value); /* 橫向平分為幾等份 */
+      var gridSize = Math.floor(canvas.width/colTotal);
+      gridPaper.style.background = 'conic-gradient(from 90deg at 2px 2px,#0000 90deg,#8ABFA5 0)  0 0/'+gridSize+'px '+gridSize+'px';
+	  canvas.style.opacity = 0.8;
+    }  else {
+      gridPaper.style.background = null;
+	  canvas.style.opacity = 1;
+    }
+  }
 };
 /* 製造按鈕按下的動畫, 先縮小, 再復原 */
 function clickAni(target, scale) {
@@ -1981,7 +1999,9 @@ function setOpacity(elm) {
   //enableDoole(false);
   opacity = elm.value;
   if(!(typeof(doodleEnable)=='boolean' && doodleEnable)) {
-    selectedCanvas.style.opacity = opacity;
+    if(typeof(selectedCanvas)!='undefined') {
+      selectedCanvas.style.opacity = opacity;
+    }
   } else {
     document.getElementById('canvasDoodle').style.opacity = opacity;
   }

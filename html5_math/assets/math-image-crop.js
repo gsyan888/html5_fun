@@ -264,7 +264,8 @@ function addQRCodeOnTopLayer(image_url) {
   url += '?url='+image_url;
   //取得 QRCode 的網址
   var size = 340;
-  var qrCodeURL = 'https://chart.googleapis.com/chart?chs='+size+'x'+size+'&cht=qr&chl='+encodeURIComponent(url);
+  //var qrCodeURL = 'https://chart.googleapis.com/chart?chs='+size+'x'+size+'&cht=qr&chl='+encodeURIComponent(url);
+  var qrCodeURL = 'https://quickchart.io/qr?size='+size+'&text='+encodeURIComponent(url);
   var html = '<img src="'+qrCodeURL+'" title = "按一下隱藏 QRCode" class="qrcode-img" />';
   html += '<span class="qrcode-close-btn" onclick="showQRCode(false);" title="關閉">×</span>';
   html += '<img class="qrcode-img-thumbnail" src="'+image_url+'" title="圖片的縮圖" />';

@@ -87,13 +87,13 @@ menu_items = [
 	, ""
 	],
 	
-	[ "青蛙過河"
-	, "Frog 青蛙過河"
-	, "html5_frog/assets/icon.png"
-	, "html5_frog/html5_frog.html"
-	, "archives/html5_frog.zip"
-	, "https://gsyan888.blogspot.com/2023/06/html5-frog.html"
-	, "frog"
+	[ "PARTDLE 兜一兜"
+	, "PARTDLE 兜一兜"
+	, "assets/icon-partdle.png"
+	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html?autostart=1"
+	, ""
+	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html"
+	, ""
 	],
 	
 	[ "圓面積小教具"
@@ -112,6 +112,15 @@ menu_items = [
 	, ""
 	, "https://gsyan888.blogspot.com/2023/12/html5-crop.html"
 	, ""
+	],
+	
+	[ "青蛙過河"
+	, "Frog 青蛙過河"
+	, "html5_frog/assets/icon.png"
+	, "html5_frog/html5_frog.html"
+	, "archives/html5_frog.zip"
+	, "https://gsyan888.blogspot.com/2023/06/html5-frog.html"
+	, "frog"
 	],
 	
 	[ "幾A幾B"

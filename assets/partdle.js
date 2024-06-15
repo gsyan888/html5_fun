@@ -1016,7 +1016,9 @@ sceneInit = function() {
 
 		//if(target.tagName != 'path' && target.tagName != 'rect') {
 		//if(target.tagName != 'path' && (target.tagName=='rect' && target.getAttribute('class') != 'bgRect')) {
-		if(target.tagName != 'path' && target.tagName!='circle' ) {
+		//if(target.tagName != 'path' && target.tagName!='circle' ) {
+		//if(target.tagName != 'path' && target.tagName!='ellipse' ) {
+		if( target.tagName != 'path' && !target.classList.contains('pathBg') ) {
 			return;
 		}
 		e.preventDefault();
@@ -1203,6 +1205,26 @@ function insertBackground() {
 		}
 	}
 };
+
+function addPathBackground(path){
+  var bb = path.getBBox();
+  var [x, y, width, height] = [bb.x, bb.y, bb.width, bb.height];
+  var getScale = function(s){return s<500?1.5:(s<2048*0.66?1:0.75);};
+  var sx = getScale(width);
+  var sy = getScale(height);
+  var rx = sx * width/2;
+  var ry = sy * height/2;
+  var cx = x + width/2;
+  var cy = y + height/2;
+  var style = 'fill:#ffffff;fill-opacity:0.001; stroke:none;stroke-opacity:0;';
+  if(gup('debug') == '1') {
+    style = 'fill:#ffff00;fill-opacity:0.1; stroke:none;stroke-opacity:0;';
+  }
+  var bg = createSvgElm('ellipse', {'class':'pathBg', cx:cx, cy:cy, rx:rx, ry:ry, style:style});
+  var p = path.parentElement;
+  p.insertBefore(bg, p.children[0]);
+};
+
 /**
  * 
  */
@@ -1231,15 +1253,17 @@ async function inertWords(callback) {
 			svg.appendChild(g[i]);
 			
 			//加一個半透明的圓形，比較判斷是否已按對地方
+			/*
 			var b = g[i].getBBox();
 			//var rect = createSvgElm('rect', {class:'bgRect',width:b.width, height:b.height, x:b.x, y:b.y, style:'fill:#ffffff;fill-opacity:0.01;stroke:none;stroke-opacity:0'});
 			var size = Math.max(b.width, b.height);
 			var r = size*0.5*(size<500?1.5:(size>1024?0.5:0.6));
 			var cx = b.x + b.width/2;
 			var cy = b.y + b.height/2;
-			var circle = createSvgElm('circle', {class:'bgRect', r:r, cx:cx, cy:cy, style:'fill:#ffffff;fill-opacity:0.001;stroke:none;stroke-opacity:0'});
+			var circle = createSvgElm('circle', {class:'bgRect', r:r, cx:cx, cy:cy, style:'fill:#ffffff;fill-opacity:0.001; stroke:none;stroke-opacity:0;'});
 			g[i].insertBefore(circle, g[i].children[0]);
-			
+			*/
+			Array.from(g[i].querySelectorAll('path')).forEach(p=>addPathBackground(p));
 			
 			//記錄CNS部件代號
 			if(component && component[i]) {

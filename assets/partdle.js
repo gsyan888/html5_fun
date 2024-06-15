@@ -11,7 +11,8 @@ var colors = ['#ff6699',  "#56B4E9", "#009E73", "#F0E442", '#ff9933', '#FFBAA3',
 
 var soundFinish, soundFailure, soundCoin;
 var questionList = [];
-var currentIndex = 0;
+var isFirstGame = true;
+var wordIndexList = [];
 var qTotalNumber;
 
 var words = '筆順練習';
@@ -929,7 +930,6 @@ soundInit = function() {
  */
 sceneInit = function() {
 	questionList = [];
-	currentIndex = 0;
 	
 	var gameWrapper = document.querySelector('#gameWrapper');
 	var practice = document.querySelector('#practice');
@@ -1240,7 +1240,10 @@ function addPathBackground(path){
  * 
  */
 async function inertWords(callback) {
-	if(currentIndex < words.length) {
+	if(wordIndexList.length > 0) {
+		var r = Math.floor(Math.random()*wordIndexList.length);
+		var currentIndex = wordIndexList[r];
+		wordIndexList.splice(r, 1);
 		var word = words[currentIndex];
 		var xmlDoc = await fetchStroke(word);
 		//第1組部件設定, 用筆畫模式, 無筆順序號, 無動畫
@@ -1300,10 +1303,14 @@ async function inertWords(callback) {
 			var r = Math.floor(Math.random()*window.randomPos.length);
 			var rPos = window.randomPos[r];
 			var rndX = rPos * width- box.x;
-			if(rndX > 0) {
-				rndX -= box.width/2;
+			//檢查 x 是否太左或太右並修正
+			if(rndX-box.width/2 < 0) {
+				rndX = box.width/2 - box.x;
 			} else {
-				rndX += 150;
+				rndX -= box.width/2;
+			}
+			if(rndX+box.width+box.x*2 > viewBox.width) {
+				rndX = viewBox.width - box.width - box.x - 50;
 			}
 			var rndY = y - 1024 + (1-Math.floor(Math.random()*3))*2048/5 - box.y - box.height/2;
 			if(rndY + box.y + box.height > y ) {
@@ -1314,14 +1321,11 @@ async function inertWords(callback) {
 			g[i].setAttribute('transform', 'translate(' + rndX + ' ' + rndY + ')');
 			
 			//g[i].setAttribute('fill', colors[Math.floor(Math.random()*colors.length)]);
-			g[i].setAttribute('fill', colors[rPos%colors.length]);
-			
-			
+			g[i].setAttribute('fill', colors[rPos%colors.length]);						
 		}
 		
 		//g.setAttribute('style', 'outline: 3px solid red;');
 		
-		currentIndex++;
 		inertWords(callback);
 	} else {
 		if(typeof(callback)=='function') {
@@ -1346,11 +1350,16 @@ randomPosition = function() {
 				var r = Math.floor(Math.random()*randomPos.length);
 				var rPos = randomPos[r];
 				var rndX = rPos * width - box.x;
-				if(rndX > 0) {
-					rndX -= box.width/2;
+				//檢查 x 是否太左或太右並修正
+				if(rndX-box.width/2 < 0) {
+					rndX = box.width/2 - box.x;
 				} else {
-					rndX += 50;
+					rndX -= box.width/2;
 				}
+				if(rndX+box.width+box.x*2 > viewBox.width) {
+					rndX = viewBox.width - box.width - box.x - 50;
+				}
+				//y
 				var rndY = yStart - 1024 + (1-Math.floor(Math.random()*3))*2048/5 - box.y - box.height/2;
 				if(rndY + box.y + box.height > yStart ) {
 					rndY = yStart - 50 - box.height - box.y;
@@ -1683,12 +1692,11 @@ newGame = function() {
 
     updateSVGviewBox();
     
-	//全域變數 currentIndex 只有在第一題時會是 0, 用來控制是否顯示遊戲說明
-    var isFirst = typeof(currentIndex)=='number' && currentIndex == 0;
     //字的方框(答案區)
     insertBackground(); 
     //開始製作並以亂數填入字的部件
-    currentIndex = 0;
+	//先產生字的可用序號
+	wordIndexList = Array.from({ length: words.length }, (value, index) => index);
     inertWords( function() {
       //將小的部件放最上層
       bringSmallToTop();
@@ -1698,8 +1706,9 @@ newGame = function() {
 	    checkBtn.classList.toggle('hidden', false);
       }
       //顯示開始闖關的訊息
-      if(isFirst) {
+      if(isFirstGame) {
 	    showMessage('<span style="color:#ffff00;font-size:1.25em;">開始闖關</span><br>請將部件拖曳到方框中拼成字<br>語詞拼好了，就按 [送出答案] 鈕', 'orange', 3);
+		isFirstGame = false;
       }
     });	
   }
@@ -2389,6 +2398,7 @@ loadQuestionAndStartGame = function() {
       loadingLogoEnable = false; //停止載入的動畫
 	
       questionLines = q;
+	  isFirstGame = true;
       newGame();
     });
 

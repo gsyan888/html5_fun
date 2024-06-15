@@ -198,6 +198,12 @@ loadSettingFromExternalScript = function(scriptSrc, callback)  {
 	docHead.insertBefore(scriptToAdd, docHead.firstChild);
 };
 /**
+ * 將 RegExp 中的保留符號先加上反斜線
+ */
+escapeRegExpString = function (str) {
+  return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
+/**
  * 將一行部件設定字串解析為多組部件字串陣列
  * 以stroke_parts.parts_set_separator (~)分解多個部件
  * 2021.12.23 add
@@ -700,7 +706,8 @@ async function fetchStroke(word, callback) {
 	var txt = await fetchStrokeData(word);
 	if(typeof(txt) == 'string' && txt.length > 0 && txt.match(/<Stroke>/i)) {
 		xmlDoc = parseXML(convert_string_to_xml(txt));
-		var re = new RegExp(word+'\\t([^\\t]+)\\t([^\\t]+)\\t([^\\n]*)\n*');
+		//var re = new RegExp(word+'\\t([^\\t]+)\\t([^\\t]+)\\t([^\\n]*)\n*');
+		var re = new RegExp(escapeRegExpString(word)+'\\t([^\\t]+)\\t([^\\t]+)\\t([^\\n]*)\n*');
 		if((match=stroke_parts_data.match(re)) && match.length>3) {
 			xmlDoc.sound = '/sound/'+(/\.m4a/.test(match[2])?match[2]:match[2]+'.mp3');
 			xmlDoc.parts = match[3];
@@ -1018,7 +1025,7 @@ sceneInit = function() {
 		//if(target.tagName != 'path' && (target.tagName=='rect' && target.getAttribute('class') != 'bgRect')) {
 		//if(target.tagName != 'path' && target.tagName!='circle' ) {
 		//if(target.tagName != 'path' && target.tagName!='ellipse' ) {
-		if( target.tagName != 'path' && !target.classList.contains('pathBg') ) {
+		if( target.tagName != 'path' && !target.classList.contains('pathBg') && !target.classList.contains('wordNG') ) {
 			return;
 		}
 		e.preventDefault();
@@ -1251,6 +1258,17 @@ async function inertWords(callback) {
 		var y = yStart;
 		var transform = 'translate(' + x + ' ' + y + ')';
 		var g = svgDoc.querySelectorAll('g');
+		
+		if(g.length==0) {
+			//抓不到筆順資料者，改以 text 元件來顯示全字
+			var fontSize = Math.floor(2048*0.82);
+			var gNG = createSvgElm('g');
+			var tNG = createSvgElm('text',{'font-size':fontSize, 'class':'wordNG', style:'pointer-events:all;', x:1024, y:1024, "dominant-baseline":"central", "text-anchor": "middle"});
+			tNG.innerHTML = word;
+			gNG.appendChild(tNG);
+			g = [gNG];
+		}		
+		
 		for(var i=0; i<g.length; i++) {
 			g[i].setAttribute('id', word+'-'+currentIndex+'-'+i);
 			g[i].setAttribute('transform', transform);
@@ -1353,7 +1371,9 @@ randomPosition = function() {
  */  
 get_parts = function(word) {
 	var parts = '';
-	var re = new RegExp(word+'\\t([^\\t]+)\\t([^\\t]+)\\t([^\\n]*)\n*');
+	//var re = new RegExp(word+'\\t([^\\t]+)\\t([^\\t]+)\\t([^\\n]*)\n*');
+	var re = new RegExp(escapeRegExpString(word)+'\\t([^\\t]+)\\t([^\\t]+)\\t([^\\n]*)\n*');
+	
 	if(( match = stroke_parts_data.match(re) ) && match.length>3) {
 		//xmlDoc.sound = '/sound/'+(/\.m4a/.test(match[2])?match[2]:match[2]+'.mp3');
 		parts = match[3];
@@ -1366,7 +1386,12 @@ get_parts = function(word) {
 get_partsTotal = function(words) {
 	var total = 0;
 	for(var i=0; i<words.length; i++) {
-		total += parseParts(get_parts(words[i]), 0).length;
+		var p = get_parts(words[i]);
+		if(p!=='') {
+			total += parseParts(p, 0).length;
+		} else {
+			total++;
+		}
 	}
 	return total;
 };
@@ -1378,9 +1403,13 @@ get_stroke_component = function(word) {
 	if(typeof(stroke_component)=='undefined' || stroke_component == null) {
 		load_stroke_component();
 	} else {
-		var re = new RegExp(word+'\\t([^\\n]*)\n*');
+		//var re = new RegExp(word+'\\t([^\\n]*)\n*');
+		var re = new RegExp(escapeRegExpString(word)+'\\t([^\\n]*)\n*');		
 		if((match=stroke_component.match(re)) && match.length>=2) {
 			component = match[1].trim().split(';')[0].split(',');
+		} else {
+			//找不到部件者，就用全字
+			component.push(word);
 		}
 	}
 	return component;
@@ -1399,14 +1428,16 @@ checkAnswer = function(answerTxt) {
 		var question = ( typeof(words)=='string'? words : words.join('') ).trim();
 		answerTxt = answerTxt.trim();
 		if( answerTxt.length >= question.length ) {
-			var re = new RegExp(question);
+			//var re = new RegExp(question);
+			var re = new RegExp(escapeRegExpString(question));			
 			if( !re.test(answerTxt) ) {
 				if(typeof(enableTransToPinyin) == 'boolean' && enableTransToPinyin && typeof(toPinyin)=='function' ) {
 					question = toPinyin(question);
 					answerTxt = toPinyin( answerTxt );
 					//console.log(question, answerTxt);
 					//alert(question + '\n'+ answerTxt);
-					var re = new RegExp(question);
+					//var re = new RegExp(question);
+					var re = new RegExp(escapeRegExpString(question));					
 					if( !re.test( answerTxt )) {
 						isFinish = false;
 					}
@@ -1474,8 +1505,18 @@ checkAnswer = function(answerTxt) {
 	//最後回饋
 	if(isFinish) {
 		showAnswer();
-		txt = '恭喜過關!!';
-		showMessage('<span style="color:#99cc33;font-size:1.25em;">太棒了</span><br>'+txt, 'green', 1.5, function() {
+		var score = 100;
+		var color = 'green';
+		var delay = 1.5;
+		if(questionList.length==0) {
+			txt = '已經全部挑戰完～加5000分';
+			score = 5000;
+			color = '#56B4E9';
+			delay = 3;
+		} else {
+			txt = '恭喜過關!!';
+		}
+		showMessage('<span style="color:#99cc33;font-size:1.25em;">太棒了</span><br>'+txt, color, delay, function() {
 			//顯示下一題的按鈕
 			var nextBtn = document.querySelector('#nextBtn');
 			if(nextBtn) {
@@ -1491,7 +1532,7 @@ checkAnswer = function(answerTxt) {
 		if(checkBtn) {
 			checkBtn.classList.toggle('hidden', true);
 		}
-		updateScore(100);
+		updateScore(score);
 	} else {
 		if(hitTotal < partsTotal && typeof(answerTxt)!='string') {
 			txt = '請檢查部件是否都完整地在方格內<br>有 '+(partsTotal-hitTotal)+' 個需要調整位置';
@@ -1550,6 +1591,7 @@ getOneQuestion = function() {
   if( typeof(questionLines)!='undefined' && questionLines!=null && questionLines.length > 1 ) {
     if( typeof(questionList)=='undefined' || questionList==null || questionList.length==0 ) {
       questionList = questionLines.trim().replace(/\r/g, '\n').split(/\n+/);
+	  //questionList=[':=)','^_^'];	  
       qTotalNumber = questionList.length;
     }
     r = Math.floor(Math.random()*questionList.length);
@@ -1851,7 +1893,8 @@ toPinyin = function(source) {
 			var c = source.substr(i++,1);
 			if(/[^a-z|A-Z|0-9|,|\+|\$|\^|\(|\)|\*|\.|\|]/.test(c)) {  //跳過字母、數字及 RE 會用到的特殊符號 ()*.|
 				//pinyinDic.match(/顏([^,]+),/);
-				var re = new RegExp(c+'([^,]+)');
+				//var re = new RegExp(c+'([^,]+)');
+				var re = new RegExp(escapeRegExpString(c)+'([^,]+)');				
 				var match = pinyinDic.match(re);
 				c = (typeof(match)!='undefined' && match!=null ? match[1]:c);
 			}

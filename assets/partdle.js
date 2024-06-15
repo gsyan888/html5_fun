@@ -964,7 +964,7 @@ sceneInit = function() {
 		if(typeof(e.changedTouches)!='undefined' && e.changedTouches!=null && e.changedTouches.length>0) {		
 			var id = e.changedTouches[0].identifier;
 			for(var i=0; i<penList.length; i++) {
-				if(penList[i].id && penList[i].id == id) {
+				if(penList[i].id!=null && penList[i].id == id) {
 					index = i;
 				}
 			}
@@ -1026,8 +1026,11 @@ sceneInit = function() {
 		
 		//pos1 = getMousePosition(e);
 		//pos1.target = target;
-		//document.querySelector('.debug').textContent += getPenIndex(e)+ ' , ';
+		
 		addToPenList(e);
+
+		//document.querySelector('.debug').textContent += JSON.stringify(penList)+ ' ';
+		
 		
 		//加一個半透明的矩形，比較判斷是否已按對地方
 		var b = target.parentElement.getBBox();
@@ -1051,6 +1054,7 @@ sceneInit = function() {
 
 		var penIndex = getPenIndex(e);
 		var pen = penList[penIndex];
+	
 		//if(typeof(pos1)=='undefined' || pos1==null ) {
 		if(typeof(pen)=='undefined' || pen==null ) {
 			return;

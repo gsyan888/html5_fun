@@ -37,7 +37,7 @@
   margin: auto;
   text-align: center;
 }
-.preview th, td {
+.preview th, .preview td {
   border: 1px solid;
   padding: 0.5em;
   margin: 0;

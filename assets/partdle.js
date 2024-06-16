@@ -1595,7 +1595,53 @@ showMessage = function(txt, bgColor, delay, callback) {
  * 每次取出一題題目
  * @return {String} 語詞的字串 
  */
+partLevel = 1;
+nextLevel = 1;
 getOneQuestion = function() {
+  var qLine, r;
+  if( typeof(questionLines)!='undefined' && questionLines!=null && questionLines.length > 1 ) {
+    if( typeof(questionList)=='undefined' || questionList==null || questionList.length==0 ) {
+	  //將題庫依總部件數排序
+      var lines=questionLines.split(/\n+/).filter(s=>s.replace(/\s/g, '')!='');
+      questionList = Array.from({length:lines.length}, (a, i)=>{return {q:lines[i], p:get_partsTotal(lines[i])}});
+      questionList.sort((a, b)=>(a.p-b.p));      
+	  //questionList=[ {q:':=)', p:3}, {q:'^_^', p:3} ];	  
+      qTotalNumber = questionList.length;
+	  partLevel = questionList[0].p;
+	  nextLevel = partLevel+1;
+    }
+	var t = questionList.length;
+	var max = questionList[t-1].p;
+	var qList;
+	var i = 0;
+	var totalMin = 3;
+	while(partLevel <= max && questionList.length>0) {
+		qList = questionList.filter(a=>a.p>=partLevel && a.p<=nextLevel);
+		if(qList.length == 0) {
+			partLevel++;
+			nextLevel++;
+		} else if(questionList.length > totalMin && qList.length <= totalMin) {
+			nextLevel++;
+		} else {
+			break;
+		}
+	}
+	if(partLevel != questionList[0].p) {
+		showMessage('恭喜升級<br>加發點數 1000', 'blue', 2);
+		updateScore(1000);
+		partLevel = questionList[0].p;
+	}
+	qList = qList.filter(a=>a.p==partLevel);
+    r = Math.floor(Math.random()*qList.length);
+    qLine = Array.from(qList[r].q.trim());	
+    questionList = questionList.filter(a=>a.q!=qList[r].q);
+	if(typeof(updateQlabel)=='function') {
+      updateQlabel(qTotalNumber - questionList.length); //更新右上角題數
+	}
+  }
+  return qLine;
+};
+getOneQuestionOld = function() {
   var qLine, r;
   if( typeof(questionLines)!='undefined' && questionLines!=null && questionLines.length > 1 ) {
     if( typeof(questionList)=='undefined' || questionList==null || questionList.length==0 ) {

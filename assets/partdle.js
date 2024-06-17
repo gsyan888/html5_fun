@@ -2354,7 +2354,7 @@ setVisibility = function(enable) {
 	  //重新顯示原有的內容
 	  document.body.style.overflow = '';
 	  //
-	  try{document.querySelector('#aswift_4').parentElement.parentElement.style.scale = 1}catch(e){};
+	  try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
 	}
   }
 };
@@ -2497,8 +2497,7 @@ loadSettings = function() {
  * 
  */
 start = function() {
-  try{document.querySelector('#aswift_4').parentElement.parentElement.style.scale = 0.0001}catch(e){};
-  
+	
   setViewport();
   
   setVisibility(true);

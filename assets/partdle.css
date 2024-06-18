@@ -160,7 +160,7 @@
 	display: block;
 	position: absolute;
 	left: 50%;
-	bottom: 10px;
+	bottom: 9px;
 	margin: auto;
 	text-align: center;
 	transform: translate(-50%, -50%);
@@ -236,6 +236,38 @@
   text-align：center;
   margin: 8px;
   opacity: 0.4;
+}
+.roundBtn {
+  position: absolute;
+  background-color: ##F3BDCBC0;
+  border: 1px solid #4CAF50;
+  color: #ff0000;
+  opacity: 0.6;
+  margin: 0.24px;  
+  padding: 0.2vw;
+  width:8vw;
+  height:2.4vw; 
+  font-size: 1.25vw;
+  white-space: nowrap;  
+  border-radius: 1vw;
+}
+.randomBtn {
+  left: 66%;
+  bottom: 0;
+  transform: translate(-50%, -20%);
+  background-color: #C3D69BA0;
+}
+.showAnsBtn {
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, -50%);
+  background-color: #8DB3E2A0;
+}
+.skipBtn {
+  left: 33%;  
+  bottom: 0;
+  transform: translate(-50%, -20%);
+  background-color: #E5B9B7A0;
 }
 .hidden {
   visibility: hidden;

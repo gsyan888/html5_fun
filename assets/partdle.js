@@ -1144,24 +1144,26 @@ sceneInit = function() {
 	  checkBtn.innerHTML = '<label>送出<br>答案</label>';
 	  gameWrapper.appendChild(checkBtn);
 	  
+	  var skipBtn = document.createElement('button');
+	  skipBtn.setAttribute('class', 'roundBtn skipBtn hidden-0');
+	  skipBtn.setAttribute('onclick', 'btnSleep(this, 500);skipQuestion();');
+	  skipBtn.innerHTML = '<label>稍後作答</label>';
+	  gameWrapper.appendChild(skipBtn);
+
+      var randomBtn = document.createElement('button');
+      randomBtn.setAttribute('class', 'roundBtn randomBtn');
+      randomBtn.setAttribute('onclick', 'randomPosition();');
+      randomBtn.innerHTML = '<label>部件重排</label>';
+      gameWrapper.appendChild(randomBtn);
+	  
 	  //for debug
       if(gup('debug') == '1') {
-        var btnBlock = document.createElement('div');
-        //btnBlock.setAttribute('style', 'position:absolute;left:30px;top:30px;');
-        btnBlock.setAttribute('style', 'position:absolute;right:0;bottom:0.25em;transform:translate(-100% , 0%);');
-        gameWrapper.appendChild(btnBlock);
-
         var showAnsBtn = document.createElement('button');
-        showAnsBtn.setAttribute('style', 'margin:0.5em');
+        showAnsBtn.setAttribute('class', 'roundBtn showAnsBtn');
         showAnsBtn.setAttribute('onclick', 'showAnswer();');
-        showAnsBtn.innerHTML = '<label>Answer</label>';
-        btnBlock.appendChild(showAnsBtn);
+        showAnsBtn.innerHTML = '<label>顯示答案</label>';
+        gameWrapper.appendChild(showAnsBtn);
 
-        var randomBtn = document.createElement('button');
-        randomBtn.setAttribute('style', 'margin:0.5em');
-        randomBtn.setAttribute('onclick', 'randomPosition();');
-        randomBtn.innerHTML = '<label>Random</label>';
-        btnBlock.appendChild(randomBtn);
       }
     }
 		
@@ -1546,11 +1548,15 @@ checkAnswer = function(answerTxt) {
 		if(typeof(soundFinish)!='undefined' && soundFinish!=null) {
 			audioPlay(soundFinish);
 		}
-		//隱藏送出答案的按鈕
-		var checkBtn = document.querySelector('.checkBtn');
-		if(checkBtn) {
-			checkBtn.classList.toggle('hidden', true);
+		//隱藏送出答案、部件重排、稍後作答的按鈕
+		var cList = ['.checkBtn', '.skipBtn', '.randomBtn'];
+		for(var i=0; i<cList.length; i++) {
+			var btn = document.querySelector(cList[i]);
+			if(btn) {
+				btn.classList.toggle('hidden', true);
+			}
 		}
+		
 		updateScore(score);
 	} else {
 		if(hitTotal < partsTotal && typeof(answerTxt)!='string') {
@@ -1564,6 +1570,18 @@ checkAnswer = function(answerTxt) {
 		}
 	}
 	return isFinish;
+};
+skipQuestion = function() {  
+  if(questionList.length > 0) {
+    var q = words.join('');  
+    var p = get_partsTotal(q);
+    questionList.push({q:q, p:p, skip:true});	
+	var s = [ '回頭見', '待會兒見', 'See you later' ];
+	showMessage('～'+s[Math.floor(Math.random()*s.length)]+'～', '#00B0F0', 0.6);
+	newGame(true);
+  } else {
+    showMessage('請勇敢面對<br>這是最後一題了', 'red');
+  }
 };
 /**
  * 
@@ -1607,41 +1625,51 @@ showMessage = function(txt, bgColor, delay, callback) {
  */
 partLevel = 1;
 nextLevel = 1;
-getOneQuestion = function() {
+getOneQuestion = function(isSkip) {
   var qLine, r;
+  if(typeof(isSkip)!='boolean') {
+    isSkip = false;
+  }
   if( typeof(questionLines)!='undefined' && questionLines!=null && questionLines.length > 1 ) {
     if( typeof(questionList)=='undefined' || questionList==null || questionList.length==0 ) {
 	  //將題庫依總部件數排序
       var lines=questionLines.split(/\n+/).filter(s=>s.replace(/\s/g, '')!='');
-      questionList = Array.from({length:lines.length}, (a, i)=>{return {q:lines[i], p:get_partsTotal(lines[i])}});
+      questionList = Array.from({length:lines.length}, (a, i)=>{return {q:lines[i], p:get_partsTotal(lines[i]), skip:false} } );
       questionList.sort((a, b)=>(a.p-b.p));      
-	  //questionList=[ {q:':=)', p:3}, {q:'^_^', p:3} ];	  
+	  //questionList=[ {q:':=)', p:3, skip:false}, {q:'^_^', p:3, skip:false} ];
       qTotalNumber = questionList.length;
 	  partLevel = questionList[0].p;
 	  nextLevel = partLevel+1;
     }
 	var t = questionList.length;
 	var max = questionList[t-1].p;
-	var qList;
+	var qList = [];
 	var i = 0;
 	var totalMin = 3;
 	while(partLevel <= max && questionList.length>0) {
-		qList = questionList.filter(a=>a.p>=partLevel && a.p<=nextLevel);
+		qList = questionList.filter(a=>a.p>=partLevel && a.p<=nextLevel && !a.skip);
 		if(qList.length == 0) {
 			partLevel++;
 			nextLevel++;
-		} else if(questionList.length > totalMin && qList.length <= totalMin) {
+		} else if(questionList.filter(a=>!a.skip).length > totalMin && qList.length <= totalMin) {
 			nextLevel++;
 		} else {
 			break;
 		}
 	}
-	if(partLevel != questionList[0].p) {
-		showMessage('恭喜升級<br>加發點數 1000', 'blue', 2);
-		updateScore(1000);
+	//console.log('==> '+JSON.stringify(qList));
+	if(partLevel != questionList[0].p && !questionList[0].skip) {
+		if(!isSkip) {
+			showMessage('恭喜升級<br>加發點數 1000', 'blue', 2);
+			updateScore(1000);
+		}
 		partLevel = questionList[0].p;
 	}
-	qList = qList.filter(a=>a.p==partLevel);
+	if(qList.length > 0) {
+		qList = qList.filter(a=>a.p==partLevel);
+	} else {
+		qList = questionList.slice(0);
+	}
     r = Math.floor(Math.random()*qList.length);
     qLine = Array.from(qList[r].q.trim());	
     questionList = questionList.filter(a=>a.q!=qList[r].q);
@@ -1724,7 +1752,10 @@ updateSVGviewBox = function() {
 /**
  * 遊戲場景初始並填入新題目
  */
-newGame = function() {
+newGame = function(isSkip) {
+  if(typeof(isSkip)!='boolean') {
+    isSkip = false;
+  }
   var svg = document.querySelector('#practiceSVG');
 
   //場景的一些物件初始
@@ -1739,7 +1770,7 @@ newGame = function() {
   updateDicLink();
 
   //get question
-  words = getOneQuestion();
+  words = getOneQuestion(isSkip);
   if(typeof(words)!='undefined' && words!=null && words.length > 0) {
     //如果題目是字串, 轉為陣列, 一個字一個元素
     if(typeof(words)=='string') {
@@ -1756,10 +1787,13 @@ newGame = function() {
     inertWords( function() {
       //將小的部件放最上層
       bringSmallToTop();
-      //顯示送出答案的按鈕
-      var checkBtn = document.querySelector('.checkBtn');
-      if(checkBtn) {
-	    checkBtn.classList.toggle('hidden', false);
+      //顯示送出答案、部件重排、稍後作答的按鈕
+      var cList = ['.checkBtn', '.skipBtn', '.randomBtn'];
+      for(var i=0; i<cList.length; i++) {
+        var btn = document.querySelector(cList[i]);
+        if(btn) {
+          btn.classList.toggle('hidden', false);
+        }
       }
       //顯示開始闖關的訊息
       if(isFirstGame) {

@@ -1145,13 +1145,13 @@ sceneInit = function() {
 	  gameWrapper.appendChild(checkBtn);
 	  
 	  var skipBtn = document.createElement('button');
-	  skipBtn.setAttribute('class', 'roundBtn skipBtn hidden-0');
+	  skipBtn.setAttribute('class', 'roundBtn skipBtn hidden');
 	  skipBtn.setAttribute('onclick', 'btnSleep(this, 500);skipQuestion();');
 	  skipBtn.innerHTML = '<label>稍後作答</label>';
 	  gameWrapper.appendChild(skipBtn);
 
       var randomBtn = document.createElement('button');
-      randomBtn.setAttribute('class', 'roundBtn randomBtn');
+      randomBtn.setAttribute('class', 'roundBtn randomBtn hidden');
       randomBtn.setAttribute('onclick', 'randomPosition();');
       randomBtn.innerHTML = '<label>部件重排</label>';
       gameWrapper.appendChild(randomBtn);

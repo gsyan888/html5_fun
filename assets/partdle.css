@@ -121,7 +121,7 @@
   position: absolute;
   top: 0px;
   left: 50%;
-  font-size: 1.5em;
+  font-size: 4vmin; /* 1.5em; */
   font-weight: 900;
   color: gray;
   text-align: center;
@@ -135,8 +135,8 @@
   position:absolute;
   width: 100px;
   top: 0px;
-  left: 0.5em;
-  font-size: 2em;
+  left: 0.75em; /* 0.5em; */
+  font-size: 4.5vmin; /* 2em; */
   font-weight: 600;
   padding: 0.25em;
   margin: 0.25em;
@@ -147,8 +147,8 @@
   position:absolute;
   width: 150px;
   top: 0px;
-  right: 0.5em;
-  font-size: 2em;
+  right: 0.75em; /* 0.5em; */
+  font-size: 4.5vmin; /* 2em; */
   font-weight: 600;
   padding: 0.25em;
   margin: 0.25em;
@@ -160,7 +160,7 @@
 	display: block;
 	position: absolute;
 	left: 50%;
-	bottom: 9px;
+	bottom: 1vmin; /* 9px; */
 	margin: auto;
 	text-align: center;
 	transform: translate(-50%, -50%);
@@ -170,7 +170,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	font-size: 10px;
+	font-size: 1.5vmin; /* 10px; */
 	color: gray;
 	margin: auto;
 	cursor: pointer;
@@ -182,7 +182,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 98%;
-  font-size: 2em;
+  font-size: 5vmin; /* 2em; */
   font-weight: 600;
   margin: 0.5em;
   text-align: center;
@@ -196,13 +196,13 @@
 }
 .circleBtn {
     border-radius: 50% ;
-    padding: 2.5vw;
+    padding: 3vmin; /* 2.5vw; */
     display: flex;
     justify-content: center;
     align-items: center;
-    width:7.5vw;
-    height:7.5vw; 
-    font-size: 1.75vw;
+    width: 12vmin; /* 7.5vw; */
+    height: 12vmin; /* 7.5vw; */
+    font-size: 3vmin; /* 1.75vw; */
     outline:none;
     border: none;
 	white-space: nowrap;
@@ -244,12 +244,12 @@
   color: #ff0000;
   opacity: 0.6;
   margin: 0.24px;  
-  padding: 0.2vw;
-  width:8vw;
-  height:2.4vw; 
-  font-size: 1.25vw;
+  padding: 0.4vmin; /* 0.2vw; */
+  width: 13vmin; /* 8vw; */
+  height: 4.25vmin; /* 2.4vw; */
+  font-size: 2.25vmin; /* 1.25vw; */
   white-space: nowrap;  
-  border-radius: 1vw;
+  border-radius: 2vmin; /* 1vw; */
 }
 .randomBtn {
   left: 66%;
@@ -278,14 +278,14 @@
   	color:white;
   	opacity:0.5;
   	border:0;
-  	top: 0px;
-  	right: 0px;
-  	height:32px;
-  	max-height:32px;
-  	max-width:32px;
-  	min-height:32px;
-  	min-width:32px;
-  	width:32px;
+  	top: 2px;
+  	right: 2px;
+  	height: 4.5vmin; /* 32px; */
+  	max-height: 4.5vmin; /* 32px; */
+  	max-width: 4.5vmin; /* 32px; */
+  	min-height: 4.5vmin; /* 32px; */
+  	min-width: 4.5vmin; /* 32px; */
+  	width: 4.5vmin; /* 32px; */
 	border-radius: 50%;
 }
 /* shadow play button */
@@ -362,11 +362,11 @@
 	top: 40%;
 	left: 50%;
 	width: 85%;
-	line-height: 70px;
+	line-height: 10vmin; /* 70px; */
 	padding: 0.5em 0.25em;
 	margin: 0;
 	transform: translate(-50%, -50%);
-	font-size: 50px;
+	font-size: 7.25vmin; /*50px;*/
 	color: #fff;
 	text-align: center;
 	opacity: 0;

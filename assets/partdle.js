@@ -2493,11 +2493,13 @@ loadSettings = function() {
   }
 	
 };
+set__scale=function(s){try{document.querySelector('#aswift_4').parentElement.parentElement.style.scale= s}catch(e){};}
 /**
  * 
  */
 start = function() {
-	
+  try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
+  
   setViewport();
   
   setVisibility(true);

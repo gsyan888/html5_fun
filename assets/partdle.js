@@ -48,25 +48,35 @@ clearPreview = function() {
 	//移除預覽，隱藏輸出區
 	try {
 		Array.from(document.querySelector('.preview').children).forEach(c=>c.remove());
+        document.querySelector('#previewBtn').style.display = 'block';
 		document.querySelector('.resultBlock').style.display = 'none';
+		document.querySelector('#submitBtn').style.display = 'none';
 	}catch(e) {};
 };
 /**
  *
  */
 fileURL_onBlurHandler = function(elm) {
-  if(elm.value.replace(/\s/g, '') != '') {
+  //if(elm.value.replace(/\s/g, '') != '') {
     var id = '';
     if( (/^https:\/\//i.test(elm.value)) && (/spreadsheets/.test(elm.value)) ) {
       id = gdGetSpreadSheetID(elm.value);
     }
     if(id == '') {
        clearPreview(); //清除預覽結果及輸出區
-	   setTimeout(function() {
-	     showMessage('請輸入 Google 試算表的共用網址');
-	   }, 100);
+       if(elm.value.replace(/\s/g, '') != '') {
+	     setTimeout(function() {
+	       showMessage('請輸入 Google 試算表的共用網址');
+	     }, 100);
+       } else {
+         clearPreview();
+       }
 	   return;
     }
+    try { 
+      document.querySelector('#previewBtn').style.display = 'none';
+      document.querySelector('#submitBtn').style.display = 'block'; 
+	}catch(e){};
 	getQuestioLinesFromSpreadSheet(elm.value, null, 'SELECT * LIMIT 2', true, function(data) {
 		var errorMsg = '';
 		if(typeof(data)!='undefined' && data!=null && typeof(data['status'])=='string' && data['status']=='ok') {
@@ -106,7 +116,7 @@ fileURL_onBlurHandler = function(elm) {
 			console.log('debug', data);
 		}
 	});
-  }
+  //}
 };
 /**
  * 按送出紐後要處理的程序

@@ -206,6 +206,15 @@
     outline:none;
     border: none;
 	white-space: nowrap;
+	text-align:center;
+	margin:auto;
+}
+.circleBtn label {
+  position: absolute;
+  margin: auto;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
 }
 .nextBtn {
   position: absolute;

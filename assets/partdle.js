@@ -842,8 +842,10 @@ addTolerance = function(box) {
  * @return {Boolean}
  */
 hitTest = function(obj1, obj2) {
-	var rect1 =  obj1.getClientRects()[0].toJSON();
-	var rect2 = obj2.getClientRects()[0].toJSON();
+	//var rect1 =  obj1.getClientRects()[0].toJSON();
+	//var rect2 = obj2.getClientRects()[0].toJSON();
+	var rect1 =  obj1.getBoundingClientRect().toJSON();
+	var rect2 = obj2.getBoundingClientRect().toJSON();
 	return boxContains(addTolerance(rect1), rect2);
 };
 /**
@@ -1909,7 +1911,8 @@ updateSVGviewBox = function() {
   if(svg && svgContainer && typeof(words)!='undefined' && words!=null && typeof(wordSpacing)=='number') {
     //檢查一下橫向時, 以橫的為基準取大小，直的會不會太大
     //如果太大，將橫的再放大
-    var size = svgContainer.getClientRects()[0];
+    //var size = svgContainer.getClientRects()[0];
+	var size = svgContainer.getBoundingClientRect();	
     var w = size.width/words.length;
     var h = size.height/2.25;
     var scale = 1;

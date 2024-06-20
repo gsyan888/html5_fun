@@ -1177,6 +1177,28 @@ sceneInit = function() {
 	}
 	message.setAttribute('style', 'opacity:0;');
 };
+localToScreen = function(box) {
+  var svgElement = document.getElementById("practiceSVG");
+  var CTM = svgElement.getScreenCTM();
+  if(box.width!=null && box.height!=null) {
+    box.width *= CTM.a;
+	box.height *= CTM.d;
+  }
+  box.x = box.x * CTM.a + CTM.e; 
+  box.y = box.y * CTM.d + CTM.f;
+  return box;
+};
+screenToLocal = function(box) {
+  var svgElement = document.getElementById("practiceSVG");
+  var CTM = svgElement.getScreenCTM();
+  if(box.width!=null && box.height!=null) {
+    box.width /= CTM.a;
+	box.height /= CTM.d;
+  }
+  box.x = (box.x - CTM.e) / CTM.a; 
+  box.y = (box.y - CTM.f) / CTM.d;
+  return box;
+};
 /**
  * 以位置的編號計算在 SVG 中的位置
  * @param {Number} 要放在第幾個位置
@@ -1586,7 +1608,7 @@ getTermInRect = function() {
 /**
  * 
  */
-checkAnswer = async function(answerTxt) {
+checkAnswer = function(answerTxt) {
 	var isFinish = true;	
 	var anotherTerm = null; 
 	var partsTotal = 0;
@@ -2755,3 +2777,4 @@ var autostart = gup('autostart');
 if(autostart == '1' || autostart == 'true') {
   start();
 }
+

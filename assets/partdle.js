@@ -864,7 +864,7 @@ var btnSleep = function(btn, t) {
  * @return {Object} 
  */
 audioInit = function(src, isSimple) {
-  if(isSimple) {
+  if(isSimple || typeof(AudioContext)!='function') {
     var baseElement = document.createElement('audio');
     baseElement.preload = true;
     baseElement.loop = false;					
@@ -1251,7 +1251,7 @@ function addPathBackground(path){
 /**
  * 
  */
-async function inertWords(callback) {
+async function insertWords(callback) {
 	if(wordIndexList.length > 0) {
 		var r = Math.floor(Math.random()*wordIndexList.length);
 		var currentIndex = wordIndexList[r];
@@ -1338,7 +1338,7 @@ async function inertWords(callback) {
 		
 		//g.setAttribute('style', 'outline: 3px solid red;');
 		
-		inertWords(callback);
+		insertWords(callback);
 	} else {
 		if(typeof(callback)=='function') {
 			callback();
@@ -1436,10 +1436,157 @@ get_stroke_component = function(word) {
 	return component;
 };
 /**
+ *
+ */
+checkByEduDict2 = async function(term) {
+  var api_key = 'ee1af97d-9ec5-4a09-9317-cc3b89aa25c8';
+  var urlBase = 'https://pedia.cloud.edu.tw/api/v2/';
+  //var param = 'List?keyword={term}&page=1&api_key={api_key}';
+  var param = 'Detail?term={term}&api_key={api_key}';
+  var url = urlBase + param;
+  url = url.replace('{api_key}', api_key).replace('{term}', encodeURIComponent(term));  
+  //url = 'https://corsproxy.io/?'+encodeURIComponent(url);
+  var found = false;
+  if( typeof(term)=='string' && term.replace(/\s/g, '') != '' ) {
+    try {
+      var res = await fetch(url);
+      data = await res.json();
+      if(data && data['title']) {
+        found = true;
+      }
+    }catch(e) {
+      console.log(e);
+    }
+  }
+  return found;
+};
+
+isRowsInSheet = function(data) {
+  var found = false;
+  if(typeof(data)!='undefined' && data!=null && typeof(data['status'])=='string' && data['status']=='ok') {
+	var table = data['table'];
+	if(typeof(table['rows'])!='undefined' && table['rows']!=null && table['rows'].length>0) {
+		//table['rows'].forEach(r=>{					
+		//	console.log(r);
+		//});
+		found = true;
+	} else {
+		//errorMsg = '工作表沒有資料<br>請確認試算表中的內容後再試';
+	}
+  } else {
+	//errorMsg = '無法載入題庫<br>請確認試算表中的內容後再試';
+  }
+  return found;
+};
+checkByEduDict = async function(term, isJSONP, callback) {
+  if(typeof(isJSONP)!='boolean') {
+    isJSONP = false;
+  }
+  var found = false;
+  var dicSheetURL = 'https://docs.google.com/spreadsheets/d/1lTWAUvuqj6kmoafiCatBOPh38Wk08SIntTUoQucXqy8/edit?usp=sharing';
+  var dicSheetURL = 'https://docs.google.com/spreadsheets/d/1gXpIr34zH65D50td6vnuKbM4yy1WPNQTbReDguCy5lY/edit?usp=sharing';
+  var sql = "SELECT * WHERE A='"+term+"' LIMIT 1";
+  if(isJSONP) {
+	getQuestioLinesFromSpreadSheet(dicSheetURL, null, sql , true, function(data) {
+		found = isRowsInSheet(data);
+		if(typeof(callback)=='function') {
+			callback(found);
+		} else {
+			console.log('debug', data);
+		}
+	}); 
+  } else {
+    var queryURL = gdGetSpreadSheetQueryURL(dicSheetURL, null, sql, 1);
+	queryURL = 'https://corsproxy.io/?'+encodeURIComponent(queryURL);
+	var data = null;
+	try {
+	  var res = await fetch(queryURL);
+	  var data = await res.text();
+	}catch(e) {};
+	if(typeof(data)=='string' && data.length > 47) {
+	  try {
+	    data = JSON.parse( data.substring(47, data.length - 2) );
+	    found = isRowsInSheet(data);
+	  } catch(e) { };
+	}
+	if(typeof(callback)=='function') {
+	  callback(found);
+	}
+  }
+  return found;  
+};
+
+/**
+ * 由答案區方框中的部件抓出可能的語詞
+ * .解析出所有部件的 id: 字-在詞的第幾個字-在字的第幾個部件 (rf. insertWords)
+ * .記錄該格中使用哪些字的部件
+ * .記錄該格中有哪些 CNS 代碼
+ * .查詢字該有的 CNS , 如果和格中的 CNS 總數一樣，就檢查 CNS 內容是否一樣
+ * .如果一樣者, 字算拼出來了, 加入 term 字串
+ * .每格都檢查完, 回傳 term
+ */
+getTermInRect = function() {
+	var term = '';
+	var rectList = [];
+	var svg = document.querySelector('#practiceSVG');
+	if(svg) {		
+		for(var i=0; i<words.length; i++) {
+			rectList[i] = {};
+			rectList[i]['w'] = {};
+			rectList[i]['cns'] = [];
+		}
+		for(var i=0; i<svg.children.length; i++) {
+			var g = svg.children[i];
+			var id = g.getAttribute('id');
+			if(g.tagName == 'g' && typeof(id)=='string' && (match=id.match(/([^-]+)-(\d+)-(\d+)/)) ) {
+				var w = match[1];
+				var cns = g.getAttribute('cns');
+				for(var j=0; j<rectList.length; j++) {
+					if( hitTest(svg.children[j], g) ) {
+						rectList[j]['cns'].push(cns);
+						if(rectList[j]['w'][w]==null) {
+							rectList[j]['w'][w] = 1;
+						} else {
+							rectList[j]['w'][w]++;
+						}						
+						break;
+					};
+				}
+			}
+		}
+	}
+	for(var i=0; i<rectList.length; i++) {
+		var r = rectList[i];
+		var keys = Object.keys(r['w']);
+		keys.sort((a, b)=>(r['w'][a]-r['w'][b]));
+		for(var k=0; k<keys.length; k++) {
+			var w = keys[k];
+			var cns = get_stroke_component(w);
+			if( r['cns'].length == cns.length ) {
+				for(var j=0; j<r['cns'].length && cns.length>0; j++) {
+					for(var c=0; c<cns.length; c++) {
+						if(r['cns'][j] == cns[c]) {
+							cns.splice(c, 1);
+							break;
+						}
+					}
+				}
+				if(cns.length == 0) {
+					term += w;
+					break;
+				}
+			}
+		}
+	}
+	//console.log(term);
+	return term;
+};
+/**
  * 
  */
-checkAnswer = function(answerTxt) {
+checkAnswer = async function(answerTxt) {
 	var isFinish = true;	
+	var anotherTerm = null; 
 	var partsTotal = 0;
 	var hitTotal = 0;
 	var checkList = [];
@@ -1523,6 +1670,34 @@ checkAnswer = function(answerTxt) {
 			}
 		}
 	}
+	//如果未找出標準答案, 且非語音辨識, 就試著用字典查看看語詞在不在(可能是迴文)
+	if(!isFinish && typeof(answerTxt) != 'string' ) {
+		var term = getTermInRect();
+		if(Array.from(term).length == words.length) {
+			console.log('search dic: '+term);
+			showMessage('字拼對了，詞不同<br>～查字典中，請稍候～', '#FF94B8', 2);
+			document.querySelector('.checkBtn').enable = false;
+			//isFinish = await checkByEduDict(term, false);
+			//document.querySelector('.checkBtn').enable = true;
+			//if(isFinish) {
+			//	//記錄回文，供製作教育百科第二個連結
+			//	anotherTerm = term;
+			//}
+			checkByEduDict(term, true, function(isTermFound) {
+				if(isTermFound) {
+					anotherTerm = term;
+				}
+				feedBack(isTermFound, hitTotal, partsTotal, anotherTerm);
+			});
+		} else {
+			feedBack(isFinish, hitTotal, partsTotal, anotherTerm);
+		}
+	} else {
+		feedBack(isFinish, hitTotal, partsTotal, anotherTerm);
+	}
+	return isFinish;
+};
+feedBack = function(isFinish, hitTotal, partsTotal, anotherTerm) {	
 	//最後回饋
 	if(isFinish) {
 		showAnswer();
@@ -1543,7 +1718,7 @@ checkAnswer = function(answerTxt) {
 			if(nextBtn) {
 				nextBtn.classList.toggle('hidden', false);
 			}
-			updateDicLink(words);
+			updateDicLink(words, anotherTerm);
 		});
 		if(typeof(soundFinish)!='undefined' && soundFinish!=null) {
 			audioPlay(soundFinish);
@@ -1555,8 +1730,7 @@ checkAnswer = function(answerTxt) {
 			if(btn) {
 				btn.classList.toggle('hidden', true);
 			}
-		}
-		
+		}		
 		updateScore(score);
 	} else {
 		if(hitTotal < partsTotal && typeof(answerTxt)!='string') {
@@ -1784,7 +1958,7 @@ newGame = function(isSkip) {
     //開始製作並以亂數填入字的部件
 	//先產生字的可用序號
 	wordIndexList = Array.from({ length: words.length }, (value, index) => index);
-    inertWords( function() {
+    insertWords( function() {
       //將小的部件放最上層
       bringSmallToTop();
       //顯示送出答案、部件重排、稍後作答的按鈕
@@ -2362,7 +2536,7 @@ updateQlabel = function(n) {
 /**
  * 
  */
-updateDicLink = function(txt) {
+updateDicLink = function(txt, anotherTerm) {
   var dicLink = document.querySelector('.dicLink');
   var url = 'https://pedia.cloud.edu.tw/Entry/Detail?title=';
   if(dicLink) {
@@ -2372,7 +2546,14 @@ updateDicLink = function(txt) {
 	  if(typeof(txt) != 'string') {
 	    txt = txt.join('');
 	  }
-	  txt = '<a href="'+url+encodeURIComponent(txt)+'#" target="_blank">查看教育雲-教育百科 ['+txt+'] 的解釋</a>';
+	  if(typeof(anotherTerm)=='undefined' || anotherTerm==null) {
+	    txt = '<a href="'+url+encodeURIComponent(txt)+'#" target="_blank">查看教育雲-教育百科 ['+txt+'] 的解釋</a>';
+      } else {
+	    var t = '查看教育雲-教育百科的解釋 &gt;&gt; ';
+		t += '[<a href="'+url+encodeURIComponent(txt)+'#" target="_blank">'+txt+'</a>]';
+		t += '[<a href="'+url+encodeURIComponent(anotherTerm)+'#" target="_blank">'+anotherTerm+'</a>]';
+		txt = t;
+      }	  
     }
 	dicLink.innerHTML = txt;
   }
@@ -2556,7 +2737,7 @@ start = function() {
   loadingAnimation('PARTDLE');
 
   soundInit();
-  
+
   setTimeout(function() {
     updateScore();//reset the score to 0
 	updateQlabel(); //reset the question total number label

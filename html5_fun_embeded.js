@@ -236,7 +236,7 @@ loadExternalScript = function(scriptSrc, callback)  {
 };
 
 set__scale=function(s){
-  for(var i=3; i<=5; i++) {
+  for(var i=3; i<=10; i++) {
     try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
   }
 }

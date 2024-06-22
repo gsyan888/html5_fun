@@ -234,8 +234,13 @@ loadExternalScript = function(scriptSrc, callback)  {
   var docHead = document.getElementsByTagName("head")[0];
   docHead.insertBefore(scriptToAdd, docHead.firstChild);
 };
+
+set__scale=function(s){try{document.querySelector('#aswift_4').parentElement.parentElement.style.scale= s}catch(e){};}
+
 //載入的程序
 injection = function() {
+  try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
+  
   //讓 play button lost focus : 呼叫 blur(), 以免按空白鍵也觸發
   var elm = document.getElementById('playButton');
   if(typeof(elm)!='undefined' && elm!=null) {
@@ -426,6 +431,8 @@ removeHTML5FunEmbeded = function() {
   window.onscroll=null;
   //重新顯示原有的內容
   document.body.style.overflow = '';
+  //
+  try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
 }
 //
 //在畫面 playButton 新增一個 PLAY 的按鈕

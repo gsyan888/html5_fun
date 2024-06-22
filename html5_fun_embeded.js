@@ -235,7 +235,11 @@ loadExternalScript = function(scriptSrc, callback)  {
   docHead.insertBefore(scriptToAdd, docHead.firstChild);
 };
 
-set__scale=function(s){try{document.querySelector('#aswift_4').parentElement.parentElement.style.scale= s}catch(e){};}
+set__scale=function(s){
+  for(var i=3; i<=5; i++) {
+    try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
+  }
+}
 
 //載入的程序
 injection = function() {

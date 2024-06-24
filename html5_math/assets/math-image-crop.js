@@ -2112,7 +2112,11 @@ function applyTheUrlAndAutoStart(url) {
   }
 };
 
-set__scale=function(s){try{document.querySelector('#aswift_4').parentElement.parentElement.style.scale= s}catch(e){};}
+set__scale=function(s){
+  for(var i=3; i<=10; i++) {
+    try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
+  }
+};
 
 function start() {
   try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};

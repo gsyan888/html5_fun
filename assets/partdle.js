@@ -4,7 +4,7 @@ var pinyinJSFilename = 'https://gsyan888.github.io/html5_fun/assets/pinyin.js'; 
 var soundFailureURL = 'https://gsyan888.github.io/html5_fun/html5_wheel/assets/sound_spin.mp3';
 var soundCoinURL = 'https://gsyan888.github.io/html5_fun/assets/sound-coin.mp3';
 var soundFinishURL = 'https://gsyan888.github.io/html5_fun/assets/sound-ding-dong-ding-dong.mp3';
-var defaultURL = 'https://docs.google.com/spreadsheets/d/1kBueULlojPOH9E3EZYEUcUAv1HfJm_wULQT1hT2m1nM/edit?usp=sharing';
+var defaultSpreadSheetURL = 'https://docs.google.com/spreadsheets/d/1kBueULlojPOH9E3EZYEUcUAv1HfJm_wULQT1hT2m1nM/edit?usp=sharing';
   
 var parts_set_separator = '~';	//部件設定生字與筆順間的分隔符號
 var colors = ['#ff6699',  "#56B4E9", "#009E73", "#F0E442", '#ff9933', '#FFBAA3', '#9169EC', '#7B92BE'];
@@ -14,8 +14,11 @@ var questionList = [];
 var isFirstGame = true;
 var wordIndexList = [];
 var qTotalNumber;
+var checkTotal = 0;
+var checkTotalMax = 3;
 
 var words = '筆順練習';
+var otherPhrase = [];
 
 var xStart = 0;
 var yStart = 1024;
@@ -212,7 +215,7 @@ loadSettingFromExternalScript = function(scriptSrc, callback)  {
  * 將 RegExp 中的保留符號先加上反斜線
  */
 escapeRegExpString = function (str) {
-  return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  return (typeof(str)=='string'?str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : str);
 };
 /**
  * 將一行部件設定字串解析為多組部件字串陣列
@@ -576,7 +579,7 @@ allPartsToSVG = function(word, data, partSetIndex, byPart, addStroeNumber, addAn
 		}
 		var svg = '<svg id="'+word+'" viewBox="0 0 2048 2048" xmlns="http://www.w3.org/2000/svg">\n';
 		for(var i=0; i<partsList.length; i++) {
-			var color = colors[i];
+			var color = colors[i%colors.length];
 			svg += '<g fill="'+color+'" fill-opacity="1" stroke="#000000" stroke-width="0" stroke-linejoin="round" stroke-opacity="0">';
 			if(byPart) {
 				//將部件的筆畫合併
@@ -1277,6 +1280,11 @@ function addPathBackground(path){
  */
 async function insertWords(callback) {
 	if(wordIndexList.length > 0) {
+		if(wordIndexList.length == words.length) {
+			//弄亂部件擺放位置及顏色用的可用位置
+			window.randomPos = Array.from({length: get_partsTotal(words)}, (x, i) => i);				
+		}
+	
 		var r = Math.floor(Math.random()*wordIndexList.length);
 		var currentIndex = wordIndexList[r];
 		wordIndexList.splice(r, 1);
@@ -1332,29 +1340,36 @@ async function insertWords(callback) {
 			}
 						
 			var box = g[i].getBBox();
-			if( !window.randomPos || window.randomPos.length < 1 ) {
-				window.randomPos = Array.from({length: get_partsTotal(words)}, (x, i) => i);				
-			}
+			
+			//if( !window.randomPos || window.randomPos.length < 1 ) {
+			//	window.randomPos = Array.from({length: get_partsTotal(words)}, (x, i) => i);				
+			//}
 			var width = viewBox.width / get_partsTotal(words);
 			var r = Math.floor(Math.random()*window.randomPos.length);
 			var rPos = window.randomPos[r];
-			var rndX = rPos * width- box.x;
+			
+			//var rndX = rPos * width- box.x;
 			//檢查 x 是否太左或太右並修正
-			if(rndX-box.width/2 < 0) {
-				rndX = box.width/2 - box.x;
-			} else {
-				rndX -= box.width/2;
-			}
-			if(rndX+box.width+box.x*2 > viewBox.width) {
-				rndX = viewBox.width - box.width - box.x - 50;
-			}
-			var rndY = y - 1024 + (1-Math.floor(Math.random()*3))*2048/5 - box.y - box.height/2;
-			if(rndY + box.y + box.height > y ) {
-				rndY = y - 50 - box.height - box.y;
-			}
+			//if(rndX-box.width/2 < 0) {
+			//	rndX = box.width/2 - box.x;
+			//} else {
+			//	rndX -= box.width/2;
+			//}
+			//if(rndX+box.width+box.x*2 > viewBox.width) {
+			//	rndX = viewBox.width - box.width - box.x - 50;
+			//}
+			//var rndY = y - 1024 + (1-Math.floor(Math.random()*3))*2048/5 - box.y - box.height/2;
+			//if(rndY + box.y + box.height > y ) {
+			//	rndY = y - 50 - box.height - box.y;
+			//}
 			window.randomPos.splice(r, 1);
+			
+			//改為放中央
+			var cx = viewBox.width/2 - box.width/2 - box.x;
+			var cy = viewBox.height/2 - box.height/2 - box.y;			
 
-			g[i].setAttribute('transform', 'translate(' + rndX + ' ' + rndY + ')');
+			//g[i].setAttribute('transform', 'translate(' + rndX + ' ' + rndY + ')');
+			g[i].setAttribute('transform', 'translate(' + cx + ' ' + cy + ')');
 			
 			//g[i].setAttribute('fill', colors[Math.floor(Math.random()*colors.length)]);
 			g[i].setAttribute('fill', colors[rPos%colors.length]);						
@@ -1365,6 +1380,9 @@ async function insertWords(callback) {
 		insertWords(callback);
 	} else {
 		if(typeof(callback)=='function') {
+			//打亂位置
+			randomPosition();
+			
 			callback();
 		}
 	}
@@ -1460,7 +1478,7 @@ get_stroke_component = function(word) {
 	return component;
 };
 /**
- *
+ * 利用教育雲查詞
  */
 checkByEduDict2 = async function(term) {
   var api_key = 'ee1af97d-9ec5-4a09-9317-cc3b89aa25c8';
@@ -1502,6 +1520,9 @@ isRowsInSheet = function(data) {
   }
   return found;
 };
+/**
+ * 利用放在試算表中的重編國語字典詞庫來查
+ */
 checkByEduDict = async function(term, isJSONP, callback) {
   if(typeof(isJSONP)!='boolean') {
     isJSONP = false;
@@ -1539,34 +1560,156 @@ checkByEduDict = async function(term, isJSONP, callback) {
   }
   return found;  
 };
-
 /**
- * 由答案區方框中的部件抓出可能的語詞
- * .解析出所有部件的 id: 字-在詞的第幾個字-在字的第幾個部件 (rf. insertWords)
- * .記錄該格中使用哪些字的部件
- * .記錄該格中有哪些 CNS 代碼
- * .查詢字該有的 CNS , 如果和格中的 CNS 總數一樣，就檢查 CNS 內容是否一樣
- * .如果一樣者, 字算拼出來了, 加入 term 字串
- * .每格都檢查完, 回傳 term
+ * 利用放在試算表中的重編國語字典詞庫來查帶有字串各字的語詞, 再留字數符合者
  */
-getTermInRect = function() {
-	var term = '';
-	var rectList = [];
+findOtherPhraseByEduDict = function(term, callback) {
+  var dicSheetURL = 'https://docs.google.com/spreadsheets/d/1gXpIr34zH65D50td6vnuKbM4yy1WPNQTbReDguCy5lY/edit?usp=sharing';
+  if(typeof(term)=='string') {
+    term = Array.from(term);
+  }
+  var condition = ''; 
+  //將字串拆成一個字、一個字，組合成單字查詢的條件，傳回含有每一個字者, 再去掉字數不合者
+  term.forEach(w=>condition+=(condition==''?'':" AND")+" A LIKE '%"+w+"%'");
+  var sql = "SELECT * WHERE "+ condition;
+  getQuestioLinesFromSpreadSheet(dicSheetURL, null, sql , true, function(data) {
+    var others = [];
+    if(typeof(data)!='undefined' && data!=null && typeof(data['status'])=='string' && data['status']=='ok') {
+      var table = data['table'];
+      if(typeof(table['rows'])!='undefined' && table['rows']!=null && table['rows'].length>1) {
+        var rows = data['table']['rows'].filter(r=>r.c && r.c[0].v.length == term.length);
+		if(rows.length > 1) {
+          term = term.join('');
+          for(i=0; i<rows.length; i++) {
+            if(rows[i].c[0].v != term) {
+              others.push(rows[i].c[0].v.trim());
+            }
+          }
+        }
+      }
+    }
+    if(typeof(callback)=='function') {
+      callback(others);
+    } else {
+      console.log(JSON.stringify(others));
+    }
+  });
+};
+getTranslateCoord = function(el) {
+  var pos = {x:0, y:0};
+  var t = el.getAttribute('transform');
+  if( t && (m=t.match(/translate\s*\(([^\)]+)\)/i)) ) {
+    var xy = m[1].split(/\s+/);
+	if(xy && xy.length==2) {
+	  pos.x = Number(xy[0]);
+	  pos.y = Number(xy[1]);
+	}
+  }
+  return pos;
+};
+getAllPosition = function() {
+	var posList = {};
 	var svg = document.querySelector('#practiceSVG');
 	if(svg) {		
-		for(var i=0; i<words.length; i++) {
-			rectList[i] = {};
-			rectList[i]['w'] = {};
-			rectList[i]['cns'] = [];
-		}
+		//for(var i=0; i<words.length; i++) {
+		//	rectList[i] = [];
+		//}
 		for(var i=0; i<svg.children.length; i++) {
 			var g = svg.children[i];
 			var id = g.getAttribute('id');
 			if(g.tagName == 'g' && typeof(id)=='string' && (match=id.match(/([^-]+)-(\d+)-(\d+)/)) ) {
 				var w = match[1];
+				var index = Number(match[2]); //答案第幾個字(格)
+				var cns = g.getAttribute('cns');
+				var box = g.getBBox();
+				var cx = Math.ceil(box.x + box.width/2);
+				var cy = Math.ceil(box.y + box.height/2);				
+				var pos = {cns:cns, x:cx, y:cy};
+				//rectList[index].push(pos);
+				if(!posList[w]) {
+					posList[w] = [];
+				}
+				posList[w].push(pos);
+			}
+		}
+	}
+	return posList;
+};
+checkPos = function() {
+	var ngTotal = 0;
+	var svg = document.querySelector('#practiceSVG');
+	var getDist = function(p1, p2) {
+		return Math.sqrt(
+			Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) 
+		);
+	};
+	var offset = function(p1, p2) { 
+		p1.x += p2.x;
+		p1.y += p2.y;
+		return p1;
+	}
+	var getCenter = function(i, g) {
+		var rPos = getTranslateCoord(svg.children[i]);
+		var gPos = getTranslateCoord(g);
+		var bb = g.getBBox();
+		gPos = offset(gPos, {x:-rPos.x, y:-rPos.y});
+		gPos = offset(gPos, bb);
+		gPos = offset(gPos, {x:bb.width/2, y:bb.height/2});
+		return gPos;
+	};
+	var qPos = getAllPosition();	//原始答案各部件的位置
+	var ans = getPartsOverRect();	//目前方框中的部件
+	
+	//獨體字不用檢查位置
+	//以和部件中心點的距離來排序，找出最近的題目部件，比對 CNS 是否一樣
+	for(var r=0; r<ans.length; r++) {
+		var cns = ans[r]['cns'];
+		var wKeys = Object.keys(ans[r]['w']);
+		if(wKeys.length > 0 && cns.length > 0) {
+			var w = wKeys[0];
+			var q = qPos[w];
+			for(var i=0; i<ans[r]['g'].length; i++) {
+				var g = ans[r]['g'][i];
+				var pos = getCenter(r, g);
+				q = q.sort((a, b)=>(getDist(pos,a)-getDist(pos,b)));
+				//部件的 CNS 代碼和最靠近的答案 CNS 不同，表示放錯位置
+				if(g.getAttribute('cns') != q[0]['cns']) {
+					ngTotal++;
+					console.log('NG: ',g.getAttribute('cns'), q[0]['cns']);
+					return ngTotal;
+				}
+				console.log(w, g.getAttribute('cns'), pos, q[0]);				
+			}
+			console.log('---');
+		}
+	}
+	return ngTotal;
+};
+/**
+ * 由答案區方框中的部件抓出可能的語詞
+ * .解析出所有部件的 id: 字-在詞的第幾個字-在字的第幾個部件 (rf. insertWords)
+ * .記錄該格中使用哪些字的部件
+ * .記錄該格中有哪些 CNS 代碼
+ */
+getPartsOverRect = function() {
+	var rectList = [];
+	var svg = document.querySelector('#practiceSVG');
+	if(svg) {		
+		for(var i=0; i<words.length; i++) {
+			rectList[i] = {};
+			rectList[i]['g'] = [];
+			rectList[i]['w'] = {};
+			rectList[i]['cns'] = [];
+		}
+		for(var i=words.length; i<svg.children.length; i++) {
+			var g = svg.children[i];
+			var id = g.getAttribute('id');
+			if(g.tagName == 'g' && typeof(id)=='string' && (match=id.match(/([^-]+)-(\d+)-(\d+)/)) ) {				
+				var w = match[1];
 				var cns = g.getAttribute('cns');
 				for(var j=0; j<rectList.length; j++) {
 					if( hitTest(svg.children[j], g) ) {
+						rectList[j]['g'].push(g);
 						rectList[j]['cns'].push(cns);
 						if(rectList[j]['w'][w]==null) {
 							rectList[j]['w'][w] = 1;
@@ -1578,8 +1721,83 @@ getTermInRect = function() {
 				}
 			}
 		}
+		//修正一個框內使用到不同字的部件可能產生的問題
+		//將 .w 的數值與 .cns 的部件數量不同者刪除
+		var ng = [];
+		var wList = words.slice();
+		for(var i=0; i<rectList.length; i++) {
+			var cnsTotal = rectList[i]['cns'].length;
+			var wKeys = Object.keys(rectList[i]['w']);
+			for(var j=0; j<wKeys.length; j++) {
+				var cns = get_stroke_component(wKeys[j]);
+				if( cns.length != cnsTotal) {
+					delete rectList[i]['w'][wKeys[j]];
+				} else {
+					for(k=0; k<cnsTotal && cns.length>0; k++) {
+						for(c=0; c<cns.length; c++) {
+							if(cns[c] == rectList[i]['cns'][k]) {
+								cns.splice(c, 1);
+								break;
+							}
+						}
+					}
+					if(cns.length >0) {
+						delete rectList[i]['w'][wKeys[j]];
+					}				
+				}
+			}
+			var wTotal = Object.keys(rectList[i]['w']).length;
+			if(wTotal == 0) {
+				ng.push(i);
+				console.log('NG: ', i, rectList[i]);
+			} else if(wTotal == 1) {
+				for(var k=0; k<wList.length; k++) {
+					if(wList[k] == Object.keys(rectList[i]['w'])[0]) {
+						wList.splice(k, 1);
+						break;
+					}
+				}
+			}
+		}
+		//找找看，什麼字是漏掉的，可以搭配尚未設定在格子內的
+		for(var i=0; i<ng.length; i++) {
+			var cnsTotal = rectList[ng[i]]['cns'].length;
+			for(var k=0; k<wList.length; k++) {
+				var w = wList[k];
+				var cns = get_stroke_component(w);
+				if(cns.length == cnsTotal) {
+					for(j=0; j<cnsTotal && cns.length>0; j++) {
+						for(c=0; c<cns.length; c++) {
+							if(cns[c] == rectList[ng[i]]['cns'][j]) {
+								cns.splice(c, 1);
+								break;
+							}
+						}
+					}
+					if(cns.length == 0) {
+						rectList[ng[i]]['w'][w] = cnsTotal;
+						break;
+					}
+				}
+			}
+		}
 	}
-	for(var i=0; i<rectList.length; i++) {
+	return rectList;
+};
+/**
+ * 由答案區方框中的部件抓出可能的語詞
+ * .查詢字該有的 CNS , 如果和格中的 CNS 總數一樣，就檢查 CNS 內容是否一樣
+ * .如果一樣者, 字算拼出來了, 加入 term 字串
+ * .每格都檢查完, 回傳 term
+ */
+getTermInRect = function(index) {
+	var term = '';
+	var rectList = getPartsOverRect();
+	var min = 0, max = rectList.length-1;
+	if(typeof(index)=='number') {
+		max = min = index;
+	}
+	for(var i=min; i<=max; i++) {
 		var r = rectList[i];
 		var keys = Object.keys(r['w']);
 		keys.sort((a, b)=>(r['w'][a]-r['w'][b]));
@@ -1609,12 +1827,64 @@ getTermInRect = function() {
  * 
  */
 checkAnswer = function(answerTxt) {
-	var isFinish = true;	
+	var isFinish = true;
+	var posNgTotal = 0;
 	var anotherTerm = null; 
 	var partsTotal = 0;
 	var hitTotal = 0;
-	var checkList = [];
-    soundInit();
+	var checkList = [];    
+	
+	var tolerance = 2048/10; //10, 12, 15
+	var offset = function(p1, p2, op) { 
+		if(typeof(op)!='number') op = 1;
+		p1.x += p2.x*op;
+		p1.y += p2.y*op;
+		return p1;
+	}
+	var getCenter = function(r, g) {
+		var rPos = getTranslateCoord(r);
+		var gPos = getTranslateCoord(g);
+		var bb = g.getBBox();
+		gPos = offset(gPos, {x:rPos.x, y:rPos.y}, -1);
+		gPos = offset(gPos, bb);
+		gPos = offset(gPos, {x:bb.width/2, y:bb.height/2});
+		return gPos;
+	};
+	//幫位置需調整的部件加上警示的方框
+	var checkHint = function(g) {
+		if(g) {
+			var b = g.getBBox();
+			var rect = createSvgElm('rect', {'class':'hintRect',width:b.width, height:b.height, x:b.x, y:b.y, style:'fill:#ffff00;fill-opacity:0.5;stroke:#ff0000;stroke-width:20;stroke-opacity:0.25'});
+			g.insertBefore(rect, g.children[0]);
+		} else {
+			var hint = document.querySelectorAll('.hintRect');
+			if(hint) {
+				Array.from(hint).forEach(g=>g.remove());
+			}
+		}
+	};
+	//檢查部件是否在位置上
+	//p1為要檢查的部件 translate, p2 為該字部件中，面積較大者的 translate
+	var isIn = function(p1, p2, tolerance) {
+		return (Math.abs(p1.x-p2.x)<=tolerance && Math.abs(p1.y-p2.y)<=tolerance);
+	};
+	//width*height 用來將元件依大小排序用
+	var getSize = function(g) {
+		var b = g.getBBox();
+		return b.width*b.height;
+	};
+	//同樣的部件在各字中是不同位置
+	//將 g 的 translate 修正為以 a 的視角看
+	var meToOther = function(g, a) {
+		var b0 = a.getBBox();
+		var b1 = g.getBBox();
+		var dx = b1.x - b0.x + (b1.width - b0.width)/2;
+		var dy = b1.y - b0.y + (b1.height - b0.height)/2;
+		var pos = getTranslateCoord(g);
+		pos.x += dx;
+		pos.y += dy;
+		return pos
+	};
 	if( typeof(answerTxt) == 'string' ) {
 		//比對語音辨識傳來的字串
 		var question = ( typeof(words)=='string'? words : words.join('') ).trim();
@@ -1641,6 +1911,7 @@ checkAnswer = function(answerTxt) {
 			return false;	//字數不足時，不進行比對
 		}
 	} else {
+		soundInit(); //是按下滑鼠者，試著載入音效
 		//檢查方格內的部件是否正確
 		//準備標準答案
 		for(var i=0; i<words.length; i++) {
@@ -1656,7 +1927,8 @@ checkAnswer = function(answerTxt) {
 				var g = svg.children[i];
 				var id = g.getAttribute('id');
 				if(g.tagName == 'g' && typeof(id)=='string' && (match=id.match(/([^-]+)-(\d+)-(\d+)/)) ) {
-					var index = match[2];
+					var w = match[1];
+					var index = Number(match[2]);
 					var cns = g.getAttribute('cns');
 					for(var j=0; j<checkList.length; j++) {
 						if( hitTest(svg.children[j], g) ) {
@@ -1678,7 +1950,8 @@ checkAnswer = function(answerTxt) {
 				break;
 			}
 			//檢查 CNS 部件代碼是否對
-			var q = target['q'].slice(0);
+			//先將題目部件複製一份, 找到的就去掉, 有剩就是未答完
+			var q = target['q'].slice(0); 
 			for(var j=0; j<target['a'].length; j++) {
 				var cns = target['a'][j].getAttribute('cns');
 				for(var k=0; k<q.length; k++) {
@@ -1693,6 +1966,73 @@ checkAnswer = function(answerTxt) {
 				break;
 			}
 		}
+		//檢查位置有沒有錯
+		if(isFinish) {
+			for(var i=0; i<checkList.length; i++) {
+				var target = checkList[i];
+				if(target['a'].length > 1) {
+					//以面積大到小, 以最大的當位置的基準
+					target['a'] = target['a'].sort((a, b)=>(getSize(b)-getSize(a)));
+					var rPos = getTranslateCoord(target['a'][0]);
+					for(var j=0; j<target['a'].length; j++) {
+						var g = target['a'][j];
+						var id = g.getAttribute('id');
+						var cns = g.getAttribute('cns');
+						var match = id.match(/([^-]+)-(\d+)-(\d+)/);
+						var w = match[1];
+						var index = Number(match[2]);
+
+						var ng = true;
+						var query = 'g[id*="'+words[i]+'"][cns="'+cns+'"]';
+						var gList = svg.querySelectorAll(query);
+						//console.log(query, gList);
+						//部件來自原字的，先檢查 translate 就好
+						if(index == i) {
+							var gPos = getTranslateCoord(g);
+							if(isIn(gPos, rPos, tolerance)) {
+								ng = false;
+							}
+						}
+						if(ng && gList.length > 0) {
+							for(var k=0; k<gList.length; k++) {
+								var gg = gList[k];
+								if(gg.getAttribute('id') != id) {
+									//console.log(gg);
+									gPos = meToOther(g, gg);
+									if(isIn(gPos, rPos, tolerance)) {
+										ng = false;
+										break;
+									}
+								}
+							}
+						}
+						if(ng) {
+							checkHint(g);
+							setTimeout(function() {
+								checkHint();
+							}, 250);
+							showMessage('加油<br>第 '+ (i+1) + ' 個字再排好一點', '#ff6699a0', 0.75);
+							if(typeof(soundFailure)!='undefined' && soundFailure!=null) {
+								audioPlay(soundFailure);
+							}								
+							return;							
+						}
+					}
+				}
+			}
+			//if(isFinish) {
+			//	showMessage('OK', 'green', 0.75);
+			//}
+			//return;
+		
+			//posNgTotal = checkPos();
+			//if(posNgTotal > 0) {
+			//	//showMessage(posNgTotal+' 個部件<br>需要調整位置', 'purple', 2);
+			//	showMessage('再檢查一下<br>有部件需要調整位置哦~', 'purple', 1.5);
+			//	return;
+			//}
+		}
+		
 	}
 	//如果未找出標準答案, 且非語音辨識, 就試著用字典查看看語詞在不在(可能是迴文)
 	if(!isFinish && typeof(answerTxt) != 'string' ) {
@@ -1707,12 +2047,26 @@ checkAnswer = function(answerTxt) {
 			//	//記錄回文，供製作教育百科第二個連結
 			//	anotherTerm = term;
 			//}
-			checkByEduDict(term, true, function(isTermFound) {
-				if(isTermFound) {
-					anotherTerm = term;
+			
+			//checkByEduDict(term, true, function(isTermFound) {
+			//	if(isTermFound) {
+			//		anotherTerm = term;
+			//	}
+			//	feedBack(isTermFound, hitTotal, partsTotal, anotherTerm);
+			//});
+			//
+			//利用已查過的字典結果(otherPhrase, 在 newGame 中查的)
+			//如果找到，表示可能是迴文
+			var anotherTerm = '';
+			if(otherPhrase.length > 0) {
+				for(var i=0; i<otherPhrase.length; i++) {
+					if(term == otherPhrase[i]) {
+						anotherTerm = term;
+						break;
+					}
 				}
-				feedBack(isTermFound, hitTotal, partsTotal, anotherTerm);
-			});
+			}
+			feedBack(anotherTerm!='', hitTotal, partsTotal, anotherTerm);
 		} else {
 			feedBack(isFinish, hitTotal, partsTotal, anotherTerm);
 		}
@@ -1968,6 +2322,8 @@ newGame = function(isSkip) {
   //清掉字典的連結
   updateDicLink();
 
+  checkTotal = 0;	//計算已按過幾次送出答案(供檢查位置放水用 XDDD
+
   //get question
   words = getOneQuestion(isSkip);
   if(typeof(words)!='undefined' && words!=null && words.length > 0) {
@@ -1975,6 +2331,11 @@ newGame = function(isSkip) {
     if(typeof(words)=='string') {
       words = Array.from(words.trim());
     }
+
+    //預先查一下字典，是否有其它組合的語詞
+    findOtherPhraseByEduDict(words, function(others) {
+      otherPhrase = others;
+    });
 
     updateSVGviewBox();
     
@@ -2683,8 +3044,15 @@ loadQuestionAndStartGame = function() {
     var id = gup('id');
 	var gid = gup('gid');
 	var col = gup('col');
-	if(id.replace(/\s/g, '') == '') {
-		url = defaultURL;
+	var url = defaultSpreadSheetURL;
+	if(id.replace(/\s/g, '') == '') {		
+		if(gid != '') {
+			if(/gid=/.test(url)) {
+				url = url.replace(/gid=([^&\?#]+)/g, 'gid='+gid);
+			} else {
+				url += (/\?/.test(url)?'&':'?') + 'gid='+gid+'#'+gid;
+			}
+		}
 	} else {
 		url = 'https://docs.google.com/spreadsheets/d/'+id+'/edit?'+(gid=='' ? 'usp=sharing' : '?gid='+gid+'#'+gid);
 	}
@@ -2743,7 +3111,11 @@ loadSettings = function() {
   }
 	
 };
-set__scale=function(s){try{document.querySelector('#aswift_4').parentElement.parentElement.style.scale= s}catch(e){};}
+set__scale=function(s){
+  for(var i=3; i<=10; i++) {
+    try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
+  }
+};
 /**
  * 
  */

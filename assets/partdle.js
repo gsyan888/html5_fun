@@ -1579,7 +1579,9 @@ findOtherPhraseByEduDict = function(term, callback) {
       if(typeof(table['rows'])!='undefined' && table['rows']!=null && table['rows'].length>1) {
         var rows = data['table']['rows'].filter(r=>r.c && r.c[0].v.length == term.length);
 		if(rows.length > 1) {
-          term = term.join('');
+          if(typeof(term)!='string') {
+            term = term.join('');
+          }
           for(i=0; i<rows.length; i++) {
             if(rows[i].c[0].v != term) {
               others.push(rows[i].c[0].v.trim());
@@ -1668,8 +1670,8 @@ checkPos = function() {
 		if(wKeys.length > 0 && cns.length > 0) {
 			var w = wKeys[0];
 			var q = qPos[w];
-			for(var i=0; i<ans[r]['g'].length; i++) {
-				var g = ans[r]['g'][i];
+			for(var i=0; i<ans[r]['a'].length; i++) {
+				var g = ans[r]['a'][i];
 				var pos = getCenter(r, g);
 				q = q.sort((a, b)=>(getDist(pos,a)-getDist(pos,b)));
 				//部件的 CNS 代碼和最靠近的答案 CNS 不同，表示放錯位置
@@ -1697,7 +1699,7 @@ getPartsOverRect = function() {
 	if(svg) {		
 		for(var i=0; i<words.length; i++) {
 			rectList[i] = {};
-			rectList[i]['g'] = [];
+			rectList[i]['a'] = [];
 			rectList[i]['w'] = {};
 			rectList[i]['cns'] = [];
 		}
@@ -1709,7 +1711,7 @@ getPartsOverRect = function() {
 				var cns = g.getAttribute('cns');
 				for(var j=0; j<rectList.length; j++) {
 					if( hitTest(svg.children[j], g) ) {
-						rectList[j]['g'].push(g);
+						rectList[j]['a'].push(g);
 						rectList[j]['cns'].push(cns);
 						if(rectList[j]['w'][w]==null) {
 							rectList[j]['w'][w] = 1;
@@ -1821,7 +1823,7 @@ getTermInRect = function(index) {
 		}
 	}
 	//console.log(term);
-	return term;
+	return {term:term, rect:rectList};
 };
 /**
  * 
@@ -1885,6 +1887,52 @@ checkAnswer = function(answerTxt) {
 		pos.y += dy;
 		return pos
 	};
+	var checkPartPos = function(target, word) {
+		var gError = null;
+		if(target && target['a'] && target['a'].length > 1 && typeof(word)=='string') {
+			//以面積大到小, 以最大的當位置的基準
+			target['a'] = target['a'].sort((a, b)=>(getSize(b)-getSize(a)));
+			var rPos = getTranslateCoord(target['a'][0]);
+			for(var j=0; j<target['a'].length; j++) {
+				var g = target['a'][j];
+				var id = g.getAttribute('id');
+				var cns = g.getAttribute('cns');
+				var match = id.match(/([^-]+)-(\d+)-(\d+)/);
+				var w = match[1];
+				var index = Number(match[2]);
+
+				var ng = true;
+				var query = 'g[id*="'+word+'"][cns="'+cns+'"]';
+				var gList = svg.querySelectorAll(query);
+				//console.log(query, gList);
+				//部件來自原字的，先檢查 translate 就好
+				if(w == word) {
+					var gPos = getTranslateCoord(g);
+					if(isIn(gPos, rPos, tolerance)) {
+						ng = false;
+					}
+				}
+				if(ng && gList.length > 0) {
+					for(var k=0; k<gList.length; k++) {
+						var gg = gList[k];
+						if(gg.getAttribute('id') != id) {
+							//console.log(gg);
+							gPos = meToOther(g, gg);
+							if(isIn(gPos, rPos, tolerance)) {
+								ng = false;
+								break;
+							}
+						}
+					}
+				}
+				if(ng) {
+					gError = g;
+					break;
+				}
+			}
+		}
+		return gError;
+	};	
 	if( typeof(answerTxt) == 'string' ) {
 		//比對語音辨識傳來的字串
 		var question = ( typeof(words)=='string'? words : words.join('') ).trim();
@@ -1966,10 +2014,12 @@ checkAnswer = function(answerTxt) {
 				break;
 			}
 		}
+		
 		//檢查位置有沒有錯
 		if(isFinish) {
 			for(var i=0; i<checkList.length; i++) {
 				var target = checkList[i];
+				/*
 				if(target['a'].length > 1) {
 					//以面積大到小, 以最大的當位置的基準
 					target['a'] = target['a'].sort((a, b)=>(getSize(b)-getSize(a)));
@@ -2019,38 +2069,41 @@ checkAnswer = function(answerTxt) {
 						}
 					}
 				}
+				*/
+				
+				var ng = checkPartPos(target, words[i]);
+				if(ng) {
+					checkHint(ng);
+					setTimeout(function() {
+						checkHint();
+					}, 250);
+					showMessage('加油<br>第 '+ (i+1) + ' 個字再排好一點', '#ff6699a0', 0.75);
+					if(typeof(soundFailure)!='undefined' && soundFailure!=null) {
+						audioPlay(soundFailure);
+					}								
+					return;							
+				}
+				
 			}
-			//if(isFinish) {
-			//	showMessage('OK', 'green', 0.75);
-			//}
-			//return;
-		
-			//posNgTotal = checkPos();
-			//if(posNgTotal > 0) {
-			//	//showMessage(posNgTotal+' 個部件<br>需要調整位置', 'purple', 2);
-			//	showMessage('再檢查一下<br>有部件需要調整位置哦~', 'purple', 1.5);
-			//	return;
-			//}
-		}
-		
+		}		
 	}
 	//如果未找出標準答案, 且非語音辨識, 就試著用字典查看看語詞在不在(可能是迴文)
 	if(!isFinish && typeof(answerTxt) != 'string' ) {
-		var term = getTermInRect();
-		if(Array.from(term).length == words.length) {
-			console.log('search dic: '+term);
+		var ans = getTermInRect();
+		if(Array.from(ans['term']).length == words.length) {
+			console.log('search dic: '+ans['term']);
 			showMessage('字拼對了，詞不同<br>～查字典中，請稍候～', '#FF94B8', 2);
 			document.querySelector('.checkBtn').enable = false;
-			//isFinish = await checkByEduDict(term, false);
+			//isFinish = await checkByEduDict(ans['term'], false);
 			//document.querySelector('.checkBtn').enable = true;
 			//if(isFinish) {
 			//	//記錄回文，供製作教育百科第二個連結
-			//	anotherTerm = term;
+			//	anotherTerm = ans['term'];
 			//}
 			
-			//checkByEduDict(term, true, function(isTermFound) {
+			//checkByEduDict(ans['term'], true, function(isTermFound) {
 			//	if(isTermFound) {
-			//		anotherTerm = term;
+			//		anotherTerm = ans['term'];
 			//	}
 			//	feedBack(isTermFound, hitTotal, partsTotal, anotherTerm);
 			//});
@@ -2060,9 +2113,27 @@ checkAnswer = function(answerTxt) {
 			var anotherTerm = '';
 			if(otherPhrase.length > 0) {
 				for(var i=0; i<otherPhrase.length; i++) {
-					if(term == otherPhrase[i]) {
-						anotherTerm = term;
+					if(ans['term'] == otherPhrase[i]) {
+						anotherTerm = ans['term'];
 						break;
+					}
+				}
+			}
+			if(anotherTerm!='') {
+				//檢查部件的位置
+				for(var i=0; i<ans.rect.length; i++) {
+					var target = ans.rect[i];
+					var ng = checkPartPos(target, Object.keys(ans.rect[i]['w'])[0]);
+					if(ng) {
+						checkHint(ng);
+						setTimeout(function() {
+							checkHint();
+						}, 250);
+						showMessage('加油<br>第 '+ (i+1) + ' 個字再排好一點', '#ff6699a0', 0.75);
+						if(typeof(soundFailure)!='undefined' && soundFailure!=null) {
+							audioPlay(soundFailure);
+						}								
+						return;							
 					}
 				}
 			}
@@ -3149,4 +3220,3 @@ var autostart = gup('autostart');
 if(autostart == '1' || autostart == 'true') {
   start();
 }
-

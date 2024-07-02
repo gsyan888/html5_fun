@@ -25,8 +25,8 @@ html5FunSendScore = function(logger_url, score) {
 			
 			//如果是用 Google Apps Script 來記錄，透過 corsproxy 才不會被 Google 加料
 			if(/https:\/\/script\.google\.com\/macros\//.test(logger_url)) {
-				var nocache = '&nocache=' + new Date().getTime();
-				url += nocache;  
+				//var nocache = '&nocache=' + new Date().getTime();
+				//url += nocache;  
 				url = 'https://corsproxy.io/?'+encodeURIComponent(url);
 			}			
 			loadSettingFromExternalScript(url, function(result) {			

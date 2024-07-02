@@ -1487,6 +1487,8 @@ checkByEduDict2 = async function(term) {
   var param = 'Detail?term={term}&api_key={api_key}';
   var url = urlBase + param;
   url = url.replace('{api_key}', api_key).replace('{term}', encodeURIComponent(term));  
+  var nocache = '&nocache=' + new Date().getTime();
+  url += nocache;
   //url = 'https://corsproxy.io/?'+encodeURIComponent(url);
   var found = false;
   if( typeof(term)=='string' && term.replace(/\s/g, '') != '' ) {
@@ -1542,6 +1544,8 @@ checkByEduDict = async function(term, isJSONP, callback) {
 	}); 
   } else {
     var queryURL = gdGetSpreadSheetQueryURL(dicSheetURL, null, sql, 1);
+    var nocache = '&nocache=' + new Date().getTime();
+	queryURL += nocache;
 	queryURL = 'https://corsproxy.io/?'+encodeURIComponent(queryURL);
 	var data = null;
 	try {
@@ -3220,3 +3224,4 @@ var autostart = gup('autostart');
 if(autostart == '1' || autostart == 'true') {
   start();
 }
+

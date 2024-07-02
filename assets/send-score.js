@@ -25,6 +25,8 @@ html5FunSendScore = function(logger_url, score) {
 			
 			//如果是用 Google Apps Script 來記錄，透過 corsproxy 才不會被 Google 加料
 			if(/https:\/\/script\.google\.com\/macros\//.test(logger_url)) {
+				var nocache = '&nocache=' + new Date().getTime();
+				url += nocache;  
 				url = 'https://corsproxy.io/?'+encodeURIComponent(url);
 			}			
 			loadSettingFromExternalScript(url, function(result) {			
@@ -412,8 +414,10 @@ google_form_getFormParams = function(url, callback) {
     url = 'https://docs.google.com/forms/d/e/'+id+'/viewform';
   }
   //使用 CORS proxy 
-  //url = 'https://corsproxy.io/?'+encodeURIComponent(url);
-  url = 'https://corsproxy.io/?'+url;
+  var nocache = 'nocache=' + new Date().getTime();
+  url += '?' + nocache;  
+  url = 'https://corsproxy.io/?'+encodeURIComponent(url);
+  //url = 'https://corsproxy.io/?'+url;
   fetch(url)
     ['then'](function(res) {
       return res.text();

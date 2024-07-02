@@ -133,7 +133,7 @@
 }
 .score {
   position:absolute;
-  width: 100px;
+  width: 33%;
   top: 0px;
   left: 0.75em; /* 0.5em; */
   font-size: 4.5vmin; /* 2em; */
@@ -142,10 +142,11 @@
   margin: 0.25em;
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
 }
 .q-number {
   position:absolute;
-  width: 150px;
+  width: 33%;
   top: 0px;
   right: 0.75em; /* 0.5em; */
   font-size: 4.5vmin; /* 2em; */
@@ -155,6 +156,7 @@
   text-align: right;
   pointer-events: none;
   user-select: none;
+  white-space: nowrap;
 }
 .credit {
 	display: block;

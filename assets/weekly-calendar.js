@@ -1,7 +1,7 @@
 /**
  * Weekly calendar
  * @author gsyan < https://gsyan888.blogspot.com/ >
- * @version 2024.07.07.13.45
+ * @version 2024.07.07.15.25
  * @since 2024.07.04 
  */
  
@@ -13,6 +13,8 @@
   // 要產生幾週的行事曆
   var numWeeks = 21; 
 
+  var loadingLogoEnable = false;
+  
   // 製作行事暦
   generateWeeklyCalendar = async function() {
     var chMonth = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'];
@@ -30,6 +32,9 @@
     var  timeMin =  new Date(startDate);
     var timeMax = new Date(startDate);
     timeMax.setDate(timeMax.getDate() + (numWeeks*7) + 1);
+
+    loadingLogoEnable = true;
+    loadingAnimation('載入日曆');
 
     //取得 Google 行事曆
     var calendarEvents = await getEvents(calendarId, timeMin, timeMax);
@@ -69,6 +74,9 @@
     }
 	weekHTML += '</tbody>\n';
 	calendar.insertAdjacentHTML('beforeend', weekHTML);
+	
+	loadingLogoEnable = false;
+	
     if(calendarEvents && Object.keys(calendarEvents).length == 0) alert('找不到行事曆內容');	
   };
 
@@ -462,6 +470,63 @@
         try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
       }
     }
+  };
+  /**
+   * 
+   */
+  getWindowSize = function() {
+    var clientWidth = window.innerWidth && document.documentElement.clientWidth ? 
+					Math.min(window.innerWidth, document.documentElement.clientWidth) 
+					: window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+    var clientHeight = window.innerHeight && document.documentElement.clientHeight ? 
+					Math.min(window.innerHeight, document.documentElement.clientHeight) 
+					: window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+    return {width:clientWidth, height:clientHeight};
+  };
+  /**
+   * 載入設定檔時顯示動畫
+   */
+  loadingAnimation = function (txt, callback) {
+    if (typeof(txt) == 'undefined' || txt == null) {
+      var txt = "載入檔案中";
+    }
+    var size = getWindowSize();
+    var x = size.width / 2;
+    var y = size.height / 2 +60;
+    var loadingLogo = document.createElement('div');
+    loadingLogo.id = 'loadingLogo';
+    loadingLogo.setAttribute('class', "loading-container");
+    loadingLogo.style.top = (y + window.scrollY) + 'px';
+    loadingLogo.style.left = x + 'px';
+
+    loadingLogo.innerHTML = '<div class="loading-logo"><p class="loading-label">'+txt+'</p></div>';
+
+    document.body.appendChild(loadingLogo);
+
+    var angle = 10;
+
+    loadingLogoEnable = true;
+
+    var loadingIntervalId = setInterval(function () {
+      /* var loadingLogo = document.getElementById('loadingLogo'); */
+      loadingLogo.style.top = (y + window.scrollY) + 'px';
+      loadingLogo.style.left = x + 'px';
+      var label = document.querySelector('.loading-label');
+      if (angle != 10) {
+        angle = 10;
+      } else {
+        angle = -10;
+      }
+      label.style['transform'] = 'translate(10px, -40px) rotate(' + angle + 'deg)';
+      if (typeof(loadingLogoEnable) == 'boolean' && !loadingLogoEnable) {
+        clearInterval(loadingIntervalId);
+        //loadingLogo.parentNode.removeChild(loadingLogo);
+	    loadingLogo.remove();
+        if (typeof(callback) == 'function') {
+          callback();
+        }
+      }
+    }, 100);
   };  
   set__scale=function(s){
     for(var i=3; i<=10; i++) {

@@ -137,10 +137,12 @@
 	border: 1px solid gold;
     -webkit-user-select: text;
     user-select: text;
+	text-align: left;
 }
 #gameWrapper .content label{
   font-size: 3vmin;
   margin-left: 0px;
+  text-align: left;
 }
 .topLayer {
   display: none;

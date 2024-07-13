@@ -1060,6 +1060,13 @@ start = async function() {
   //try{document.querySelector('#gameWrapper .content').innerHTML = ''}catch(e) {};
   document.querySelector('#gameWrapper .content').onclick = contentOnClickHandler;
   makeLangSelector();
+  
+  var slider = document.querySelector('.speed-slider');
+  if(slider) {
+    slider.setAttribute('min', 0.5)
+    slider.setAttribute('max', 2);
+    slider.setAttribute('step', 0.125);
+  }
 
   loadingLogoEnable = true;
   loadingAnimation('HTML5 FUN<br>PLAYER');

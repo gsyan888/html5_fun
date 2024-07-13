@@ -390,7 +390,7 @@ clickHandler = function (ev) {
   var inputFromFile = document.createElement('input');
   inputFromFile.setAttribute('type', 'file');
   inputFromFile.setAttribute('multiple', 'multiple');
-  inputFromFile.setAttribute('accept', '.txt,.srt,.mp3,.mp4,.mkv');
+  inputFromFile.setAttribute('accept', '.txt,.srt,.mp3,.mp4,.mkv,.mov,.avi,.webm');
   inputFromFile.setAttribute('id', 'inputFromFile');
   inputFromFile.style['width'] = '1px';
   inputFromFile.style['height'] = '1px';

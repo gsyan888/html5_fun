@@ -260,6 +260,16 @@ menu_items = [
 	],
 
 
+	[ "Audio Player"
+	, "字幕+影音播放器"
+	, "assets/icon-audio-player.png"
+	, "https://gsyan888.blogspot.com/2024/07/html5-fun-audio-player.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2024/07/html5-fun-audio-player.html"
+	, ""
+	],
+	
+
 	[ "重組遊戲"
 	, "UNSCRAMBLE"
 	, "html5_unscramble/assets/icon.png"

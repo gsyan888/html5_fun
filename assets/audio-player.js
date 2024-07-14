@@ -3,6 +3,7 @@ var subList;
 var mediaPlayer;
 var activeIntervalId = null;
 var activeInterval = 200;
+var ccLang = '';
 
 var bingIG, bingIID, bingKey, bingToken;
 
@@ -231,6 +232,19 @@ setViewport = function() {
   viewport.content = content;
 };
 /**
+ * 
+ */
+//取得網址中的某一個參數(已編碼過的)
+var gup = function( name , url){
+  if(typeof(url)!='string') url = window.location.href
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  var regex = new RegExp( regexS );  
+  var results = regex.exec(url); 
+  if( results == null )    return "";  
+  else  return results[1];
+};
+/**
  * 建立音效物件
  * @param {String} 音效路徑或資料
  * @param {Boolean} 是否使用 baseElement
@@ -326,7 +340,14 @@ var AVplayer = function(src, type) {
     player.element.src = src;
 	if(type=='video') {
 		player.element.className = 'video-player';
-		document.querySelector('#gameWrapper').appendChild(player.element);
+		//document.querySelector('#gameWrapper').appendChild(player.element);
+		//player.element.onclick = function(e) {player.element.classList.toggle('video-player-large')};
+		var p = document.querySelector('.playerWapper');
+		p.classList.toggle('hidden', false);
+		p.appendChild(player.element);
+		//p.onclick = function(e) {p.classList.toggle('video-player-large')};
+		p.addEventListener('touchstart', startDragHandler);
+		p.addEventListener('mousedown', startDragHandler);
 	}
 	player.setSrc = function(src) {
 		player.element.src = src;
@@ -474,6 +495,8 @@ updateYTurl = async function() {
 		} else {		
 			var lang = ytLangSelector.querySelector('select');
 			if(lang && lang.value!='') {
+				//var checked = Array.from(ytLangSelector.querySelectorAll('option')).find(o=>o.selected);
+				ccLang = gup('lang', lang.value);
 				//var srt = await getYTsubtitle(ytUrl, lang);
 				var srt = await getYTcaptionByBaseUrl(lang.value);
 				//console.log(srt);
@@ -490,6 +513,14 @@ updateMediaPlayer = function(mediaPath, type) {
 	if(typeof(mediaPlayer)!='undefined' && typeof(mediaPlayer.destroy)=='function') {	
 		mediaPlayer.destroy();
 		delete mediaPlayer;
+	}
+	var p = document.querySelector('.playerWapper');
+	if(p) {
+		p.classList.toggle('hidden', true);
+		p.classList.toggle('video-player-large', false);
+		try{p.removeEventListener('touchstart', startDragHandler);}catch(e){};
+		try{p.removeEventListener('mousedown', startDragHandler);}catch(e){};
+
 	}
 	if( typeof(mediaPath)=='string' && parseYoutubeURL(mediaPath) ) {
 		mediaPlayer = new YOUTUBE(mediaPath, () => {
@@ -699,6 +730,12 @@ activeHandler = function() {
 					document.querySelectorAll('.timeActive').forEach(a=>a.classList.toggle('timeActive', false));
 					p.classList.toggle('timeActive', true);
 					autoScroll(p);
+					var cc2 = document.querySelector('.playerWapper .caption2');
+					var isLarge = document.querySelector('.playerWapper.video-player-large');
+					var trans = p.querySelector('.trans');
+					if(cc2) {
+						cc2.innerHTML = trans && isLarge?trans.innerHTML:'';
+					}
 					break;
 				}
 			}
@@ -744,7 +781,10 @@ var YOUTUBE = function(source, playPauseCallback) {
 	player.element = document.createElement('div');
 	player.element.setAttribute('id','oTplayerEl');
 	player.element.className = 'video-player';
-	document.querySelector('#gameWrapper').appendChild(player.element); 
+	//document.querySelector('#gameWrapper').appendChild(player.element); 
+	document.querySelector('.playerWapper').classList.toggle('hidden', false);
+	document.querySelector('.playerWapper').appendChild(player.element); 
+	
 			
 	loadScriptTag(() => {        
 		var videoId = parseYoutubeURL(source);
@@ -753,6 +793,9 @@ var YOUTUBE = function(source, playPauseCallback) {
 			videoId: videoId,
 			playerVars: {
 				// controls: 0,
+				cc_load_policy: 1,
+				hl: ccLang,
+				cc_lang_pref: ccLang,
 				disablekb: 1,
 				fs: 0,
 				rel: 0,
@@ -792,6 +835,14 @@ var YOUTUBE = function(source, playPauseCallback) {
 					player._isReady = true;
 					window._ytEl = player._ytEl;
 				},500);
+				
+				//var v = document.querySelector('.video-player');
+				//v.onclick = function(e) {v.classList.toggle('video-player-large')};
+				var p = document.querySelector('.playerWapper');
+				//p.onclick = function(e) {p.classList.toggle('video-player-large')};
+				p.addEventListener('touchstart', startDragHandler);
+				p.addEventListener('mousedown', startDragHandler);
+
 	
 			},1000);
 		}
@@ -1041,6 +1092,76 @@ loadingAnimation = function (txt, callback) {
         }
       }
     }, 100);
+};
+startDragHandler = function (e) {  
+  var target = e.target || e.touches[0].target;
+  e.preventDefault();
+  
+  var x = e.clientX || e.touches[0].clientX;
+  var y = e.clientY || e.touches[0].clientY;
+  var rect = target.getBoundingClientRect();
+  var style = getComputedStyle(target);
+  var left = style.getPropertyValue('left');
+  var top = style.getPropertyValue('top');
+  target.posX = Number(left==''?0:left.match(/([\d-]+)/).pop());
+  target.posY = Number(top==''?0:top.match(/([\d-]+)/).pop());
+  target.offsetX = x - target.posX;
+  target.offsetY = y - target.posY;	 
+  target.style['cursor'] = 'move';	  	  	
+  target.timeStart = new Date();
+  if (e.touches) {
+    target.removeEventListener('mousedown', startDragHandler);
+    target.addEventListener('touchend', endDragHandler);
+    target.addEventListener('touchmove', dragHandler);
+  } else {
+    target.removeEventListener('touchstart', startDragHandler);
+    target.addEventListener('mouseup', endDragHandler);	
+    target.addEventListener('mousemove', dragHandler);
+  }  	
+};
+dragHandler = function(e) {
+  var target = e.target || e.touches[0].target;
+  
+  var x = e.clientX || e.touches[0].clientX;
+  var y = e.clientY || e.touches[0].clientY;
+  
+  e.preventDefault();
+  
+  var rect = target.getBoundingClientRect();  
+  if (x >= rect.left && x <= rect.left + rect.width && y >= rect.top && y <= rect.top + rect.height) {
+    target.style['cursor'] = 'move';
+    target.title = '按下後拖曳可以移動';
+  } else {
+    target.style['cursor'] = 'default';
+    target.title = '';
+  }
+  target.posX = x - target.offsetX;
+  target.posY = y - target.offsetY; 
+  target.style['left'] = (target.posX)+'px';	
+  target.style['top'] = (target.posY)+'px';
+};
+endDragHandler = function(e) {
+  var target = e.target || e.touches[0].target;      
+  target.style['cursor'] = 'default';
+  var timeEnd = new Date();
+  if(target.timeStart && (timeEnd - target.timeStart) < 200) {
+	//click
+    var p = document.querySelector('.playerWapper');
+    if(p) {
+      p.classList.toggle('video-player-large');	  
+      var cc2 = document.querySelector('.playerWapper .caption2');
+      if(cc2) {
+        cc2.innerHTML = '';
+	  }
+    }
+  }
+  if (e.touches) {
+    target.removeEventListener('touchend', endDragHandler);
+    target.removeEventListener('touchmove', dragHandler);
+  } else {
+    target.removeEventListener('mouseup', endDragHandler);	
+    target.removeEventListener('mousemove', dragHandler);
+  }  
 };
 set__scale=function(s){
   for(var i=3; i<=10; i++) {

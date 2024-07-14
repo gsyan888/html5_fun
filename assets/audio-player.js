@@ -405,6 +405,7 @@ applyYTsample = function() {
   var input = document.querySelector('.ext-input-field input');
   if(input) {
     input.value = 'https://www.youtube.com/watch?v=sKXEfmV6xro';
+	showFadeOutMessage('.yt-sample', '已將網址填好，請按 [下一步] 鈕', '50%', '300%', 1);
   }  
 };
 updateYTurl = async function() {
@@ -1272,3 +1273,4 @@ var autostart = gup('autostart');
 if(autostart == '1' || autostart == 'true') {
   start();
 }
+

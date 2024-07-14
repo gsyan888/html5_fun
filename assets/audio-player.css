@@ -343,6 +343,27 @@
   white-space: nowrap;  
   border-radius: 2vmin; /* 1vw; */
 }
+.dictGroup {
+  display: block;
+  position: absolute;
+  width: 15vmin;
+  left: calc(100% - 20vmin);
+  top: 8vmin;
+  padding: 1vmin;
+  margin: 5vmin 3vmin;
+  /* border: 1px dashed gold; */
+  /* border-radius: 3vmin; */
+}
+.dictBtn {
+  display: block;
+  position: relative;
+  margin: auto;
+  /* transform: translate(-50%, -50%); */
+  background-color: #C3D69BA0;
+  left: 0;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;  
+}
 .transBtn {
   left: 8.5vmin;
   top: 6vmin;

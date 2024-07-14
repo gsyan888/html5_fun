@@ -703,7 +703,7 @@ activeHandler = function() {
 	}
 };
 contentOnClickHandler = function(e) {
-	var target = e.target;
+	var target = e.target;	
 	//if(target.tagName.toLowerCase() == 'label') {
 	if(target.classList.contains('arrow-left')) {
 		target = target.parentElement;
@@ -1187,6 +1187,47 @@ endDragHandler = function(e) {
 showPlayerInfo = function() {
   showFadeOutMessage('.playerWapper', '<ul><li>放大縮小: 按一下邊框</li><li>移動: 拖曳邊框</li></ul>', 0, 0, 2);
 };
+getSelectionText = function() {
+  var text = "";
+  if (window.getSelection) {
+    text = window.getSelection().toString();
+  } else if (document.selection && document.selection.type != "Control") {
+    text = document.selection.createRange().text;
+  }
+  return text;
+};
+
+/**
+ * 在 iOS 可能會擷取不到選取的文字，利用 onselectionchange 來保留
+ **/
+var lastSeletionText = '';
+document.onselectionchange = function(e) { 
+  var t = getSelectionText();
+  if(t!='') lastSeletionText = t;
+};
+/**
+ * 製作查字典的連結,並開啟頁面
+ */
+dictSearch = function(n) {
+  var dictList = [
+	'https://dictionary.cambridge.org/zht/dictionary/english-chinese-traditional/', 
+	'https://www.merriam-webster.com/dictionary/',
+	'https://www.collinsdictionary.com/dictionary/english/'
+	];
+  if(typeof(n)!='number') n = 0;
+  var text = getSelectionText();
+  if(text=='') text = lastSeletionText; //如果沒即時抓到選取的文字，用記錄的
+  if(text.replace(/\s/g, '')!='') {
+    //用連結並以觸發 click 來開啟字典
+	var url = dictList[n]+encodeURIComponent(text);
+    var anchor = document.createElement('a');
+    anchor.setAttribute('href', url);
+    anchor.setAttribute('target', '_blank');
+    document.body.appendChild(anchor);
+    anchor.click();
+    setTimeout(function(){anchor.remove()}, 50);  
+  }
+}
 set__scale=function(s){
   for(var i=3; i<=10; i++) {
     try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};

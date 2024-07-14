@@ -480,6 +480,7 @@ updateYTurl = async function() {
 		var ytUrl = input.value;
 		if(ytLangSelector.innerHTML == '') {
 			var captionTracks = await getYTcaptionTracks(ytUrl);
+			console.log(captionTracks);
 			if(captionTracks) {
 				var html = '<label>字幕語言: </label>';
 				html += '<select id="subtitle">';
@@ -489,9 +490,11 @@ updateYTurl = async function() {
 					html += '</option>';
 				}
 				html += '</select>';
-				ytLangSelector.innerHTML = html;
-				try{document.querySelector('.yt-sample').classList.toggle('hidden', true)}catch(e){};
+			} else {
+				var html = '<br><label>此影片無任何字幕，影片載入後請自行匯入</label>';
 			}
+			ytLangSelector.innerHTML = html;
+			try{document.querySelector('.yt-sample').classList.toggle('hidden', true)}catch(e){};
 		} else {		
 			var lang = ytLangSelector.querySelector('select');
 			if(lang && lang.value!='') {
@@ -1202,3 +1205,4 @@ start = async function() {
 };
 
 //start();
+

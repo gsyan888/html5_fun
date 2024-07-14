@@ -9,12 +9,12 @@
 }
 .playerWapper {
   position: absolute;
-  padding: 15px;
-  width:calc(160px + 15px * 2);
-  height:calc(90px + 15px * 2);
+  padding: 30px;
+  width:calc(160px + 30px * 2);
+  height:calc(90px + 30px * 2);
   /* border: 1px dashed lightgrey; */
   /* left: 100%; */
-  left: calc(100% - 80px - 15px * 2 );
+  left: calc(100% - 80px - 30px * 2 );
   /* top: calc(100% - 30vmin); */
   bottom: 8.5vmin;
   /* transform: translate(-110%, -50%); */
@@ -28,9 +28,9 @@
   width: 100%;
   left: 50%;
   bottom: 0;
-  transform: translate(-50%, 100%);  
+  transform: translate(-50%, -25%);  
   text-align: center;
-  padding-bottom: 15px;
+  /* padding-bottom: 15px; */
   pointer-events: none;
 }
 .video-playerOld {
@@ -47,14 +47,14 @@
 }
 .video-player {
   position: absolute;
-  width: calc(100% - 30px);
-  height: calc(100% - 30px);
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 .video-player-large {
-  width:95vmin;
+  width: 95vmin;
   height: calc(95vmin * 9 / 16);
   top: 50%;
   left: 50%;

@@ -202,15 +202,14 @@ setVisibility = function(enable) {
 	  document.body.style.overflow = 'hidden';
 	  HTML5FunWrapper.style.visibility = "visible";
 	} else {
-	  try{mediaPlayer.pause()}catch(e){}; //試著停止在播放的影音	
-	  
+	  try{mediaPlayer.pause()}catch(e){}; //試著停止在播放的影音		
+	  //重新顯示原有的內容
 	  HTML5FunWrapper.style.visibility = "hidden";
 	  //恢復捲軸的功能
 	  window.onscroll=null;
-	  //重新顯示原有的內容
-	  document.body.style.overflow = '';
+	  document.body.style.overflow = 'auto';	  
 	  //
-	  try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
+	  try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};	  
 	}
   }
 };
@@ -1226,7 +1225,10 @@ dictSearch = function(n) {
     document.body.appendChild(anchor);
     anchor.click();
     setTimeout(function(){anchor.remove()}, 50);  
+  } else {
+    showFadeOutMessage('.dictGroup', '請先選取要查字典的文字', 0, '70%', 1.5);
   }
+
 }
 set__scale=function(s){
   for(var i=3; i<=10; i++) {

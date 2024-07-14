@@ -1225,5 +1225,7 @@ start = async function() {
   }, 1500);
 };
 
-//start();
-
+var autostart = gup('autostart');
+if(autostart == '1' || autostart == 'true') {
+  start();
+}

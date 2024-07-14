@@ -1098,6 +1098,9 @@ loadingAnimation = function (txt, callback) {
 };
 startDragHandler = function (e) {  
   var target = e.target || e.touches[0].target;
+  
+  if(!target.classList.contains('playerWapper')) return;
+  
   e.preventDefault();
   
   var x = e.clientX || e.touches[0].clientX;

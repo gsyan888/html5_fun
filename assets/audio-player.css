@@ -38,6 +38,7 @@
   right: 3px;
   top: 3px;
   margin: 3px;
+  padding: 0px;
   background:#454545;
   color:white;
   opacity:0.7;
@@ -325,7 +326,8 @@
   margin: 8px;
   opacity: 0.5;
   font-size: 6vmin;
-  color: #ff0000d0;
+  color: #ff0000d0;  
+  line-height: 8vmin;
 }
 .roundBtn {
   position: absolute;

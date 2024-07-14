@@ -78,6 +78,7 @@ displayLang = function(el) {
 	if(/隱藏/.test(label)) {
 		el.children[0].textContent = label.replace(/隱藏/, '顯示');
 		document.querySelectorAll('.lang-'+lang).forEach(t=>t.style.display='none');
+		try{document.querySelector('.playerWapper .caption2').innerHTML=''}catch(e){}; //試著清除影片的翻譯字幕
 	} else {
 		el.children[0].textContent = label.replace(/顯示/, '隱藏');
 		document.querySelectorAll('.lang-'+lang).forEach(t=>t.style.display='block');
@@ -323,72 +324,6 @@ soundInit = function() {
 	};	
 };
 
-/**
- * audio / video Player
- */
-var AVplayer = function(src, type) {
-	//var type = /\.mp3$/i.test(src.trim()) ? 'audio' : 'video';
-	if((type && /audio/i.test(type)) || /\.mp3$/i.test(src.trim())) {
-		type = 'audio';
-	} else {
-		type = 'video';
-	}
-	var player = {};
-    player.element = document.createElement(type);
-    player.element.preload = true;
-    player.element.loop = false;					
-    player.element.src = src;
-	if(type=='video') {
-		player.element.className = 'video-player';
-		//document.querySelector('#gameWrapper').appendChild(player.element);
-		//player.element.onclick = function(e) {player.element.classList.toggle('video-player-large')};
-		var p = document.querySelector('.playerWapper');
-		p.classList.toggle('hidden', false);
-		p.appendChild(player.element);
-		//p.onclick = function(e) {p.classList.toggle('video-player-large')};
-		p.addEventListener('touchstart', startDragHandler);
-		p.addEventListener('mousedown', startDragHandler);
-	}
-	player.setSrc = function(src) {
-		player.element.src = src;
-	};
-    player.play = function() {
-        player.element.play();
-        player.status = 'playing';
-    }
-    player.pause = function() {
-        player.element.pause();
-        player.status = 'paused';
-    }
-    player.getTime = function() {
-        return player.element.currentTime;
-    }
-    player.setTime = function(time) {
-        player.element.currentTime = time;
-    }
-    player.getStatus = function() {
-        return player.status;
-    }
-    player.getLength = function() {
-        return player.element.duration;
-    }
-    player.isReady = function() {
-        return (!player.element.destroyed && (!isNaN(player.element.duration)) && (player.element.readyState === 4));
-    }
-    player.getSpeed = function() {
-        return player.element.playbackRate;
-    }
-    player.setSpeed = function(speed){
-        return player.element.playbackRate = speed;
-    }
-    player.destroy = function(){
-		player.pause();
-        player.element.remove();
-    	delete player.element;
-    	player.destroyed = true;
-    }
-	return player;
-};
 
 srtParser = function(lines) {
 	//var pattern = '\\d+\\n([\\d\\:\\-\\>\\,\\.\\ ]+)\\n([^\\n\\n]+)\\n\\n';
@@ -560,8 +495,15 @@ updateMediaPlayer = function(mediaPath, type) {
 		mediaPlayer.onPlayPause(status => {
 			if (status === 'playing'){
 				console.log('>>> playing');
+				if(activeIntervalId == null) {
+					activeIntervalId = setInterval(activeHandler, activeInterval);
+				}				
 			} else {
 				console.log('>>> pause');
+				if(activeIntervalId != null) {
+					clearInterval(activeIntervalId);
+					activeIntervalId = null;
+				}
 			}
 		});		
 		/*
@@ -675,9 +617,9 @@ updateContent = function(src, filename) {
 		if(langGroup) {
 			langGroup.innerHTML = '';
 		}
-		if(activeIntervalId == null) {
-			activeIntervalId = setInterval(activeHandler, activeInterval);
-		}
+		//if(activeIntervalId == null) {
+		//	activeIntervalId = setInterval(activeHandler, activeInterval);
+		//}
 		
 		showFadeOutMessage(null, '<center>加上影音後<br>按文字左側的「三角形」可播放該句<br>按空白的地方可暫停</center>', 0, '-5%', 4);
 	}
@@ -705,20 +647,28 @@ autoScroll = function(el) {
 };
 mediaPlayHandler = function(e) {
 	if(e) {
+		//如果有傳 e , 表示為按播放鈕的, 就控制播放、暫停
 		if( mediaPlayer.getStatus() != 'playing' ) {
 			mediaPlayer.play();
 		} else {
 			mediaPlayer.pause();
 		}
 	}
+	//改變按鈕上的文字及控制是否監聽播放狀態後設定播放中的字幕
 	var label = document.querySelector('.playBtn label');
-	if(label) {
-		if( mediaPlayer.getStatus() == 'playing' ) {
-			label.innerHTML = '停止';
-		} else {
-			label.innerHTML = '播放';
+	var status = mediaPlayer.getStatus();
+	if (status === 'playing'){
+		if(label) label.innerHTML = '停止';		
+		if(activeIntervalId == null) {
+			activeIntervalId = setInterval(activeHandler, activeInterval);
 		}
-	}
+	} else {
+		if(label) label.innerHTML = '播放';
+		if(activeIntervalId != null) {
+			clearInterval(activeIntervalId);
+			activeIntervalId = null;
+		}
+	}	
 };
 activeHandler = function() {
 	var content = document.querySelector('#gameWrapper .content');
@@ -732,26 +682,24 @@ activeHandler = function() {
 				if(currentTime >= start && currentTime <= end) {
 					document.querySelectorAll('.timeActive').forEach(a=>a.classList.toggle('timeActive', false));
 					p.classList.toggle('timeActive', true);
+					
 					autoScroll(p);
+					
+					//更新影片第二字幕的內容
 					var cc2 = document.querySelector('.playerWapper .caption2');
 					var isLarge = document.querySelector('.playerWapper.video-player-large');
 					var trans = p.querySelector('.trans');
 					if(cc2) {
-						cc2.innerHTML = trans && isLarge?trans.innerHTML:'';
+						var displayTrans = (trans && trans.style.display!='none');
+						cc2.innerHTML = displayTrans && isLarge?trans.innerHTML:'';
 					}
 					break;
 				}
 			}
 		}
 	} else {
+		//非播放中或沒字幕，就全部設為非正播放中的字句
 		document.querySelectorAll('.timeActive').forEach(a=>a.classList.toggle('timeActive', false));
-		//if(mediaPlayer.currentTime >= mediaPlayer.duration) {
-		if( mediaPlayer.getTime() >= mediaPlayer.getLength() ) {
-			var label = document.querySelector('.playBtn label');
-			if(label) {
-				label.textContent = '播放';
-			}
-		}
 	}
 };
 contentOnClickHandler = function(e) {
@@ -777,6 +725,73 @@ contentOnClickHandler = function(e) {
 			mediaPlayHandler();
 		}
 	}
+};
+
+/**
+ * audio / video Player
+ */
+var AVplayer = function(src, type) {
+	//var type = /\.mp3$/i.test(src.trim()) ? 'audio' : 'video';
+	if((type && /audio/i.test(type)) || /\.mp3$/i.test(src.trim())) {
+		type = 'audio';
+	} else {
+		type = 'video';
+	}
+	var player = {};
+    player.element = document.createElement(type);
+    player.element.preload = true;
+    player.element.loop = false;					
+    player.element.src = src;
+	if(type=='video') {
+		player.element.className = 'video-player';
+		//document.querySelector('#gameWrapper').appendChild(player.element);
+		//player.element.onclick = function(e) {player.element.classList.toggle('video-player-large')};
+		var p = document.querySelector('.playerWapper');
+		p.classList.toggle('hidden', false);
+		p.appendChild(player.element);
+		//p.onclick = function(e) {p.classList.toggle('video-player-large')};
+		p.addEventListener('touchstart', startDragHandler);
+		p.addEventListener('mousedown', startDragHandler);
+	}
+	player.setSrc = function(src) {
+		player.element.src = src;
+	};
+    player.play = function() {
+        player.element.play();
+        player.status = 'playing';
+    }
+    player.pause = function() {
+        player.element.pause();
+        player.status = 'paused';
+    }
+    player.getTime = function() {
+        return player.element.currentTime;
+    }
+    player.setTime = function(time) {
+        player.element.currentTime = time;
+    }
+    player.getStatus = function() {
+        return player.status;
+    }
+    player.getLength = function() {
+        return player.element.duration;
+    }
+    player.isReady = function() {
+        return (!player.element.destroyed && (!isNaN(player.element.duration)) && (player.element.readyState === 4));
+    }
+    player.getSpeed = function() {
+        return player.element.playbackRate;
+    }
+    player.setSpeed = function(speed){
+        return player.element.playbackRate = speed;
+    }
+    player.destroy = function(){
+		player.pause();
+        player.element.remove();
+    	delete player.element;
+    	player.destroyed = true;
+    }
+	return player;
 };
 
 var YOUTUBE = function(source, playPauseCallback) {        
@@ -1168,6 +1183,9 @@ endDragHandler = function(e) {
     target.removeEventListener('mouseup', endDragHandler);	
     target.removeEventListener('mousemove', dragHandler);
   }  
+};
+showPlayerInfo = function() {
+  showFadeOutMessage('.playerWapper', '<ul><li>放大縮小: 按一下邊框</li><li>移動: 拖曳邊框</li></ul>', 0, 0, 2);
 };
 set__scale=function(s){
   for(var i=3; i<=10; i++) {

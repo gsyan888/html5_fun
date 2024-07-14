@@ -33,6 +33,23 @@
   /* padding-bottom: 15px; */
   pointer-events: none;
 }
+.playerWapper .player-info {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  margin: 3px;
+  background:#454545;
+  color:white;
+  opacity:0.7;
+  border:0;
+  height: 22px;
+  max-height: 22px;
+  max-width: 22px;
+  min-height: 22px;
+  min-width: 22px;
+  width: 22px;
+  border-radius: 50%;
+}
 .video-playerOld {
   position: absolute;
   padding: 15px;

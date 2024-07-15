@@ -434,7 +434,7 @@ removeHTML5FunEmbeded = function() {
   //恢復捲軸的功能  
   window.onscroll=null;
   //重新顯示原有的內容
-  document.body.style.overflow = '';
+  document.body.style.overflow = 'visible';
   //
   try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
 }

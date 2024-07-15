@@ -207,7 +207,7 @@ setVisibility = function(enable) {
 	  HTML5FunWrapper.style.visibility = "hidden";
 	  //恢復捲軸的功能
 	  window.onscroll=null;
-	  document.body.style.overflow = 'auto';	  
+	  document.body.style.overflow = 'visible';	  
 	  //
 	  try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};	  
 	}

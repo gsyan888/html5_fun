@@ -14,87 +14,102 @@ appendTrans = async function() {
   if(!srt || srt.length > 0 ) {
     var transBtn = document.querySelector('.transBtn');
     if(transBtn) {
-	  if(typeof(transBtn.lock)=='boolean' && transBtn.lock) {
+      if(typeof(transBtn.lock)=='boolean' && transBtn.lock) {
         showFadeOutMessage(transBtn, '尚在翻譯中, 請稍候', 150, 25, 1.5);
-		return;
+        return;
       }
-	  transBtn.lock = true;
-	  showFadeOutMessage(transBtn, '翻譯中, 請稍候', 150, 25, 1.5);
-	}
+      transBtn.lock = true;
+      showFadeOutMessage(transBtn, '翻譯中, 請稍候', 150, 25, 1.5);
+    }
     if(typeof(bingIG)!='string' || typeof(bingIID)!='string' || typeof(bingKey)!='string' || typeof(bingToken)!='string') {
-		await bingTransInit();
-	}
-	var result = [];
-	var text = '';
-	for(var i=0; i<srt.length; i++) {
-		var subs = srt[i].children[textIsAt].textContent;
-		//最多只能翻譯 1000 個字，滿了就翻譯
-		if ( (text + subs).length > 1000-100 || i>=srt.length-1 ) {
-			if( i>=srt.length-1 ) {
-				text += subs.trim() + ' ==--== \n';
-			}
-			//console.log(text);
-			var trans = await bingTranslate(text, 'auto-detect', lang);
-			//console.log(trans);
-			//console.log('--> ',i);
-			if(typeof(trans)=='string') {
-				var t = trans.trim().split(/\n/);
-				if(t.length == text.trim().split(/\s*==--==\s*/).length-1 ) {
-					trans = t;
-				} else {
-					trans = trans.trim().split(/\s*==--==\s*/);
-				}
-				trans.forEach( t=>result.push(t.replace(/\s*==--==\s*/g, '').trim()) );
-			}
-			text = subs.trim() + ' ==--== \n';
-		} else {
-			text += subs.trim() + ' ==--== \n';
-		}
-	}
-	result = result.filter(t=>t.replace(/\s/g,'')!='');
-	var text = '';
-	for(var i=0; i<srt.length; i++) {
-		var subs = srt[i];
-		if( subs && typeof(result[i])=='string' && result[i].replace(/\s/g, '') != '' ) {
-			subs.innerHTML += '<label class="trans lang-' + lang  +'">' + result[i] + '</label>';	
-		}
-	}
-	var langGroup = document.querySelector('.langGroup');
-	var btn = document.createElement('button');
-	btn.setAttribute('class', 'roundBtn');
-	btn.setAttribute('lang', lang);
-	btn.innerHTML = '<label>隱藏-' + langCodes[lang].substring(0, 2) + '</label>';
-	btn.setAttribute('onclick', 'displayLang(this)');
-	langGroup.appendChild(btn);
+      await bingTransInit();
+    }
+    if(typeof(bingIG)!='string' || typeof(bingIID)!='string' || typeof(bingKey)!='string' || typeof(bingToken)!='string') {
+      transBtn.lock = false;
+      showFadeOutMessage(transBtn, '目前連不上 Bing 翻譯服務', 150, 25, 1.5);
+      return;
+    }
+    try{document.querySelector('.trans-progress-bar').style.display='block'}catch(e){};
+    var result = [];
+    var text = '';
+    for(var i=0; i<srt.length; i++) {
+      var n = (i+1) * 100 / srt.length;
+      updateProgress('.trans-progress-bar', n);
+      document.querySelector('.percentage').innerHTML = Math.ceil(n) + '%';
+    
+      var subs = srt[i].children[textIsAt].textContent;
+      //最多只能翻譯 1000 個字，滿了就翻譯
+      if ( (text + subs).length > 1000-100 || i>=srt.length-1 ) {
+        if( i>=srt.length-1 ) {
+          text += subs.trim() + ' ==--== \n';
+        }
+        //console.log(text);
+        
+        var trans = await bingTranslate(text, 'auto-detect', lang);
+        //console.log(trans);
+        //console.log('--> ',i);
+        if(typeof(trans)=='string') {
+          var t = trans.trim().split(/\n/);
+          if(t.length == text.trim().split(/\s*==--==\s*/).length-1 ) {
+            trans = t;
+          } else {
+            trans = trans.trim().split(/\s*==--==\s*/);
+          }
+          trans.forEach( t=>result.push(t.replace(/\s*==--==\s*/g, '').trim()) );
+        }
+        text = subs.trim() + ' ==--== \n';
+      } else {
+        text += subs.trim() + ' ==--== \n';
+      }
+    }
+    
+    updateProgress('.trans-progress-bar', 100);
+    try{document.querySelector('.trans-progress-bar').style.display='none'}catch(e){};
+    
+    result = result.filter(t=>t.replace(/\s/g,'')!='');
+    var text = '';
+    for(var i=0; i<srt.length; i++) {
+      var subs = srt[i];
+      if( subs && typeof(result[i])=='string' && result[i].replace(/\s/g, '') != '' ) {
+        subs.innerHTML += '<label class="trans lang-' + lang  +'">' + result[i] + '</label>';	
+      }
+    }
+    var langGroup = document.querySelector('.langGroup');
+    var btn = document.createElement('button');
+    btn.setAttribute('class', 'roundBtn');
+    btn.setAttribute('lang', lang);
+    btn.innerHTML = '<label>隱藏-' + langCodes[lang].substring(0, 2) + '</label>';
+    btn.setAttribute('onclick', 'displayLang(this)');
+    langGroup.appendChild(btn);
     if(transBtn) {
-	  transBtn.lock = false;
-	  transBtn.title = '按這裡加入新的翻譯';
-	}
+      transBtn.lock = false;
+      transBtn.title = '按這裡加入新的翻譯';
+    }
   }	
 };
 displayLang = function(el) {
-	var lang = el.getAttribute('lang');
-	var label = el.children[0].textContent;
-	if(/隱藏/.test(label)) {
-		el.children[0].textContent = label.replace(/隱藏/, '顯示');
-		document.querySelectorAll('.lang-'+lang).forEach(t=>t.style.display='none');
-		try{document.querySelector('.playerWapper .caption2').innerHTML=''}catch(e){}; //試著清除影片的翻譯字幕
-	} else {
-		el.children[0].textContent = label.replace(/顯示/, '隱藏');
-		document.querySelectorAll('.lang-'+lang).forEach(t=>t.style.display='block');
-	}
-	//document.querySelectorAll('.lang-'+lang).forEach(t=>t.classList.toggle('hidden'));
+  var lang = el.getAttribute('lang');
+  var label = el.children[0].textContent;
+  if(/隱藏/.test(label)) {
+    el.children[0].textContent = label.replace(/隱藏/, '顯示');
+    document.querySelectorAll('.lang-'+lang).forEach(t=>t.style.display='none');
+    try{document.querySelector('.playerWrapper .caption2').innerHTML=''}catch(e){}; //試著清除影片的翻譯字幕
+  } else {
+    el.children[0].textContent = label.replace(/顯示/, '隱藏');
+    document.querySelectorAll('.lang-'+lang).forEach(t=>t.style.display='block');
+  }
+  //document.querySelectorAll('.lang-'+lang).forEach(t=>t.classList.toggle('hidden'));
 };
 var langCodes = {"zh-Hant":"中文 (繁体)","en":"英语","ja":"日语","ko":"韩语","fr":"法语","fr-CA":"法语 (加拿大)","de":"德语","it":"意大利语","zh-Hans":"中文 (简体)","vi":"越南语","bho":"Bhojpuri","brx":"Bodo","hne":"Chhattisgarhi","lzh":"Chinese (Literary)","doi":"Dogri","lug":"Ganda","ikt":"Inuinnaqtun","iu-Latn":"Inuktitut (Latin)","ks":"Kashmiri","gom":"Konkani","mn-Cyrl":"Mongolian (Cyrillic)","mn-Mong":"Mongolian (Traditional)","nya":"Nyanja","run":"Rundi","st":"Sesotho","nso":"Sesotho sa Leboa","tn":"Setswana","hsb":"上索布语","dsb":"下索布语","da":"丹麦语","uk":"乌克兰语","uz":"乌兹别克语","ur":"乌尔都语","nb":"书面挪威语","hy":"亚美尼亚语","ig":"伊博语","ru":"俄语","bg":"保加利亚语","sd":"信德语","si":"僧伽罗语","tlh-Latn":"克林贡语 (拉丁文)","hr":"克罗地亚语","otq":"克雷塔罗奥托米语","is":"冰岛语","gl":"加利西亚语","ca":"加泰罗尼亚语","hu":"匈牙利语","af":"南非荷兰语","kn":"卡纳达语","rw":"卢旺达语","hi":"印地语","id":"印度尼西亚语","gu":"古吉拉特语","kk":"哈萨克语","iu":"因纽特语","tk":"土库曼语","tr":"土耳其语","ty":"塔希提语","sr-Latn":"塞尔维亚语 (拉丁文)","sr-Cyrl":"塞尔维亚语 (西里尔文)","or":"奥里亚语","cy":"威尔士语","bn":"孟加拉语","yua":"尤卡特克玛雅语","ne":"尼泊尔语","ba":"巴什基尔语","eu":"巴斯克语","he":"希伯来语","el":"希腊语","ku":"库尔德语 (中)","kmr":"库尔德语 (北)","lv":"拉脱维亚语","cs":"捷克语","ti":"提格利尼亚语","fj":"斐济语","sk":"斯洛伐克语","sl":"斯洛文尼亚语","sw":"斯瓦希里语","pa":"旁遮普语","ps":"普什图语","ln":"林加拉语","ky":"柯尔克孜语","ka":"格鲁吉亚语","mi":"毛利语","to":"汤加语","fo":"法罗语","pl":"波兰语","bs":"波斯尼亚语","fa":"波斯语","te":"泰卢固语","ta":"泰米尔语","th":"泰语","ht":"海地克里奥尔语","ga":"爱尔兰语","et":"爱沙尼亚语","sv":"瑞典语","zu":"祖鲁语","xh":"科萨语","lt":"立陶宛语","yue":"粤语 (繁体)","so":"索马里语","yo":"约鲁巴语","sn":"绍纳语","ug":"维吾尔语","my":"缅甸语","ro":"罗马尼亚语","lo":"老挝语","fi":"芬兰语","mww":"苗语","nl":"荷兰语","fil":"菲律宾语","sm":"萨摩亚语","pt":"葡萄牙语 (巴西)","pt-PT":"葡萄牙语 (葡萄牙)","bo":"藏语","es":"西班牙语","ha":"豪萨语","prs":"达里语","mai":"迈蒂利语","dv":"迪维希语","az":"阿塞拜疆语","am":"阿姆哈拉语","sq":"阿尔巴尼亚语","ar":"阿拉伯语","as":"阿萨姆语","tt":"鞑靼语","mk":"马其顿语","mg":"马拉加斯语","mr":"马拉地语","ml":"马拉雅拉姆语","ms":"马来语","mt":"马耳他语","km":"高棉语"};
 makeLangSelector = function() {
   var selector = document.querySelector('.langSelect');
   var html = '';
   if(selector.children.length == 0) {
-	var codes = Object.keys(langCodes);
-	for(var i=0; i<codes.length; i++) {
-		html += '<option value="' + codes[i] + '">' + langCodes[codes[i]] + '</option>\n';
-	}
-	selector.innerHTML = html;
+    var codes = Object.keys(langCodes);
+    for(var i=0; i<codes.length; i++) {
+      html += '<option value="' + codes[i] + '">' + langCodes[codes[i]] + '</option>\n';
+    }
+    selector.innerHTML = html;
   }
 };
 getLangCode = function(tl) {
@@ -136,19 +151,31 @@ getLangCode = function(tl) {
   return tl; 
 };
 bingTransInit = async function() {	
-	var nocache = '&nocache=' + new Date().getTime();
-	var url = 'https://www.bing.com/translator/?from=en&to=zh-Hant&text=TEST'+nocache;
-	url = 'https://corsproxy.io/?'+encodeURIComponent(url);
-	var res = await fetch(url);
-	//var cookie = await res.headers.get('Set-cookie')
-	//console.log(cookie)
-	var html = await res.text();
-	//console.log(html)
-	bingIG = html.match(/IG:"([^"]+)"/)[1]
-	bingIID = html.match(/data-iid="([^"]+)"/)[1]
-	tokens = html.match(/params_AbusePreventionHelper\s*=\s*\[(\d+),"([^"]+)",\d+\];/)
-	bingKey = tokens[1];
-	bingToken = tokens[2];
+  var timeout = 2500; 
+  var html = '';
+  var nocache = '&nocache=' + new Date().getTime();
+  var url = 'https://www.bing.com/translator/?from=en&to=zh-Hant&text=TEST'+nocache;
+  url = 'https://corsproxy.io/?'+encodeURIComponent(url);
+  try {
+    var controller = new AbortController();
+    var timeoutId = setTimeout(()=>controller.abort(), 2500);
+    var res = await fetch(url, {signal:controller.signal});
+    clearTimeout(timeoutId);
+    //var cookie = await res.headers.get('Set-cookie')
+    //console.log(cookie)
+    html = await res.text();
+    //console.log(html)
+  } catch(e) {
+    html = '';
+    //alert(e);
+  }
+  if(html!='') {
+    bingIG = html.match(/IG:"([^"]+)"/)[1]
+    bingIID = html.match(/data-iid="([^"]+)"/)[1]
+    tokens = html.match(/params_AbusePreventionHelper\s*=\s*\[(\d+),"([^"]+)",\d+\];/)
+    bingKey = tokens[1];
+    bingToken = tokens[2];
+  }
 };
 /**
  * https://www.bing.com/ttranslatev3?isVertical=1&&IG=B5A9CA9E83F7495D9ABE7757267BF0C7&IID=translator.5026
@@ -157,7 +184,7 @@ bingTranslate = async function(text, from='en', to='zh-Hant') {
   text = encodeURIComponent(text)
   var payload = `key=${bingKey}&token=${bingToken}&fromLang=${from}&to=${to}&text=${text}&tryFetchingGenderDebiasedTranslations=true`;
   var headers = {
-	"Content-Type" : "application/x-www-form-urlencoded",
+    "Content-Type" : "application/x-www-form-urlencoded",
     //"Cookie" : cookie,
   };
   var url = 'https://www.bing.com'; 
@@ -167,12 +194,17 @@ bingTranslate = async function(text, from='en', to='zh-Hant') {
   url += nocache;
   //url = 'https://api.cors.lol/?url='+url;	//這個只能用在 .text() 的
   url = 'https://corsproxy.io/?'+encodeURIComponent(url);
-  var res = await fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: payload
-  });
-  var data = await res.json();
+  var data;
+  try {
+    var res = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: payload
+    });
+    data = await res.json();
+  }catch(e) {
+    data = null;
+  }
   if(data && data[0] && data[0]['translations']) {
     data = data[0]['translations'][0]['text'];
   }
@@ -180,11 +212,11 @@ bingTranslate = async function(text, from='en', to='zh-Hant') {
 };
 getWindowSize = function() {
   var clientWidth = window.innerWidth && document.documentElement.clientWidth ? 
-			Math.min(window.innerWidth, document.documentElement.clientWidth) 
-			: window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
+    Math.min(window.innerWidth, document.documentElement.clientWidth) 
+      : window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
   var clientHeight = window.innerHeight && document.documentElement.clientHeight ? 
-			Math.min(window.innerHeight, document.documentElement.clientHeight) 
-			: window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+    Math.min(window.innerHeight, document.documentElement.clientHeight) 
+      : window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
   return {width:clientWidth, height:clientHeight};
 };
 /**
@@ -193,24 +225,24 @@ getWindowSize = function() {
 setVisibility = function(enable) {
   var HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
   if(typeof(HTML5FunWrapper)!='undefined' && HTML5FunWrapper!=null) {
-	if (enable) {
-	  //先將捲軸捲到最上方，以免無法進行按下的動作
-	  window.scrollTo(0,0);
-	  //禁用捲軸的功能
-	  window.onscroll = function () { window.scrollTo(0, 0); };
-	  //讓遊戲全畫面
-	  document.body.style.overflow = 'hidden';
-	  HTML5FunWrapper.style.visibility = "visible";
-	} else {
-	  try{mediaPlayer.pause()}catch(e){}; //試著停止在播放的影音		
-	  //重新顯示原有的內容
-	  HTML5FunWrapper.style.visibility = "hidden";
-	  //恢復捲軸的功能
-	  window.onscroll=null;
-	  document.body.style.overflow = 'visible';	  
-	  //
-	  try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};	  
-	}
+    if (enable) {
+      //先將捲軸捲到最上方，以免無法進行按下的動作
+      window.scrollTo(0,0);
+      //禁用捲軸的功能
+      window.onscroll = function () { window.scrollTo(0, 0); };
+      //讓遊戲全畫面
+      document.body.style.overflow = 'hidden';
+      HTML5FunWrapper.style.visibility = "visible";
+    } else {
+      try{mediaPlayer.pause()}catch(e){}; //試著停止在播放的影音		
+      //重新顯示原有的內容
+      HTML5FunWrapper.style.visibility = "hidden";
+      //恢復捲軸的功能
+      window.onscroll = null;
+      document.body.style.overflow = 'visible';	  
+      //
+      try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};	  
+    }
   }
 };
 /**
@@ -220,14 +252,14 @@ setViewport = function() {
   //<meta name="viewport" content="initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no">
   var viewport = document.querySelector("meta[name=viewport]");
   if(typeof(viewport)=='undefined' || viewport==null) {
-	viewport = document.createElement('meta');
-	viewport.name = 'viewport';
-	document.getElementsByTagName('head').item(0).appendChild(viewport);
+    viewport = document.createElement('meta');
+    viewport.name = 'viewport';
+    document.getElementsByTagName('head').item(0).appendChild(viewport);
   }
   var content = 'initial-scale=1.0,minimum-scale=1,' +
-		   'maximum-scale=1.0,user-scalable=no';
+           'maximum-scale=1.0,user-scalable=no';
   if ((/android/i).test(navigator.userAgent)) {
-	content += ',target-densityDpi=device-dpi';
+    content += ',target-densityDpi=device-dpi';
   }
   viewport.content = content;
 };
@@ -411,36 +443,45 @@ applyYTsample = function() {
 updateYTurl = async function() {
 	var ytLangSelector = document.querySelector('.yt-lang-selector');
 	var input = document.querySelector('.ext-input-field input');
-	if(input && input.value.replace(/\s/g, '')!='' && parseYoutubeURL(input.value) && ytLangSelector) {
-		var ytUrl = input.value;
-		if(ytLangSelector.innerHTML == '') {
-			var captionTracks = await getYTcaptionTracks(ytUrl);
-			console.log(captionTracks);
-			if(captionTracks) {
-				var html = '<label>字幕語言: </label>';
-				html += '<select id="subtitle">';
-				for(var i=0; i<captionTracks.length; i++) {
-					html += '<option value="' + captionTracks[i]['baseUrl'] + '">';
-					html += captionTracks[i]['name']['simpleText'];
-					html += '</option>';
+	if(input && input.value.replace(/\s/g, '')!='' ) {
+		if( parseYoutubeURL(input.value) && ytLangSelector ) {
+			var ytUrl = input.value;
+			if(ytLangSelector.innerHTML == '') {
+				var captionTracks = await getYTcaptionTracks(ytUrl);
+				console.log(captionTracks);
+				if(captionTracks) {
+					var html = '<label>字幕語言: </label>';
+					html += '<select id="subtitle">';
+					for(var i=0; i<captionTracks.length; i++) {
+						html += '<option value="' + captionTracks[i]['baseUrl'] + '">';
+						html += captionTracks[i]['name']['simpleText'];
+						html += '</option>';
+					}
+					html += '</select>';
+				} else {
+					var html = '<br><label>此影片無任何字幕，影片載入後請自行匯入</label>';
 				}
-				html += '</select>';
-			} else {
-				var html = '<br><label>此影片無任何字幕，影片載入後請自行匯入</label>';
+				ytLangSelector.innerHTML = html;
+				try{document.querySelector('.yt-sample').classList.toggle('hidden', true)}catch(e){};
+			} else {		
+				var lang = ytLangSelector.querySelector('select');
+				if(lang && lang.value!='') {
+					//var checked = Array.from(ytLangSelector.querySelectorAll('option')).find(o=>o.selected);
+					ccLang = gup('lang', lang.value);
+					//var srt = await getYTsubtitle(ytUrl, lang);
+					var srt = await getYTcaptionByBaseUrl(lang.value);
+					//console.log(srt);
+					updateContent(srt);
+				}
+				updateMediaPlayer(ytUrl);
+				inputYTurl(false); //close input box
 			}
-			ytLangSelector.innerHTML = html;
-			try{document.querySelector('.yt-sample').classList.toggle('hidden', true)}catch(e){};
-		} else {		
-			var lang = ytLangSelector.querySelector('select');
-			if(lang && lang.value!='') {
-				//var checked = Array.from(ytLangSelector.querySelectorAll('option')).find(o=>o.selected);
-				ccLang = gup('lang', lang.value);
-				//var srt = await getYTsubtitle(ytUrl, lang);
-				var srt = await getYTcaptionByBaseUrl(lang.value);
-				//console.log(srt);
-				updateContent(srt);
-			}
-			updateMediaPlayer(ytUrl);
+		} else if(/\.(mp3|mp4|mkv|mov|avi|webm)/i.test(input.value) ) {
+			//非 YT 的網址,但網址中帶有影音的附檔名, 試著載入
+			var type = /\.mp3/i.test(input.value)?'audio':'video';
+			updateMediaPlayer(input.value, type);
+			inputYTurl(false); //close input box
+		} else {
 			inputYTurl(false); //close input box
 		}
 	} else {
@@ -452,13 +493,17 @@ updateMediaPlayer = function(mediaPath, type) {
 		mediaPlayer.destroy();
 		delete mediaPlayer;
 	}
-	var p = document.querySelector('.playerWapper');
+	var p = document.querySelector('.playerWrapper');
 	if(p) {
 		p.classList.toggle('hidden', true);
 		p.classList.toggle('video-player-large', false);
 		try{p.removeEventListener('touchstart', startDragHandler);}catch(e){};
 		try{p.removeEventListener('mousedown', startDragHandler);}catch(e){};
-
+	}
+	var speedBox = document.querySelector('.speed-box');
+	if(speedBox) {
+		try{speedBox.removeEventListener('touchstart', startDragHandler);}catch(e){};
+		try{speedBox.removeEventListener('mousedown', startDragHandler);}catch(e){};			
 	}
 	if( typeof(mediaPath)=='string' && parseYoutubeURL(mediaPath) ) {
 		mediaPlayer = new YOUTUBE(mediaPath, () => {
@@ -471,21 +516,22 @@ updateMediaPlayer = function(mediaPath, type) {
 		mediaPlayer = new AVplayer(mediaPath, type);
 		mediaPlayHandler();
 	} else {
-		var playBtn = document.querySelector('.playBtn');
-		if(playBtn) {
-			playBtn.classList.toggle('hidden', true);
-		}
+		try{document.querySelector('.playBtnGroup').classList.toggle('hidden', true);}catch(e){};
 	}
 	if(mediaPlayer) {
+	   try{document.querySelector('.play-progress-bar').classList.toggle('hidden', false)}catch(e){};
+	
 		var playBtn = document.querySelector('.playBtn');
 		if(playBtn) {
-			playBtn.classList.toggle('hidden', false);
 			playBtn.onclick = mediaPlayHandler;
+			try{document.querySelector('.playBtnGroup').classList.toggle('hidden', false);}catch(e){};
 		}
 		var speedBox = document.querySelector('.speed-box');
 		if(speedBox) {
 			speedBox.classList.toggle('hidden', false);
 			speedBox.querySelector('input').value = 1;
+			speedBox.addEventListener('touchstart', startDragHandler);
+			speedBox.addEventListener('mousedown', startDragHandler);
 		}
 		showFadeOutMessage(null, '<center>加上字幕文字後<br>按文字左側的「三角形」可播放<br>按空白的地方可暫停</center>', 0, '-5%', 5);
 		
@@ -615,7 +661,10 @@ updateContent = function(src, filename) {
 		}
 		var langGroup = document.querySelector('.langGroup');
 		if(langGroup) {
-			langGroup.innerHTML = '';
+			//langGroup.innerHTML = '';
+			langGroup.querySelectorAll('button').forEach(e=>e.remove());
+			try{document.querySelector('.trans-progress-bar').style.display='none'}catch(e){};
+	
 		}
 		//if(activeIntervalId == null) {
 		//	activeIntervalId = setInterval(activeHandler, activeInterval);
@@ -667,40 +716,59 @@ mediaPlayHandler = function(e) {
 		if(activeIntervalId != null) {
 			clearInterval(activeIntervalId);
 			activeIntervalId = null;
+			
 		}
-	}	
+	}
+	activeHandler();
+};
+updateProgress = function(e, n) {
+  var bar = document.querySelector(e);
+  if(bar) {
+    var bg = 'radial-gradient(closest-side, white 79%, transparent 80% 100%),';
+    bg += 'conic-gradient(#F7DC6F ' + n + '%, palegreen 0)';
+    bar.style.background = bg;
+  }
 };
 activeHandler = function() {
-	var content = document.querySelector('#gameWrapper .content');
-	if( content && content.children.length > 1 && mediaPlayer && mediaPlayer.getStatus()=='playing' ) {
-		var currentTime = mediaPlayer.getTime();
-		if(typeof(currentTime)=='number') {			
-			for(var i=0; i<content.children.length; i++) {
-				var p = content.children[i];
-				var start = Number(p.getAttribute('start'));
-				var end = Number(p.getAttribute('end'));
-				if(currentTime >= start && currentTime <= end) {
-					document.querySelectorAll('.timeActive').forEach(a=>a.classList.toggle('timeActive', false));
-					p.classList.toggle('timeActive', true);
+  if( mediaPlayer && mediaPlayer.getStatus()=='playing' ) {
+    var currentTime = mediaPlayer.getTime();
+    var dur = mediaPlayer.getLength();
+    if(typeof(currentTime)=='number' && currentTime<dur) {
+      var n = dur>0?currentTime*100/dur:0;
+      updateProgress('.play-progress-bar', n);
+      var content = document.querySelector('#gameWrapper .content');
+      if( content && content.children.length > 1 ) {
+        for(var i=0; i<content.children.length; i++) {
+          var p = content.children[i];
+          var start = Number(p.getAttribute('start'));
+          var end = Number(p.getAttribute('end'));
+          if(currentTime >= start && currentTime <= end) {
+            document.querySelectorAll('.timeActive').forEach(a=>a.classList.toggle('timeActive', false));
+            p.classList.toggle('timeActive', true);
 					
-					autoScroll(p);
+            autoScroll(p);
 					
-					//更新影片第二字幕的內容
-					var cc2 = document.querySelector('.playerWapper .caption2');
-					var isLarge = document.querySelector('.playerWapper.video-player-large');
-					var trans = p.querySelector('.trans');
-					if(cc2) {
-						var displayTrans = (trans && trans.style.display!='none');
-						cc2.innerHTML = displayTrans && isLarge?trans.innerHTML:'';
-					}
-					break;
-				}
-			}
-		}
-	} else {
+            //更新影片第二字幕的內容
+            var cc2 = document.querySelector('.playerWrapper .caption2');
+            var isLarge = document.querySelector('.playerWrapper.video-player-large');
+            var trans = p.querySelector('.trans');
+            if(cc2) {
+              var displayTrans = (trans && trans.style.display!='none');
+              cc2.innerHTML = displayTrans && isLarge?trans.innerHTML:'';
+            }
+            break;
+          }
+        }
+      }
+    } else {
+      mediaPlayer.pause();
+      updateProgress('.play-progress-bar', 100);
+      mediaPlayHandler();
+    }
+  } else {
 		//非播放中或沒字幕，就全部設為非正播放中的字句
 		document.querySelectorAll('.timeActive').forEach(a=>a.classList.toggle('timeActive', false));
-	}
+  }
 };
 contentOnClickHandler = function(e) {
 	var target = e.target;	
@@ -718,7 +786,9 @@ contentOnClickHandler = function(e) {
 			}
 			mediaPlayer.setTime(Number(start));
 			mediaPlayHandler();
-		}	
+		} else {
+			showFadeOutMessage(target.parentElement, '無法播放, 請先載入影音', 0, 0, 1);
+		}
 	} else {
 	    if(mediaPlayer && typeof(mediaPlayer.pause)=='function') {
 			mediaPlayer.pause();
@@ -746,7 +816,7 @@ var AVplayer = function(src, type) {
 		player.element.className = 'video-player';
 		//document.querySelector('#gameWrapper').appendChild(player.element);
 		//player.element.onclick = function(e) {player.element.classList.toggle('video-player-large')};
-		var p = document.querySelector('.playerWapper');
+		var p = document.querySelector('.playerWrapper');
 		p.classList.toggle('hidden', false);
 		p.appendChild(player.element);
 		//p.onclick = function(e) {p.classList.toggle('video-player-large')};
@@ -800,8 +870,8 @@ var YOUTUBE = function(source, playPauseCallback) {
 	player.element.setAttribute('id','oTplayerEl');
 	player.element.className = 'video-player';
 	//document.querySelector('#gameWrapper').appendChild(player.element); 
-	document.querySelector('.playerWapper').classList.toggle('hidden', false);
-	document.querySelector('.playerWapper').appendChild(player.element); 
+	document.querySelector('.playerWrapper').classList.toggle('hidden', false);
+	document.querySelector('.playerWrapper').appendChild(player.element); 
 	
 			
 	loadScriptTag(() => {        
@@ -856,7 +926,7 @@ var YOUTUBE = function(source, playPauseCallback) {
 				
 				//var v = document.querySelector('.video-player');
 				//v.onclick = function(e) {v.classList.toggle('video-player-large')};
-				var p = document.querySelector('.playerWapper');
+				var p = document.querySelector('.playerWrapper');
 				//p.onclick = function(e) {p.classList.toggle('video-player-large')};
 				p.addEventListener('touchstart', startDragHandler);
 				p.addEventListener('mousedown', startDragHandler);
@@ -1114,7 +1184,8 @@ loadingAnimation = function (txt, callback) {
 startDragHandler = function (e) {  
   var target = e.target || e.touches[0].target;
   
-  if(!target.classList.contains('playerWapper')) return;
+  if( !target.classList.contains('playerWrapper') &&
+	  !target.classList.contains('speed-box')  ) return;
   
   e.preventDefault();
   
@@ -1137,6 +1208,7 @@ startDragHandler = function (e) {
   } else {
     target.removeEventListener('touchstart', startDragHandler);
     target.addEventListener('mouseup', endDragHandler);	
+	target.addEventListener('mouseout', endDragHandler);	
     target.addEventListener('mousemove', dragHandler);
   }  	
 };
@@ -1165,12 +1237,12 @@ endDragHandler = function(e) {
   var target = e.target || e.touches[0].target;      
   target.style['cursor'] = 'default';
   var timeEnd = new Date();
-  if(target.timeStart && (timeEnd - target.timeStart) < 200) {
+  if(target.classList.contains('playerWrapper') && target.timeStart && (timeEnd - target.timeStart) < 200) {
 	//click
-    var p = document.querySelector('.playerWapper');
+    var p = document.querySelector('.playerWrapper');
     if(p) {
       p.classList.toggle('video-player-large');	  
-      var cc2 = document.querySelector('.playerWapper .caption2');
+      var cc2 = document.querySelector('.playerWrapper .caption2');
       if(cc2) {
         cc2.innerHTML = '';
 	  }
@@ -1180,12 +1252,27 @@ endDragHandler = function(e) {
     target.removeEventListener('touchend', endDragHandler);
     target.removeEventListener('touchmove', dragHandler);
   } else {
-    target.removeEventListener('mouseup', endDragHandler);	
+    target.removeEventListener('mouseup', endDragHandler);
+	target.removeEventListener('mouseout', endDragHandler);
     target.removeEventListener('mousemove', dragHandler);
   }  
+  tunePosition(target);
+};
+tunePosition = function(el) {
+  var size = getWindowSize();
+  var b = el.getBoundingClientRect();
+  var isCenter = getComputedStyle(el)['transform'] != 'none'; //假設有設定就是置中的
+  if(b.left < 0) 
+    el.style.left = Math.floor((isCenter?b.width/2:0) + 5)+'px';
+  else if(b.left > size.width - b.width) 
+    el.style.left = Math.floor(size.width - (isCenter?b.width/2:b.width) - 5)+'px';
+  if(b.top < 0) 
+    el.style.top = Math.floor((isCenter?b.height/2:0) + 5)+'px';
+  else if(b.top > size.height - b.height) 
+    el.style.top = Math.floor(size.height - (isCenter?b.height/2:b.height) -5)+'px';  
 };
 showPlayerInfo = function() {
-  showFadeOutMessage('.playerWapper', '<ul><li>放大縮小: 按一下邊框</li><li>移動: 拖曳邊框</li></ul>', 0, 0, 2);
+  showFadeOutMessage('.playerWrapper', '<ul><li>放大縮小: 按一下邊框</li><li>移動: 拖曳邊框</li></ul>', 0, 0, 2);
 };
 getSelectionText = function() {
   var text = "";

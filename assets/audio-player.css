@@ -430,6 +430,7 @@
   font-size: 3vmin;
   line-height: 3vmin;
   color: rgb(0, 0, 0, 0.8);
+  white-space: nowrap;
 }
 .uploadBtn {
   left: 50%;

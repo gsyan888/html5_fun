@@ -511,10 +511,23 @@ updateYTurl = async function() {
 appendSrt2 = function(srt2, lang) {
   if(srt2) {
     var srt = document.querySelectorAll('#gameWrapper .content p');
-    //html += '<p ' + 'start="' + toSecond(s.start) + '" end="' + toSecond(s.end) + '">';
-    for(var i=0; i<srt.length; i++) {
-      if(typeof(srt2[i])!='undefined') {
-        var label = '<label class="trans lang-' + lang  +'">' + srt2[i].text.trim() + '</label>';
+    for(var i=0, j=0; i<srt.length; i++) {
+      var start = Number(srt[i].getAttribute('start'));
+      var end = Number(srt[i].getAttribute('end'));
+      var txt = '';
+      for(var k=j; k<srt2.length; k++) {
+        var s2 = srt2[k];
+        var start2 = toSecond(s2.start);
+        var end2 = toSecond(s2.end);
+        if(start2 >= start && start2 < end) {
+          txt += s2.text.trim();
+        } else if(start2 >= end) {
+          j = k;
+          break;
+        }
+      }
+      if(txt!='') {
+        var label = '<label class="trans lang-' + lang  +'">' + txt + '</label>';
         srt[i].insertAdjacentHTML('beforeend', label);
       }
     }

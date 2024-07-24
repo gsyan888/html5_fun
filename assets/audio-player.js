@@ -50,12 +50,12 @@ appendTrans = async function() {
         //console.log('--> ',i);
         if(typeof(trans)=='string') {
           var t = trans.trim().split(/\n/);
-          if(t.length == text.trim().split(/\s*==--==\s*/).length-1 ) {
+          if(t.length == text.trim().split(/\s*==-*==\s*/).length-1 ) {
             trans = t;
           } else {
-            trans = trans.trim().split(/\s*==--==\s*/);
+            trans = trans.trim().split(/\s*==-*==\s*/);
           }
-          trans.forEach( t=>result.push(t.replace(/\s*==--==\s*/g, '').trim()) );
+          trans.forEach( t=>result.push(t.replace(/\s*==(\s*-\s*)*==\s*/g, '').trim()) );
         }
         text = subs.trim() + ' ==--== \n';
       } else {
@@ -412,20 +412,20 @@ readFiles = function (files) {
       var file = files[i];
       if (file.size > 0) {
         var reader = new FileReader();
-	    //console.log(file);
-		mimeType = file.type;
+        //console.log(file);
+        mimeType = file.type;
         reader.mimeType = file.type; /* 記錄一下 file.type */
-	    if( (mimeType!='' && /audio|video/i.test(mimeType)) || /\.(mp3|mp4|mkv|mov|avi|webm)$/i.test(file.name) ) {
-	      var blob = window.URL.createObjectURL(file);
-		  //updateMediaPlayer(file.name, file.type);
-		  if(mimeType=='' && /\.(mp4|mkv|mov|avi|webm)$/i.test(file.name)) mimeType = 'video';
-		  updateMediaPlayer(blob, mimeType);
-	    } else {
+        if( (mimeType!='' && /audio|video/i.test(mimeType)) || /\.(mp3|mp4|mkv|mov|avi|webm)$/i.test(file.name) ) {
+          var blob = window.URL.createObjectURL(file);
+          //updateMediaPlayer(file.name, file.type);
+          if(mimeType=='' && /\.(mp4|mkv|mov|avi|webm)$/i.test(file.name)) mimeType = 'video';
+          updateMediaPlayer(blob, mimeType);
+        } else {
           reader.readAsText(file); //reader.readAsDataURL(file);	/* 以 DataURL base64編碼的資料 */
           reader.onloadend = function (e) {
-		    updateContent(this.result, file.name); /* 取得資料,並轉換格式 */
+            updateContent(this.result, file.name); /* 取得資料,並轉換格式 */
           };
-	    }
+        }
       } else {
         alert('請上載文字檔，才能處理');
       }
@@ -437,59 +437,98 @@ applyYTsample = function() {
   var input = document.querySelector('.ext-input-field input');
   if(input) {
     input.value = 'https://www.youtube.com/watch?v=sKXEfmV6xro';
-	showFadeOutMessage('.yt-sample', '已將網址填好，請按 [下一步] 鈕', '50%', '300%', 1);
+    showFadeOutMessage('.yt-sample', '已將網址填好，請按 [下一步] 鈕', '50%', '300%', 1);
   }  
 };
 updateYTurl = async function() {
-	var ytLangSelector = document.querySelector('.yt-lang-selector');
-	var input = document.querySelector('.ext-input-field input');
-	if(input && input.value.replace(/\s/g, '')!='' ) {
-		if( parseYoutubeURL(input.value) && ytLangSelector ) {
-			var ytUrl = input.value;
-			if(ytLangSelector.innerHTML == '') {
-				var captionTracks = await getYTcaptionTracks(ytUrl);
-				console.log(captionTracks);
-				if(captionTracks) {
-					var html = '<label>字幕語言: </label>';
-					html += '<select id="subtitle">';
-					for(var i=0; i<captionTracks.length; i++) {
-						html += '<option value="' + captionTracks[i]['baseUrl'] + '">';
-						html += captionTracks[i]['name']['simpleText'];
-						html += '</option>';
-					}
-					html += '</select>';
-				} else {
-					var html = '<br><label>此影片無任何字幕，影片載入後請自行匯入</label>';
-				}
-				ytLangSelector.innerHTML = html;
-				try{document.querySelector('.yt-sample').classList.toggle('hidden', true)}catch(e){};
-			} else {		
-				var lang = ytLangSelector.querySelector('select');
-				if(lang && lang.value!='') {
-					//var checked = Array.from(ytLangSelector.querySelectorAll('option')).find(o=>o.selected);
-					ccLang = gup('lang', lang.value);
-					//var srt = await getYTsubtitle(ytUrl, lang);
-					var srt = await getYTcaptionByBaseUrl(lang.value);
-					//console.log(srt);
-					updateContent(srt);
-				}
-				updateMediaPlayer(ytUrl);
-				inputYTurl(false); //close input box
-			}
-		} else if(/\.(mp3|mp4|mkv|mov|avi|webm)/i.test(input.value) ) {
-			//非 YT 的網址,但網址中帶有影音的附檔名, 試著載入
-			var type = /\.mp3/i.test(input.value)?'audio':'video';
-			updateMediaPlayer(input.value, type);
-			inputYTurl(false); //close input box
-		} else {
-			inputYTurl(false); //close input box
-		}
-	} else {
-		inputYTurl(false); //close the input block
-	}
+  var ytLangSelector = document.querySelector('.yt-lang-selector');
+  var input = document.querySelector('.ext-input-field input');
+  if(input && input.value.replace(/\s/g, '')!='' ) {
+    if( parseYoutubeURL(input.value) && ytLangSelector ) {
+      var ytUrl = input.value;
+      //擷取字幕,並製作選單
+      if(ytLangSelector.innerHTML == '') {
+        var captionTracks = await getYTcaptionTracks(ytUrl);
+        console.log(captionTracks);
+        if(captionTracks) {
+          var html = '<label>字幕語言: </label>';
+          html += '<select id="subtitle">';
+		  var option = '';
+          for(var i=0; i<captionTracks.length; i++) {
+            option += '<option value="' + captionTracks[i]['baseUrl'] + '">';
+            option += captionTracks[i]['name']['simpleText'];
+            option += '</option>';
+          }
+          html += option;
+          html += '</select>';
+          if(captionTracks.length > 1) {
+            html += '<br>';
+            html += '<label>第二字幕: </label>';
+            html += '<select id="subtitle2">';
+            html += '<option value="">XXX 不使用 XXX</option>';
+            html += option;
+            html += '</select>';
+          }
+        } else {
+          var html = '<br><label>此影片無任何字幕，影片載入後請自行匯入</label>';
+        }
+        ytLangSelector.innerHTML = html;
+        try{document.querySelector('.yt-sample').classList.toggle('hidden', true)}catch(e){};
+      } else {
+        var lang = ytLangSelector.querySelector('#subtitle');
+        if(lang && lang.value!='') {
+          //var checked = Array.from(ytLangSelector.querySelectorAll('option')).find(o=>o.selected);
+          ccLang = gup('lang', lang.value);
+          //var srt = await getYTsubtitle(ytUrl, lang);
+          var srt = await getYTcaptionByBaseUrl(lang.value);
+          //console.log(srt);
+          updateContent(srt);
+          //2nd SRT
+          var lang2 = ytLangSelector.querySelector('#subtitle2');
+          if(lang2 && lang2.value!='') {
+            ccLang2 = gup('lang', lang2.value);
+            var srt2 = await getYTcaptionByBaseUrl(lang2.value);
+            //console.log(srt2);
+            //var langName = lang2.options[lang2.selectedIndex].textContent;
+            appendSrt2(srt2, ccLang2);
+          }
+        }
+        updateMediaPlayer(ytUrl);
+        inputYTurl(false); //close input box
+      }
+    } else if(/\.(mp3|mp4|mkv|mov|avi|webm)/i.test(input.value) ) {
+      //非 YT 的網址,但網址中帶有影音的附檔名, 試著載入
+      var type = /\.mp3/i.test(input.value)?'audio':'video';
+      updateMediaPlayer(input.value, type);
+      inputYTurl(false); //close input box
+    } else {
+      inputYTurl(false); //close input box
+    }
+  } else {
+    inputYTurl(false); //close the input block
+  }
+};
+appendSrt2 = function(srt2, lang) {
+  if(srt2) {
+    var srt = document.querySelectorAll('#gameWrapper .content p');
+    //html += '<p ' + 'start="' + toSecond(s.start) + '" end="' + toSecond(s.end) + '">';
+    for(var i=0; i<srt.length; i++) {
+      if(typeof(srt2[i])!='undefined') {
+        var label = '<label class="trans lang-' + lang  +'">' + srt2[i].text.trim() + '</label>';
+        srt[i].insertAdjacentHTML('beforeend', label);
+      }
+    }
+    var langGroup = document.querySelector('.langGroup');
+    var btn = document.createElement('button');
+    btn.setAttribute('class', 'roundBtn');
+    btn.setAttribute('lang', lang);
+    btn.innerHTML = '<label>隱藏-' + lang + '</label>';
+    btn.setAttribute('onclick', 'displayLang(this)');
+    langGroup.appendChild(btn);	
+  }
 };
 updateMediaPlayer = function(mediaPath, type) {
-	if(typeof(mediaPlayer)!='undefined' && typeof(mediaPlayer.destroy)=='function') {	
+	if(typeof(mediaPlayer)!='undefined' && typeof(mediaPlayer.destroy)=='function') {
 		mediaPlayer.destroy();
 		delete mediaPlayer;
 	}

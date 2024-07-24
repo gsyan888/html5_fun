@@ -233,8 +233,13 @@ setVisibility = function(enable) {
       //讓遊戲全畫面
       document.body.style.overflow = 'hidden';
       HTML5FunWrapper.style.visibility = "visible";
+      //如果影音播放器已存在了，就加上鍵盤監控的功能
+      if(mediaPlayer && typeof(mediaPlayer.play)=='function') {
+	    enableHotkey(true);
+      }
     } else {
       try{mediaPlayer.pause()}catch(e){}; //試著停止在播放的影音		
+      enableHotkey(false); //移除鍵盤監控
       //重新顯示原有的內容
       HTML5FunWrapper.style.visibility = "hidden";
       //恢復捲軸的功能
@@ -615,6 +620,8 @@ updateMediaPlayer = function(mediaPath, type) {
 			}
 		};
 		*/
+        //開始監鍵盤按鍵
+		enableHotkey(true);
 	}
     openImportPanel(false);	
 	return;
@@ -824,6 +831,7 @@ activeHandler = function() {
 };
 contentOnClickHandler = function(e) {
 	var target = e.target;	
+	
 	//if(target.tagName.toLowerCase() == 'label') {
 	if(target.classList.contains('arrow-left')) {
 		target = target.parentElement;
@@ -1369,7 +1377,94 @@ dictSearch = function(n) {
     showFadeOutMessage('.dictGroup', '請先選取要查字典的文字', 0, '70%', 1.5);
   }
 
-}
+};
+gotoAndPlay = function(dir) {
+  if(mediaPlayer && typeof(mediaPlayer.getStatus)=='function') {
+    var content = document.querySelector('#gameWrapper .content');
+    if( content && content.children.length > 0 ) {
+      var index = 0;
+      var justStart = false;
+      var currentTime = mediaPlayer.getTime();
+      var dur = mediaPlayer.getLength();
+      if(typeof(currentTime)=='number' && currentTime<dur) {
+        for(var i=0; i<content.children.length; i++) {
+          var p = content.children[i];
+          var start = Number(p.getAttribute('start'));
+          var end = Number(p.getAttribute('end'));
+          if(currentTime >= start && currentTime < end) {
+            index = i;			
+            if( currentTime < start + (end-start)/4 ) {
+              justStart = true;
+            }
+			break;
+          } else if(currentTime <= start) {
+            index = i - (i>0?1:0);
+			break;
+          }
+        }
+      }
+      if(typeof(dir)=='string' && dir=='forward') {
+        index += (index<content.children.length-1?1:0);
+      } else {
+	    index -= (index>0 && justStart ? 1 : 0);
+      }
+      if(index<0) index=0; 
+	  else if(index>content.children.length-1) index = content.children.length-1;
+      var p = content.children[index];
+      var start = Number(p.getAttribute('start'));
+      mediaPlayer.setTime(start);
+    }
+  }
+};
+playForward = function() { 
+  gotoAndPlay('forward'); 
+};
+keydownHandler = function(e) {
+  console.log(e.key);
+  if(mediaPlayer && typeof(mediaPlayer.play)=='function') {
+    var cmd;
+    switch(e.key.toLowerCase()) {
+      case 'escape' :
+        if(mediaPlayer.getStatus()=='playing') {
+          cmd = mediaPlayer.pause;
+        } else {
+          cmd = mediaPlayer.play;
+        }
+        break;
+      case 'f1' :
+        cmd = gotoAndPlay;
+        break;      
+      case 'f2' :
+        cmd = function(){gotoAndPlay('forward')};
+        break;      
+    }
+    if(cmd) {
+      e.preventDefault();
+      e.stopPropagation();
+      cmd();
+    }
+  }
+};
+enableHotkey = function(enable) {
+  if(typeof(enable)!='boolean' || enable) {
+    enableHotkey(false);
+    document.addEventListener('keydown', keydownHandler);
+  } else {
+    document.removeEventListener('keydown', keydownHandler);
+  }
+};
+autoFillYTurl = function() {
+  var input = document.querySelector('.ext-input-field input');
+  if(input) {
+    var v = decodeURIComponent(gup('v'));
+	if( !(/https:\/\//i.test(v)) ) {
+      v = 'https://www.youtube.com/watch?v=' + v;
+	}
+    input.value = v;
+    inputYTurl(true);
+    updateYTurl();
+  }
+};
 set__scale=function(s){
   for(var i=3; i<=10; i++) {
     try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
@@ -1403,13 +1498,19 @@ start = async function() {
     loadingLogoEnable = false;
     setTimeout(function() {
        showFadeOutMessage('.addMediaBtn', '按 + 號加影音、字幕', '100%', '-100%', 1);
-       setTimeout(openImportPanel, 1000);
+	   var v = gup('v');
+	   if(v.replace(/\s/g, '')!='') {
+         setTimeout(autoFillYTurl, 1000);
+       } else {
+         setTimeout(openImportPanel, 1000);
+	   }
     }, 600);
   }, 1500);
 };
 
 var autostart = gup('autostart');
-if(autostart == '1' || autostart == 'true') {
+var v = gup('v');
+if(autostart == '1' || autostart == 'true' || v.replace(/\s/g, '')!='') {
   start();
 }
 

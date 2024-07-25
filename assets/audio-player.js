@@ -363,7 +363,8 @@ soundInit = function() {
 
 srtParser = function(lines) {
 	//var pattern = '\\d+\\n([\\d\\:\\-\\>\\,\\.\\ ]+)\\n([^\\n\\n]+)\\n\\n';
-	var pattern = '\\d+\\n([\\d\\:\\,\\.]+)\\s*-->\\s*([\\d\\:\\,\\.]+)\\s*\\n(([^\\n]+\\n)+)\\n';
+	//var pattern = '\\d+\\n([\\d\\:\\,\\.]+)\\s*-->\\s*([\\d\\:\\,\\.]+)\\s*\\n(([^\\n]+\\n)+)\\n';
+	var pattern = '\\d+\\n([\\d\\:\\,\\.]+)\\s*-->\\s*([\\d\\:\\,\\.]+)\\s*\\n(([^\\n]+\\n)+)\\n*';
 	var re = new RegExp(pattern, 'g');
 	subs = lines.replace(/\r/g, '').match(re);
 	var srt = [];
@@ -375,6 +376,8 @@ srtParser = function(lines) {
 			}
 		}
 	}	
+	//console.log(lines);
+	//console.log(srt);
 	return srt;
 };
 clickHandler = function (ev) {
@@ -1412,6 +1415,8 @@ gotoAndPlay = function(dir) {
 	  else if(index>content.children.length-1) index = content.children.length-1;
       var p = content.children[index];
       var start = Number(p.getAttribute('start'));
+	  //document.querySelectorAll('.timeActive').forEach(a=>a.classList.toggle('timeActive', false));
+	  //p.classList.toggle('timeActive', true);
       mediaPlayer.setTime(start);
     }
   }

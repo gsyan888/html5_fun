@@ -202,6 +202,7 @@
 	text-align: left;
 }
 #gameWrapper .content label{
+  display: block;
   font-size: 3vmin;
   margin-left: 0px;
   text-align: left;

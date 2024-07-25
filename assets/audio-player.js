@@ -658,6 +658,7 @@ updateContent = function(src, filename) {
 	} else if(typeof(src)!='undefined'){
 		subList = src;
 	}
+	var mediaURL = '';
 	srtFilename = filename;
 	var html = '';
 	if(content && subList && subList.length > 0) {
@@ -669,9 +670,13 @@ updateContent = function(src, filename) {
 			var t = s.text.trim().split(/\n/);
 			t.forEach(tt=>{
 				html += '<label>';
-				html += tt;
+				html += (/^https:\/\//.test(tt) ? '<a href="'+tt+'" target="_blank">'+tt+'</a>' : tt);
 				html += '</label>'
 				//html += '<br>';
+				//如果找到影音的網址就先暫存，稍後自動載入
+				if(/\.(mp3|mp4|mkv|mov|avi|webm)/i.test(tt) || parseYoutubeURL(tt) ) {
+					mediaURL = tt.trim();
+				}
 			});
 			html += '</p>';
 		});
@@ -733,6 +738,11 @@ updateContent = function(src, filename) {
 		//}
 		
 		showFadeOutMessage(null, '<center>加上影音後<br>按文字左側的「三角形」可播放該句<br>按空白的地方可暫停</center>', 0, '-5%', 4);
+		
+		//如果找到影音的網址就自動載入
+		if(mediaURL != '') {
+			autoFillYTurl(mediaURL);
+		}
 	}
 		
 	//console.log(subList);
@@ -1458,11 +1468,14 @@ enableHotkey = function(enable) {
     document.removeEventListener('keydown', keydownHandler);
   }
 };
-autoFillYTurl = function() {
+autoFillYTurl = function(url) {
   var input = document.querySelector('.ext-input-field input');
   if(input) {
     var v = decodeURIComponent(gup('v'));
-	if( !(/https:\/\//i.test(v)) ) {
+    if(typeof(url)=='string' && url.replace(/\s/g, '')!='') {
+      v = url;
+	}
+	if( !(/https:\/\//i.test(v)) && !(/\.(mp3|mp4|mkv|mov|avi|webm)/i.test(v)) ) {
       v = 'https://www.youtube.com/watch?v=' + v;
 	}
     input.value = v;

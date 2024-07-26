@@ -668,7 +668,7 @@
     box-shadow: 0 0 10px grey;
     -webkit-box-shadow: 0 0 10px grey;
     width: 250px;
-	height: 36px;
+	height: 33.5px;
     padding: 8px 0 5px;
     /* z-index: -50; */
     cursor: default;
@@ -691,21 +691,21 @@
     height: 24px;
     border-right: 1px solid grey;
     position: relative;
-	left: 29px; /* 48px; */
+	left: 32px; /* 29px 48px; */
     /* z-index: -50; */
     display: inline-block;
     vertical-align: middle;
 	pointer-events: none;
+	opacity: 0.5;
 }
 .speed-slider {
     display: inline;
     vertical-align: middle;
-    width: 60px; /* 120px; */
+    width: 70px; /* 60px 120px; */
 }
 .speed-box span {
   pointer-events: none;
 }
-
 .seek-button {
   display: inline;
   vertical-align: middle;

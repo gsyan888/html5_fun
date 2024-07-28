@@ -469,7 +469,8 @@ readFiles = function (files) {
 };
 applyYTsample = function() {
   var list = [
-    'https://www.youtube.com/watch?v=chjn7CoTPSI', //Vooks
+    'https://www.youtube.com/watch?v=sKXEfmV6xro', //Vooks
+    'https://www.youtube.com/watch?v=chjn7CoTPSI', 
 	'https://www.youtube.com/watch?v=y2EKuKGCRQA',
 	'https://www.youtube.com/watch?v=_sDxBrBhDJQ',
 	'https://www.youtube.com/watch?v=KspRgXxo4Fo',
@@ -1117,6 +1118,8 @@ parseYoutubeURL = function(url){
 getYTcaptionTracks = async function(url) {
   var captionTracks=null, data=null;
   //var url = 'https://www.youtube.com/watch?v=bKetUdtTw0g';
+  var nocache = 'nocache=' + new Date().getTime();
+  url += (/\?/.test(url)?'&':'?') + nocache;    
   url = 'https://corsproxy.io/?'+encodeURIComponent(url);
   try {
     var res = await fetch(url);
@@ -1136,6 +1139,8 @@ getYTcaptionByBaseUrl = async function(baseUrl) {
     srt.push({start:start, end:end, text:txt});
   };
   var data;
+  var nocache = 'nocache=' + new Date().getTime();
+  baseUrl += (/\?/.test(baseUrl)?'&':'?') + nocache;  
   try {
     var res = await fetch('https://corsproxy.io/?'+encodeURIComponent(baseUrl));
     var data = await res.text();

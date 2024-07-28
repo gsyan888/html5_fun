@@ -468,9 +468,24 @@ readFiles = function (files) {
   openImportPanel(); //關閉新增媒材的選單
 };
 applyYTsample = function() {
+  var list = [
+    'https://www.youtube.com/watch?v=chjn7CoTPSI', //Vooks
+	'https://www.youtube.com/watch?v=y2EKuKGCRQA',
+	'https://www.youtube.com/watch?v=_sDxBrBhDJQ',
+	'https://www.youtube.com/watch?v=KspRgXxo4Fo',
+	'https://www.youtube.com/watch?v=dlxE-aWzFoc',
+	'https://www.youtube.com/watch?v=xRyjzE3tsxQ',
+	'https://www.youtube.com/watch?v=7GpQsGCOHkE',
+	'https://www.youtube.com/watch?v=m4Ics03xzUQ', //TED Talk
+	'https://www.youtube.com/watch?v=aISXCw0Pi94',
+	'https://www.youtube.com/watch?v=7K3KdgDcdYc',
+	'https://www.youtube.com/watch?v=xQ156y4TtJs',
+	'https://www.youtube.com/watch?v=Xu-QfE_1ksk'
+    ];
   var input = document.querySelector('.ext-input-field input');
   if(input) {
-    input.value = 'https://www.youtube.com/watch?v=sKXEfmV6xro';
+    //input.value = 'https://www.youtube.com/watch?v=sKXEfmV6xro';
+	input.value = list[Math.floor(Math.random()*list.length)];
     showFadeOutMessage('.yt-sample', '已將網址填好，請按 [下一步] 鈕', '50%', '300%', 1);
   }  
 };

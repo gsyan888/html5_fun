@@ -1486,11 +1486,14 @@ keydownHandler = function(e) {
     var cmd;
     switch(e.key.toLowerCase()) {
       case 'escape' :
+        /*
         if(mediaPlayer.getStatus()=='playing') {
           cmd = mediaPlayer.pause;
         } else {
           cmd = mediaPlayer.play;
         }
+        */
+        cmd = function(){mediaPlayHandler(e)};
         break;
       case 'f1' :
         cmd = gotoAndPlay;

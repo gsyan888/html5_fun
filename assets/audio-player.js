@@ -392,6 +392,7 @@ srtParser = function(lines) {
 	//var pattern = '\\d+\\n([\\d\\:\\,\\.]+)\\s*-->\\s*([\\d\\:\\,\\.]+)\\s*\\n(([^\\n]+\\n)+)\\n';
 	var pattern = '\\d+\\n([\\d\\:\\,\\.]+)\\s*-->\\s*([\\d\\:\\,\\.]+)\\s*\\n(([^\\n]+\\n)+)\\n*';
 	var re = new RegExp(pattern, 'g');
+	lines += '\n'; //多加一個換行字元，避免最後一行抓不到
 	subs = lines.replace(/\r/g, '').match(re);
 	var srt = [];
 	if(subs) {

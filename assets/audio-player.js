@@ -43,11 +43,30 @@ appendTrans = async function() {
         if( i>=srt.length-1 ) {
           text += subs.trim() + ' ==--== \n';
         }
+		
+		text = text.replace(/([\"\'])(\s+(and|or))/g, '”$2');  //corsproxy 對引號 and/or過敏 XDDD
+		
         //console.log(text);
-        
+        //console.log('size: ',text.length);
         var trans = await bingTranslate(text, 'auto-detect', lang);
         //console.log(trans);
         //console.log('--> ',i);
+        //如果批次翻譯失敗，就改用一句句
+        if(!trans) {
+          var ngList = text.split(/\n/);
+          trans = '';
+          for(var r=0; r<ngList.length; r++) {
+            if(ngList[r].replace(/\s/g, '')!='') {
+              var t = await bingTranslate(ngList[r], 'auto-detect', lang);
+              console.log(r, '===> ', t);
+              if(typeof(t)=='string') {
+                trans += t + ' \n';
+              } else {
+                trans += '?' + ' ==--== \n'; //一句還是失敗者用問號替代
+              }
+            }
+          }
+        }
         if(typeof(trans)=='string') {
           var t = trans.trim().split(/\n/);
           if(t.length == text.trim().split(/\s*==-*==\s*/).length-1 ) {

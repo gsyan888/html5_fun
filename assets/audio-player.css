@@ -411,6 +411,11 @@
   position: relative;
   margin-bottom: 0.5vmin;
 }
+.exportToSrtBtn {
+  background-color: #C3D69BA0;
+  color: #0d4216;
+  margin-top: 4vmin;
+}
 .trans-progress-bar {
   position: relative;
   width: 12vmin;

@@ -1890,6 +1890,7 @@ start = async function() {
 	   if(v.replace(/\s/g, '')!='') {
          setTimeout(autoFillYTurl, 1000);
        } else if(f.replace(/\s/g, '')!='') {
+         showFadeOutMessage(null, '<center>載入資料中，請稍候</center>', 0, '-5%', 2);
          gdFetchTextFile(f, function(data) {
            if(data!='') {
              updateContent(data);		 

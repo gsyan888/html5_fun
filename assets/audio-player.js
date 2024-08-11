@@ -2,7 +2,7 @@ var srtFilename;
 var subList;
 var mediaPlayer;
 var activeIntervalId = null;
-var activeInterval = 200;
+var activeInterval = 100;
 var ccLang = '';
 
 var bingIG, bingIID, bingKey, bingToken;
@@ -100,6 +100,7 @@ appendTrans = async function() {
     btn.innerHTML = '<label>隱藏-' + langCodes[lang].substring(0, 2) + '</label>';
     btn.setAttribute('onclick', 'displayLang(this)');
     langGroup.appendChild(btn);
+	//langGroup.insertBefore(btn, langGroup.lastElementChild);
     if(transBtn) {
       transBtn.lock = false;
       transBtn.title = '按這裡加入新的翻譯';
@@ -405,7 +406,6 @@ soundInit = function() {
 	};	
 };
 
-
 srtParser = function(lines) {
 	//var pattern = '\\d+\\n([\\d\\:\\-\\>\\,\\.\\ ]+)\\n([^\\n\\n]+)\\n\\n';
 	//var pattern = '\\d+\\n([\\d\\:\\,\\.]+)\\s*-->\\s*([\\d\\:\\,\\.]+)\\s*\\n(([^\\n]+\\n)+)\\n';
@@ -425,6 +425,304 @@ srtParser = function(lines) {
 	//console.log(lines);
 	//console.log(srt);
 	return srt;
+};
+/**
+ * base64 encoding and decoding for UTF-8 
+ * rf. https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
+ */
+base64Encode = function(str) {	
+  return ( u_btoa(new TextEncoder().encode(str)) );
+};
+base64Decode = function(base64Str) {
+  if(/base64,/i.test(base64Str)) {
+    base64Str = base64Str.split(/base64,/)[1];
+  }
+  return ( new TextDecoder().decode(u_atob(base64Str)) );
+};
+u_atob = function(ascii) {
+  return Uint8Array.from(atob(ascii), c => c.charCodeAt(0));
+};
+u_btoa = function(buffer) {
+  var binary = [];
+  var bytes = new Uint8Array(buffer);
+  for (var i = 0, il = bytes.byteLength; i < il; i++) {
+    binary.push(String.fromCharCode(bytes[i]));
+  }
+  return btoa(binary.join(''));
+};
+/**
+ * 由網址解析出 Google Drive 檔案的 id
+ * @param {String} url 網址
+ * @return {String} id
+ */
+gdGetFileId = function(url) {
+  var id = '';  
+  if(!(/^https\:\/\//i.test(url))) {
+    id = url.trim();
+  } else if(match=url.match(/\/d\/([^\/]{20}[^\/]+)\//) ) {
+    //parse URL format /d/xxxxxxxxxxx/
+    id = match[1];
+  } else {
+    id = getUrlParam('id', url);
+  }
+  return id;
+};
+/**
+ * 將網址轉換為 Google Drive 檔案直接下載的網址
+ * @param {String} url 原始網址
+ * @return {String} 轉換好的網址, 非 Google Drive 的檔案傳回空字串
+ */
+gdGetFileDownloadURL = function(url) {
+  var id = gdGetFileId(url);  
+  if(id!='') {
+    var resourcekey = getUrlParam('resourcekey', url);
+    url = 'https://drive.google.com/uc?export=view&id='+id;
+    //url = 'https://drive.google.com/uc?export=download&id='+id;
+    url += '&confirm=t&'; //加上 confirm=t 就不會出現確認的頁面, .js 才能下載
+    url += (resourcekey!=''?'&resourcekey='+resourcekey:'');
+  } else {
+    url = '';
+  }
+  return url;
+};
+
+/**
+ * 針對一個 Google Drive 檔案分享連結的解析結果
+ *
+ * [1]: filename
+ * image [2]:thumbnail [3]:?? [10]:original (image/jpeg image/png ...)
+ * pdf   [2]:thumbnail [9]:broken JSON preview (application/pdf)
+ * video [2]:thumbnail (video/quicktime video/mp4 ...)
+ * mp3   [5]:download 內容跟 [18] 一樣 (audio/mpeg)	
+ * text  [9]:preview (text/plain, text/html, text/javascript, text/xml ..., 上載時附檔名決定)
+ * [11]:mimeType
+ * [18]:download URL
+ *
+ * @param {String} html 公開共用的網址的頁面原始碼
+ * @param {Boolean} debug 是否要顯示除錯內容
+ * @return {Object} 以 JSON 格式回傳部份欄位
+ */
+function gdFileShareParse(html, debug) {
+  //抓出 window.viewerData 的內容
+  var data = html.match(/<script[^>]+>\s*window\.viewerData\s*=\s*({(?:.|\n)*?});<\/script>/im).pop();
+  //修正 JSON 不能用單引號, 名稱要加雙引號, 及「"viewer-web",」的最後多了個逗號的問題
+  data = data.replace(/'/g, '"').replace('config:', '"config":').replace('configJson:', '"configJson":').replace('itemJson:', '"itemJson":');
+  data = data.replace('"viewer-web",', '"viewer-web"');
+  data = JSON.parse(data);
+  if(typeof(debug)=='boolean' && debug) {
+    console.log(data);
+  }
+  var value = {
+    filename: data.itemJson[1], //原始檔名
+    url: data.itemJson[2]?data.itemJson[2]:data.itemJson[18],  //也可能是 data.itemJson[3], data.itemJson[10] (高解析度的圖)
+    url_9: data.itemJson[9],  //欄位 9 的網址可抓到更進一步的參數, 可搭配前綴 https://drive.google.com/viewerng/
+    url_18: data.itemJson[18],	
+    mimeType: data.itemJson[11],
+    raw: data.itemJson
+  };
+  return value;
+};	
+/**
+ * 抓 Google Drive 有公開分享的檔案(文字型為主)
+ * @param {String} url 公開共用的網址
+ * @return {String} 檔案的文字內容(非文字檔用 base64 編碼)
+ */
+gdFetchTextFile = async function(url, callback) {
+  if(typeof(url)!='string' || url.replace(/\s/g) == '') return '';
+
+  if(!/^https:\/\//.test(url)) {
+    url = 'https://drive.google.com/file/d/' + url + '/view?usp=drive_link';
+  }
+  
+  //沒有 CORS 問題時可用
+  //url = gdGetFileDownloadURL(url);
+  //console.log(url);
+  //var res = await fetch(url);
+  //var data = await res.text();
+  //return data;
+
+  var data = '', res, html;
+
+  //-----
+  //  網址加上一個亂數, 避免出現 HTTP error 410
+  //    410. That’s an error.
+  //    The server cannot process the request because it is malformed. It should not be retried. That’s all we know.
+  //-----
+  var nocache = 'nocache=' + new Date().getTime();
+  url += (/\?/.test(url)?'&':'?') + nocache;
+
+  //-----
+  //1.抓取 google drive 分享的檔案, 解析出設定
+  try {
+    res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
+    html = await res.text();
+  }catch(e) {
+    //-----
+    // try again: using https://api.allorigins.win/get?url=
+    //-----		
+    try {
+      res = await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url));
+      html = await res.json()['contents'];
+    }catch(e) {
+      html = '';
+    }
+  }
+  if(html.replace(/\s/g, '')!='') {
+    var itemJson = gdFileShareParse(html, true);
+    if(itemJson) {
+      if(itemJson.url_9) {
+        url = itemJson.url_9;
+      } else if(itemJson.url_18) {
+        url = itemJson.url_18;
+      }
+    }
+    //console.log(itemJson.mimeType);
+    //console.log(url);
+    //-----
+    //2.抓取預覽的設定(網址)
+    //被 GD 識別為文字型態者，可以直接由 [9] 抓取預覽內容
+    if( /text/i.test(itemJson.mimeType) ) {
+      try {
+        res = await fetch(url);
+        data = await res.text();
+      }catch(e) {
+        data = '';
+      }
+      //console.log(data);
+      //取得預覽的網址
+      //抓到的內容，如果去掉最前面多出來的符號(第一個左大括號前的)就可以轉為 JSON 物件
+      //可以得到 img, meta, page, pdf, press, presspage, staus
+      if( /^\)\]\}'/.test(data) ) {
+        data = JSON.parse(data.replace(/^[^{]+/, ''));
+        page = data['page'];			
+        //console.log('\n\npage:\n'+page+'\n=============\n');				
+        //-----
+        //3.下載預覽的內容
+        //抓取 Google Drive 文字型態檔案的文字內容，或是影像的預覽圖(可以用 ?text ?image 來判斷)
+        url = 'https://drive.google.com/viewerng/' + page;
+        //console.log(url);
+        try {
+          res = await fetch(url);
+          if( /^text/.test(page) ) {
+            data = await res.text();
+            data = JSON.parse(data.replace(/^[^{]+/, ''))['data'];
+          } else {
+            data = await res.blob();
+          }
+        } catch(e) {
+          data = '';
+        }
+        //console.log(data);
+      } else {
+        console.log('\n\nget preview data failure\n=======\n\n')
+      }
+    } else {
+      console.log('\n\nget file failure\n==========\n');
+    }
+    //return data;
+	
+    //-----
+    //4.如果前面沒抓到內容，再換另一個 cors proxy 重抓
+    // try again:
+    //  using https://api.allorigins.win/get?url=
+    //-----
+    //url = gdGetFileDownloadURL(url); //沒有 CORS 問題才能用的網址
+    //console.log(url);
+    if(data == '' || data == null) {
+      url = itemJson.url_18;
+      url = 'https://api.allorigins.win/get?url='+encodeURIComponent(url);	
+      var header = {
+        'Referer': 'no-referrer',
+        //'referrerPolicy' : 'no-referrer',
+        'User-Agent': 'Mozilla/5.0 (X11; CrOS i686 4319.74.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36' //Chrome
+      };
+      try {
+        //res = await fetch(url, header);
+        res = await fetch(url);
+        data = await res.json();	
+        data = data['contents'];
+        if( /^data:text/i.test(data) || (itemJson.filename && /\.(txt|js|srt|gpx|html|vtt|xml|json)/i.test(itemJson.filename)) ) {
+          console.log('base64 decoe:\n=============\n');
+          data = base64Decode(data);
+        }
+      } catch(e) {
+        data = '';
+        //console.log(e);
+      }
+    }
+    //console.log(data);
+  }
+  if(typeof(callback)=='function') {
+    callback(data);
+  }
+  return data;	
+};
+//get date and time string in yyyy-mm-dd_hh-mm-ss
+getNowDateTimeString = function() {
+  var prefixZero = function(n) {
+    return (n<10 ?'0'+n : n);
+  }
+  var d = new Date();
+  var str = d.getFullYear();
+  str += '-'+prefixZero(d.getMonth()+1);
+  str += '-'+prefixZero(d.getDate());
+  str += '_'+prefixZero(d.getHours());
+  str += '-'+prefixZero(d.getMinutes());
+  str += '-'+prefixZero(d.getSeconds());
+  return str;
+};
+function secondsToString(time) {
+  if(typeof(time)=='string') {
+    time = Number(time);
+  }
+  const hours = Math.floor(time / 3600).toString();
+  const minutes = ("0" + Math.floor(time / 60) % 60).slice(-2);
+  const seconds = ("0" + Math.floor( time % 60 )).slice(-2);
+  const ms = ("00" + Math.floor(time*1000 % 1000 )).slice(-3);
+  var formatted = minutes+":"+seconds;
+  formatted = hours + ":" + minutes + ":" + seconds + ',' + ms;
+  if (Number(hours)<10) {
+    formatted = '0'+formatted
+  }
+  formatted = formatted.replace(/\s/g,'');
+  return formatted;
+};
+function exportToSrt() {
+  var result = '';
+  var lines = document.querySelectorAll('.content p');
+  if(lines && lines.length > 0) {
+    for(var i=0,n=1; i<lines.length; i++) {
+      var p = lines[i];
+      var start = p.getAttribute('start');
+      var end = p.getAttribute('end');
+      var labels = p.querySelectorAll('label');
+      if(typeof(start)!='undefined' && typeof(end)!='undefined' && labels && labels.length>0) {
+        var txt = '';
+        for(var j=0; j<labels.length; j++) {
+          if(labels[j].style.display.toLowerCase() != 'none') {
+            txt += labels[j].innerText + '\n';
+          }
+        }
+        result += n + '\n';
+        result += secondsToString(start) + ' --> ' + secondsToString(end) + '\n';
+        result += txt.trim() + '\n\n';
+        n++;
+      }
+    }
+    result = result.replace(/\r/g, '').replace(/\n/g, '\r\n');
+    var dataURL = 'data:text/plain;base64,' + base64Encode(result);
+    var filename = getNowDateTimeString() + '.srt';
+    //用連結並以觸發 click 來自動下載圖片
+    var anchor = document.createElement('a');	anchor.setAttribute('download', filename);
+    anchor.setAttribute('href', dataURL);
+    anchor.setAttribute('target', '_blank');
+    document.body.appendChild(anchor);
+    anchor.click();
+    setTimeout(function(){anchor.remove()}, 100);
+  } else {
+    showFadeOutMessage(null, '<center>目前沒有內容，無法匯出字幕</center>', 0, '-5%', 2);
+  }
+  //console.log(result);
 };
 clickHandler = function (ev) {
   /* 新增 input 的元件, 接收上載的檔案 */
@@ -608,6 +906,7 @@ appendSrt2 = function(srt2, lang) {
     btn.innerHTML = '<label>隱藏-' + lang + '</label>';
     btn.setAttribute('onclick', 'displayLang(this)');
     langGroup.appendChild(btn);	
+	//langGroup.insertBefore(btn, langGroup.lastElementChild);
   }
 };
 updateMediaPlayer = function(mediaPath, type) {
@@ -713,7 +1012,7 @@ toSecond = function(str) {
 	return n; 
 };
 updateContent = function(src, filename) {
-	try{mediaPlayer.pause()}catch(e){console.log(e)}; //試著停止在播放的影音	
+	try{mediaPlayer.pause()}catch(e){}; //試著停止在播放的影音	
 	var content = document.querySelector('#gameWrapper .content');
 	if(typeof(src)=='string') {
 		subList = srtParser(src); 
@@ -791,7 +1090,8 @@ updateContent = function(src, filename) {
 		var langGroup = document.querySelector('.langGroup');
 		if(langGroup) {
 			//langGroup.innerHTML = '';
-			langGroup.querySelectorAll('button').forEach(e=>e.remove());
+			//langGroup.querySelectorAll('button').forEach(e=>e.remove());
+			langGroup.querySelectorAll('button:is([lang])').forEach(e=>e.remove());
 			try{document.querySelector('.trans-progress-bar').style.display='none'}catch(e){};
 	
 		}
@@ -1506,14 +1806,14 @@ keydownHandler = function(e) {
     var cmd;
     switch(e.key.toLowerCase()) {
       case 'escape' :
-        /*
+	    /*
         if(mediaPlayer.getStatus()=='playing') {
           cmd = mediaPlayer.pause;
         } else {
           cmd = mediaPlayer.play;
         }
-        */
-        cmd = function(){mediaPlayHandler(e)};
+		*/
+		cmd = function(){mediaPlayHandler(e)};
         break;
       case 'f1' :
         cmd = gotoAndPlay;
@@ -1586,8 +1886,17 @@ start = async function() {
     setTimeout(function() {
        showFadeOutMessage('.addMediaBtn', '按 + 號加影音、字幕', '100%', '-100%', 1);
 	   var v = gup('v');
+	   var f = gup('f');
 	   if(v.replace(/\s/g, '')!='') {
          setTimeout(autoFillYTurl, 1000);
+       } else if(f.replace(/\s/g, '')!='') {
+         gdFetchTextFile(f, function(data) {
+           if(data!='') {
+             updateContent(data);		 
+           } else {
+             setTimeout(openImportPanel, 1000);
+	       }
+         });
        } else {
          setTimeout(openImportPanel, 1000);
 	   }
@@ -1597,7 +1906,7 @@ start = async function() {
 
 var autostart = gup('autostart');
 var v = gup('v');
-if(autostart == '1' || autostart == 'true' || v.replace(/\s/g, '')!='') {
+var f = gup('f');
+if(autostart == '1' || autostart == 'true' || v.replace(/\s/g, '')!='' || f.replace(/\s/g, '')!='') {
   start();
 }
-

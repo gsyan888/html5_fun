@@ -270,6 +270,16 @@ menu_items = [
 	],
 	
 
+	[ "English800"
+	, "English800句記7000個單字"
+	, "assets/icon-eng800.png"
+	, "https://gsyan888.blogspot.com/2024/08/html5-fun-english800.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2024/08/html5-fun-english800.html"
+	, ""
+	],
+	
+
 	[ "重組遊戲"
 	, "UNSCRAMBLE"
 	, "html5_unscramble/assets/icon.png"

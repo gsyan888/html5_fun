@@ -1090,9 +1090,9 @@ gameInit = function() {
   }
   //tts init
   if(window['speechSynthesis']) {
-    ttsSpeak('加油', 'zh-TW');
+    ttsSpeak('將藍色卡片拖曳到綠色上,加油', 'zh-TW');
   }
-  showFadeOutMessage(null, '<center>請拖曳藍色的詞卡，放到配對的綠色字卡上</center>', 0, '-15%', 3);
+  showFadeOutMessage(null, '<center>請將藍色卡片拖曳到綠色上</center>', 0, '-15%', 4);
 };
 set__scale=function(s){
   for(var i=3; i<=10; i++) {

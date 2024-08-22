@@ -1,4 +1,8 @@
-var qFile = 'english800-data.js';
+/**
+ * HTML5 FUN English 800
+ * @Author gsyan (https://gsyan888.blogspot.com/)
+ */
+var qFile = 'https://gsyan888.github.io/html5_fun/assets/english800-data.js';
 var soundFailureURL = 'https://gsyan888.github.io/html5_fun/html5_wheel/assets/sound_spin.mp3';
 var soundCoinURL = 'https://gsyan888.github.io/html5_fun/assets/sound-coin.mp3';
 var soundFinishURL = 'https://gsyan888.github.io/html5_fun/assets/sound-ding-dong-ding-dong.mp3';

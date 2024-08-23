@@ -199,7 +199,7 @@ nextQuestion = function(n, stopSound) {
     //currentIndex = Math.floor(Math.random()*questionLines.length);
 	currentIndex++;
   }
-  if(currentIndex >= questionLines.length-1) {
+  if(currentIndex > questionLines.length-1) {
 	currentIndex = 0;
   } else if(currentIndex < 0) {
     currentIndex = questionLines.length-1;

@@ -451,17 +451,37 @@ moveToTop = function(target) {
     p.insertBefore(q[i], target);
   }
 };
+/**
+ * 取得多點觸控時，該點的 event
+ * 這樣就能只針對該點進行操作，達成支援多點的功能
+ * @param {object} event object
+ * @return {object} event object
+ */
+getEvt = function(evt) {
+  if (evt.touches) { 
+    var id = evt.changedTouches[0].identifier;
+    for(i=0; i<evt.touches.length; i++) {		  
+      if(evt.touches[i].identifier == id) {
+	    return evt.touches[i];
+      }
+    }
+  }
+  return evt;
+};
 startDragHandler = function (e) {  
   soundInit(); //是按下滑鼠者，試著載入音效  
-  var target = e.target || e.touches[0].target;
-  moveToTop(target);
-  //if( !target.classList.contains('playerWrapper') &&
-  //    !target.classList.contains('speed-box')  ) return;
+  //var target = e.target || e.touches[0].target;
+  //var x = e.clientX || e.touches[0].clientX;
+  //var y = e.clientY || e.touches[0].clientY;
+  var evt = getEvt(e);
+  var target = evt.target;
+  var x = evt.clientX;
+  var y = evt.clientY;
   
+  moveToTop(target);
+
   e.preventDefault();
   
-  var x = e.clientX || e.touches[0].clientX;
-  var y = e.clientY || e.touches[0].clientY;
   var rect = target.getBoundingClientRect();
   var style = getComputedStyle(target);
   var left = style.getPropertyValue('left');
@@ -485,10 +505,14 @@ startDragHandler = function (e) {
   }
 };
 dragHandler = function(e) {
-  var target = e.target || e.touches[0].target;
+  //var target = e.target || e.touches[0].target;  
+  //var x = e.clientX || e.touches[0].clientX;
+  //var y = e.clientY || e.touches[0].clientY;
   
-  var x = e.clientX || e.touches[0].clientX;
-  var y = e.clientY || e.touches[0].clientY;
+  var evt = getEvt(e);
+  var target = evt.target;
+  var x = evt.clientX;
+  var y = evt.clientY;
   
   e.preventDefault();
   
@@ -506,20 +530,15 @@ dragHandler = function(e) {
   target.style['top'] = (target.posY)+'px';
 };
 endDragHandler = function(e) {  
-  var target = e.target || e.touches[0].target;      
+  //var target = e.target || e.touches[0].target;      
+  var evt = getEvt(e);
+  var target = evt.target;
+  
   target.style['cursor'] = 'default';
   var timeEnd = new Date();
   /*
-  if(target.classList.contains('playerWrapper') && target.timeStart && (timeEnd - target.timeStart) < 200) {
+  if(target.timeStart && (timeEnd - target.timeStart) < 200) {
 	//click
-    var p = document.querySelector('.playerWrapper');
-    if(p) {
-      p.classList.toggle('video-player-large');	  
-      var cc2 = document.querySelector('.playerWrapper .caption2');
-      if(cc2) {
-        cc2.innerHTML = '';
-	  }
-    }
   }
   */
   if (e.touches) {
@@ -1075,6 +1094,24 @@ loadQuestions = function() {
 	updateRangeValue(currentIndex);
   }
 }
+set__scale=function(s){
+  for(var i=3; i<=10; i++) {
+    try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
+  }
+};
+start = async function() {
+  
+  try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
+  
+  setViewport();
+  setMetaReferrer();
+  setVisibility(true);
+  
+  window.scrollTo(0, 0);
+  
+  loadQuestions();  
+};  
+
 gameInit = function() {
   if(typeof(soundFinish)=='undefined' || soundFinish==null) {
     soundInit();
@@ -1094,23 +1131,6 @@ gameInit = function() {
   }
   showFadeOutMessage(null, '<center>請將藍色卡片拖曳到綠色上</center>', 0, '-15%', 4);
 };
-set__scale=function(s){
-  for(var i=3; i<=10; i++) {
-    try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
-  }
-};
-start = async function() {
-  
-  try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
-  
-  setViewport();
-  setMetaReferrer();
-  setVisibility(true);
-  
-  window.scrollTo(0, 0);
-  
-  loadQuestions();  
-};  
 
 function moveHTML5FunWrapper() {
   var el = document.querySelector('#HTML5FunWrapper');
@@ -1121,6 +1141,6 @@ function moveHTML5FunWrapper() {
 if(/english/i.test(document.title)) {
   moveHTML5FunWrapper();
 }
-
+  
 //gameInit(); 
 //start();

@@ -341,13 +341,13 @@ checkChoice = function(word) {
 };
 rectCollision = function(a, b) {
   var rectA=a.getBoundingClientRect(), rectB=b.getBoundingClientRect();
-  var cx = rectB.x + rectB.width/2;
-  var cy = rectB.y + rectB.height/2;
+  var cx = rectB.left + rectB.width/2;  //left 與 x 一樣，但有些瀏覽器只有 left
+  var cy = rectB.top + rectB.height/2;  //top 與 y 一樣，但有些瀏覽器只有 top
   return (
-    cx > rectA.x && 
-	cx < rectA.x + rectA.width &&
-	cy > rectA.y &&
-	cy < rectA.y + rectA.height
+    cx > rectA.left && 
+	cx < rectA.left + rectA.width &&
+	cy > rectA.top &&
+	cy < rectA.top + rectA.height
   );
 };
 rectCollision2 = function(a, b) {
@@ -486,6 +486,16 @@ startDragHandler = function (e) {
   var style = getComputedStyle(target);
   var left = style.getPropertyValue('left');
   var top = style.getPropertyValue('top');
+  
+  //有些瀏覽器 getComputedStyle 不會將百分比轉為 px, 只好自己轉換
+  var parentRecc = target.parentElement.getBoundingClientRect();
+  if(/%$/.test(left)) {  
+    left = Math.floor(parseInt(left)/100*parentRecc.width)+'px';
+  }
+  if(/%$/.test(top)) { 
+    top = Math.floor(parseInt(top)/100*parentRecc.height)+'px';
+  }
+  
   target.posX = Number(left==''?0:left.match(/([\d-]+)/).pop());
   target.posY = Number(top==''?0:top.match(/([\d-]+)/).pop());
   target.oldPos = [target.posX, target.posY];

@@ -100,7 +100,7 @@
     border: 1px dotted hsl(340deg 100% 32%);
   	transform: translateY(-6px);
 }
-/* -----------Sidebard --------- */
+/* -----------Sidebar --------- */
 .mySidebar {
   height: 100%;
   width: 0;
@@ -452,4 +452,24 @@
   border-radius: 100%;
   top: 0px;
   /* transform: translate(-50%, -50%); */
+}
+.file-selector {
+  display: none;
+  width: 28vmin;
+  height: 28vmin;
+  text-align: center;
+  margin: auto;
+  border: 5px dashed #ffff00;
+  border-radius: 100%;
+  cursor: pointer;  
+  /* pointer-events: none; */
+}
+.file-selector label {
+  display: inline-block;
+  position: relative;
+  margin: auto;
+  top: 50%;
+  left: 0%;
+  transform: translate(0%, -50%);  
+  cursor: pointer;    
 }

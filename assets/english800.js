@@ -23,6 +23,7 @@ function openNav() {
   document.getElementById("gameWrapper").style.marginLeft = "400px";
   document.querySelector('.navOpenBtn').style.display = 'none';
   updateStatistics();
+  importLogger(false); //hide the file drop area
 }
 function closeNav() {
   document.getElementById("mySidebar").style.width = "0";
@@ -988,13 +989,49 @@ resetLogger = function() {
     showFadeOutMessage(null, '<center><p>已清除記錄，可以重新練習</p>請拖曳藍色的詞卡，放到配對的綠色字卡上</center>', 0, '-15%', 3);
   }, 500);
 };
-importLogger = function() {
-  var file = document.querySelector('#input-logger-file');
-  file.onchange = readLoggerFile;
-  file.click();
+importLogger = function(enable) {
+  var selector = document.querySelector('.file-selector');
+  if(selector.style.display == 'block' || (typeof(enable)!='undefined' && !enable) ) {
+    selector.style.display = 'none';
+  } else {
+    selector.style.display = 'block';
+  }
 };
-readLoggerFile = function(e) {
-  var input = e.target;
+function selectFile(ev) {
+    /* 新增 input 的元件, 接收上載的檔案 */
+    var inputFromFile = document.createElement('input');
+    inputFromFile.setAttribute('type', 'file');
+    inputFromFile.setAttribute('accept', '.json');
+    inputFromFile.setAttribute('id', 'inputFromFile');
+    inputFromFile.style['width'] = '1px';
+    inputFromFile.style['height'] = '1px';
+    document.body.appendChild(inputFromFile); //要加入頁面中才能觸發 change event
+    inputFromFile.onchange = function(e) {			
+      if(typeof(e.target)!='undefined' && typeof(e.target.files)!='undefined' && e.target.files.length>0) {
+        readLoggerFile(e.target.files);
+      }
+      inputFromFile.remove();
+    };
+    inputFromFile.click();
+};
+
+function dropHandler(e) {
+    /* https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop 
+       Prevent default behavior (Prevent file from being opened)
+    */
+    e.preventDefault();
+    e.stopPropagation();
+    if(typeof(e.dataTransfer)!='undefined' && typeof(e.dataTransfer.files) != 'undefined') {
+      readLoggerFile(e.dataTransfer.files);
+    } else {
+      console.log(e);
+    }
+};
+function dragOverHandler(e) {
+    e.preventDefault();
+    e.stopPropagation();
+};
+readLoggerFile = function(files) {
   var reader = new FileReader();
   reader.onload = function() {
     var text = reader.result;
@@ -1023,7 +1060,8 @@ readLoggerFile = function(e) {
 	  alert('匯入失敗!!');
 	}
   };
-  reader.readAsText(input.files[0]);
+  reader.readAsText(files[0]);
+  importLogger(false); //hide the file drop area
 };
 exportLogger = function() {
   var json = JSON.stringify(getLog());
@@ -1123,6 +1161,15 @@ start = async function() {
 };  
 
 gameInit = function() {
+  //設定記錄檔輸入區 in SideBar 的 drop Events
+  var fileSelector = document.querySelector('.file-selector');
+  try{
+    fileSelector.removeEventListener("drop", dropHandler);
+    fileSelector.removeEventListener("dragover", dragOverHandler);
+  }catch(e){};
+  fileSelector.addEventListener("drop", dropHandler);
+  fileSelector.addEventListener("dragover", dragOverHandler);
+  
   if(typeof(soundFinish)=='undefined' || soundFinish==null) {
     soundInit();
     audioPlay(soundFinish);

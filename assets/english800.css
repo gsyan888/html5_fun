@@ -473,3 +473,38 @@
   transform: translate(0%, -50%);  
   cursor: pointer;    
 }
+/* --- for vertical layout --- */
+.question-v {
+  font-size: 20px;
+  width: 89%;
+}
+.words-v {
+  display: block;
+  width: 40%;
+  height:60%;
+  left: 20%;
+  top: 60%;
+}
+.answers-v {
+  width: 40%;
+  height:60%;
+  left: 80%;
+  top: 60%;
+  bottom: auto;
+}
+.card-v {
+  left: 50%;
+  min-width: 70%;
+  max-width: 70%;
+  min-height: 20px;
+  line-height: 20px;
+  font-size:16px;
+}
+.mcqLabel-v {
+  min-height: 24px;
+  line-height: 24px;
+  font-size:24px;
+}
+.range-wrap-v {
+  width: 60%;
+}

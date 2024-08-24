@@ -17,10 +17,15 @@ var currentQuestion = {};
 var currentErrors = {};
 var logger = {};
 
-
 function openNav() {
-  document.getElementById("mySidebar").style.width = "400px";
-  document.getElementById("gameWrapper").style.marginLeft = "400px";
+  var width = 400;
+  var size = getWindowSize();
+  if(size.width < size.height) {
+    width = size.width;
+  }
+  width = width+'px';
+  document.getElementById("mySidebar").style.width = width;
+  document.getElementById("gameWrapper").style.marginLeft = width;
   document.querySelector('.navOpenBtn').style.display = 'none';
   updateStatistics();
   importLogger(false); //hide the file drop area
@@ -216,6 +221,16 @@ nextQuestion = function(n, stopSound) {
   removeAllChildren(eWords);
   removeAllChildren(eAnswers);
   document.querySelector('.trans').style.display = 'none';
+  eWords.setAttribute('style', '');
+  eAnswers.setAttribute('style', '');  
+  
+  var isVertical = window.innerWidth < window.innerHeight;
+  if(isVertical) {
+    eWords.classList.toggle('words-v', true);
+	eAnswers.classList.toggle('answers-v', true);
+	eSentence.parentElement.classList.toggle('question-v', true);
+  }
+  document.querySelector('.range-wrap').classList.toggle('range-wrap-v', isVertical);
   
   var question = questionLines[currentIndex];
   var q = question[0];
@@ -233,7 +248,7 @@ nextQuestion = function(n, stopSound) {
   };
   eSentence.innerHTML = q;
   eTrans.innerHTML = t;
-  var xOffset = 100/(words.length+1);
+  var offset = 100/(words.length+1);
   var rndList = Array.from({length: words.length}, (x, i) => i);
   rndList.sort(() => (Math.random() > 0.5) ? 1 : -1); //先洗一次順序
   for(var i=0; i<words.length; i++) {
@@ -242,7 +257,14 @@ nextQuestion = function(n, stopSound) {
 	w.setAttribute('value', words[i][1]);
 	w.setAttribute('checked', false);
 	w.innerHTML = words[i][0];
-	w.style.left = Math.floor(xOffset*(i+1))+'%';
+	if(isVertical) {
+	  w.classList.toggle('card-v', true);
+	  w.style.top = Math.floor(offset*(i+1))+'%';
+	  w.style.left = '50%';
+	} else {
+	  w.style.left = Math.floor(offset*(i+1))+'%';
+	  w.style.top = '50%';
+	}
 	eWords.appendChild(w);
     var a = document.createElement('div');
 	a.setAttribute('class', 'card answer');
@@ -251,7 +273,14 @@ nextQuestion = function(n, stopSound) {
 	var rnd = Math.floor(Math.random()*rndList.length);
 	var rndPos = rndList[rnd];
 	rndList.splice(rnd, 1);
-	a.style.left = Math.floor(xOffset*(rndPos+1))+'%';
+	if(isVertical) {
+	  a.classList.toggle('card-v', true);
+	  a.style.top = Math.floor(offset*(rndPos+1))+'%';
+	  a.style.left = '50%';
+	} else {
+	  a.style.left = Math.floor(offset*(rndPos+1))+'%';
+	  a.style.top = '50%';
+	}	
 	eAnswers.appendChild(a);		
 	a.addEventListener('touchstart', startDragHandler);
 	a.addEventListener('mousedown', startDragHandler);
@@ -276,6 +305,17 @@ multipleChoiceQuestions = function() {
   removeAllChildren(eWords);
   removeAllChildren(eAnswers);
   document.querySelector('.trans').style.display = 'none';
+  eWords.setAttribute('style', '');
+  eAnswers.setAttribute('style', '');
+  
+  var isVertical = window.innerWidth < window.innerHeight;
+  eWords.classList.toggle('words-v', false);
+  eAnswers.classList.toggle('answers-v', false);
+  eSentence.parentElement.classList.toggle('question-v', isVertical);
+  if(isVertical) {
+    eWords.style.top = '55%';
+	eAnswers.style.bottom = '20%';
+  }
   
   var question = questionLines[currentIndex];
   var q = question[0];
@@ -295,8 +335,21 @@ multipleChoiceQuestions = function() {
 	w.setAttribute('class', 'card word');
 	w.setAttribute('value', words[i][1]);
 	w.setAttribute('checked', false);
-	w.innerHTML = words[i][0];
-	w.style.left = Math.floor(xOffset*(i+1))+'%';
+	w.innerHTML = words[i][0];	
+	if(isVertical) {  
+	  var style = 'min-height:20px;';
+	  style += 'line-height:20px;';
+	  style += 'font-size:16px;';
+	  style += 'left: auto;';
+	  style += 'top:auto;';
+	  style += 'display:inline-block;';
+	  style += 'position:relative;';
+	  style += 'transform:none;';
+	  style += 'margin:0.25em;';
+	  w.setAttribute('style', style);
+	} else {
+	  w.style.left = Math.floor(xOffset*(i+1))+'%';
+	}
 	eWords.appendChild(w);
     w.onclick = function() {
       ttsSpeakForWord(this.innerText);
@@ -305,13 +358,14 @@ multipleChoiceQuestions = function() {
   }
   var a = document.createElement('div');
   a.setAttribute('class', 'mcqLabel');
+  a.classList.toggle('mcqLabel-v', isVertical);
   a.setAttribute('value', words[rnd][0]);
   a.innerHTML = words[rnd][1];
   eAnswers.appendChild(a);		
   var label = document.createElement('label');
   label.setAttribute('class', 'mcqHint');
   label.innerHTML = '請按一下正確的答案';
-  eAnswers.appendChild(label);
+  eAnswers.appendChild(label);  
 };
 checkChoice = function(word) {
   var mcqLabel = document.querySelector('.mcqLabel');
@@ -1150,12 +1204,14 @@ set__scale=function(s){
 start = async function() {
   
   try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
-  
+ 
   setViewport();
   setMetaReferrer();
   setVisibility(true);
   
   window.scrollTo(0, 0);
+
+  showFadeOutMessage(null, '<center>請將藍色卡片拖曳到綠色上</center>', 0, '-15%', 4);  
   
   loadQuestions();  
 };  
@@ -1185,8 +1241,7 @@ gameInit = function() {
   //tts init
   if(window['speechSynthesis']) {
     ttsSpeak('將藍色卡片拖曳到綠色上,加油', 'zh-TW');
-  }
-  showFadeOutMessage(null, '<center>請將藍色卡片拖曳到綠色上</center>', 0, '-15%', 4);
+  }  
 };
 
 function moveHTML5FunWrapper() {

@@ -80,7 +80,7 @@ fileURL_onBlurHandler = function(elm) {
       document.querySelector('#previewBtn').style.display = 'none';
       document.querySelector('#submitBtn').style.display = 'block'; 
 	}catch(e){};
-	getQuestioLinesFromSpreadSheet(elm.value, null, 'SELECT * LIMIT 2', true, function(data) {
+	getQuestioLinesFromSpreadSheet(elm.value, null, 'SELECT * LIMIT 2', true, true, function(data) {
 		var errorMsg = '';
 		if(typeof(data)!='undefined' && data!=null && typeof(data['status'])=='string' && data['status']=='ok') {
 			var table = data['table'];
@@ -1534,7 +1534,7 @@ checkByEduDict = async function(term, isJSONP, callback) {
   var dicSheetURL = 'https://docs.google.com/spreadsheets/d/1gXpIr34zH65D50td6vnuKbM4yy1WPNQTbReDguCy5lY/edit?usp=sharing';
   var sql = "SELECT * WHERE A='"+term+"' LIMIT 1";
   if(isJSONP) {
-	getQuestioLinesFromSpreadSheet(dicSheetURL, null, sql , true, function(data) {
+	getQuestioLinesFromSpreadSheet(dicSheetURL, null, sql , true, true, function(data) {
 		found = isRowsInSheet(data);
 		if(typeof(callback)=='function') {
 			callback(found);
@@ -1576,7 +1576,7 @@ findOtherPhraseByEduDict = function(term, callback) {
   //將字串拆成一個字、一個字，組合成單字查詢的條件，傳回含有每一個字者, 再去掉字數不合者
   term.forEach(w=>condition+=(condition==''?'':" AND")+" A LIKE '%"+w+"%'");
   var sql = "SELECT * WHERE "+ condition;
-  getQuestioLinesFromSpreadSheet(dicSheetURL, null, sql , true, function(data) {
+  getQuestioLinesFromSpreadSheet(dicSheetURL, null, sql , true, true, function(data) {
     var others = [];
     if(typeof(data)!='undefined' && data!=null && typeof(data['status'])=='string' && data['status']=='ok') {
       var table = data['table'];
@@ -2797,18 +2797,22 @@ gdGetSpreadSheetQueryResponse = function(url, callback)  {
 };
 /**
  * 由 Google SpreadSheet 取得資料
- * @param {String} 試算表網址
- * @param {String} 工作表名稱
- * @param {String} SQL
- * @param {Boolean} 是否不解析結果, 直接回傳取回的資料
- * @param {Function}
+ * @param {String} spreadSheetURL 試算表網址
+ * @param {String} sheet 工作表名稱
+ * @param {String} sql SQL
+ * @param {Boolean} rawResult 是否不解析結果, 直接回傳取回的資料
+ * @param {Boolean} excludeNull 是否略過空格(rawResult=false 才有意義)
+ * @param {Function} callback
  */
-getQuestioLinesFromSpreadSheet = function(spreadSheetURL, sheet, sql, rawResult, callback) {
+getQuestioLinesFromSpreadSheet = function(spreadSheetURL, sheet, sql, rawResult, excludeNull, callback) {
 	if(typeof(spreadSheetURL)!='string') {
 		spreadSheetURL = '';
 	} else if(!(/^https:\/\//i.test(spreadSheetURL))) {
 		//不是網址, 可能是用 ID
 		spreadSheetURL = 'https://docs.google.com/spreadsheets/d/'+spreadSheetURL+'/edit?usp=sharing';
+	}
+	if(typeof(excludeNull)!='boolean') {
+		excludeNull = true;
 	}
 	if( !(/^https:\/\//i.test(spreadSheetURL)) || !(/spreadsheets/.test(spreadSheetURL)) ) {
 		loadingLogoEnable = false; //停止載入的動畫
@@ -2880,7 +2884,11 @@ getQuestioLinesFromSpreadSheet = function(spreadSheetURL, sheet, sql, rawResult,
 						if( typeof(cell) != 'undefined' && cell != null ) {
 							if( typeof(cell['v'])=='string' && cell['v'].replace(/\s/g, '')!='' ) {
 								questionLines += cell['v'].trim() + '\n';
+							} else if(!excludeNull) { 
+								questionLines += '\n';
 							}
+						} else if(!excludeNull) { 
+							questionLines += '\n';
 						}
 					}
 				}				
@@ -3135,10 +3143,20 @@ loadQuestionAndStartGame = function() {
 	if(col.replace(/\s|[^a-z]/ig, '') != '') {
 		sql = 'SELECT '+col.toUpperCase();
 	}
-    getQuestioLinesFromSpreadSheet(url, null, sql, false, function(q) {	
+    getQuestioLinesFromSpreadSheet(url, null, sql, false, false, function(q) {	
       loadingLogoEnable = false; //停止載入的動畫
-	
-      questionLines = q;
+      questionLines = q.trim();
+	  
+	  //如果有指定課別, 只取該課(在資料庫中, 不同課有使用空白行分隔)
+	  var lesson = parseInt(gup('lesson'));
+	  if(!isNaN(lesson)) {
+		q = questionLines.split(/\n\n+/);
+		if(lesson >=0 && lesson <= q.length) {
+			questionLines = q[lesson-1];
+		}
+	  }
+	  //console.log(questionLines);
+	  
 	  isFirstGame = true;
       newGame();
     });

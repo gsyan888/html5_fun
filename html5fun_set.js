@@ -93,7 +93,7 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html?autostart=1"
 	, ""
 	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html"
-	, ""
+	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html#custom"
 	],
 	
 	[ "圓面積小教具"

@@ -32,6 +32,7 @@ appendTrans = async function() {
     try{document.querySelector('.trans-progress-bar').style.display='block'}catch(e){};
     var result = [];
     var text = '';
+	var langOrigin = 'auto-detect';
     for(var i=0; i<srt.length; i++) {
       var n = (i+1) * 100 / srt.length;
       updateProgress('.trans-progress-bar', n);
@@ -48,26 +49,33 @@ appendTrans = async function() {
 		
         //console.log(text);
         //console.log('size: ',text.length);
-        var trans = await bingTranslate(text, 'auto-detect', lang);
+        //var trans = await bingTranslate(text, 'auto-detect', lang);
+		//用第一筆自動偵測到的語言當 from, 後續的都用一樣的語言
+		var trans = await bingTranslate(text, langOrigin, lang);
         //console.log(trans);
         //console.log('--> ',i);
         //如果批次翻譯失敗，就改用一句句
         if(!trans) {
           var ngList = text.split(/\n/);
-          trans = '';
+          trans = {'text':''};
           for(var r=0; r<ngList.length; r++) {
             if(ngList[r].replace(/\s/g, '')!='') {
               var t = await bingTranslate(ngList[r], 'auto-detect', lang);
               console.log(r, '===> ', t);
-              if(typeof(t)=='string') {
-                trans += t + ' \n';
+              if(t && typeof(t['text'])=='string') {
+                trans['text'] += t['text'] + ' \n';
               } else {
-                trans += '?' + ' ==--== \n'; //一句還是失敗者用問號替代
+                trans['text'] += '?' + ' ==--== \n'; //一句還是失敗者用問號替代
               }
             }
           }
         }
-        if(typeof(trans)=='string') {
+        if(trans && typeof(trans['text'])=='string') {
+		  if(langOrigin == 'auto-detect' && typeof(trans['detectedLanguage'])=='string') {
+		    //用第一筆自動偵測到的語言當 from, 後續的都用一樣的語言
+		    langOrigin = trans['detectedLanguage'];
+		  }
+		  trans = trans['text'];
           var t = trans.trim().split(/\n/);
           if(t.length == text.trim().split(/\s*==-*==\s*/).length-1 ) {
             trans = t;
@@ -148,6 +156,7 @@ getTopLine = function() {
 };
 var langCodes = {"zh-Hant":"中文 (繁体)","en":"英语","ja":"日语","ko":"韩语","fr":"法语","fr-CA":"法语 (加拿大)","de":"德语","it":"意大利语","zh-Hans":"中文 (简体)","vi":"越南语","bho":"Bhojpuri","brx":"Bodo","hne":"Chhattisgarhi","lzh":"Chinese (Literary)","doi":"Dogri","lug":"Ganda","ikt":"Inuinnaqtun","iu-Latn":"Inuktitut (Latin)","ks":"Kashmiri","gom":"Konkani","mn-Cyrl":"Mongolian (Cyrillic)","mn-Mong":"Mongolian (Traditional)","nya":"Nyanja","run":"Rundi","st":"Sesotho","nso":"Sesotho sa Leboa","tn":"Setswana","hsb":"上索布语","dsb":"下索布语","da":"丹麦语","uk":"乌克兰语","uz":"乌兹别克语","ur":"乌尔都语","nb":"书面挪威语","hy":"亚美尼亚语","ig":"伊博语","ru":"俄语","bg":"保加利亚语","sd":"信德语","si":"僧伽罗语","tlh-Latn":"克林贡语 (拉丁文)","hr":"克罗地亚语","otq":"克雷塔罗奥托米语","is":"冰岛语","gl":"加利西亚语","ca":"加泰罗尼亚语","hu":"匈牙利语","af":"南非荷兰语","kn":"卡纳达语","rw":"卢旺达语","hi":"印地语","id":"印度尼西亚语","gu":"古吉拉特语","kk":"哈萨克语","iu":"因纽特语","tk":"土库曼语","tr":"土耳其语","ty":"塔希提语","sr-Latn":"塞尔维亚语 (拉丁文)","sr-Cyrl":"塞尔维亚语 (西里尔文)","or":"奥里亚语","cy":"威尔士语","bn":"孟加拉语","yua":"尤卡特克玛雅语","ne":"尼泊尔语","ba":"巴什基尔语","eu":"巴斯克语","he":"希伯来语","el":"希腊语","ku":"库尔德语 (中)","kmr":"库尔德语 (北)","lv":"拉脱维亚语","cs":"捷克语","ti":"提格利尼亚语","fj":"斐济语","sk":"斯洛伐克语","sl":"斯洛文尼亚语","sw":"斯瓦希里语","pa":"旁遮普语","ps":"普什图语","ln":"林加拉语","ky":"柯尔克孜语","ka":"格鲁吉亚语","mi":"毛利语","to":"汤加语","fo":"法罗语","pl":"波兰语","bs":"波斯尼亚语","fa":"波斯语","te":"泰卢固语","ta":"泰米尔语","th":"泰语","ht":"海地克里奥尔语","ga":"爱尔兰语","et":"爱沙尼亚语","sv":"瑞典语","zu":"祖鲁语","xh":"科萨语","lt":"立陶宛语","yue":"粤语 (繁体)","so":"索马里语","yo":"约鲁巴语","sn":"绍纳语","ug":"维吾尔语","my":"缅甸语","ro":"罗马尼亚语","lo":"老挝语","fi":"芬兰语","mww":"苗语","nl":"荷兰语","fil":"菲律宾语","sm":"萨摩亚语","pt":"葡萄牙语 (巴西)","pt-PT":"葡萄牙语 (葡萄牙)","bo":"藏语","es":"西班牙语","ha":"豪萨语","prs":"达里语","mai":"迈蒂利语","dv":"迪维希语","az":"阿塞拜疆语","am":"阿姆哈拉语","sq":"阿尔巴尼亚语","ar":"阿拉伯语","as":"阿萨姆语","tt":"鞑靼语","mk":"马其顿语","mg":"马拉加斯语","mr":"马拉地语","ml":"马拉雅拉姆语","ms":"马来语","mt":"马耳他语","km":"高棉语"};
 makeLangSelector = function() {
+  //var selectorSrc = document.querySelector('.langSrcSelect');
   var selector = document.querySelector('.langSelect');
   var html = '';
   if(selector.children.length == 0) {
@@ -156,6 +165,7 @@ makeLangSelector = function() {
       html += '<option value="' + codes[i] + '">' + langCodes[codes[i]] + '</option>\n';
     }
     selector.innerHTML = html;
+	//selectorSrc.innerHTML = '<option value="auto-detect">自動偵測</option>\n' + html;
   }
 };
 getLangCode = function(tl) {
@@ -252,7 +262,10 @@ bingTranslate = async function(text, from='en', to='zh-Hant') {
     data = null;
   }
   if(data && data[0] && data[0]['translations']) {
-    data = data[0]['translations'][0]['text'];
+    data = {
+		"text": data[0]["translations"][0]["text"], 
+		"detectedLanguage": data[0]["detectedLanguage"]["language"]
+	};
   }
   return data;
 };
@@ -295,6 +308,23 @@ setVisibility = function(enable) {
       try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};	  
     }
   }
+};
+
+setMetaReferrer = function() {
+  var metaReferrer = null;
+  var meta = document.getElementsByTagName('meta');
+  for(var nIndex=0; nIndex<meta.length; nIndex++) { 
+    if(meta[nIndex].name=="referrer") {
+      metaReferrer = meta[nIndex];
+      break;
+    };
+  }
+  if(metaReferrer==null) {
+    metaReferrer = document.createElement('meta');
+    metaReferrer.name = "referrer";
+    document.getElementsByTagName('head')[0].appendChild(metaReferrer);
+  }
+  metaReferrer.content = "no-referrer";
 };
 /**
  * 
@@ -1862,7 +1892,7 @@ start = async function() {
   try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
   
   setViewport();
-  
+  setMetaReferrer();
   setVisibility(true);
   
   window.scrollTo(0, 0);

@@ -687,6 +687,234 @@ gdFetchTextFile = async function(url, callback) {
   }
   return data;	
 };
+//----------------------------------------
+//Google SpreadSheet Query
+/**
+ * 解析出 SpreadSheet 的文件 ID
+ * @param {String} url 試算表的網址
+ * @return {String} id
+ */
+gdGetSpreadSheetID = function(url) {
+  var id = '';
+  if(!(/^https:\/\//.test(url)) && url.length>20) {
+    id = url;
+  } else if(/\/d\/([^\/]{20}[^\/]+)\//.test(url)) {
+    id = window['RegExp']['lastParen'];
+  }
+  return id;
+};
+/**
+ * 製作 SpreadSheet 的查詢資料網址
+ * @param {String} url 試算表的網址
+ * @param {String} sheet 工作表名稱
+ * @param {String} query SQL string
+ * @param {Number} headers total number
+ * @return {String} url 如果不是試算表的網址就回傳空字串
+ */
+gdGetSpreadSheetQueryURL = function(url, sheet, query, headers) {
+  var id = gdGetSpreadSheetID(url);
+  var gid = url.match(/[\#\&\?]gid=(\d+)/); //工作表的 id
+  if( gid && gid.length > 1 ) {
+	gid = gid[1];
+  } else {
+    gid = '-1';
+  }
+  url = '';
+  if(id != '') {
+    //預設使用 tqx=out:json
+	url = 'https://docs.google.com/spreadsheets/d/'+id+'/gviz/tq?tqx=out:json';
+	//如果有指定工作表名稱，就不使用 gid 
+	//似乎 gid, sheet 同時存在的話，就看誰放前面
+	//都不指定的話，就會取用在試算表中的第一個工作表
+    if(typeof(sheet)=='string' && sheet.replace(/\s/g, '')!='') {
+      url += '&sheet='+encodeURIComponent(sheet);  //指定工作表(sheet)
+    } else if( gid != '-1' ) {
+	  url += '&gid='+gid;
+	}
+    if(typeof(query)=='string' && query.replace(/\s/g, '')!='') {
+      //query = 'Select *';
+      //query = `Select * where A = '${gameID}'`;
+      query = encodeURIComponent(query);
+      url += '&tq='+query;  //指定查詢的 SQL 指令(tq)
+    }
+	if(typeof(headers)=='number') {
+	  url += '&headers='+headers;
+	}
+	//console.log(url);
+  }
+  return url;
+};
+/**
+ * JSONP 以新增 script 的方式，來執行試算表的查詢後的函數
+ * callback 變成查詢後執行的函數，這樣參數可以取得試算表的查詢結果
+ *
+ * @param {String} url 試算表的共用必須任何人都可以檢視
+ * @param {Function} callback 查到資料後要執的程序
+ */
+gdGetSpreadSheetQueryResponse = function(url, callback)  {
+  var nocacheVal = '?nocache=' + new Date().getTime();	//為了避免 cache 的問題,在檔名後加亂數
+  var scriptToAdd = document.createElement('script');		//建立一個 scriptElement
+
+  //delete spreadSheetQueryData; //先清除儲存試算表查詢結果用的變數
+  //JSONP 呼叫 callback
+  if(typeof(google)=='undefined') { google = {}; }
+  if(typeof(google['visualization'])=='undefined') { google['visualization'] = {}; }
+  if(typeof(google['visualization']['Query'])=='undefined') { google['visualization']['Query'] = {};}
+  google['visualization']['Query']['setResponse'] = callback;
+
+  scriptToAdd.setAttribute('type','text/javascript');
+  scriptToAdd.setAttribute('charset','utf-8');
+  //scriptToAdd.setAttribute('src', url + nocacheVal);	//避免 cache 時用的
+  scriptToAdd.setAttribute('src', url);
+  //載入成功時
+  scriptToAdd.onload = scriptToAdd.onreadystatechange = function() {
+    if (!scriptToAdd.readyState || scriptToAdd.readyState === "loaded" || scriptToAdd.readyState === "complete") {
+      scriptToAdd.onload = scriptToAdd.onreadystatechange = null;
+      document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//將變數載入後移除 script
+      //if(typeof(callback)=='function') {
+      //	callback();	//執行指定的函數
+      //}
+    };
+  };
+  //無法載入時, 將設定用預設值
+  scriptToAdd.onerror = function() {
+    scriptToAdd.onerror = null;	//將事件移除
+    document.getElementsByTagName('head')[0].removeChild(scriptToAdd);	//移除 script
+    if( typeof callback == 'function' ) {
+      callback();	//執行指定的函數
+    } else {
+      var msg = '無法載入設定.';
+      var resultBlock = document.querySelector('.resultBlock');
+      if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
+        msg += '\n\n請確認一下:\n\n* 試算表共用連結的網址是否正確, \n\n* 是否開放任何人都可以檢視.';
+        resultBlock.style.display = 'none';			
+      }
+      setTimeout(function() {
+        alert(msg);
+      }, 100);
+    }
+  }
+
+  //在 head 的最前頭加上前述的 scriptElement
+  var docHead = document.getElementsByTagName("head")[0];
+  docHead.insertBefore(scriptToAdd, docHead.firstChild);
+};
+/**
+ * 由 Google SpreadSheet 取得資料
+ * @param {String} spreadSheetURL 試算表網址
+ * @param {String} sheet 工作表名稱
+ * @param {String} sql SQL
+ * @param {Number} headers total number
+ * @param {Boolean} rawResult 是否不解析結果, 直接回傳取回的資料
+ * @param {Boolean} excludeNull 是否略過空格(rawResult=false 才有意義)
+ * @param {Function} callback
+ */
+getQuestioLinesFromSpreadSheet = function(spreadSheetURL, sheet, sql, headers, rawResult, excludeNull, callback) {
+	if(typeof(spreadSheetURL)!='string') {
+		spreadSheetURL = '';
+	} else if(!(/^https:\/\//i.test(spreadSheetURL))) {
+		//不是網址, 可能是用 ID
+		spreadSheetURL = 'https://docs.google.com/spreadsheets/d/'+spreadSheetURL+'/edit?usp=sharing';
+	}
+	if(typeof(excludeNull)!='boolean') {
+		excludeNull = true;
+	}
+	if( !(/^https:\/\//i.test(spreadSheetURL)) || !(/spreadsheets/.test(spreadSheetURL)) ) {
+		loadingLogoEnable = false; //停止載入的動畫
+		showMessage('無法載入題庫<br>網址似乎不是試算表的，請確認後再試', 'red', 10, function(){setVisibility(0);});
+		return ;
+	}
+	var questionLines = '';
+	//var headers = null;
+	if(typeof(rawResult)=='boolean' && rawResult && typeof(headers)!='number') {
+		headers = 0;
+	}
+	var queryURL = gdGetSpreadSheetQueryURL(spreadSheetURL, sheet, sql, headers);
+	gdGetSpreadSheetQueryResponse(queryURL, function(data) {
+		if(typeof(rawResult)=='boolean' && rawResult) {
+			//如果是想取回完整資料者，就不再往下解析資料
+			if(typeof(callback)=='function') {
+				callback(data);
+			} else {
+				console.log(data);
+			}
+			return;
+		}
+		if(typeof(data)!='undefined' && data!=null && typeof(data['status'])=='string' && data['status']=='ok') {
+			if(typeof(data['table']['rows'])!='undefined' && data['table']['rows']!=null && data['table']['rows'].length>0) {				
+				//題庫先設為空的
+				questionLines = '';
+				//找出成語在哪一欄中
+				var qAtCol = -1;
+				var firstRow = 0;
+				var cols = data['table']['cols'];
+				if( data['table']['parsedNumHeaders'] == 0 ) {
+					//如果第 0 列不是設定為欄位標題者, parsedNumHeaders = 0
+					//只好利用 ['rows'][0] 來看 '成語' 是在第幾欄
+					var fields = data['table']['rows'][0]['c'];
+					for(var i=0; i<fields.length; i++) {
+						var v = data['table']['rows'][0]['c'][i]['v'];
+						if( typeof(v)=='string' && v.trim() == '成語' ) {
+							qAtCol = i;
+							firstRow = 1;
+							break;
+						}
+					}
+				} else {
+					//工作表有設定欄名者(parsedNumHeaders=1), label 不為空白					
+					for(var i=0; i<cols.length; i++) {
+						if( cols[i]['label'].trim() == '成語' ) {
+							qAtCol = i;
+							found = true;
+							break;
+						}
+					}
+				}
+				if( qAtCol < 0 ) {
+					qAtCol = 0;
+					if( data['table']['parsedNumHeaders'] > 0 ) {
+						//最上面的那列被當成headers(欄名)了，要先加入題庫
+						var v = data['table']['cols'][qAtCol]['label'];
+						if( typeof(v)=='string' && v.replace(/\s/g, '')!='' ) {
+							questionLines += v.trim();
+						}
+					}
+				}
+				console.log('get @'+qAtCol, 'from '+firstRow, cols);
+				//table = data['table'];
+				//取試算表成語欄位的內容
+				if( qAtCol >= 0 ) {
+					for(var i=firstRow; i<data['table']['rows'].length; i++) {
+						var cell = data['table']['rows'][i]['c'][qAtCol];
+						if( typeof(cell) != 'undefined' && cell != null ) {
+							if( typeof(cell['v'])=='string' && cell['v'].replace(/\s/g, '')!='' ) {
+								questionLines += cell['v'].trim() + '\n';
+							} else if(!excludeNull) { 
+								questionLines += '\n';
+							}
+						} else if(!excludeNull) { 
+							questionLines += '\n';
+						}
+					}
+				}				
+			}
+		}
+		if(questionLines!='') {
+			if( typeof(callback) == 'function' ) {
+				callback(questionLines);
+			} else {
+				console.log(questionLines);
+			}
+		} else {
+			if(typeof(data)!='undefined' && data!=null && typeof(data['table'])!='undefined') {
+				console.log(data['table']);
+			}
+			loadingLogoEnable = false; //停止載入的動畫
+			showMessage('無法載入題庫<br>請確認試算表中的內容後再試', 'red', 10, function(){setVisibility(0);});
+		}
+	});
+};
+
 //get date and time string in yyyy-mm-dd_hh-mm-ss
 getNowDateTimeString = function() {
   var prefixZero = function(n) {
@@ -1882,6 +2110,36 @@ autoFillYTurl = function(url) {
     updateYTurl();
   }
 };
+getSrtFromSpreedSheet = function(url, sheet, id, callback) {
+  //var colNames = ['ID', '日期', '標題', '字幕'];
+  var url = 'https://docs.google.com/spreadsheets/d/1WpqxinLBzxutSo0-M_papmqZKtXd9OzPdPa1bud3Ark/edit?';
+    
+  //取一列的 header, 用來分析各欄位在哪裡(spreadSheetURL, sheet, sql, headers, rawResult, excludeNull, callback)
+  var sql = null;
+  if(typeof(id)=='string') {
+    sql = "select D where A='" + id + "'";
+  }
+  //sheet = 'ICRT News for Kids';
+  showFadeOutMessage(null, '<center>載入資料中，請稍候</center>', 0, '-5%', 2);
+  getQuestioLinesFromSpreadSheet(url, sheet, sql, 1, true, null, function(data) {
+    if(data && typeof(data['table'])!='undefined' && typeof(data['table']['rows'])!='undefined' && data['table']['rows'].length > 0) {
+      var rows = data['table']['rows'];
+	  var values = data['table']['cols'];
+	  //console.log(values);
+	  //console.log(rows);
+	  if(rows[0]['c'] && rows[0]['c'][0] && rows[0]['c'][0]['v']) {
+	    setTimeout(function() {
+			updateContent(rows[0]['c'][0]['v']);
+		}, 1000);
+	  }  else {
+	    setTimeout(openImportPanel, 1000);
+	  }
+    } else {
+	   setTimeout(openImportPanel, 1000);
+	}
+	//console.log(data);
+  });
+};
 set__scale=function(s){
   for(var i=3; i<=10; i++) {
     try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
@@ -1916,18 +2174,25 @@ start = async function() {
     setTimeout(function() {
        showFadeOutMessage('.addMediaBtn', '按 + 號加影音、字幕', '100%', '-100%', 1);
 	   var v = gup('v');
-	   var f = gup('f');
+	   var f = decodeURIComponent(gup('f'));
 	   if(v.replace(/\s/g, '')!='') {
          setTimeout(autoFillYTurl, 1000);
        } else if(f.replace(/\s/g, '')!='') {
          showFadeOutMessage(null, '<center>載入資料中，請稍候</center>', 0, '-5%', 2);
-         gdFetchTextFile(f, function(data) {
-           if(data!='') {
-             updateContent(data);		 
-           } else {
-             setTimeout(openImportPanel, 1000);
-	       }
-         });
+		 if(/\t/.test(f)) {
+		   //如果參數中帶有 tab , 由 Google 試算載入指定工作表中 ID 相符的那一列字幕
+		   var fields = f.split(/\t/); //第一欄為 ID, 第二欄為工作表的名稱
+		   getSrtFromSpreedSheet(null, fields[1], fields[0]);
+		 } else {
+		   //試著由 Google Drive 載入指定 id 的文字檔
+           gdFetchTextFile(f, function(data) {
+             if(data!='') {
+               updateContent(data);		 
+             } else {
+               setTimeout(openImportPanel, 1000);
+	         }
+           });
+		 }
        } else {
          setTimeout(openImportPanel, 1000);
 	   }

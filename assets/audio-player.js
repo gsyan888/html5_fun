@@ -6,7 +6,24 @@ var activeInterval = 100;
 var ccLang = '';
 
 var bingIG, bingIID, bingKey, bingToken;
+var gamePadPressd, 	gamePadReq;
 
+/**
+ * 將 RegExp 中的保留符號先加上反斜線
+ */
+escapeRegExpString = function (str) {
+  return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
+/**
+ * 將所有標點符號都去掉
+ */
+removeAllPunc = function(str) {
+  var chPunc = '：，、。；．？！「」『』…～＄％＠＆＃＊‧【】《》（）＜＞◎○●⊕⊙△▲☆★◇◆□';
+  //var punc = '!()-[]{};:\'"\\,<>./?@#$%^&*_~' + chPunc;
+  var punc = chPunc + ',;!:?”\'\"';
+  var re = new RegExp('[' + punc + '\\s]', 'gm');
+  return str.replace(re, '');
+};
 appendTrans = async function() {
   var textIsAt = 1;
   var srt = document.querySelectorAll('#gameWrapper .content p');
@@ -39,8 +56,9 @@ appendTrans = async function() {
       document.querySelector('.percentage').innerHTML = Math.ceil(n) + '%';
     
       var subs = srt[i].children[textIsAt].textContent;
-      //最多只能翻譯 1000 個字，滿了就翻譯
-      if ( (text + subs).length > 1000-100 || i>=srt.length-1 ) {
+      //最多只能翻譯 1000 個字，滿了就翻譯(超過 800字才送出翻譯)
+	  //console.log((text + subs).length);
+      if ( (text + subs).length > 1000-200 || i>=srt.length-1 ) {
         if( i>=srt.length-1 ) {
           text += subs.trim() + ' ==--== \n';
         }
@@ -98,6 +116,10 @@ appendTrans = async function() {
     for(var i=0; i<srt.length; i++) {
       var subs = srt[i];
       if( subs && typeof(result[i])=='string' && result[i].replace(/\s/g, '') != '' ) {
+	    if(removeAllPunc(result[i]) == removeAllPunc(subs.children[textIsAt].textContent)) {
+		  //如果翻譯完去掉標點及空白是一樣的，就只填入空白
+		  result[i] = '&nbsp;';
+		}
         subs.innerHTML += '<label class="trans lang-' + lang  +'">' + result[i] + '</label>';	
       }
     }
@@ -2087,12 +2109,79 @@ keydownHandler = function(e) {
     }
   }
 };
+setSpeed = function(direction) {
+  var speedIncrement = 0.125;
+  var minSpeed = 0.5;
+  var maxSpeed = 2;
+  if (typeof direction === 'number') {
+    changeSpeed( direction );
+  } else if (direction === 'speedUp' || direction === 'speedDown') {
+    if(mediaPlayer && typeof(mediaPlayer.getSpeed)=='function') {
+      var speed = mediaPlayer.getSpeed();
+      speed += speedIncrement * (direction === 'speedUp' ? 1 : -1);
+      if ((speed >= minSpeed) && (speed <= maxSpeed)) {
+        changeSpeed(speed);
+		try{document.querySelector('.speed-slider').value = speed;}catch(e){};
+      }
+	}
+  } else {
+    throw ('Speed requires a direction: up or down')
+  }
+};
+function updateGamePadStatus() {
+  const cmdList = {0:'insertTimestamp', 1:'forwards', 2:'backwards', 3:'playPause', 14:'speedDown', 15:'speedUp', 13:'moveToNext'};
+  for (const gamepad of navigator.getGamepads()) {
+    if (!gamepad) continue;
+
+    for (const [i, button] of gamepad.buttons.entries()) {
+      if (button.pressed) {
+		  if(!gamePadPressd.has(i)) {
+			  //console.log('button ', i);
+			  var btnNumber = i;
+			  gamePadPressd.add(btnNumber);
+			  //setTimeout(function(){gamePadPressd.delete(btnNumber);}, 250);
+			  if(cmdList[btnNumber]) {
+				switch(cmdList[btnNumber]) {
+				  case 'backwards':
+				    gotoAndPlay('backward');
+					break;
+				  case 'forwards':
+				    gotoAndPlay('forward');
+					break;
+				  case 'playPause':
+				    mediaPlayHandler('playPause');
+					break;
+				  case 'speedUp' :
+				  case 'speedDown' :
+				    setSpeed(cmdList[btnNumber]);
+					break;
+				  case 'insertTimestamp': //run first translate button click
+				    try{document.querySelector('.langGroup button').onclick();}catch(e){};
+					break;
+				}
+			  }
+		  }
+      } else {
+		  gamePadPressd.delete(i);
+	  }
+    }
+  }
+  gamePadReq = requestAnimationFrame(updateGamePadStatus);
+};
 enableHotkey = function(enable) {
   if(typeof(enable)!='boolean' || enable) {
     enableHotkey(false);
     document.addEventListener('keydown', keydownHandler);
+	//start gamepad listener
+	if(typeof(gamePadPressd) == 'undefined' || gamePadPressd == null) {
+	  gamePadPressd = new Set();
+	} else {
+	  gamePadPressd.clear();
+	}
+	gamePadReq = requestAnimationFrame(updateGamePadStatus);
   } else {
     document.removeEventListener('keydown', keydownHandler);
+	try{cancelAnimationFrame(gamePadReq);} catch(e) {}; //stop gamepad listener
   }
 };
 autoFillYTurl = function(url) {

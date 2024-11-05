@@ -756,6 +756,177 @@ loadJavascriptAndStartGame = function(data) {
  * 以存放 Google Drive 的檔案來啟動遊戲
  *--------------------------------------
  */
+/**
+ * 針對一個 Google Drive 檔案分享連結的解析結果
+ *
+ * [1]: filename
+ * image [2]:thumbnail [3]:?? [10]:original (image/jpeg image/png ...)
+ * pdf   [2]:thumbnail [9]:broken JSON preview (application/pdf)
+ * video [2]:thumbnail (video/quicktime video/mp4 ...)
+ * mp3   [5]:download 內容跟 [18] 一樣 (audio/mpeg)	
+ * text  [9]:preview (text/plain, text/html, text/javascript, text/xml ..., 上載時附檔名決定)
+ * [11]:mimeType
+ * [18]:download URL
+ *
+ * @param {String} html 公開共用的網址的頁面原始碼
+ * @param {Boolean} debug 是否要顯示除錯內容
+ * @return {Object} 以 JSON 格式回傳部份欄位
+ */
+function gdFileShareParse(html, debug) {
+  //抓出 window.viewerData 的內容
+  var data = html.match(/<script[^>]+>\s*window\.viewerData\s*=\s*({(?:.|\n)*?});<\/script>/im).pop();
+  //修正 JSON 不能用單引號, 名稱要加雙引號, 及「"viewer-web",」的最後多了個逗號的問題
+  data = data.replace(/'/g, '"').replace('config:', '"config":').replace('configJson:', '"configJson":').replace('itemJson:', '"itemJson":');
+  data = data.replace('"viewer-web",', '"viewer-web"');
+  data = JSON.parse(data);
+  if(typeof(debug)=='boolean' && debug) {
+    console.log(data);
+  }
+  var value = {
+    filename: data.itemJson[1], //原始檔名
+    url: data.itemJson[2]?data.itemJson[2]:data.itemJson[18],  //也可能是 data.itemJson[3], data.itemJson[10] (高解析度的圖)
+    url_9: data.itemJson[9],  //欄位 9 的網址可抓到更進一步的參數, 可搭配前綴 https://drive.google.com/viewerng/
+    url_18: data.itemJson[18],	
+    mimeType: data.itemJson[11],
+    raw: data.itemJson
+  };
+  return value;
+};	
+/**
+ * 抓 Google Drive 有公開分享的檔案(文字型為主)
+ * @param {String} url 公開共用的網址
+ * @return {String} 檔案的文字內容(非文字檔用 base64 編碼)
+ */
+gdFetchTextFile = async function(url, callback) {
+  if(typeof(url)!='string' || url.replace(/\s/g) == '') return '';
+
+  if(!/^https:\/\//.test(url)) {
+    url = 'https://drive.google.com/file/d/' + url + '/view?usp=drive_link';
+  }
+  
+  //沒有 CORS 問題時可用
+  //url = gdGetFileDownloadURL(url);
+  //console.log(url);
+  //var res = await fetch(url);
+  //var data = await res.text();
+  //return data;
+
+  var data = '', res, html;
+
+  //-----
+  //  網址加上一個亂數, 避免出現 HTTP error 410
+  //    410. That’s an error.
+  //    The server cannot process the request because it is malformed. It should not be retried. That’s all we know.
+  //-----
+  var nocache = 'nocache=' + new Date().getTime();
+  url += (/\?/.test(url)?'&':'?') + nocache;
+
+  //-----
+  //1.抓取 google drive 分享的檔案, 解析出設定
+  try {
+    res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
+    html = await res.text();
+  }catch(e) {
+    //-----
+    // try again: using https://api.allorigins.win/get?url=
+    //-----		
+    try {
+      res = await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url));
+      html = await res.json()['contents'];
+    }catch(e) {
+      html = '';
+    }
+  }
+  if(html.replace(/\s/g, '')!='') {
+    var itemJson = gdFileShareParse(html, true);
+    if(itemJson) {
+      if(itemJson.url_9) {
+        url = itemJson.url_9;
+      } else if(itemJson.url_18) {
+        url = itemJson.url_18;
+      }
+    }
+    //console.log(itemJson.mimeType);
+    //console.log(url);
+    //-----
+    //2.抓取預覽的設定(網址)
+    //被 GD 識別為文字型態者，可以直接由 [9] 抓取預覽內容
+    if( /text/i.test(itemJson.mimeType) ) {
+      try {
+        res = await fetch(url);
+        data = await res.text();
+      }catch(e) {
+        data = '';
+      }
+      //console.log(data);
+      //取得預覽的網址
+      //抓到的內容，如果去掉最前面多出來的符號(第一個左大括號前的)就可以轉為 JSON 物件
+      //可以得到 img, meta, page, pdf, press, presspage, staus
+      if( /^\)\]\}'/.test(data) ) {
+        data = JSON.parse(data.replace(/^[^{]+/, ''));
+        page = data['page'];			
+        //console.log('\n\npage:\n'+page+'\n=============\n');				
+        //-----
+        //3.下載預覽的內容
+        //抓取 Google Drive 文字型態檔案的文字內容，或是影像的預覽圖(可以用 ?text ?image 來判斷)
+        url = 'https://drive.google.com/viewerng/' + page;
+        //console.log(url);
+        try {
+          res = await fetch(url);
+          if( /^text/.test(page) ) {
+            data = await res.text();
+            data = JSON.parse(data.replace(/^[^{]+/, ''))['data'];
+          } else {
+            data = await res.blob();
+          }
+        } catch(e) {
+          data = '';
+        }
+        //console.log(data);
+      } else {
+        console.log('\n\nget preview data failure\n=======\n\n')
+      }
+    } else {
+      console.log('\n\nget file failure\n==========\n');
+    }
+    //return data;
+	
+    //-----
+    //4.如果前面沒抓到內容，再換另一個 cors proxy 重抓
+    // try again:
+    //  using https://api.allorigins.win/get?url=
+    //-----
+    //url = gdGetFileDownloadURL(url); //沒有 CORS 問題才能用的網址
+    //console.log(url);
+    if(data == '' || data == null) {
+      url = itemJson.url_18;
+      url = 'https://api.allorigins.win/get?url='+encodeURIComponent(url);	
+      var header = {
+        'Referer': 'no-referrer',
+        //'referrerPolicy' : 'no-referrer',
+        'User-Agent': 'Mozilla/5.0 (X11; CrOS i686 4319.74.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.57 Safari/537.36' //Chrome
+      };
+      try {
+        //res = await fetch(url, header);
+        res = await fetch(url);
+        data = await res.json();	
+        data = data['contents'];
+        if( /^data:text/i.test(data) || (itemJson.filename && /\.(txt|js|srt|gpx|html|vtt|xml|json)/i.test(itemJson.filename)) ) {
+          console.log('base64 decoe:\n=============\n');
+          data = base64Decode(data);
+        }
+      } catch(e) {
+        data = '';
+        //console.log(e);
+      }
+    }
+    //console.log(data);
+  }
+  if(typeof(callback)=='function') {
+    callback(data);
+  }
+  return data;	
+}; 
 
 /**
  * 將網址轉換為 Google Drive 檔案直接下載的網址
@@ -779,13 +950,16 @@ getGoogleDriveFileDownloadURL = function(url) {
  * @param {String} url 要下載的 Google Drive 檔案公開網址
  * @param {Function} callback 下載後要執行的程序
  */
-fetchFileFromGoogleDrive = function(url, callback) {
+fetchFileFromGoogleDrive = async function(url, callback) {
   // var url = 'https://drive.google.com/uc?export=view&id='+id+'&confirm=t&';
   var fileDownloadURL = getGoogleDriveFileDownloadURL(url);
   //var fileDownloadURL = url;
   if(fileDownloadURL!='') {
-    url = 'https://corsproxy.io/?'+fileDownloadURL;
-    fetch(url)
+    var nocache = 'nocache=' + new Date().getTime();
+    fileDownloadURL += (/\?/.test(fileDownloadURL)?'&':'?') + nocache;
+    fileDownloadURL = encodeURIComponent(fileDownloadURL);
+    fileDownloadURL = 'https://corsproxy.io/?'+fileDownloadURL;
+    fetch(fileDownloadURL)
       .then(res => {
         //console.log(res);
         if(res) {
@@ -793,11 +967,16 @@ fetchFileFromGoogleDrive = function(url, callback) {
             //如果有下載到資料, corsproxy 會設定 ok=true
             return res.text()
           } else {
-            if(typeof(callback)=='function') {
-              callback('', 'HTML5 FUN 的檔案下載失敗, 無法繼續。錯誤代碼: '+res.status);
-            } else {
-              return '';
-            }
+			var txt = gdFetchTextFile(url);
+			if(txt != '') {
+				return txt;
+			} else {
+				if(typeof(callback)=='function') {
+				  callback('', 'HTML5 FUN 的檔案下載失敗, 無法繼續。錯誤代碼: '+res.status);
+				} else {
+				  return '';
+				}
+			}
           }
         }
       })

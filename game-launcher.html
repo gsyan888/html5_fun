@@ -140,7 +140,7 @@ fileURL_onBlurHandler = function(elm) {
 /**
  * 按送出紐後要處理的程序
  */
-submitOnClickHandler = function() {
+submitOnClickHandler = async function() {
   var resultBlock = document.querySelector('.resultBlock');
   var playBtnWrapper = document.querySelector('.playBtnWrapper');
   var fileURL = document.getElementById('fileURL').value.trim();
@@ -756,6 +756,7 @@ loadJavascriptAndStartGame = function(data) {
  * 以存放 Google Drive 的檔案來啟動遊戲
  *--------------------------------------
  */
+
 /**
  * 針對一個 Google Drive 檔案分享連結的解析結果
  *
@@ -791,7 +792,29 @@ function gdFileShareParse(html, debug) {
     raw: data.itemJson
   };
   return value;
-};	
+};
+appsScriptProxy = async function(url, callback) {
+  var proxy = 'https://script.google.com/macros/s/AKfycbz0E5--tUkPStLMDWKHQDqkge0wlYYSN2LczZF44CEGLT1_ytYrHtnf7xLon3cM_lHd/exec';
+  var res = await fetch(proxy + '?url=' + encodeURIComponent(url));
+  //console.log(res);
+  var data = await res.json();
+  //console.log(data['result']);
+  return data['result'];    
+};
+corsProxy = async function(url, callback) {
+  var nocache = 'nocache=' + new Date().getTime();
+  if(!(/nocache=/.test(url))) {
+  	url += (/\?/.test(url)?'&':'?') + nocache;
+  }
+  var data = '';
+  try {
+    res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
+    data = await res.text();
+  }catch(e) {
+    data = ''
+  }
+  return data;
+};
 /**
  * 抓 Google Drive 有公開分享的檔案(文字型為主)
  * @param {String} url 公開共用的網址
@@ -855,8 +878,14 @@ gdFetchTextFile = async function(url, callback) {
       try {
         res = await fetch(url);
         data = await res.text();
+        //console.log('debug ....\n',data);        
       }catch(e) {
-        data = '';
+      	data = await corsProxy(url);
+        if(data == '') {
+          //data = '';
+          data = await appsScriptProxy(url);
+        }
+        //console.log('debug.... \n', data);
       }
       //console.log(data);
       //取得預覽的網址
@@ -880,7 +909,12 @@ gdFetchTextFile = async function(url, callback) {
             data = await res.blob();
           }
         } catch(e) {
-          data = '';
+		  data = await corsProxy(url);
+          if(data == '') {
+          	data = await appsScriptProxy(url);
+          }
+          data = JSON.parse(data.replace(/^[^{]+/, ''))['data'];
+          //console.log(data);
         }
         //console.log(data);
       } else {
@@ -967,6 +1001,7 @@ fetchFileFromGoogleDrive = async function(url, callback) {
             //如果有下載到資料, corsproxy 會設定 ok=true
             return res.text()
           } else {
+            console.log('try again: try to get content of preview ...\nURL==> '+url);
 			var txt = gdFetchTextFile(url);
 			if(txt != '') {
 				return txt;

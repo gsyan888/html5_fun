@@ -9,7 +9,8 @@
 
 <body>
 
-<div class="separator" style="clear: both;"><a href="https://gsyan888.blogspot.com/2022/10/html5-fun-collection.html" style="display: block; padding: 1em 0px; text-align: center;"><img alt="HTML5 FUN::Game Launcher" border="0" data-original-height="200" data-original-width="200" src="https://gsyan888.github.io/html5_fun/editor/assets/icon-launcher.png" style="border: 0px;" width="200" /></a></div>
+<div class="separator" id="rocket" style="clear: both;"><a href="https://gsyan888.blogspot.com/2022/10/html5-fun-collection.html" style="display: block; padding: 1em 0px; text-align: center;"><img alt="HTML5 FUN::Game Launcher" border="0" data-original-height="200" data-original-width="200" src="https://gsyan888.github.io/html5_fun/editor/assets/icon-launcher.png" style="border: 0px;" width="200" /></a></div>
+<div class="rocket-flame"><img src="https://gsyan888.github.io/html5_fun/editor/assets/icon-launcher-flame.png" /></div>
 
 <h1 style="text-align:center;">HTML5 FUN::自製遊戲啟動器</h1>
 
@@ -83,6 +84,43 @@
   margin: auto;
   margin-bottom: 2em;
 }
+.rocket-launch {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.rocket-flame {
+  display: none;
+  position: fixed;
+  top: calc(40% + 130px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.rocket-flame img{
+  border: none;
+}
+.gameQRcode {
+  position: relative;
+  margin:auto;
+  margin-bottom: 2.5em;
+  width: 200px;
+  height: 200px;
+  padding: 5px;
+  text-align: center;
+  background-repeat: no-repeat;
+  border: 1px solid #dadce0;
+}
+.gameQRcode img {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 0;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  border: none;
+}
 </style>
 
 <script>
@@ -137,6 +175,14 @@ fileURL_onBlurHandler = function(elm) {
     resultBlock.style.display = 'none';
   }
 };
+updateQRCode = function(gameURL) {
+  var gameQRcode = document.querySelector('.gameQRcode');
+  if(gameQRcode) {
+    var size = 180;
+    var qrcodeURL = 'https://api.qrserver.com/v1/create-qr-code/?size='+size+'x'+size+'&data='+encodeURIComponent(gameURL);
+    gameQRcode.innerHTML = '<a href="' + gameURL +'" target="_blank" title="按 QR code 可以開啟遊戲"><img src="'+ qrcodeURL + '"/></a>';
+  }
+};
 /**
  * 按送出紐後要處理的程序
  */
@@ -164,11 +210,12 @@ submitOnClickHandler = async function() {
 	    if(typeof(resultBlock)!='undefined' && resultBlock!=null) {
           resultBlock.style.display = 'block';
 		}
-		
+
 		var gameURL = getGameURL(id, sheetName, gameID, gameIdAt);
 		try {
           document.querySelector('.gameURL').innerHTML = gameURL;
 		}catch(e) {console.log(e); };
+		updateQRCode(gameURL);
 	    autostart = false;
 	    getSpreadSheetQueryResponse(url, loadJavascriptAndStartGame);
 	    jumpToAnother(1, 2);
@@ -183,6 +230,7 @@ submitOnClickHandler = async function() {
 	  try {
         document.querySelector('.gameURL').innerHTML = gameURL;
 	  }catch(e) {console.log(e);};
+	  updateQRCode(gameURL);
       autostart = false;
       fetchFileFromGoogleDrive(fileURL, replaceHtmlAndStartGame);
       jumpToAnother(1, 2);
@@ -234,7 +282,7 @@ getUrlParam = function(name, url) {
   var regex = new RegExp(regexS, 'i');  
   var results = regex.exec((typeof(url)=='string'?url:window.location.href)); 
   if(results==null) return "";  
-  else return results[1];
+  else return decodeURIComponent(results[1]);
 };
 /**
  * 由網址解析出 Google Drive 檔案的 id
@@ -355,7 +403,8 @@ copyAndSelectToClipboard = function (target) {
  * @return {String} 遊戲啟動的網址
  */
 getGameURL = function(id, sheetName, gameID, gameIdAt) {
-  var gameURL = 'https://gsyan888.github.io/html5_fun/game-launcher.html'; //window.location.href;
+  //var gameURL = 'https://gsyan888.github.io/html5_fun/game-launcher.html'; 
+  var gameURL = window.location.href;
   gameURL = new URL(gameURL);
   gameURL.hash = '';
   gameURL.search = '';
@@ -713,7 +762,7 @@ getSpreadSheetQueryResponse = function(url, callback)  {
 loadJavascriptAndStartGame = function(data) {
   console.log(data);
   var isOK = false;
-  if(typeof(data['status'])=='string' && data['status']=='ok') {
+  if(data && typeof(data['status'])=='string' && data['status']=='ok') {
     if(typeof(data['table']['rows'])!='undefined' && data['table']['rows']!=null && data['table']['rows'].length>0) {	
 	  var gameIdIndex = gameIdAt.toUpperCase().charCodeAt(0)-'A'.charCodeAt(0);
 	  gameIdIndex = (gameIdIndex>=0 && gameIdIndex<data['table']['rows'][0]['c'].length?gameIdIndex:0);
@@ -748,6 +797,7 @@ loadJavascriptAndStartGame = function(data) {
       msg += '\n\n請確認一下「工作表名稱」及「欄'+gameIdAt.toUpperCase()+'」的「取用代碼」是否正確';
       resultBlock.style.display = 'none';			
     }
+    rocketLaunch(false);
 	setTimeout(function() {
       alert(msg);
 	}, 100);
@@ -778,7 +828,11 @@ loadJavascriptAndStartGame = function(data) {
  */
 function gdFileShareParse(html, debug) {
   //抓出 window.viewerData 的內容
-  var data = html.match(/<script[^>]+>\s*window\.viewerData\s*=\s*({(?:.|\n)*?});<\/script>/im).pop();
+  var data=null, value=null;
+  try {
+    data = html.match(/<script[^>]+>\s*window\.viewerData\s*=\s*({(?:.|\n)*?});<\/script>/im).pop();
+  }catch(e) {};
+  if(data != null) {
   //修正 JSON 不能用單引號, 名稱要加雙引號, 及「"viewer-web",」的最後多了個逗號的問題
   data = data.replace(/'/g, '"').replace('config:', '"config":').replace('configJson:', '"configJson":').replace('itemJson:', '"itemJson":');
   data = data.replace('"viewer-web",', '"viewer-web"');
@@ -786,7 +840,7 @@ function gdFileShareParse(html, debug) {
   if(typeof(debug)=='boolean' && debug) {
     console.log(data);
   }
-  var value = {
+    value = {
     filename: data.itemJson[1], //原始檔名
     url: data.itemJson[2]?data.itemJson[2]:data.itemJson[18],  //也可能是 data.itemJson[3], data.itemJson[10] (高解析度的圖)
     url_9: data.itemJson[9],  //欄位 9 的網址可抓到更進一步的參數, 可搭配前綴 https://drive.google.com/viewerng/
@@ -794,6 +848,7 @@ function gdFileShareParse(html, debug) {
     mimeType: data.itemJson[11],
     raw: data.itemJson
   };
+  }
   return value;
 };
 appsScriptProxy = async function(url, callback) {
@@ -877,7 +932,7 @@ gdFetchTextFile = async function(url, callback) {
     //-----
     //2.抓取預覽的設定(網址)
     //被 GD 識別為文字型態者，可以直接由 [9] 抓取預覽內容
-    if( /text/i.test(itemJson.mimeType) ) {
+    if(itemJson && /text/i.test(itemJson.mimeType) ) {
       try {
         res = await fetch(url);
         data = await res.text();
@@ -935,7 +990,7 @@ gdFetchTextFile = async function(url, callback) {
     //-----
     //url = gdGetFileDownloadURL(url); //沒有 CORS 問題才能用的網址
     //console.log(url);
-    if(data == '' || data == null) {
+    if(itemJson && (data == '' || data == null)) {
       url = itemJson.url_18;
       url = 'https://api.allorigins.win/get?url='+encodeURIComponent(url);	
       var header = {
@@ -971,6 +1026,9 @@ gdFetchTextFile = async function(url, callback) {
  * @return {String} 轉換好的網址, 非 Google Drive 的檔案傳回空字串
  */
 getGoogleDriveFileDownloadURL = function(url) {
+  //這兩種待比較
+  //https://drive.google.com/uc?export=view&id=
+  //https://drive.usercontent.google.com/download?export=download&confirm=t&id=
   var id = getGoogleDriveFileId(url);  
   if(id!='') {
     var resourcekey = getUrlParam('resourcekey', url);
@@ -997,7 +1055,7 @@ fetchFileFromGoogleDrive = async function(url, callback) {
     fileDownloadURL = encodeURIComponent(fileDownloadURL);
     fileDownloadURL = 'https://corsproxy.io/?'+fileDownloadURL;
     fetch(fileDownloadURL)
-      .then(res => {
+      .then(async res => {
         //console.log(res);
         if(res) {
           if(res.ok) {
@@ -1005,7 +1063,7 @@ fetchFileFromGoogleDrive = async function(url, callback) {
             return res.text()
           } else {
             console.log('try again: try to get content of preview ...\nURL==> '+url);
-			var txt = gdFetchTextFile(url);
+			var txt = await gdFetchTextFile(url);
 			if(txt != '') {
 				return txt;
 			} else {
@@ -1075,6 +1133,7 @@ appendSettingJS = function(html) {
  * @param {String} errorMsg 自訂的錯誤訊息
  */
 replaceHtmlAndStartGame = function(html, errorMsg) {
+  rocketLaunch(false); //關閉火箭發射動畫
   var match;
   window['html'] = html;
   if(/<html/i.test(html) && /id\s*=\s*[\'\"]settingJS[\'\"]/.test(html) && (match=html.match(/<head>((?:.|\n|\r)*?)<\/head>/im))) {
@@ -1115,13 +1174,64 @@ replaceHtmlAndStartGame = function(html, errorMsg) {
 	appendSettingJS(html);
     reloadInjectionJS(modulenameInJs);	
   } else {
-	if(typeof(errorMsg)=='string') {
-      alert(errorMsg);
-	} else {
-      alert('找不到 HTML5 FUN 的設定, 無法繼續');
-	}
+    try {
+      //發生錯誤就隱藏輸出區
+      document.querySelector('.resultBlock').style.display = 'none';
+    } catch(e) {};  
+	setTimeout(function() {
+	  alert(typeof(errorMsg)=='string' ? errorMsg : '找不到 HTML5 FUN 的設定, 無法繼續');
+	}, 100);
   }
 };
+
+rocketLaunch = function(enable) {
+  if(typeof(launchInterval)!='undefined' && launchInterval!=null) {
+    clearInterval(launchInterval);
+	launchInterval = null;
+  }
+  try {
+    document.querySelector('#rocket').classList.toggle('rocket-launch', enable);
+  }catch(e) {};
+  try {
+    document.querySelector('.rocket-flame').style.display = (enable?'block':'none');
+  }catch(e) {};
+  if(enable) {
+    var offset = 5;
+    launchInterval = setInterval(function() {
+	  window.scrollBy({top: offset, behavior: "smooth",});	  
+	  offset *= -1;
+      try {
+        document.querySelector('.rocket-flame').style.transform = 'scaleX(' + (offset<0?'-1':'1') + ') translate(' + (offset<0?'50%':'-50%') + ', -50%)';
+      }catch(e) {};	  
+	}, 100);      
+  }
+};
+
+/* 
+ <meta name="referrer" content="no-referrer" /> 
+*/
+setMetaNoReferrer = function() {
+  var metaReferrer = null;
+  var meta = document.getElementsByTagName('meta');
+  for(var nIndex=0; nIndex<meta.length; nIndex++) { 
+    if(meta[nIndex].name=="referrer") {
+      metaReferrer = meta[nIndex];
+      break;
+    };
+  }
+  if(metaReferrer==null) {
+    metaReferrer = document.createElement('meta');
+    metaReferrer.name = "referrer";
+	try {
+      document.getElementsByTagName('head')[0].appendChild(metaReferrer);
+	}catch(e) {console.log(e); };
+  }
+  try {
+    metaReferrer.content = "no-referrer";
+  }catch(e) {console.log(e); };
+};
+/* 設 no-referrer .js 才能下載 */
+setMetaNoReferrer();
 
 var fileId = '';
 
@@ -1139,7 +1249,6 @@ var sheetName = getUrlParam('sheetName');
 var gameID = getUrlParam('gameID');
 
 var gameIdAt = getUrlParam('idAt').toUpperCase();
-console.log(gameIdAt);
 
 if(fileId=='') {
   var msg = '未指定題庫, 無法載入遊戲';
@@ -1154,6 +1263,8 @@ if(fileId=='') {
 } else {
   /* 設定為載後後自動開啟遊戲 */  
   autostart = true;
+  
+  rocketLaunch(true); //火箭發射的動畫
   
   if(fileId!='' && gameID!='') {
     /* 設定存放試算表的遊戲 */	

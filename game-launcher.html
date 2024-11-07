@@ -729,7 +729,10 @@ loadJavascriptAndStartGame = function(data) {
 			}
 		  }
 		}
-        value = utf8to16(base64_decode(value));
+		//如果找不到關鍵字，可能是 base64 編碼的資料，先解碼
+		if(!/settingJS|injectionJS|html5_fun_embeded.js/.test(value)) {
+          value = utf8to16(base64_decode(value));
+		}
         if(/settingJS|injectionJS|html5_fun_embeded.js/.test(value)) {
           isOK = true;
           document.querySelector('.playBtnWrapper').innerHTML = value;

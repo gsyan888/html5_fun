@@ -1088,7 +1088,7 @@ applyYTsample = function() {
     showFadeOutMessage('.yt-sample', '已將網址填好，請按 [下一步] 鈕', '50%', '300%', 1);
   }  
 };
-updateYTurl = async function() {
+updateYTurl = async function(subtitleDisableDefault) {
   var ytLangSelector = document.querySelector('.yt-lang-selector');
   var input = document.querySelector('.ext-input-field input');
   if(input && input.value.replace(/\s/g, '')!='' ) {
@@ -1108,7 +1108,8 @@ updateYTurl = async function() {
             option += '</option>';
           }
 		  if(option != '') {
-			option += '<option value="不使用">XXX 不使用 XXX</option>';
+			var selected = (subtitleDisableDefault!=null? 'selected="selected"' : '');
+			option += '<option value="不使用"' + selected + '>XXX 不使用 XXX</option>';
 		  }
           html += option;
           html += '</select>';
@@ -2203,7 +2204,7 @@ autoFillYTurl = function(url) {
 	}
     input.value = v;
     inputYTurl(true);
-    updateYTurl();
+    updateYTurl(true);
   }
 };
 getSrtFromSpreedSheet = function(url, sheet, id, callback) {

@@ -1107,6 +1107,9 @@ updateYTurl = async function() {
             option += captionTracks[i]['name']['simpleText'];
             option += '</option>';
           }
+		  if(option != '') {
+			option += '<option value="不使用">XXX 不使用 XXX</option>';
+		  }
           html += option;
           html += '</select>';
           if(captionTracks.length > 1) {
@@ -1118,7 +1121,7 @@ updateYTurl = async function() {
             html += '</select>';
           }
         } else {
-          var html = '<br><label>此影片無任何字幕，影片載入後請自行匯入</label>';
+          var html = '<br><label>影片無字幕或無法下載字幕清單，請再自行匯入</label>';
         }
         ytLangSelector.innerHTML = html;
         try{document.querySelector('.yt-sample').classList.toggle('hidden', true)}catch(e){};
@@ -1128,17 +1131,21 @@ updateYTurl = async function() {
           //var checked = Array.from(ytLangSelector.querySelectorAll('option')).find(o=>o.selected);
           ccLang = gup('lang', lang.value);
           //var srt = await getYTsubtitle(ytUrl, lang);
-          var srt = await getYTcaptionByBaseUrl(lang.value);
-          //console.log(srt);
-          updateContent(srt);
+          if(/https:/i.test(lang.value)) {
+            var srt = await getYTcaptionByBaseUrl(lang.value);
+            //console.log(srt);
+            updateContent(srt);
+          }
           //2nd SRT
           var lang2 = ytLangSelector.querySelector('#subtitle2');
           if(lang2 && lang2.value!='') {
             ccLang2 = gup('lang', lang2.value);
-            var srt2 = await getYTcaptionByBaseUrl(lang2.value);
-            //console.log(srt2);
-            //var langName = lang2.options[lang2.selectedIndex].textContent;
-            appendSrt2(srt2, ccLang2);
+			if(/https:/i.test(lang2.value)) {
+              var srt2 = await getYTcaptionByBaseUrl(lang2.value);
+              //console.log(srt2);
+              //var langName = lang2.options[lang2.selectedIndex].textContent;
+              appendSrt2(srt2, ccLang2);
+            }
           }
         }
         updateMediaPlayer(ytUrl);
@@ -2295,3 +2302,4 @@ var f = gup('f');
 if(autostart == '1' || autostart == 'true' || v.replace(/\s/g, '')!='' || f.replace(/\s/g, '')!='') {
   start();
 }
+

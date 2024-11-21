@@ -9,7 +9,11 @@ var defaultSpreadSheetURL = 'https://docs.google.com/spreadsheets/d/1kBueULlojPO
 var parts_set_separator = '~';	//部件設定生字與筆順間的分隔符號
 var colors = ['#ff6699',  "#56B4E9", "#009E73", "#F0E442", '#ff9933', '#FFBAA3', '#9169EC', '#7B92BE'];
 
-var soundFinish, soundFailure, soundCoin;
+var soundFinish, soundFailure, soundCoin, soundTTS;
+var tts_language = 'zh-TW'; //'en-US';  //跟語音辨識的語言一樣 英文: 'en-US' , 中文: 'zh-TW'
+var tts_speed = 1;  //語音的速度 0 ~ 1 (可用小數) 0.3
+var tts_base_url = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=${tts_language}&client=tw-ob&ttsspeed=${tts_speed}&q=';
+
 var questionList = [];
 var isFirstGame = true;
 var wordIndexList = [];
@@ -939,6 +943,58 @@ soundInit = function() {
 	if(typeof(soundCoin)=='undefined' || soundCoin==null) {
 		soundCoin = audioInit(soundCoinURL);
 	};	
+};
+getTTS_URL = function(query) {
+	var url = '';
+	var lang = '';
+	//字串字尾如果是 .??-?? 者，視為有指定語言代碼
+	//左側為要發音的字串，而搜尋的字串(去掉點)為語音代碼
+	if(/\.(\w{2}\-\w{2})$/.test(query)) {
+		query = window['RegExp']['leftContext'];	//要合成語音的字串
+		lang = window['RegExp']['lastParen'];		//語言代碼
+	}		
+	if(typeof(tts_language)=='string' &&  typeof(tts_speed)!='undefined' && !isNaN(tts_speed) && typeof(tts_base_url)=='string') {
+		url = tts_base_url.replace(/\$\{tts_language\}/i, (lang==''?tts_language:lang));
+		url = url.replace(/\$\{tts_speed\}/i, tts_speed);
+		url = url+encodeURIComponent(query);
+	}
+	return url;
+};
+ttsEndedHandler = function(e) {
+  //如果自訂的 queue 還有未播放完的，就依設定繼續播放
+  if(typeof(soundTTS)!='undefined' && soundTTS != null) {
+    if(soundTTS.queue && soundTTS.queue.length > 0) {
+      var url  = getTTS_URL(soundTTS.queue[0]);
+	  soundTTS.queue.splice(0, 1);
+	  soundTTS.src = url;
+	  audioPlay(soundTTS);
+	}
+  }
+};
+ttsSpeak = function(txt, lang, speed) {
+	var url;
+    if(typeof(lang)!='string') { 
+		lang = 'en-US';
+	}
+	if(/https:\/\//.test(txt)) {
+	  url = txt;
+	} else {
+	  txt = txt.replace(/\.tts$/, '');
+	  if(!/\.(\w{2}\-\w{2})$/.test(txt)) {
+	    txt += '.' + lang;
+	  }
+	  url = getTTS_URL(txt);
+	}
+	if(typeof(soundTTS)=='undefined' || soundTTS == null) {
+		soundTTS = audioInit(url, true);
+		//soundTTS.addEventListener("ended", ttsEndedHandler);
+	} else {
+		soundTTS.src = url;
+	}
+	soundTTS.queue = []; //清空前一次的 queue
+	//alert(soundTTS.src);
+	audioPlay(soundTTS);
+	return true;
 };
 /**
  * 遊戲場景及變數的初始
@@ -2151,6 +2207,7 @@ checkAnswer = function(answerTxt) {
 	return isFinish;
 };
 feedBack = function(isFinish, hitTotal, partsTotal, anotherTerm) {	
+	var txt = '';
 	//最後回饋
 	if(isFinish) {
 		showAnswer();
@@ -2176,6 +2233,18 @@ feedBack = function(isFinish, hitTotal, partsTotal, anotherTerm) {
 		if(typeof(soundFinish)!='undefined' && soundFinish!=null) {
 			audioPlay(soundFinish);
 		}
+		//以 TTS 念出語詞
+		txt = '';
+	    if(typeof(words) != 'string') {
+			txt = words.join('');
+		}
+		if(typeof(anotherTerm)=='string' && anotherTerm!='') {
+			txt += ','+anotherTerm;
+		}
+		if(txt!='') {
+			ttsSpeak(txt, 'zh-TW');
+		}
+		
 		//隱藏送出答案、部件重排、稍後作答的按鈕
 		var cList = ['.checkBtn', '.skipBtn', '.randomBtn'];
 		for(var i=0; i<cList.length; i++) {
@@ -3227,6 +3296,7 @@ start = function() {
   loadingAnimation('PARTDLE');
 
   soundInit();
+  ttsSpeak('加油', 'zh-TW'); //先建立 TTS 物件
 
   setTimeout(function() {
     updateScore();//reset the score to 0
@@ -3242,4 +3312,3 @@ var autostart = gup('autostart');
 if(autostart == '1' || autostart == 'true') {
   start();
 }
-

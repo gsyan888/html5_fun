@@ -3139,6 +3139,22 @@ setViewport = function() {
   }
   viewport.content = content;
 };
+setMetaReferrer = function() {
+  var metaReferrer = null;
+  var meta = document.getElementsByTagName('meta');
+  for(var nIndex=0; nIndex<meta.length; nIndex++) { 
+    if(meta[nIndex].name=="referrer") {
+      metaReferrer = meta[nIndex];
+      break;
+    };
+  }
+  if(metaReferrer==null) {
+    metaReferrer = document.createElement('meta');
+    metaReferrer.name = "referrer";
+    document.getElementsByTagName('head')[0].appendChild(metaReferrer);
+  }
+  metaReferrer.content = "no-referrer";
+};
 /*
 載入設定檔時顯示動畫
  */
@@ -3285,7 +3301,7 @@ start = function() {
   try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
   
   setViewport();
-  
+  setMetaReferrer();
   setVisibility(true);
   
   window.scrollTo(0, 0);

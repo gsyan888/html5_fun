@@ -1323,7 +1323,7 @@ updateContent = function(src, filename) {
 				html += '</label>'
 				//html += '<br>';
 				//如果找到影音的網址就先暫存，稍後自動載入
-				if(/\.(mp3|mp4|mkv|mov|avi|webm)/i.test(tt) || parseYoutubeURL(tt) ) {
+				if(mediaURL=='' && /^https:\/\//.test(tt) && (/\.(mp3|mp4|mkv|mov|avi|webm)/i.test(tt) || parseYoutubeURL(tt)) ) {
 					mediaURL = tt.trim();
 				}
 			});

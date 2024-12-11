@@ -11,6 +11,10 @@ var editorOptions = {
     "enableOpenInNewWindow": false,
 
     "options": {
+      "caption": [
+        "text",
+        "標題"],
+
       "numberOfOptions": [
         "text",
         "每題有幾個選項"],

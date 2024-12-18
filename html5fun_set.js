@@ -32,25 +32,16 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2021/12/html5-stroke-parts.html"
 	, ""
 	],
-
-	[ "Speaking"
-	, "HTML5 Speaking"
-	, "html5_speaking/assets/icon.png"
-	, "html5_speaking/html5_speaking.html"
-	, "archives/html5_speaking.zip"
-	, "https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
-	, "speaking"
+	
+	[ "PARTDLE 兜一兜"
+	, "PARTDLE 兜一兜"
+	, "assets/icon-partdle.png"
+	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html?autostart=1"
+	, ""
+	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html"
+	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html#custom"
 	],
 	
-	[ "我說你猜"
-	, "比手畫腳，比一比猜一猜"
-	, "html5_charades/assets/icon.png"
-	, "html5_charades/html5_charades.html"
-	, "archives/html5_charades.zip"
-	, "https://gsyan888.blogspot.com/2022/11/html5-charades.html"
-	, "charades"
-	],
-
 	[ "PK大賽"
 	, "兩人 PK 遊戲"
 	, "html5_pk/assets/icon.png"
@@ -87,15 +78,6 @@ menu_items = [
 	, ""
 	],
 	
-	[ "PARTDLE 兜一兜"
-	, "PARTDLE 兜一兜"
-	, "assets/icon-partdle.png"
-	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html?autostart=1"
-	, ""
-	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html"
-	, "https://gsyan888.blogspot.com/2024/06/html5-fun-partdle.html#custom"
-	],
-	
 	[ "圓面積小教具"
 	, "利用切割圓來推導面積公式小教具"
 	, "html5_math/assets/icon-circle-area.png"
@@ -130,6 +112,24 @@ menu_items = [
 	, ""
 	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
 	, ""
+	],
+	
+	[ "我說你猜"
+	, "比手畫腳，比一比猜一猜"
+	, "html5_charades/assets/icon.png"
+	, "html5_charades/html5_charades.html"
+	, "archives/html5_charades.zip"
+	, "https://gsyan888.blogspot.com/2022/11/html5-charades.html"
+	, "charades"
+	],
+
+	[ "Speaking"
+	, "HTML5 Speaking"
+	, "html5_speaking/assets/icon.png"
+	, "html5_speaking/html5_speaking.html"
+	, "archives/html5_speaking.zip"
+	, "https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
+	, "speaking"
 	],
 	
 	[ "足球高手"

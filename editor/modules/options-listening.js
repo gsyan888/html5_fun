@@ -108,7 +108,9 @@ var editorOptions = {
 
       "logger_url": [
         "text",
-        "上載成績記錄用的網址"],
+        "上載成績記錄用的網址",
+        "(請參考「<a href=\"https://gsyan888.blogspot.com/2023/12/html5-fun-google-form-save-score.html\" target=\"_blank\">利用 Google Form 登錄遊戲成績</a>」)"
+      ],
 
       "questionLines": [
         "textarea",

@@ -1309,6 +1309,7 @@ updateContent = function(src, filename) {
 	}
 	var mediaURL = '';
 	srtFilename = filename;
+	var labelTotal, t, unknowLangTotal = 0;
 	var html = '';
 	if(content && subList && subList.length > 0) {
 		subList.forEach(s=>{
@@ -1316,9 +1317,17 @@ updateContent = function(src, filename) {
 			//html += s.start + '~' + s.end;
 			//html += '<br>';
 			html += '<span class="arrow-left" title="從這裡開始播放"></span>';
-			var t = s.text.trim().split(/\n/);
-			t.forEach(tt=>{
-				html += '<label>';
+			labelTotal = 0;
+			t = s.text.trim().split(/\n/);
+			t.forEach(tt=>{			    
+				if(labelTotal < 1) {
+					html += '<label>';
+				} else {
+					//如果有第二行，視為另一種語言的, 用 lang-unknow? 的代碼 2025.02.04 add
+					html += '<label class="trans lang-unknow' + labelTotal + '">';
+					unknowLangTotal = Math.max(unknowLangTotal, labelTotal);
+				}
+				labelTotal++;
 				html += (/^https:\/\//.test(tt) ? '<a href="'+tt+'" target="_blank">'+tt+'</a>' : tt);
 				html += '</label>'
 				//html += '<br>';
@@ -1381,7 +1390,17 @@ updateContent = function(src, filename) {
 			//langGroup.querySelectorAll('button').forEach(e=>e.remove());
 			langGroup.querySelectorAll('button:is([lang])').forEach(e=>e.remove());
 			try{document.querySelector('.trans-progress-bar').style.display='none'}catch(e){};
-	
+			//加入字幕自帶的其它語言字幕 2025.02.04 add
+			if(unknowLangTotal > 0) {
+				for(var i=1; i<unknowLangTotal; i++) {
+					var btn = document.createElement('button');
+					btn.setAttribute('class', 'roundBtn');
+					btn.setAttribute('lang', 'unknow' + i);
+					btn.innerHTML = '<label>隱藏-' + '預設' + (i+1) + '</label>';
+					btn.setAttribute('onclick', 'displayLang(this)');
+					langGroup.appendChild(btn);
+				}
+			}	
 		}
 		//if(activeIntervalId == null) {
 		//	activeIntervalId = setInterval(activeHandler, activeInterval);

@@ -1791,9 +1791,9 @@ getYTcaptionTracks = async function(url) {
   var captionTracks=null, data=null;
   //var url = 'https://www.youtube.com/watch?v=bKetUdtTw0g';
   var nocache = 'nocache=' + new Date().getTime();
-  url += (/\?/.test(url)?'&':'?') + nocache;    
-  url = 'https://corsproxy.io/?'+encodeURIComponent(url);
+  url += (/\?/.test(url)?'&':'?') + nocache;      
   try {
+    //url = 'https://corsproxy.io/?'+encodeURIComponent(url);
     //var res = await fetch(url);
     //var data = await res.text();
     data = await corsProxy(url);

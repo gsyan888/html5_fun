@@ -502,6 +502,30 @@ u_btoa = function(buffer) {
   }
   return btoa(binary.join(''));
 };
+appsScriptProxy = async function(url, callback) {
+  console.log('try GAS ...');
+  //@ming
+  var proxy = 'https://script.google.com/macros/s/AKfycbz0E5--tUkPStLMDWKHQDqkge0wlYYSN2LczZF44CEGLT1_ytYrHtnf7xLon3cM_lHd/exec';
+  var res = await fetch(proxy + '?url=' + encodeURIComponent(url));
+  //console.log(res);
+  var data = await res.json();
+  //console.log(data['result']);
+  return data['result'];    
+};
+corsProxy = async function(url, callback) {
+  var nocache = 'nocache=' + new Date().getTime();
+  if(!(/nocache=/.test(url))) {
+  	url += (/\?/.test(url)?'&':'?') + nocache;
+  }
+  var data = '';
+  try {
+    res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
+    data = await res.text();
+  }catch(e) {
+    data = ''
+  }
+  return data;
+};
 /**
  * 由網址解析出 Google Drive 檔案的 id
  * @param {String} url 網址
@@ -606,8 +630,12 @@ gdFetchTextFile = async function(url, callback) {
   //-----
   //1.抓取 google drive 分享的檔案, 解析出設定
   try {
-    res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
-    html = await res.text();
+    //res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
+    //html = await res.text();
+    html = await corsProxy(url);
+    if(typeof(html)!='string' || html.replace(/\s/g, '') == '') {
+      html = await appsScriptProxy(url);
+	}
   }catch(e) {
     //-----
     // try again: using https://api.allorigins.win/get?url=
@@ -1766,8 +1794,12 @@ getYTcaptionTracks = async function(url) {
   url += (/\?/.test(url)?'&':'?') + nocache;    
   url = 'https://corsproxy.io/?'+encodeURIComponent(url);
   try {
-    var res = await fetch(url);
-    var data = await res.text();
+    //var res = await fetch(url);
+    //var data = await res.text();
+    data = await corsProxy(url);
+    if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
+      data = await appsScriptProxy(url);
+	}
   }catch(e) {console.log(e);};
   if( data && (match=data.match( /"captionTracks":(\[.*?\])/) ) ) {
     captionTracks =JSON.parse(match[1]);
@@ -1786,8 +1818,12 @@ getYTcaptionByBaseUrl = async function(baseUrl) {
   var nocache = 'nocache=' + new Date().getTime();
   baseUrl += (/\?/.test(baseUrl)?'&':'?') + nocache;  
   try {
-    var res = await fetch('https://corsproxy.io/?'+encodeURIComponent(baseUrl));
-    var data = await res.text();
+    //var res = await fetch('https://corsproxy.io/?'+encodeURIComponent(baseUrl));
+    //var data = await res.text();
+    data = await corsProxy(baseUrl);
+    if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
+      data = await appsScriptProxy(baseUrl);
+	}
   }catch(e) {console.log(e);};
   //console.log(data);
   if(data) {

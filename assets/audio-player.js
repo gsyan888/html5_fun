@@ -967,9 +967,12 @@ function secondsToString(time) {
   formatted = formatted.replace(/\s/g,'');
   return formatted;
 };
-function exportToSrt() {
+function exportToSrt(extStr) {
   var result = '';
   var lines = document.querySelectorAll('.content p');
+  if(typeof(extStr)!='string') {
+    extStr = '';
+  }
   if(lines && lines.length > 0) {
     for(var i=0,n=1; i<lines.length; i++) {
       var p = lines[i];
@@ -991,7 +994,7 @@ function exportToSrt() {
     }
     result = result.replace(/\r/g, '').replace(/\n/g, '\r\n');
     var dataURL = 'data:text/plain;base64,' + base64Encode(result);
-    var filename = getNowDateTimeString() + '.srt';
+    var filename = getNowDateTimeString() + '.srt' + extStr;
     //用連結並以觸發 click 來自動下載圖片
     var anchor = document.createElement('a');	anchor.setAttribute('download', filename);
     anchor.setAttribute('href', dataURL);
@@ -1309,7 +1312,7 @@ updateContent = function(src, filename) {
 	}
 	var mediaURL = '';
 	srtFilename = filename;
-	var labelTotal, t, unknowLangTotal = 0;
+	var labelTotal, t, unknowLang = [];
 	var html = '';
 	if(content && subList && subList.length > 0) {
 		subList.forEach(s=>{
@@ -1325,7 +1328,11 @@ updateContent = function(src, filename) {
 				} else {
 					//如果有第二行，視為另一種語言的, 用 lang-unknow? 的代碼 2025.02.04 add
 					html += '<label class="trans lang-unknow' + labelTotal + '">';
-					unknowLangTotal = Math.max(unknowLangTotal, labelTotal);
+				}
+				if(typeof(unknowLang[labelTotal])=='undefined') {
+					unknowLang[labelTotal] = 0;
+				} else {
+					unknowLang[labelTotal]++;
 				}
 				labelTotal++;
 				html += (/^https:\/\//.test(tt) ? '<a href="'+tt+'" target="_blank">'+tt+'</a>' : tt);
@@ -1340,6 +1347,14 @@ updateContent = function(src, filename) {
 		});
 		content.innerHTML = html;
 		content.scrollTop = 0;
+		if(unknowLang.length > 1) {
+			for(var i=1; i<unknowLang.length; i++) {
+				if(unknowLang[i] < Math.floor(unknowLang[0]/2)) {
+					content.querySelectorAll('.lang-unknow' + i).forEach(e=>e.setAttribute("class", ""));
+					unknowLang[i] = 0;
+				}
+			}
+		}
 		
 		//'camels-04-05.srt'.math(/(.*)\.srt$/)
 		/*
@@ -1391,16 +1406,18 @@ updateContent = function(src, filename) {
 			langGroup.querySelectorAll('button:is([lang])').forEach(e=>e.remove());
 			try{document.querySelector('.trans-progress-bar').style.display='none'}catch(e){};
 			//加入字幕自帶的其它語言字幕 2025.02.04 add
-			if(unknowLangTotal > 0) {
-				for(var i=1; i<unknowLangTotal; i++) {
+			if(unknowLang.length > 1) {
+				for(var i=1; i<unknowLang.length; i++) {
+					if(unknowLang[i] > 0) {
 					var btn = document.createElement('button');
-					btn.setAttribute('class', 'roundBtn');
-					btn.setAttribute('lang', 'unknow' + i);
-					btn.innerHTML = '<label>隱藏-' + '預設' + (i+1) + '</label>';
-					btn.setAttribute('onclick', 'displayLang(this)');
-					langGroup.appendChild(btn);
+						btn.setAttribute('class', 'roundBtn');
+						btn.setAttribute('lang', 'unknow' + i);
+						btn.innerHTML = '<label>隱藏-' + '預設' + (i+1) + '</label>';
+						btn.setAttribute('onclick', 'displayLang(this)');
+						langGroup.appendChild(btn);
+					}
 				}
-			}	
+			}
 		}
 		//if(activeIntervalId == null) {
 		//	activeIntervalId = setInterval(activeHandler, activeInterval);

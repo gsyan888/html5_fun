@@ -2,7 +2,7 @@
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
  * - update 2022.11.06 21:21:00 
- * - update 2023.05.16 22:30:00
+ * - update 2025.02.07 14:53:00
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -125,7 +125,8 @@ var moduleScripts = {
   },
   "stroke_parts": {
     src:"https://gsyan888.github.io/html5_fun/html5_stroke_parts/stroke_parts.js",
-    "name": "筆順練習"
+    "name": "筆順練習",
+	style: 'color:#000000;background:#99cc33;background:-webkit-gradient(radial, 50% 50%, 10, 50% 50%, 850, from(#93d81e), to(#2f5c1b), color-stop(.6,#99cc33));background:-moz-radial-gradient(center 45deg, circle farthest-side, #93d81e 0%, #99cc33 60%, #2f5c1b 100%);'
   },
 };
 

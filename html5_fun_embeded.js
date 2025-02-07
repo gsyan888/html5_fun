@@ -123,7 +123,7 @@ var moduleScripts = {
     src:"https://gsyan888.github.io/html5_fun/html5_math/math.whiteboard.js",
     "name": "數學小白板"
   },
-  "stroke_part": {
+  "stroke_parts": {
     src:"https://gsyan888.github.io/html5_fun/html5_stroke_parts/stroke_parts.js",
     "name": "筆順練習"
   },

@@ -514,9 +514,9 @@ appsScriptProxy = async function(url, callback) {
 };
 corsProxy = async function(url, callback) {
   var nocache = 'nocache=' + new Date().getTime();
-  if(!(/nocache=/.test(url))) {
-  	url += (/\?/.test(url)?'&':'?') + nocache;
-  }
+  //if(!(/nocache=/.test(url))) {
+  //	url += (/\?/.test(url)?'&':'?') + nocache;
+  //}
   var data = '';
   try {
     res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
@@ -1130,6 +1130,8 @@ updateYTurl = async function(subtitleDisableDefault) {
         var captionTracks = await getYTcaptionTracks(ytUrl);
         console.log(captionTracks);
         if(captionTracks) {
+          var isTranslatable = false;
+		  var transUrl = '';
           var html = '<label>字幕語言: </label>';
           html += '<select id="subtitle">';
 		  var option = '';
@@ -1137,19 +1139,26 @@ updateYTurl = async function(subtitleDisableDefault) {
             option += '<option value="' + captionTracks[i]['baseUrl'] + '">';
             option += captionTracks[i]['name']['simpleText'];
             option += '</option>';
+			if(!isTranslatable && captionTracks[i]['isTranslatable']) {
+			  isTranslatable = captionTracks[i]['isTranslatable'];
+			}
           }
 		  if(option != '') {
 			var selected = (subtitleDisableDefault!=null? 'selected="selected"' : '');
-			option += '<option value="不使用"' + selected + '>XXX 不使用 XXX</option>';
+			//option += '<option value="不使用"' + selected + '>XXX 不使用 XXX</option>';
+			html += '<option value="不使用"' + selected + '>XXX 不使用 XXX</option>';
 		  }
           html += option;
           html += '</select>';
-          if(captionTracks.length > 1) {
+          if(captionTracks.length > 1) {		    
             html += '<br>';
             html += '<label>第二字幕: </label>';
             html += '<select id="subtitle2">';
             html += '<option value="">XXX 不使用 XXX</option>';
             html += option;
+			if(!/中文/.test(option) && isTranslatable) {
+              html += '<option value="https://自動翻譯中文">自動翻譯中文</option>';
+			}
             html += '</select>';
           }
         } else {
@@ -1173,7 +1182,13 @@ updateYTurl = async function(subtitleDisableDefault) {
           if(lang2 && lang2.value!='') {
             ccLang2 = gup('lang', lang2.value);
 			if(/https:/i.test(lang2.value)) {
-              var srt2 = await getYTcaptionByBaseUrl(lang2.value);
+              if(lang2.value == 'https://自動翻譯中文' && /https:/i.test(lang.value)) {
+                //以第一字幕的網址改為自動翻譯中文的網址
+                var srt2 = await getYTcaptionByBaseUrl(lang.value + '&tlang=zh-TW');
+              } else {
+                //擷取一般自選的第二字幕
+                var srt2 = await getYTcaptionByBaseUrl(lang2.value);
+              }
               //console.log(srt2);
               //var langName = lang2.options[lang2.selectedIndex].textContent;
               appendSrt2(srt2, ccLang2);
@@ -1787,26 +1802,39 @@ parseYoutubeURL = function(url){
     }
     return false;
 };
+/**
+ * 由 YouTube 影片的頁面中解析出字幕的網址
+ * @param {string} url YT 影片的網址
+ * @retrun {object}
+ */
 getYTcaptionTracks = async function(url) {
   var captionTracks=null, data=null;
+  url += '&app=desktop&hl=zh-TW'; //加上 app 指定用電腦版還是行動版, lh 指定頁面的語言
   //var url = 'https://www.youtube.com/watch?v=bKetUdtTw0g';
-  var nocache = 'nocache=' + new Date().getTime();
-  url += (/\?/.test(url)?'&':'?') + nocache;      
+  //var nocache = 'nocache=' + new Date().getTime();
+  //url += (/\?/.test(url)?'&':'?') + nocache;      
   try {
     //url = 'https://corsproxy.io/?'+encodeURIComponent(url);
     //var res = await fetch(url);
     //var data = await res.text();
     data = await corsProxy(url);
-    if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
+	//console.log(data);
+    //if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
+	if(typeof(data)!='string' || !data.match( /"captionTracks":(\[.*?\])/) ) {
       data = await appsScriptProxy(url);
+	  //console.log(data);
 	}
   }catch(e) {console.log(e);};
   if( data && (match=data.match( /"captionTracks":(\[.*?\])/) ) ) {
-    captionTracks =JSON.parse(match[1]);
+	//console.log(match);
+	try {
+		captionTracks =JSON.parse(match[1]);
+	}catch(e) {console.log(e);};
   }
   return captionTracks;
 };
 getYTcaptionByBaseUrl = async function(baseUrl) {
+  //自動翻譯為中文就加上 &tlang=zh-TW
   var srt = [];
   var appendSub = function(start, dur, txt) {
 	txt = txt.replace(/\n/g, ' ');

@@ -1152,7 +1152,8 @@ updateYTurl = async function(subtitleDisableDefault) {
 		  }
           html += option;
           html += '</select>';
-          if(captionTracks.length > 1) {		    
+          //if(captionTracks.length > 1) {		    
+          if(captionTracks.length > 1 || (captionTracks.length == 1 && isTranslatable)) {		    
             html += '<br>';
             html += '<label>第二字幕: </label>';
             html += '<select id="subtitle2">';
@@ -1186,7 +1187,17 @@ updateYTurl = async function(subtitleDisableDefault) {
 			if(/https:/i.test(lang2.value)) {
               if(lang2.value.indexOf('https://自動翻譯中文')>=0 && /https:/i.test(lang.value)) {
                 //以第一字幕的網址改為自動翻譯中文的網址
-                var srt2 = await getYTcaptionByBaseUrl(lang.value + '&tlang=zh-TW');
+                if(gup('kind', lang.value)=='asr' && OpenCC) {
+                  //自動產生的字幕必須先用簡中取得, 再轉繁中(YT 的 bug 替代方案)
+                  var srt2 = await getYTcaptionByBaseUrl(lang.value+ '&tlang=zh-Hans');
+			      var converter = OpenCC.Converter({ from: 'cn', to: 'twp' });
+			      for(var i=0; i<srt.length; i++) {
+				      srt2[i]['text'] = converter(srt2[i]['text']);
+			      }
+                } else {
+                  //如果是作者上載的字幕, 沒有 bug, 可以直接自動翻譯為繁中
+                  var srt2 = await getYTcaptionByBaseUrl(lang.value + '&tlang=zh-TW');
+                }
               } else {
                 //擷取一般自選的第二字幕
                 var srt2 = await getYTcaptionByBaseUrl(lang2.value);

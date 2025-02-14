@@ -504,6 +504,8 @@ u_btoa = function(buffer) {
 };
 appsScriptProxy = async function(url, callback) {
   console.log('try GAS ...');
+  //等候的時間會較久, 顯示一下訊息
+  showFadeOutMessage(null, '<center>查詢資料中，請稍候</center>', 0, '10%', 3);
   //@ming
   var proxy = 'https://script.google.com/macros/s/AKfycbz0E5--tUkPStLMDWKHQDqkge0wlYYSN2LczZF44CEGLT1_ytYrHtnf7xLon3cM_lHd/exec';
   var res = await fetch(proxy + '?url=' + encodeURIComponent(url));
@@ -1157,7 +1159,7 @@ updateYTurl = async function(subtitleDisableDefault) {
             html += '<option value="">XXX 不使用 XXX</option>';
             html += option;
 			if(!/中文/.test(option) && isTranslatable) {
-              html += '<option value="https://自動翻譯中文">自動翻譯中文</option>';
+              html += '<option value="https://自動翻譯中文?lang=中譯">自動翻譯中文</option>';
 			}
             html += '</select>';
           }
@@ -1182,7 +1184,7 @@ updateYTurl = async function(subtitleDisableDefault) {
           if(lang2 && lang2.value!='') {
             ccLang2 = gup('lang', lang2.value);
 			if(/https:/i.test(lang2.value)) {
-              if(lang2.value == 'https://自動翻譯中文' && /https:/i.test(lang.value)) {
+              if(lang2.value.indexOf('https://自動翻譯中文')>=0 && /https:/i.test(lang.value)) {
                 //以第一字幕的網址改為自動翻譯中文的網址
                 var srt2 = await getYTcaptionByBaseUrl(lang.value + '&tlang=zh-TW');
               } else {
@@ -1820,7 +1822,7 @@ getYTcaptionTracks = async function(url) {
     data = await corsProxy(url);
 	//console.log(data);
     //if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
-	if(typeof(data)!='string' || !data.match( /"captionTracks":(\[.*?\])/) ) {
+	if(typeof(data)!='string' || !data.match( /"captionTracks":(\[.*?\])/) ) {	
       data = await appsScriptProxy(url);
 	  //console.log(data);
 	}
@@ -1848,7 +1850,7 @@ getYTcaptionByBaseUrl = async function(baseUrl) {
   try {
     //var res = await fetch('https://corsproxy.io/?'+encodeURIComponent(baseUrl));
     //var data = await res.text();
-    data = await corsProxy(baseUrl);
+    data = await corsProxy(baseUrl);	
     if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
       data = await appsScriptProxy(baseUrl);
 	}

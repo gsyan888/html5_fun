@@ -96,6 +96,15 @@ menu_items = [
 	, ""
 	],
 	
+	[ "填字遊戲"
+	, "Crossword Puzzle 填字遊戲"
+	, "html5_crossword/assets/icon.png"
+	, "html5_crossword/html5_crossword.html"
+	, "archives/html5_crossword.zip"
+	, "https://gsyan888.blogspot.com/2023/05/html5-crossword.html"
+	, "crossword"
+	],
+		
 	[ "青蛙過河"
 	, "Frog 青蛙過河"
 	, "html5_frog/assets/icon.png"
@@ -105,42 +114,6 @@ menu_items = [
 	, "frog"
 	],
 	
-	[ "幾A幾B"
-	, "AB Game 幾A幾B猜謎遊戲"
-	, "html5_ab_game/assets/icon.png"
-	, "html5_ab_game/html5_ab_game.html"
-	, ""
-	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
-	, ""
-	],
-	
-	[ "我說你猜"
-	, "比手畫腳，比一比猜一猜"
-	, "html5_charades/assets/icon.png"
-	, "html5_charades/html5_charades.html"
-	, "archives/html5_charades.zip"
-	, "https://gsyan888.blogspot.com/2022/11/html5-charades.html"
-	, "charades"
-	],
-
-	[ "Speaking"
-	, "HTML5 Speaking"
-	, "html5_speaking/assets/icon.png"
-	, "html5_speaking/html5_speaking.html"
-	, "archives/html5_speaking.zip"
-	, "https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
-	, "speaking"
-	],
-	
-	[ "足球高手"
-	, ""
-	, "html5_football/assets/icon.png"
-	, "html5_football/html5_football.html"
-	, "archives/html5_football.zip"
-	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
-	, "football"
-	],
-
 	[ "投籃高手"
 	, ""
 	, "html5_basketball/assets/icon.png"
@@ -148,6 +121,15 @@ menu_items = [
 	, "archives/html5_basketball.zip"
 	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
 	, "basketball"
+	],
+
+	[ "足球高手"
+	, ""
+	, "html5_football/assets/icon.png"
+	, "html5_football/html5_football.html"
+	, "archives/html5_football.zip"
+	, "https://gsyan888.blogspot.com/2023/05/html5-football-and-basketball.html"
+	, "football"
 	],
 
 	[ "王牌投手"
@@ -159,15 +141,15 @@ menu_items = [
 	, "baseball"
 	],
 
-	[ "填字遊戲"
-	, "Crossword Puzzle 填字遊戲"
-	, "html5_crossword/assets/icon.png"
-	, "html5_crossword/html5_crossword.html"
-	, "archives/html5_crossword.zip"
-	, "https://gsyan888.blogspot.com/2023/05/html5-crossword.html"
-	, "crossword"
+	[ "幾A幾B"
+	, "AB Game 幾A幾B猜謎遊戲"
+	, "html5_ab_game/assets/icon.png"
+	, "html5_ab_game/html5_ab_game.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2022/02/html5-ab-game.html"
+	, ""
 	],
-		
+	
 	[ "English1200"
 	, ""
 	, "html5_english1200/assets/icon.png"
@@ -222,7 +204,25 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2017/10/html5-bingo.html"
 	, "bingo"
 	],
-
+	
+	[ "Audio Player"
+	, "字幕+影音播放器"
+	, "assets/icon-audio-player.png"
+	, "https://gsyan888.blogspot.com/2024/07/html5-fun-audio-player.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2024/07/html5-fun-audio-player.html"
+	, ""
+	],
+	
+	[ "English800"
+	, "English800句記7000個單字"
+	, "assets/icon-eng800.png"
+	, "https://gsyan888.blogspot.com/2024/08/html5-fun-english800.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2024/08/html5-fun-english800.html"
+	, ""
+	],
+	
 	[ "大家一起來"
 	, ""
 	, "html5_card_flip/assets/icon.png"
@@ -241,6 +241,42 @@ menu_items = [
 	, "phonetics_quiz"
 	],
 
+	[ "重組遊戲"
+	, "UNSCRAMBLE"
+	, "html5_unscramble/assets/icon.png"
+	, "html5_unscramble/html5_unscramble.html"
+	, "archives/html5_unscramble.zip"
+	, "https://gsyan888.blogspot.com/2019/04/html5-unscramble.html"
+	, "unscramble"
+	],
+	
+	[ "對對碰"
+	, ""
+	, "html5_match/assets/icon.png"
+	, "html5_match/html5_match.html"
+	, "archives/html5_match.zip"
+	, "https://gsyan888.blogspot.com/2021/06/html5-match.html"
+	, "match"
+	],
+	
+	[ "我說你猜"
+	, "比手畫腳，比一比猜一猜"
+	, "html5_charades/assets/icon.png"
+	, "html5_charades/html5_charades.html"
+	, "archives/html5_charades.zip"
+	, "https://gsyan888.blogspot.com/2022/11/html5-charades.html"
+	, "charades"
+	],
+
+	[ "Speaking"
+	, "HTML5 Speaking"
+	, "html5_speaking/assets/icon.png"
+	, "html5_speaking/html5_speaking.html"
+	, "archives/html5_speaking.zip"
+	, "https://gsyan888.blogspot.com/2022/09/html5-speaking.html"
+	, "speaking"
+	],
+	
 	[ "英文單字高手"
 	, "英文單字拼寫練習"
 	, "html5_spelling/assets/icon.png"
@@ -259,37 +295,6 @@ menu_items = [
 	, "listening"
 	],
 
-
-	[ "Audio Player"
-	, "字幕+影音播放器"
-	, "assets/icon-audio-player.png"
-	, "https://gsyan888.blogspot.com/2024/07/html5-fun-audio-player.html"
-	, ""
-	, "https://gsyan888.blogspot.com/2024/07/html5-fun-audio-player.html"
-	, ""
-	],
-	
-
-	[ "English800"
-	, "English800句記7000個單字"
-	, "assets/icon-eng800.png"
-	, "https://gsyan888.blogspot.com/2024/08/html5-fun-english800.html"
-	, ""
-	, "https://gsyan888.blogspot.com/2024/08/html5-fun-english800.html"
-	, ""
-	],
-	
-
-	[ "重組遊戲"
-	, "UNSCRAMBLE"
-	, "html5_unscramble/assets/icon.png"
-	, "html5_unscramble/html5_unscramble.html"
-	, "archives/html5_unscramble.zip"
-	, "https://gsyan888.blogspot.com/2019/04/html5-unscramble.html"
-	, "unscramble"
-	],
-	
-
 	[ "TPET造句靈感產生器"
 	, "翻卡即時創作"
 	, "html5_sentence/assets/icon.png"
@@ -299,15 +304,6 @@ menu_items = [
 	, "sentence"
 	],
 	
-	[ "對對碰"
-	, ""
-	, "html5_match/assets/icon.png"
-	, "html5_match/html5_match.html"
-	, "archives/html5_match.zip"
-	, "https://gsyan888.blogspot.com/2021/06/html5-match.html"
-	, "match"
-	],
-
 	[ "戳戳樂"
 	, "戳戳樂、洞洞樂、抽抽看"
 	, "html5_poke/assets/icon.png"

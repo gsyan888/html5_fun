@@ -146,6 +146,7 @@ questionLines = function(){/*--這一行請勿更改--
 
 -----*/}.toString().replace(/\r/g,"").slice("function(){/*--這一行請勿更改--".length+1,-9);
 
+questionLines = questionLines.replace(/[#~]/g, ''); //遊戲啟動器可能誤加了分隔符號, 全部去掉
 
 /******************************************************************
  以下為程式碼, 不要更動

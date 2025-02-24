@@ -2,7 +2,7 @@
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
  * - update 2022.11.06 21:21:00 
- * - update 2025.02.07 14:53:00
+ * - update 2025.02.25 01:23:00
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -430,7 +430,9 @@ removeHTML5FunEmbeded = function() {
   try {
 	removeChild(HTML5FunWrapper);
   } catch(error) {  console.log(error);  };
-  HTML5FunWrapper.remove();
+  try {  
+    HTML5FunWrapper.remove();
+  } catch(error) {  console.log(error);  };
   HTML5FunEmbeded = null;
   HTML5FunWrapper = null;
   console.log('remove all elements');

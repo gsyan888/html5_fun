@@ -241,7 +241,7 @@ loadExternalScript = function(scriptSrc, callback)  {
 };
 
 set__scale=function(s){
-  for(var i=3; i<=10; i++) {
+  for(var i=3; i<=20; i++) {
     try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
   }
 }
@@ -380,7 +380,9 @@ gameStart = function() {
 //
 //關閉遊戲的畫面
 closeApp = function(e) {
-  e.preventDefault();
+  try {
+    e.preventDefault();
+  } catch(error) {  };
   //移除右上角的關閉按鈕
   try {
 	document.getElementById('closeBtn').remove();

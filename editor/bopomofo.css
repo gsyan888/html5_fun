@@ -3,12 +3,13 @@
 }
 #logo {
   position: absolute;
-  left: 5px;
-  top: 5px;
+  left: -25px;
+  top: 0px;
   display: block;
   height: 50px;
   width: 50px;
-  border-radius: 0.25em;
+  border-radius: 50%;
+  background-color: white;
 }		
 .BoPoMoFoWrapper {
  text-align: center;
@@ -18,8 +19,8 @@
 }
 .stage {
   border:dashed orange 1px;
-  border-radius:3em;
-  margin: 0.5em 1.5em;
+  border-radius:1.5em;
+  margin: 0.5em 0em;
   padding: 1em 0.125em;
   padding-bottom: 2em;
 }

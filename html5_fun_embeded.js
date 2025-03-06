@@ -2,7 +2,7 @@
  * @fileoverview
  * - HTML5 FUN embeded 用的載入工具
  * - update 2022.11.06 21:21:00 
- * - update 2025.02.25 01:23:00
+ * - update 2025.03.06 14:35:00
  * 
  * @author gsyan 顏國雄
  * @see <a href="https://gsyan888.blogspot.com/" target="_blank">https://gsyan888.blogspot.com/</a>
@@ -277,7 +277,7 @@ injection = function() {
   const id = {HTML5FunWrapper:'HTML5FunWrapper', HTML5FunEmbeded:'HTML5FunEmbeded'};
 
   //先檢查模組是否存在
-  if(HTML5FunScript==null) {
+  if(typeof(HTML5FunScript)=='undefined' || HTML5FunScript==null) {
 	console.log('HTML5FunScript not found.');
 	return false;
   }
@@ -451,14 +451,14 @@ removeHTML5FunEmbeded = function() {
 //在畫面 playButton 新增一個 PLAY 的按鈕
 createPlayButton = function() {
   //先檢查模組是否存在	
-  if(HTML5FunScript==null) {
+  if(typeof(HTML5FunScript)=='undefined' || HTML5FunScript==null) {
 	console.log('HTML5FunScript not found.');
 	alert('HTML5FunScript not found.');
 	return false;
   }
   //新增按鈕
   var playButton = document.getElementById('playButton');
-  if(typeof(playButton)=='undefined' || playButton==null) {
+  if(typeof(playButton) == 'undefined' || playButton == null) {
     var playButton = document.createElement('div');
 	playButton.id = 'playButton';
 	var settingJS = document.getElementById("settingJS");

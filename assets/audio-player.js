@@ -241,7 +241,9 @@ bingTransInit = async function() {
     clearTimeout(timeoutId);
     //var cookie = await res.headers.get('Set-cookie')
     //console.log(cookie)
-    html = await res.text();
+    if(res && res.status == 200) {
+      html = await res.text();
+    }
     //console.log(html)
   } catch(e) {
     html = '';
@@ -279,7 +281,9 @@ bingTranslate = async function(text, from='en', to='zh-Hant') {
       headers: headers,
       body: payload
     });
-    data = await res.json();
+	if(res && res.status == 200) {
+      data = await res.json();
+    }
   }catch(e) {
     data = null;
   }
@@ -510,19 +514,26 @@ appsScriptProxy = async function(url, callback) {
   var proxy = 'https://script.google.com/macros/s/AKfycbz0E5--tUkPStLMDWKHQDqkge0wlYYSN2LczZF44CEGLT1_ytYrHtnf7xLon3cM_lHd/exec';
   var res = await fetch(proxy + '?url=' + encodeURIComponent(url));
   //console.log(res);
-  var data = await res.json();
-  //console.log(data['result']);
-  return data['result'];    
+  if(res && res.status == 200) {
+    var data = await res.json();
+    //console.log(data['result']);
+    return data['result'];    
+  } else {
+    return '';
+  }
 };
 corsProxy = async function(url, callback) {
   var nocache = 'nocache=' + new Date().getTime();
   //if(!(/nocache=/.test(url))) {
   //	url += (/\?/.test(url)?'&':'?') + nocache;
   //}
+  var res;
   var data = '';
   try {
     res = await fetch('https://corsproxy.io/?'+encodeURIComponent(url));
-    data = await res.text();
+	if(res && res.status == 200) {
+      data = await res.text();
+	}
   }catch(e) {
     data = ''
   }
@@ -644,12 +655,16 @@ gdFetchTextFile = async function(url, callback) {
     //-----		
     try {
       res = await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url));
-      html = await res.json()['contents'];
+	  if(res && res.status == 200) {
+        html = await res.json()['contents'];
+	  } else {
+	    html = '';
+	  }
     }catch(e) {
       html = '';
     }
   }
-  if(html.replace(/\s/g, '')!='') {
+  if(typeof(html)=='string' && html.replace(/\s/g, '')!='') {
     var itemJson = gdFileShareParse(html, true);
     if(itemJson) {
       if(itemJson.url_9) {
@@ -685,11 +700,15 @@ gdFetchTextFile = async function(url, callback) {
         //console.log(url);
         try {
           res = await fetch(url);
-          if( /^text/.test(page) ) {
-            data = await res.text();
-            data = JSON.parse(data.replace(/^[^{]+/, ''))['data'];
+          if(res && res.status == 200) {
+            if( /^text/.test(page) ) {
+              data = await res.text();
+              data = JSON.parse(data.replace(/^[^{]+/, ''))['data'];
+            } else {
+              data = await res.blob();
+            }
           } else {
-            data = await res.blob();
+            data = '';
           }
         } catch(e) {
           data = '';
@@ -721,9 +740,13 @@ gdFetchTextFile = async function(url, callback) {
       try {
         //res = await fetch(url, header);
         res = await fetch(url);
-        data = await res.json();	
-        data = data['contents'];
-        if( /^data:text/i.test(data) || (itemJson.filename && /\.(txt|js|srt|gpx|html|vtt|xml|json)/i.test(itemJson.filename)) ) {
+        if(res && res.status == 200) {
+          data = await res.json();	
+          data = data['contents'];
+        } else {
+          data = '';
+        }
+        if(typeof(data)=='string' && /^data:text/i.test(data) || (itemJson.filename && /\.(txt|js|srt|gpx|html|vtt|xml|json)/i.test(itemJson.filename)) ) {
           console.log('base64 decoe:\n=============\n');
           data = base64Decode(data);
         }

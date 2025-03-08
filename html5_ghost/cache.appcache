@@ -3,7 +3,7 @@ CACHE MANIFEST
 #----------------------------------------------
 # 下面這一行不要移除，有修改資料，記得把時間改一下
 #----------------------------------------------
-# Updated on: 2023-08-07 12:37:00
+# Updated on: 2025-03-08 11:36:00
 #
 
 #----------------------------------------------
@@ -33,6 +33,7 @@ ghost_menu_set.js
 sound.js
 injection-speech.js
 
+assets/bopomofo.woff
 assets/menu_icon.png
 assets/background.png
 assets/ghost-1.png

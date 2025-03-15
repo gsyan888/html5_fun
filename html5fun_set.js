@@ -96,13 +96,13 @@ menu_items = [
 	, ""
 	],
 	
-	[ "填字遊戲"
-	, "Crossword Puzzle 填字遊戲"
-	, "html5_crossword/assets/icon.png"
-	, "html5_crossword/html5_crossword.html"
-	, "archives/html5_crossword.zip"
-	, "https://gsyan888.blogspot.com/2023/05/html5-crossword.html"
-	, "crossword"
+	[ "Zlizer加減高手"
+	, "LimeJS Zlizer"
+	, "limejs_demos/zlizer/assets/icon.png"
+	, "https://gsyan888.blogspot.com/2025/03/html5-zlizer.html?autostart=1"
+	, ""
+	, "https://gsyan888.blogspot.com/2025/03/html5-zlizer.html"
+	, ""
 	],
 		
 	[ "青蛙過河"
@@ -123,6 +123,15 @@ menu_items = [
 	, "basketball"
 	],
 
+	[ "填字遊戲"
+	, "Crossword Puzzle 填字遊戲"
+	, "html5_crossword/assets/icon.png"
+	, "html5_crossword/html5_crossword.html"
+	, "archives/html5_crossword.zip"
+	, "https://gsyan888.blogspot.com/2023/05/html5-crossword.html"
+	, "crossword"
+	],
+		
 	[ "足球高手"
 	, ""
 	, "html5_football/assets/icon.png"

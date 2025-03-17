@@ -124,6 +124,7 @@ zlizer.loadMenuScene = function(opt_transition) {
        }
 
     var lbl_levels = new lime.Label().setText((zlizer.isZh?'選擇關卡':'Pick level:').toUpperCase()).setFontSize(30).setAnchorPoint(.5, 0).setPosition(0, 0).setFontColor('#fff');
+	lbl_levels.getDeepestDomElement().style['white-space'] = 'nowrap';
     levels.appendChild(lbl_levels);
 
     var btns_layer = new lime.Layer().setPosition(-250, 110);
@@ -165,6 +166,7 @@ zlizer.loadGame = function(level) {
 zlizer.builtWithLime = function(scene) {
     var lm = new lime.Sprite().setFill(zlizer.assetsBase + 'assets/lime.png');
     var txt = new lime.Label().setText('Built with').setFontColor('#fff').setFontSize(24).setPosition(550, 950);
+	txt.getDeepestDomElement().style['white-space'] = 'nowrap';
     var btn = new lime.Button(lm).setScale(.3).setPosition(670, 950);
     goog.events.listen(btn, 'click', function() {
         goog.global['location']['href'] = 'https://github.com/digitalfruit/limejs';

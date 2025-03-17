@@ -10,6 +10,7 @@ zlizer.dialogs.box1 = function() {
     var b = zlizer.dialogs.blank();
 
     var txt = new lime.Label().setText(zlizer.isZh?'遊戲說明':'Tutorial').setFontSize(40).setPosition(0, 70);
+	txt.getDeepestDomElement().style['white-space'] = 'nowrap';
     b.appendChild(txt);
 
     var descr = new lime.Label().setText(zlizer.isZh?'將泡泡分解或合併多個泡泡，落地之前，\n使泡泡數字能和右上角的目標數字一樣。':'Divide and add bubbles with different numeric values to get them to equal magical value before they fall to the ground.').setMultiline(true).setSize(450, 50).setPosition(0, 130).setFontSize(24).setFontColor('#333');
@@ -47,6 +48,7 @@ zlizer.dialogs.box2 = function() {
     var b = zlizer.dialogs.blank();
 
     var txt = new lime.Label().setText(zlizer.isZh?'遊戲說明':'Tutorial').setFontSize(40).setPosition(0, 70);
+	txt.getDeepestDomElement().style['white-space'] = 'nowrap';
     b.appendChild(txt);
 
     var descr = new lime.Label().setText(zlizer.isZh?'如果是使用滑鼠或觸控板，\n按鍵盤的 Z 鍵，等同滑鼠的左鍵。':'If you are using mouse or trackpad you may find it easier to hold down key Z for making a selection instead of pressing on mouse.').setMultiline(true).setSize(450, 50).setPosition(0, 130).setFontSize(24).setFontColor('#333');
@@ -76,6 +78,7 @@ zlizer.dialogs.box3 = function(game) {
       b.appendChild(txt);
 
       var descr = new lime.Label().setText(zlizer.isZh?'本關要挑戰的數字是:':'This is your magic number for this level:').setSize(450, 50).setPosition(0, 130).setFontSize(24).setFontColor('#333');
+	  descr.getDeepestDomElement().style['white-space'] = 'nowrap';
       b.appendChild(descr);
 
       var tutorial1 = new lime.Sprite().setFill(zlizer.assetsBase + 'assets/dialog_number.jpg').setPosition(0, 320);

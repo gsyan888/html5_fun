@@ -56,6 +56,7 @@ zlizer.Game = function(level) {
 		.setSize(380, 90).setAlign('right').setPosition(750, 15)
         .setFontSize(70);
     this.appendChild(this.lblScore);
+	this.lblScore.getDeepestDomElement().style['white-space'] = 'nowrap';
 
     this.progress = new zlizer.Progress().setProgress(.5).setPosition(20, 50);
     this.appendChild(this.progress);
@@ -321,6 +322,7 @@ zlizer.Game.prototype.upHandler_ = function(touch,e) {
 
 zlizer.Game.prototype.startup = function() {
     var title = new lime.Label().setText(zlizer.isZh?'遊戲即將開始':'Your game is about to start').setFontSize(52).setPosition(0, 0);
+	title.getDeepestDomElement().style['white-space'] = 'nowrap';
     this.cover.appendChild(title);
     var show = new lime.animation.MoveBy(0, 200).setDuration(1.5);
     title.runAction(show);
@@ -406,6 +408,7 @@ zlizer.Game.prototype.removeBubble = function(b) {
     var lbl = new lime.Label().setText('-' + b.value).setFontColor('#c00').setFontSize(40)
         .setOpacity(1).setPosition(b.getPosition()).setFontWeight(700);
     this.appendChild(lbl);
+	lbl.getDeepestDomElement().style['white-space'] = 'nowrap';
     var show = new lime.animation.Spawn(
       new lime.animation.MoveBy(0, -60),
       new lime.animation.FadeTo(0),
@@ -441,6 +444,7 @@ zlizer.Game.prototype.returnPoints = function(b) {
       var lbl = new lime.Label().setText('+' + b.value).setFontColor('#060').setFontSize(40)
           .setOpacity(0.5).setPosition(b.getPosition().clone()).setFontWeight(700);
       this.appendChild(lbl);
+	  lbl.getDeepestDomElement().style['white-space'] = 'nowrap';
       var show = new lime.animation.Spawn(
         new lime.animation.MoveBy(0, -60),
         new lime.animation.FadeTo(0),

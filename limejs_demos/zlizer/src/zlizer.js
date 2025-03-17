@@ -35,9 +35,7 @@ zlizer.soundBubble = null;
 
 zlizer.isZh = /^zh/i.test(navigator.language); //for label locale to Chinese 
 zlizer.gameWrapper = document.querySelector('#gameWrapper');
-if(!zlizer.gameWrapper) {
-	zlizer.gameWrapper = document.body;
-}
+
 zlizer.assetsBase = '';
 if(typeof(assetsBase)=='string' && assetsBase.replace(/\s/g, '')!='') {
 	zlizer.assetsBase = assetsBase;
@@ -47,7 +45,7 @@ if(typeof(assetsBase)=='string' && assetsBase.replace(/\s/g, '')!='') {
 zlizer.start = function() {
 
     //zlizer.director = new lime.Director(document.body, zlizer.WIDTH, zlizer.HEIGHT);
-	zlizer.director = new lime.Director(zlizer.gameWrapper, zlizer.WIDTH, zlizer.HEIGHT);
+	zlizer.director = new lime.Director((!zlizer.gameWrapper?document.body:zlizer.gameWrapper), zlizer.WIDTH, zlizer.HEIGHT);
     zlizer.director.makeMobileWebAppCapable();
 
     lime.Label.defaultFont = 'Impact';
@@ -77,6 +75,12 @@ zlizer.loadMenuScene = function(opt_transition) {
 
     var layer = new lime.Layer().setPosition(zlizer.WIDTH * .5, 0);
     scene.appendChild(layer);
+
+	var credit = new lime.Label().setText('Power by LimeJS v.2025.03.17')
+							.setFontSize(18).setFontFamily('Arial, sans-serif')
+							.setFontColor('#ffffff').setPosition(0, zlizer.HEIGHT-18);
+	credit.getDeepestDomElement().style['white-space'] = 'nowrap';
+	layer.appendChild(credit);
 
     var title = new lime.Sprite().setFill(zlizer.assetsBase + 'assets/main_title.png').setPosition(0, 250);
     layer.appendChild(title);

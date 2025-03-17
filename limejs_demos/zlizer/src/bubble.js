@@ -17,6 +17,7 @@ zlizer.Bubble = function(value) {
     this.appendChild(this.circle);
 
     this.lbl = new lime.Label().setText(value).setFontSize(34).setFontColor('#fff').setFontWeight(700).setFontFamily('Impact');
+	this.lbl.getDeepestDomElement().style['white-space'] = 'nowrap';
     this.appendChild(this.lbl);
 
     this.GRAVITY = 2.5;

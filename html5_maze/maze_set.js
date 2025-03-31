@@ -11,7 +11,7 @@ maze_set_loaded_test = true;
 //是否使用下一題來當錯的選項
 //  true: 用下一題, false: 用同一題
 //------------------------------
-maze_mix_with_next_one = true;
+maze_mix_with_next_one = false;
 
 //------------------------------
 //音效 base64 encode (多個音效合併在一個檔案中)

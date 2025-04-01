@@ -105,6 +105,15 @@ menu_items = [
 	, ""
 	],
 		
+	[ "文字迷宮"
+	, "Maze 文字迷宮"
+	, "html5_maze/assets/icon.png"
+	, "https://gsyan888.blogspot.com/2025/04/html5-maze.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2025/04/html5-maze.html"
+	, "maze"
+	],
+	
 	[ "青蛙過河"
 	, "Frog 青蛙過河"
 	, "html5_frog/assets/icon.png"

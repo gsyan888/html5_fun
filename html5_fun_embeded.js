@@ -128,6 +128,11 @@ var moduleScripts = {
     "name": "筆順練習",
 	style: 'color:#000000;background:#99cc33;background:-webkit-gradient(radial, 50% 50%, 10, 50% 50%, 850, from(#93d81e), to(#2f5c1b), color-stop(.6,#99cc33));background:-moz-radial-gradient(center 45deg, circle farthest-side, #93d81e 0%, #99cc33 60%, #2f5c1b 100%);'
   },
+  maze: {
+    src:"https://gsyan888.github.io/html5_fun/html5_maze/maze.js",
+    "name": "文字迷宮",
+	style: 'background:linear-gradient(to bottom, #a2d9ff, #cceeff 25%, #e0f7ff 50%, #cceeff 75%, #a2d9ff)'
+  },
 };
 
 

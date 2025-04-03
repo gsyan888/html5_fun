@@ -27,6 +27,11 @@ var editorOptions = {
         "念題目時，TTS語音合成的語言代碼",
         "(例: 英文 <span class=\"btn\" onclick=\"setThisValue(this);\">en-US</span>  、中文 <span class=\"btn\" onclick=\"setThisValue(this);\">zh-TW</span>  、日文 <span class=\"btn\" onclick=\"setThisValue(this);\">ja-JP</span>  、韓文 <span class=\"btn\" onclick=\"setThisValue(this);\">ko-KR</span> <a href=\"https: //cloud.google.com/speech-to-text/docs/languages\" target=\"_blank\">查代碼</a>"
       ],
+
+      "tts_speed": [
+        "text",
+        "語音的播放速度",
+		"大於 0 的數字 (可用小數)"],
 		
       "questionLines": [
         "textarea",

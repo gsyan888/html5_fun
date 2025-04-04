@@ -246,7 +246,7 @@ loadExternalScript = function(scriptSrc, callback)  {
 };
 
 set__scale=function(s){
-  for(var i=3; i<=20; i++) {
+  for(var i=3; i<=30; i++) {
     try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
   }
 }
@@ -399,6 +399,8 @@ closeApp = function(e) {
   if(typeof(callbackAfterClosed)=='function') {
     callbackAfterClosed();
   }
+  
+  try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
 }
 //
 //刪除指定元件內所有的 child nodes

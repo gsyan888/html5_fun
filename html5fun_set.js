@@ -111,7 +111,7 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2025/04/html5-maze.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2025/04/html5-maze.html"
-	, "maze"
+	, "https://gsyan888.blogspot.com/2025/04/html5-maze.html#q_a" //homePage@QA
 	],
 	
 	[ "青蛙過河"

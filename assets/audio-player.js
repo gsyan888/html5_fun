@@ -120,13 +120,14 @@ appendTrans = async function() {
           //}
           ////trans.forEach( t=>result.push(t.replace(/\s*==(\s*-\s*)*==\s*/g, '').trim()) );
 		  //trans.forEach( t=>result.push(t.replace(/\s*☺☺\d+☺☺\s*/g, '').trim()) );
-		  trans = trans.match(/((?:.|\n)*?\s*☺☺\d+☺☺\s*)/g);
-		  trans.forEach( t=> {
-		    var m;
-			if( (m = t.match(/((?:.|\n)*?)\s*☺☺(\d+)☺☺\s*/) ) ) {
-			  result[Number(m[2])] = m[1];
-			}
-		  });
+		  if( (trans = trans.match(/((?:.|\n)*?\s*☺☺\d+☺☺\s*)/g)) ) {
+		    trans.forEach( t=> {
+		      var m;
+			  if( (m = t.match(/((?:.|\n)*?)\s*☺☺(\d+)☺☺\s*/) ) ) {
+			    result[Number(m[2])] = m[1];
+			  }
+		    });
+          }
         }
         //text = subs.trim() + ' ==--== \n';
 		text = subs.trim() + ' ☺☺' + (transTotal++) + '☺☺ \n';

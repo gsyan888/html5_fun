@@ -50,7 +50,10 @@ appendTrans = async function() {
     var result = [];
     var text = '';
 	var langOrigin = 'auto-detect';
+	var fingerPrint = '☺☺☺☺☺';
+	var transTotal = 0;
     for(var i=0; i<srt.length; i++) {
+      //更新進度的百分比數字
       var n = (i+1) * 100 / srt.length;
       updateProgress('.trans-progress-bar', n);
       document.querySelector('.percentage').innerHTML = Math.ceil(n) + '%';
@@ -58,9 +61,10 @@ appendTrans = async function() {
       var subs = srt[i].children[textIsAt].textContent;
       //最多只能翻譯 1000 個字，滿了就翻譯(超過 800字才送出翻譯)
 	  //console.log((text + subs).length);
-      if ( (text + subs).length > 1000-200 || i>=srt.length-1 ) {
+      if ( (text + subs).length > 1000-300 || i>=srt.length-1 ) {
         if( i>=srt.length-1 ) {
-          text += subs.trim() + ' ==--== \n';
+          //text += subs.trim() + ' ==--== \n';
+		  text += subs.trim() + ' ☺☺' + (transTotal++) + '☺☺ \n';		  
         }
 		
 		text = text.replace(/([\"\'])(\s+(and|or))/g, '”$2');  //corsproxy 對引號 and/or過敏 XDDD
@@ -74,16 +78,27 @@ appendTrans = async function() {
         //console.log('--> ',i);
         //如果批次翻譯失敗，就改用一句句
         if(!trans) {
-          var ngList = text.split(/\n/);
-          trans = {'text':''};
-          for(var r=0; r<ngList.length; r++) {
-            if(ngList[r].replace(/\s/g, '')!='') {
-              var t = await bingTranslate(ngList[r], 'auto-detect', lang);
-              console.log(r, '===> ', t);
-              if(t && typeof(t['text'])=='string') {
-                trans['text'] += t['text'] + ' \n';
-              } else {
-                trans['text'] += '?' + ' ==--== \n'; //一句還是失敗者用問號替代
+          var initOk = await bingTransInit();  //試著重抓 cookies
+		  if(!initOk) {
+            transBtn.lock = false;
+            showFadeOutMessage(transBtn, '目前連不上 Bing 翻譯服務', 150, 25, 1.5);
+            return;		    
+		  } else {
+		    trans = await bingTranslate(text, langOrigin, lang);
+		    if(!trans) { //還是不行就分句翻譯
+              var ngList = text.split(/\n/);
+              trans = {'text':''};
+              for(var r=0; r<ngList.length; r++) {
+                if(ngList[r].replace(/\s/g, '')!='') {
+                  var t = await bingTranslate(ngList[r], 'auto-detect', lang);
+                  console.log(r, '===> ', t);
+                  if(t && typeof(t['text'])=='string') {
+                    trans['text'] += t['text'] + ' \n';
+                  } else {
+                    //trans['text'] += '?' + ' ==--== \n'; //一句還是失敗者用問號替代
+				    trans['text'] += '?' + ' ☺☺' + (transTotal++) + '☺☺ \n'; //一句還是失敗者用問號替代				
+                  }
+                }
               }
             }
           }
@@ -94,24 +109,37 @@ appendTrans = async function() {
 		    langOrigin = trans['detectedLanguage'];
 		  }
 		  trans = trans['text'];
-          var t = trans.trim().split(/\n/);
-          if(t.length == text.trim().split(/\s*==-*==\s*/).length-1 ) {
-            trans = t;
-          } else {
-            trans = trans.trim().split(/\s*==-*==\s*/);
-          }
-          trans.forEach( t=>result.push(t.replace(/\s*==(\s*-\s*)*==\s*/g, '').trim()) );
+		  
+          //var t = trans.trim().split(/\n/);
+          ////if(t.length == text.trim().split(/\s*==-*==\s*/).length-1 ) {
+		  //if(t.length == text.trim().split(/\s*☺☺\d+☺☺\s*/).length-1 ) {
+          //  trans = t;
+          //} else {
+          //  //trans = trans.trim().split(/\s*==-*==\s*/);
+		  //trans = trans.trim().split(/\s*☺☺\d+☺☺\s*/);
+          //}
+          ////trans.forEach( t=>result.push(t.replace(/\s*==(\s*-\s*)*==\s*/g, '').trim()) );
+		  //trans.forEach( t=>result.push(t.replace(/\s*☺☺\d+☺☺\s*/g, '').trim()) );
+		  trans = trans.match(/((?:.|\n)*?\s*☺☺\d+☺☺\s*)/g);
+		  trans.forEach( t=> {
+		    var m;
+			if( (m = t.match(/((?:.|\n)*?)\s*☺☺(\d+)☺☺\s*/) ) ) {
+			  result[Number(m[2])] = m[1];
+			}
+		  });
         }
-        text = subs.trim() + ' ==--== \n';
+        //text = subs.trim() + ' ==--== \n';
+		text = subs.trim() + ' ☺☺' + (transTotal++) + '☺☺ \n';
       } else {
-        text += subs.trim() + ' ==--== \n';
+        //text += subs.trim() + ' ==--== \n';
+        text += subs.trim() + ' ☺☺' + (transTotal++) + '☺☺ \n';		
       }
     }
     
     updateProgress('.trans-progress-bar', 100);
     try{document.querySelector('.trans-progress-bar').style.display='none'}catch(e){};
     
-    result = result.filter(t=>t.replace(/\s/g,'')!='');
+    //result = result.filter(t=>t.replace(/\s/g,'')!='');
     var text = '';
     for(var i=0; i<srt.length; i++) {
       var subs = srt[i];
@@ -256,6 +284,7 @@ bingTransInit = async function() {
     bingKey = tokens[1];
     bingToken = tokens[2];
   }
+  return (typeof(bingIG)=='string' && typeof(bingIID)=='string' && typeof(bingKey)=='string' && typeof(bingToken)=='string');
 };
 /**
  * https://www.bing.com/ttranslatev3?isVertical=1&&IG=B5A9CA9E83F7495D9ABE7757267BF0C7&IID=translator.5026
@@ -288,10 +317,18 @@ bingTranslate = async function(text, from='en', to='zh-Hant') {
     data = null;
   }
   if(data && data[0] && data[0]['translations']) {
-    data = {
-		"text": data[0]["translations"][0]["text"], 
-		"detectedLanguage": data[0]["detectedLanguage"]["language"]
-	};
+    try {
+      if(data[0]["detectedLanguage"]) {  
+        data = {
+		  "text": data[0]["translations"][0]["text"], 
+		  "detectedLanguage": data[0]["detectedLanguage"]["language"]
+	    };
+      } else {
+        data = {
+		  "text": data[0]["translations"][0]["text"], 
+	    };
+      }
+    } catch(e) { data = null; };
   }
   return data;
 };
@@ -1209,6 +1246,7 @@ updateYTurl = async function(subtitleDisableDefault) {
             ccLang2 = gup('lang', lang2.value);
 			if(/https:/i.test(lang2.value)) {
               if(lang2.value.indexOf('https://自動翻譯中文')>=0 && /https:/i.test(lang.value)) {
+			    //var srt2 = await getYTcaptionByBaseUrl(lang.value+ '&tlang=zh-Hant'); //繁中的自動翻譯
                 //以第一字幕的網址改為自動翻譯中文的網址
                 if(gup('kind', lang.value)=='asr' && OpenCC) {
                   //自動產生的字幕必須先用簡中取得, 再轉繁中(YT 的 bug 替代方案)
@@ -1217,6 +1255,7 @@ updateYTurl = async function(subtitleDisableDefault) {
 			      for(var i=0; i<srt.length; i++) {
 				      srt2[i]['text'] = converter(srt2[i]['text']);
 			      }
+                  //console.log(srt2);
                 } else {
                   //如果是作者上載的字幕, 沒有 bug, 可以直接自動翻譯為繁中
                   var srt2 = await getYTcaptionByBaseUrl(lang.value + '&tlang=zh-TW');

@@ -2,7 +2,7 @@
  *=====================================================
  * HTML5 FUN 國字加注音暨語文高手題庫語法產生器
  * 2022.10.31 by gsyan (https://gsyan888.blogspot.com/)
- * update : 2022.11.09
+ * update : 2025.06.16
  *=====================================================
  */
 
@@ -212,13 +212,18 @@ getPhrasePh = function (str) {
   ph;
   output = '';
   ph = [];
+  str = str.trim(); //2025.06.16 add
   re = new RegExp('^' + escapeRegExpString(str) + ',(.*),', 'gm');
   if (match = dictLines.match(re)) {
     for (var j = 0; j < match.length; j++) {
       fields = match[j].split(',');
-      ph.push((fields.length>3&&fields[2]!=''?fields[2]:fields[1]).trim());
+	  //0:字詞名, 1:注音一式, 2:變體注音, 3:多音排序 , 有2變體注音就取2
+      ph.push((fields.length>3&&fields[2]!=''?fields[2]:fields[1]).trim());	  	  
     }
   }
+  
+  //在調號後面加一個空白, 以免有些查到的注音是沒加的(2025.06.16 add)
+  //ph.forEach((p,i)=>ph[i] = p.replace(/([ˊˇˋ])/g, '$1 ').trim());
 
   if (ph.length > 1) {
     /*
@@ -257,11 +262,14 @@ getPhrasePh = function (str) {
       }
     }
   } else if (ph.length == 1) {
-    /* 只有一組注音者，直接準備輸出 */
+    /* 只有一組注音者，直接準備輸出, 如果字數與注音數不合者略過 */
     ph = ph[0].split(/\s+/);
-    for (var i = 0; i < str.length; i++) {
-      output += (output != '' ? ' ' : '') + str.substr(i, 1) + ph[i];
-    }
+	
+    if(ph.length == str.length) {
+      for (var i = 0; i < str.length; i++) {
+        output += (output != '' ? ' ' : '') + str.substr(i, 1) + (ph[i]?ph[i]:'？');
+      }
+	}
   }
   return output;
 };
@@ -702,8 +710,10 @@ convertToBasketballFormat = function (str) {
     var line = lines[n];
     var result = '';
     if (line.replace(/\s/g, '') !== '') {
-
-      var fields = (line.trim()).split(',');
+		
+      //常有人誤用全形逗號, 所以乾脆都可以用來分解; 但是最後會用半形逗回來(2025.06.16 modified)
+      var fields = (line.trim()).split(/[,，]/); 
+	  fields.forEach((e, i)=>fields[i]=e.trim()); //去掉每個詞頭尾的空白(2025.06.16 add)
 
       if (fields.length < 2) {
         /* 欄位不足兩個，肯定不是語文高手的格式, 標紅色 */
@@ -727,7 +737,8 @@ convertToBasketballFormat = function (str) {
           isAllMatch = false;
         }
         if (isAllMatch) {
-          result = line; /* 同音字為預設的格式了，不變動 */
+          //result = line; /* 同音字為預設的格式了，不變動 */
+		  result = fields.join(','); //利用欄位重組, 避免誤用全形逗號, 及多加空格的情形(2025.06.16 modified)
         } else {
           result = '<span class="ph-warning" title="首欄的字不是全部同音，請確認是否為語文高手的題庫格式。">' + line + '</span>';
           console.log('Error: ' + line);

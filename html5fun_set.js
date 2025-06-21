@@ -114,6 +114,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2025/04/html5-maze.html#q_a" //homePage@QA
 	],
 	
+	[ "壓感塗鴉"
+	, "壓力感應塗鴉小工具 Doodle"
+	, "assets/icon-doodle.png"
+	, "https://gsyan888.blogspot.com/2025/06/doodle.html?autostart=1"
+	, ""
+	, "https://gsyan888.blogspot.com/2025/06/doodle.html"
+	, ""
+	],
+		
 	[ "青蛙過河"
 	, "Frog 青蛙過河"
 	, "html5_frog/assets/icon.png"

@@ -69,6 +69,15 @@ menu_items = [
 	, ""
 	],
 	
+	[ "DD Car 嘟嘟車"
+	, "Doodle Car 益智闖關遊戲"
+	, "https://gsyan888.github.io/assets/ddcar/icon-ddcar.png"
+	, "https://gsyan888.blogspot.com/p/ddcar.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2025/07/ddcar.html"
+	, "https://gsyan888.blogspot.com/p/ddcar-editor.html"
+	],
+		
 	[ "真分數小教具"
 	, "真分數的小教具"
 	, "html5_math/assets/icon-fraction.png"

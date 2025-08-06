@@ -87,6 +87,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2025/07/ddpetals.html"
 	],
 		
+	[ "大數讀寫"
+	, "大數的讀與寫"
+	, "assets/icon-bignumbers.png"
+	, "https://gsyan888.blogspot.com/p/big-numbers.html"
+	, ""
+	, ""
+	, ""
+	],
+		
 	[ "真分數小教具"
 	, "真分數的小教具"
 	, "html5_math/assets/icon-fraction.png"

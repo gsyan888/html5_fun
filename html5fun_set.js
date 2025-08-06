@@ -92,7 +92,7 @@ menu_items = [
 	, "assets/icon-bignumbers.png"
 	, "https://gsyan888.blogspot.com/p/big-numbers.html"
 	, ""
-	, ""
+	, "https://gsyan888.blogspot.com/2025/08/html5-big-numbers.html"
 	, ""
 	],
 		

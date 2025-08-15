@@ -123,6 +123,15 @@ menu_items = [
 	, ""
 	],
 	
+	[ "位值小教具"
+	, "認識位值的小教具"
+	, "assets/icon-place-value.png"
+	, "https://gsyan888.blogspot.com/p/place-value.html"
+	, ""
+	, ""
+	, ""
+	],
+		
 	[ "Zlizer加減高手"
 	, "LimeJS Zlizer"
 	, "limejs_demos/zlizer/assets/icon.png"

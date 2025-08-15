@@ -128,7 +128,7 @@ menu_items = [
 	, "assets/icon-place-value.png"
 	, "https://gsyan888.blogspot.com/p/place-value.html"
 	, ""
-	, ""
+	, "https://gsyan888.blogspot.com/2025/08/html5-place-value.html"
 	, ""
 	],
 		

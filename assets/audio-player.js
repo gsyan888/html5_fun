@@ -1200,7 +1200,11 @@ updateYTurl = async function(subtitleDisableDefault) {
 		  var option = '';
           for(var i=0; i<captionTracks.length; i++) {
             option += '<option value="' + captionTracks[i]['baseUrl'] + '">';
-            option += captionTracks[i]['name']['simpleText'];
+			if(typeof(captionTracks[i]['name']['simpleText'])!='undefined') {
+              option += captionTracks[i]['name']['simpleText'];
+			} else if(typeof(captionTracks[i]['name']['runs'])!='undefined') {
+              option += captionTracks[i]['name']['runs'][0]['text'];
+			}
             option += '</option>';
 			if(!isTranslatable && captionTracks[i]['isTranslatable']) {
 			  isTranslatable = captionTracks[i]['isTranslatable'];
@@ -1883,7 +1887,7 @@ parseYoutubeURL = function(url){
  * @param {string} url YT 影片的網址
  * @retrun {object}
  */
-getYTcaptionTracks = async function(url) {
+getYTcaptionTracks_Old = async function(url) {
   var captionTracks=null, data=null;
   url += '&app=desktop&hl=zh-TW'; //加上 app 指定用電腦版還是行動版, lh 指定頁面的語言
   //var url = 'https://www.youtube.com/watch?v=bKetUdtTw0g';
@@ -1909,6 +1913,104 @@ getYTcaptionTracks = async function(url) {
   }
   return captionTracks;
 };
+
+async function getInnertubeApiKey(videoUrl) {
+  videoUrl = 'https://corsproxy.io/?'+encodeURIComponent(videoUrl);
+  const response = await fetch(videoUrl);
+  const html = await response.text();
+  //console.log(html);
+  if(typeof(html)=='string') {
+    const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
+    //console.log('apiKeyMatch: ', apiKeyMatch);
+    return apiKeyMatch ? apiKeyMatch[1] : null;
+  } else {
+    return null;
+  }
+};
+async function getPlayerResponse(videoId, apiKey) {
+  const isAppsScript = false;
+  
+  const endpoint = `https://www.youtube.com/youtubei/v1/player?key=${apiKey}`;
+
+  const body = {
+  
+    context: {
+      client: {
+        clientName: "ANDROID",
+        clientVersion: "20.10.38",
+		
+		clientName: "WEB", 
+		clientVersion: "2.20240611",
+      },
+    },
+	
+    videoId: videoId,
+  };
+  const options = {
+	//redirect: 'follow',
+    method: "POST",
+    headers: { 
+      //"Content-Type": "application/json", //這個會被認定是非簡單請求, 啟動 preflight 程序, 發出 OPTIONS method, Google Apps Script 不支援	
+      'Content-Type': isAppsScript?'text/plain':'application/json', // text/plain simple header to avoid preflight
+    },
+    body: JSON.stringify(body),
+  };
+  //const response = await fetch('https://corsproxy.io/?'+encodeURIComponent(endpoint), {
+  var url = '';
+  if(isAppsScript) {
+	//@ming corsproxy_get_and_post
+    var proxy = 'https://script.google.com/macros/s/AKfycbxXpe0UJZUp-b_XqZfnUjh7ono-7l4M5YWu89XUdNz2If7fdAb1GFpW5vIxRUtuAARunw/exec';
+    url = proxy + '?url=' + encodeURIComponent(endpoint) + '&contentType=json';
+  } else {
+    url = 'https://corsproxy.io/?'+encodeURIComponent(endpoint);
+  }
+  
+  //console.log(url, options);
+
+  const response = await fetch(url, options);
+  
+  //return await response.json();
+
+  if(response && response.status == 200) {
+    var data = await response.json();
+    //console.log(data);
+    return (isAppsScript? data['result'] : data);
+  } else {
+    return '';
+  }
+}
+async function getYTcaptionTracks(videoUrl) {
+  var tracks = null;
+  //var videoUrl = 'https://www.youtube.com/watch?v=Nqdoip_M9b4';
+  var videoId = parseYoutubeURL(videoUrl);
+  var apiKey = await getInnertubeApiKey(videoUrl);
+  if(apiKey) {
+    var playerData = await getPlayerResponse(videoId, apiKey);
+    if(typeof(playerData)=='string') {
+      try {
+        playerData = JSON.parse(playerData);
+	  }catch(e) {};
+	}
+	if(playerData) {
+      if(typeof(playerData['playabilityStatus'])!='undefined' && playerData['playabilityStatus']["status"] == "LOGIN_REQUIRED") {
+		console.log('===== LOGIN_REQUIRED =====' , playerData);
+	  }
+      //tracks = playerData?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+	  if(typeof(playerData['captions'])!='undefined' && typeof(playerData['captions']['playerCaptionsTracklistRenderer'])!='undefined' && typeof(playerData['captions']['playerCaptionsTracklistRenderer']['captionTracks'])!='undefined') {
+        tracks = playerData['captions']['playerCaptionsTracklistRenderer']['captionTracks']
+	  }
+      console.log(tracks);
+	  if(tracks && tracks.length > 0) {
+        for(var i=0; i<tracks.length; i++) {
+          //tracks[i]['baseUrl'] = tracks[i]['baseUrl'].replace(/fmt=srv3/, 'fmt=json3');
+	      tracks[i]['baseUrl'] = tracks[i]['baseUrl'].replace(/fmt=srv3/, '');
+        }
+      }
+    }
+  }
+  return tracks;
+}
+
 getYTcaptionByBaseUrl = async function(baseUrl) {
   //自動翻譯為中文就加上 &tlang=zh-TW
   var srt = [];
@@ -1920,13 +2022,25 @@ getYTcaptionByBaseUrl = async function(baseUrl) {
   };
   var data;
   var nocache = 'nocache=' + new Date().getTime();
-  baseUrl += (/\?/.test(baseUrl)?'&':'?') + nocache;  
+  baseUrl += (/\?/.test(baseUrl)?'&':'?') + nocache;
   try {
-    //var res = await fetch('https://corsproxy.io/?'+encodeURIComponent(baseUrl));
-    //var data = await res.text();
-    data = await corsProxy(baseUrl);	
-    if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
-      data = await appsScriptProxy(baseUrl);
+    var rs = await fetch(baseUrl);
+    var data = await rs.text();
+    //console.log(baseUrl);
+    /*
+     https://www.youtube.com/api/timedtext?v=wpRX1LQU9bs&ei=EiSpaMfBK5K_kucPoPXL6Ag&caps=asr&opi=112496729&exp=xpe&xoaf=5&hl=zh-TW&ip=0.0.0.0&ipbits=0&expire=1755940482&sparams=ip,ipbits,expire,v,ei,caps,opi,exp,xoaf&signature=3D12DCE9CB76E9FA5F3C5AD570F4B8AC7FE1F5E3.EE85D0CF8B56B62C4FDF88E4B6F97118BEAA81DD&key=yt8&lang=zh&nocache=1755915304011
+     https://www.youtube.com/api/timedtext?v=wpRX1LQU9bs&ei=KSSpaPD6OriEpt8P5cuSyQM&caps=asr&opi=112496729&xoaf=5&hl=zh-CN&ip=0.0.0.0&ipbits=0&expire=1755940506&sparams=ip%2Cipbits%2Cexpire%2Cv%2Cei%2Ccaps%2Copi%2Cxoaf&signature=5D7820AD97B820E19B892502554EF16641CEADA2.92D56598DC6057C67F74B2F6748D1E90BB0FD49D&key=yt8&lang=zh&fmt=json3&xorb=2&xobt=3&xovt=3&cbr=Chrome&cbrver=109.0.0.0&c=WEB_EMBEDDED_PLAYER&cver=1.20250819.22.00&cplayer=UNIPLAYER&cos=Windows&cosver=10.0&cplatform=DESKTOP
+    */
+    //console.log('data:',data);
+	if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
+      try {
+        //var res = await fetch('https://corsproxy.io/?'+encodeURIComponent(baseUrl));
+        //var data = await res.text();
+        data = await corsProxy(baseUrl);	
+        if(typeof(data)!='string' || data.replace(/\s/g, '') == '') {
+          data = await appsScriptProxy(baseUrl);
+	    }
+      }catch(e) {console.log(e);};
 	}
   }catch(e) {console.log(e);};
   //console.log(data);
@@ -2479,4 +2593,3 @@ var f = gup('f');
 if(autostart == '1' || autostart == 'true' || v.replace(/\s/g, '')!='' || f.replace(/\s/g, '')!='') {
   start();
 }
-

@@ -1929,7 +1929,7 @@ async function getInnertubeApiKey(videoUrl) {
   }
 };
 async function getPlayerResponse(videoId, apiKey) {
-  const proxyEnabled = false;
+  const proxyEnabled = true;
   const isAppsScript = false;
   
   const endpoint = `https://www.youtube.com/youtubei/v1/player?key=${apiKey}`;
@@ -1941,8 +1941,8 @@ async function getPlayerResponse(videoId, apiKey) {
         clientName: "ANDROID",
         clientVersion: "20.10.38",
 		
-		clientName: "WEB", 
-		clientVersion: "2.20240611",
+		//clientName: "WEB", 
+		//clientVersion: "2.20240611",
       },
     },
 	

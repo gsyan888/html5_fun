@@ -1887,7 +1887,7 @@ parseYoutubeURL = function(url){
  * @param {string} url YT 影片的網址
  * @retrun {object}
  */
-getYTcaptionTracks_Old = async function(url) {
+getYTcaptionTracks_old = async function(url) {
   var captionTracks=null, data=null;
   url += '&app=desktop&hl=zh-TW'; //加上 app 指定用電腦版還是行動版, lh 指定頁面的語言
   //var url = 'https://www.youtube.com/watch?v=bKetUdtTw0g';
@@ -1915,6 +1915,7 @@ getYTcaptionTracks_Old = async function(url) {
 };
 
 async function getInnertubeApiKey(videoUrl) {
+  videoUrl += '&app=desktop&hl=zh-TW'; //加上 app 指定用電腦版還是行動版, lh 指定頁面的語言
   videoUrl = 'https://corsproxy.io/?'+encodeURIComponent(videoUrl);
   const response = await fetch(videoUrl);
   const html = await response.text();

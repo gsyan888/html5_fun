@@ -1,3 +1,6 @@
+.blogger-clickTrap {
+  display: none;
+}
 .hint {
   outline: 10px solid red;
 }  

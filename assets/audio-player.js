@@ -1929,6 +1929,7 @@ async function getInnertubeApiKey(videoUrl) {
   }
 };
 async function getPlayerResponse(videoId, apiKey) {
+  const proxyEnabled = false;
   const isAppsScript = false;
   
   const endpoint = `https://www.youtube.com/youtubei/v1/player?key=${apiKey}`;
@@ -1952,30 +1953,30 @@ async function getPlayerResponse(videoId, apiKey) {
     method: "POST",
     headers: { 
       //"Content-Type": "application/json", //這個會被認定是非簡單請求, 啟動 preflight 程序, 發出 OPTIONS method, Google Apps Script 不支援	
-      'Content-Type': isAppsScript?'text/plain':'application/json', // text/plain simple header to avoid preflight
+      'Content-Type': proxyEnabled && !isAppsScript ? 'application/json' : 'text/plain', // text/plain simple header to avoid preflight
     },
     body: JSON.stringify(body),
   };
-  //const response = await fetch('https://corsproxy.io/?'+encodeURIComponent(endpoint), {
-  var url = '';
-  if(isAppsScript) {
-	//@ming corsproxy_get_and_post
-    var proxy = 'https://script.google.com/macros/s/AKfycbxXpe0UJZUp-b_XqZfnUjh7ono-7l4M5YWu89XUdNz2If7fdAb1GFpW5vIxRUtuAARunw/exec';
-    url = proxy + '?url=' + encodeURIComponent(endpoint) + '&contentType=json';
-  } else {
-    url = 'https://corsproxy.io/?'+encodeURIComponent(endpoint);
+  
+  var url = endpoint;
+  if(proxyEnabled) {
+    if(isAppsScript) {
+      //@ming corsproxy_get_and_post
+      var proxy = 'https://script.google.com/macros/s/AKfycbxXpe0UJZUp-b_XqZfnUjh7ono-7l4M5YWu89XUdNz2If7fdAb1GFpW5vIxRUtuAARunw/exec';
+      url = proxy + '?url=' + encodeURIComponent(url) + '&contentType=json';
+    } else {
+      url = 'https://corsproxy.io/?'+encodeURIComponent(url);
+    }
   }
   
-  //console.log(url, options);
+  //console.log(endpoint, url, options);
 
   const response = await fetch(url, options);
   
-  //return await response.json();
-
   if(response && response.status == 200) {
     var data = await response.json();
     //console.log(data);
-    return (isAppsScript? data['result'] : data);
+    return (proxyEnabled && isAppsScript? data['result'] : data);
   } else {
     return '';
   }

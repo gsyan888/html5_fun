@@ -1889,7 +1889,7 @@ parseYoutubeURL = function(url){
  */
 getYTcaptionTracks_old = async function(url) {
   var captionTracks=null, data=null;
-  url += '&app=desktop&hl=zh-TW'; //加上 app 指定用電腦版還是行動版, lh 指定頁面的語言
+  url += '&app=desktop&hl=zh-TW'; //加上 app 指定用電腦版(desktop)還是行動版(m), lh 指定頁面的語言
   //var url = 'https://www.youtube.com/watch?v=bKetUdtTw0g';
   //var nocache = 'nocache=' + new Date().getTime();
   //url += (/\?/.test(url)?'&':'?') + nocache;      
@@ -1981,13 +1981,86 @@ async function getPlayerResponse(videoId, apiKey) {
     return '';
   }
 }
+
+function u_atob(ascii) {
+    return Uint8Array['from'](atob(ascii), function(c){return c.charCodeAt(0)} );
+}
+function u_btoa(buffer) {
+    var binary = [];
+    var bytes = new Uint8Array(buffer);
+    for (var i = 0, il = bytes.byteLength; i < il; i++) {
+        binary.push(String.fromCharCode(bytes[i]));
+    }
+    return btoa(binary.join(''));
+}
+function base64Encode(str) {	
+	return ( u_btoa(new TextEncoder()['encode'](str)) );
+}
+function base64Decode(base64Str) {
+	if(/base64,/i.test(base64Str)) {
+		base64Str = base64Str.split(/base64,/)[1];
+	}
+	return ( new TextDecoder()['decode'](u_atob(base64Str)) );
+}
+//在 iframe 裡執行抓取影片資訊的程序, 可以有本機執行的效果, 躲過 robot check
+function getPlayerResponseByIframe(videoId, apiKey) {
+  var iframe = document.createElement('iframe');
+  var html = `<!DOCTYPE html><html><body><script>window.addEventListener('message', async (event) => {
+    if (event.data.type === 'startFetch') {
+      const endpoint = 'https://www.youtube.com/youtubei/v1/player?key=' + event.data.apiKey;
+      const body = {  
+        context: {
+          client: {
+            clientName: "ANDROID",
+            clientVersion: "20.10.38",
+          },
+        },	
+        videoId: event.data.videoId,
+      };
+      const options = {
+        method: "POST",
+        headers: { 
+          'Content-Type': 'text/plain', // simple header to avoid preflight
+        },
+        body: JSON.stringify(body),
+      };
+      let data = '';
+      const response = await fetch(endpoint, options);  
+      if(response && response.status == 200) {
+        data = await response.json();
+        //console.log(data);
+      }
+	  window.parent.postMessage({ type: 'fetchResult', payload: data }, '*');
+    }
+  });
+  <\/script><\/body><\/html>`;
+  iframe.src = 'data:text/html;base64,' + base64Encode(html);
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+  return new Promise((resolve) => {
+    window.addEventListener('message', function handler(event) {
+      if (event.source === iframe.contentWindow && event.data.type === 'fetchResult') {
+        window.removeEventListener('message', handler);
+		iframe.remove();
+        resolve(event.data.payload);
+      }
+    });
+
+    // 等待 iframe 載入後傳送參數給 iframe
+    iframe.onload = () => {
+      iframe.contentWindow.postMessage({ type: 'startFetch', videoId, apiKey }, '*');
+	};
+  });
+}
+
 async function getYTcaptionTracks(videoUrl) {
   var tracks = null;
   //var videoUrl = 'https://www.youtube.com/watch?v=Nqdoip_M9b4';
   var videoId = parseYoutubeURL(videoUrl);
   var apiKey = await getInnertubeApiKey(videoUrl);
   if(apiKey) {
-    var playerData = await getPlayerResponse(videoId, apiKey);
+    //var playerData = await getPlayerResponse(videoId, apiKey);
+	var playerData = await getPlayerResponseByIframe(videoId, apiKey);
     if(typeof(playerData)=='string') {
       try {
         playerData = JSON.parse(playerData);

@@ -1916,9 +1916,13 @@ getYTcaptionTracks_old = async function(url) {
 
 async function getInnertubeApiKey(videoUrl) {
   videoUrl += '&app=desktop&hl=zh-TW'; //加上 app 指定用電腦版還是行動版, lh 指定頁面的語言
-  videoUrl = 'https://corsproxy.io/?'+encodeURIComponent(videoUrl);
-  const response = await fetch(videoUrl);
-  const html = await response.text();
+  //videoUrl = 'https://corsproxy.io/?'+encodeURIComponent(videoUrl);
+  //const response = await fetch(videoUrl);
+  //const html = await response.text();
+  var html = await corsProxy(videoUrl);	
+  if(typeof(html)!='string' || html.replace(/\s/g, '') == '') {
+   html = await appsScriptProxy(videoUrl);
+  }   
   //console.log(html);
   if(typeof(html)=='string') {
     const apiKeyMatch = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/);
@@ -1930,7 +1934,7 @@ async function getInnertubeApiKey(videoUrl) {
 };
 async function getPlayerResponse(videoId, apiKey) {
   const proxyEnabled = true;
-  const isAppsScript = false;
+  const isAppsScript = !false;
   
   const endpoint = `https://www.youtube.com/youtubei/v1/player?key=${apiKey}`;
 

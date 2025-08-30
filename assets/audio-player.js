@@ -1242,7 +1242,7 @@ updateYTurl = async function(subtitleDisableDefault) {
           //var srt = await getYTsubtitle(ytUrl, lang);
           if(/https:/i.test(lang.value)) {
             var srt = await getYTcaptionByBaseUrl(lang.value);
-            //console.log(srt);
+            //console.log('srt====',srt);
             updateContent(srt);
           }
           //2nd SRT
@@ -1255,7 +1255,7 @@ updateYTurl = async function(subtitleDisableDefault) {
                 //以第一字幕的網址改為自動翻譯中文的網址
                 if(gup('kind', lang.value)=='asr' && OpenCC) {
                   //自動產生的字幕必須先用簡中取得, 再轉繁中(YT 的 bug 替代方案)
-                  var srt2 = await getYTcaptionByBaseUrl(lang.value+ '&tlang=zh-Hans', !true); //forceProxy=true
+                  var srt2 = await getYTcaptionByBaseUrl(lang.value + (/&$/.test(lang.value)?'':'&')+'tlang=zh-Hans', !true); //forceProxy=true
 				  //console.log('srt2===', srt2);
 				  if(srt2 && srt2.length > 0) {
 				    try{
@@ -1276,7 +1276,16 @@ updateYTurl = async function(subtitleDisableDefault) {
               }
               //console.log(srt2);
               //var langName = lang2.options[lang2.selectedIndex].textContent;
-              appendSrt2(srt2, ccLang2);
+              if(srt2 && srt2.length > 0) {
+                appendSrt2(srt2, ccLang2);
+              } else {
+                //未載入 YT 自動譯文, 稍後自動執行翻譯中文的程序
+                setTimeout(function() {
+                  //setTimeout(function(){showFadeOutMessage(null,'第二字幕未下載到資料, 執行翻譯中文程序');}, 2000);
+                  document.querySelector('.langSelect').children[0].selected = true;
+                  appendTrans();
+                }, 1500);
+              }			  
             }
           }
         }
@@ -1305,7 +1314,6 @@ appendSrt2 = function(srt2, lang) {
       }
 	}
 	if(!foundText) {
-      setTimeout(function(){showFadeOutMessage(null,'第二字幕未下載到資料, 請自行手動翻譯');}, 2000);
       return; //沒找到任何字幕就不繼續
     }
 	

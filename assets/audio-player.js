@@ -1255,11 +1255,16 @@ updateYTurl = async function(subtitleDisableDefault) {
                 //以第一字幕的網址改為自動翻譯中文的網址
                 if(gup('kind', lang.value)=='asr' && OpenCC) {
                   //自動產生的字幕必須先用簡中取得, 再轉繁中(YT 的 bug 替代方案)
-                  var srt2 = await getYTcaptionByBaseUrl(lang.value+ '&tlang=zh-Hans');
-			      var converter = OpenCC.Converter({ from: 'cn', to: 'twp' });
-			      for(var i=0; i<srt.length; i++) {
-				      srt2[i]['text'] = converter(srt2[i]['text']);
-			      }
+                  var srt2 = await getYTcaptionByBaseUrl(lang.value+ '&tlang=zh-Hans', !true); //forceProxy=true
+				  //console.log('srt2===', srt2);
+				  if(srt2 && srt2.length > 0) {
+				    try{
+			          var converter = OpenCC.Converter({ from: 'cn', to: 'twp' });
+			          for(var i=0; i<srt.length; i++) {
+				        srt2[i]['text'] = converter(srt2[i]['text']);
+			          }
+				    }catch(e){console.log(e);};
+				  }
                   //console.log(srt2);
                 } else {
                   //如果是作者上載的字幕, 沒有 bug, 可以直接自動翻譯為繁中
@@ -1292,6 +1297,18 @@ updateYTurl = async function(subtitleDisableDefault) {
 };
 appendSrt2 = function(srt2, lang) {
   if(srt2) {
+    var foundText = false;
+	for(var i=0; i<srt2.length; i++) {
+	  if(typeof(srt2[i].text)=='string' && srt2[i].text.replace(/\s/g, '') != '') {
+        foundText = true;
+        break;
+      }
+	}
+	if(!foundText) {
+      setTimeout(function(){showFadeOutMessage(null,'第二字幕未下載到資料, 請自行手動翻譯');}, 2000);
+      return; //沒找到任何字幕就不繼續
+    }
+	
     var srt = document.querySelectorAll('#gameWrapper .content p');
     for(var i=0, j=0; i<srt.length; i++) {
       var start = Number(srt[i].getAttribute('start'));
@@ -2078,7 +2095,7 @@ async function getYTcaptionTracks(videoUrl) {
 	  if(typeof(playerData['captions'])!='undefined' && typeof(playerData['captions']['playerCaptionsTracklistRenderer'])!='undefined' && typeof(playerData['captions']['playerCaptionsTracklistRenderer']['captionTracks'])!='undefined') {
         tracks = playerData['captions']['playerCaptionsTracklistRenderer']['captionTracks']
 	  }
-      console.log(tracks);
+      //console.log(tracks);
 	  if(tracks && tracks.length > 0) {
         for(var i=0; i<tracks.length; i++) {
           //tracks[i]['baseUrl'] = tracks[i]['baseUrl'].replace(/fmt=srv3/, 'fmt=json3');
@@ -2090,7 +2107,8 @@ async function getYTcaptionTracks(videoUrl) {
   return tracks;
 }
 
-getYTcaptionByBaseUrl = async function(baseUrl) {
+getYTcaptionByBaseUrl = async function(baseUrl, forceProxy) {
+  forceProxy = typeof(forceProxy)=='boolean' && forceProxy;
   //自動翻譯為中文就加上 &tlang=zh-TW
   var srt = [];
   var appendSub = function(start, dur, txt) {
@@ -2103,8 +2121,16 @@ getYTcaptionByBaseUrl = async function(baseUrl) {
   var nocache = 'nocache=' + new Date().getTime();
   baseUrl += (/\?/.test(baseUrl)?'&':'?') + nocache;
   try {
-    var rs = await fetch(baseUrl);
-    var data = await rs.text();
+    if(!forceProxy) {
+	  try {
+        var rs = await fetch(baseUrl);
+	    //console.log('url==',baseUrl,'rs====',rs);
+        var data = await rs.text();
+	  }catch(e){
+        console.log(e);
+		return srt;
+      }
+	}
     //console.log(baseUrl);
     /*
      https://www.youtube.com/api/timedtext?v=wpRX1LQU9bs&ei=EiSpaMfBK5K_kucPoPXL6Ag&caps=asr&opi=112496729&exp=xpe&xoaf=5&hl=zh-TW&ip=0.0.0.0&ipbits=0&expire=1755940482&sparams=ip,ipbits,expire,v,ei,caps,opi,exp,xoaf&signature=3D12DCE9CB76E9FA5F3C5AD570F4B8AC7FE1F5E3.EE85D0CF8B56B62C4FDF88E4B6F97118BEAA81DD&key=yt8&lang=zh&nocache=1755915304011

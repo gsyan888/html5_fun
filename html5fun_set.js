@@ -81,7 +81,7 @@ menu_items = [
 	[ "DD Petals 花瓣字"
 	, "Doodle Petals 花瓣字遊戲"
 	, "assets/icon-ddpetals.png"
-	, "https://gsyan888.blogspot.com/p/dd-petals.html"
+	, "https://gsyan888.blogspot.com/2025/07/ddpetals.html#menu"
 	, ""
 	, "https://gsyan888.blogspot.com/2025/07/ddpetals.html"
 	, "https://gsyan888.blogspot.com/2025/07/ddpetals.html"

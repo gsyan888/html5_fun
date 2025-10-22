@@ -87,15 +87,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2025/07/ddpetals.html"
 	],
 		
-	[ "大數讀寫"
-	, "大數的讀與寫"
-	, "assets/icon-bignumbers.png"
-	, "https://gsyan888.blogspot.com/p/big-numbers.html"
+	[ "國字基本筆畫練習"
+	, "國字基本筆畫練習"
+	, "assets/icon-stroke-order.png"
+	, "https://gsyan888.blogspot.com/p/stroke-basic.html"
 	, ""
-	, "https://gsyan888.blogspot.com/2025/08/html5-big-numbers.html"
+	, "https://gsyan888.blogspot.com/2025/10/stroke-basic-intro.html"
 	, ""
 	],
-		
+
 	[ "真分數小教具"
 	, "真分數的小教具"
 	, "html5_math/assets/icon-fraction.png"
@@ -123,12 +123,12 @@ menu_items = [
 	, ""
 	],
 	
-	[ "位值小教具"
-	, "認識位值的小教具"
-	, "assets/icon-place-value.png"
-	, "https://gsyan888.blogspot.com/p/place-value.html"
+	[ "大數讀寫"
+	, "大數的讀與寫"
+	, "assets/icon-bignumbers.png"
+	, "https://gsyan888.blogspot.com/p/big-numbers.html"
 	, ""
-	, "https://gsyan888.blogspot.com/2025/08/html5-place-value.html"
+	, "https://gsyan888.blogspot.com/2025/08/html5-big-numbers.html"
 	, ""
 	],
 		
@@ -150,6 +150,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2025/04/html5-maze.html#q_a" //homePage@QA
 	],
 	
+	[ "位值小教具"
+	, "認識位值的小教具"
+	, "assets/icon-place-value.png"
+	, "https://gsyan888.blogspot.com/p/place-value.html"
+	, ""
+	, "https://gsyan888.blogspot.com/2025/08/html5-place-value.html"
+	, ""
+	],
+
 	[ "壓感塗鴉"
 	, "壓力感應塗鴉小工具 Doodle"
 	, "assets/icon-doodle.png"

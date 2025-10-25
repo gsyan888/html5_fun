@@ -75,6 +75,7 @@ menuList = function(){/*--這一行請勿更改--
 7-regular-verse.js
 
 maze-q-bopomofo-set.js
+maze-q-bopomofo2-set.js
 
 54.js
 74.js

@@ -2087,10 +2087,10 @@ function setVisibility(enable) {
       HTML5FunWrapper.style.visibility = "visible";
     } else {
       HTML5FunWrapper.style.visibility = "hidden";
+      //重新顯示原有的內容
+      document.body.style.overflow = 'visible';
       //恢復捲軸的功能
       window.onscroll=null;
-      //重新顯示原有的內容
-      document.body.style.overflow = '';
       //
       try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
     }

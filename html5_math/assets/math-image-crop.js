@@ -51,14 +51,14 @@ document.getElementById('canvas').width = Math.min(widthMax, heightMax); //-20;
 document.getElementById('canvas').height = document.getElementById('canvas').width;
 
 /* 取得網址中的參數 */
-var gup = function( name ){
+function gup(name, url){
   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
   var regexS = "[\\?&]"+name+"=([^&#]*)";  
   var regex = new RegExp( regexS );  
-  var results = regex.exec( window.location.href ); 
+  var results = regex.exec(typeof url == 'string' ?url:window.location.href ); 
   if( results == null )    return "";  
-  else    return results[1];
-};
+  else return decodeURIComponent(results[1]);
+}
 /* 偵測可用的大小, 並重新設定全域變數 */
 function detectAndSetSize() {
   scenceWidth = window.innerWidth && document.documentElement.clientWidth ? 
@@ -80,19 +80,19 @@ function detectAndSetSize() {
     widthMax = scenceWidth - 70;;
     heightMax = scenceHeight - (rect.height+10)*2;  
   }
-};
+}
 /* 取得主要繪圖區的物件 */
 function getMainCanvas() {
   return document.getElementById('canvas');
-};
+}
 /* 取得設定選取範圍的物件 */
 function getSelectCanvas() {
   return document.getElementById('canvasSelect');
-};
+}
 /* 取得塗鴉繪圖區的物件 */
 function getDoodleCanvas() {
   return document.getElementById('canvasDoodle');
-};
+}
 /* 設定矩形選取區時會用的一些變數初始值 */
 function canvasSelectInit(canvas) {
   canvas.movingMin = 3; //至少要移動多少才處理
@@ -106,11 +106,11 @@ function canvasSelectInit(canvas) {
   canvas.cornerId = -1;
   canvas.hasMoved = false;
   canvas.style.display = 'block';
-};
+}
 /* 回傳是否為 Google Drive 檔案的共用網址 */
 function isFileOfGD(url) {
   return (typeof(url)=='string' && /https\:\/\/drive\.google\.com\/file\/d/i.test(url));
-};
+}
 
 /**
  * [原來]是用來抓取雲端硬碟公開分享資料夾的頁面  
@@ -147,7 +147,7 @@ function isFileOfGD(url) {
       mimeType: data.itemJson[11] 
 	};
     return value;
-  };
+  }
   /**
    * @param {String} url 共用資料夾的網址
    * @param {Function} callback 抓到網頁後要執行的程序
@@ -192,7 +192,7 @@ function isFileOfGD(url) {
         })
         .catch(error => console.error('無法解析\n'+error));
     return html;
-  };    
+  }    
   /**
    * 傳回雲端硬碟公開分享網址的檔案資料。
    * @param {"雲端硬碟的共用網址"} url 字串型態，頭尾必須加雙引號。
@@ -209,7 +209,7 @@ function isFileOfGD(url) {
   };
 })(typeof exports !== 'undefined' ? exports : (window.GDFolderFiles = window.GDFolderFiles || {}));
 /* 由 Google Drive 檔案共用的網址中解析出可直接存取的網址 */
-tryToGetUrlFromGDFile = function(url, callback) {
+function tryToGetUrlFromGDFile(url, callback) {
   if(isFileOfGD(url)) {
     console.log('This is a file in Google Drive');
     GDFolderFiles.fetch(url, null , function(data) {
@@ -231,7 +231,7 @@ tryToGetUrlFromGDFile = function(url, callback) {
   } else if(typeof(callback)=='function') {
     callback(url);
   }
-};
+}
 /* 顯示自動開啟程式並載入指定網址圖片的 QRCode */
 function showQRCode(enable) {
   if(typeof(enable)!='boolean') enable = true;
@@ -256,7 +256,7 @@ function showQRCode(enable) {
 	  topLayer.style.opacity = 1;
       topLayer.style.display = 'none';  
   }
-};
+}
 /* 將 QRCode 圖片加到 topLayer 中 */
 function addQRCodeOnTopLayer(image_url) {
   //var url = 'https://gsyan888.blogspot.com/2023/12/html5-crop.html';
@@ -279,7 +279,7 @@ function addQRCodeOnTopLayer(image_url) {
   topLayer.style['text-align'] = 'center';
   topLayer.style.opacity = 1;
   topLayer.style.display = 'block';
-};
+}
 /* 準備等待指定圖片時的環境初始 */
 function importImage() {
   var topLayer = document.querySelector('.topLayer');
@@ -291,7 +291,7 @@ function importImage() {
   closePopupMenu();
   clearDoodle();  
   enableDoole(true);
-};
+}
 /* 輸入網址的方式指定要載入的圖片 */
 function loadImageFromURL() {
   var url = document.querySelector('.imageURL').value;
@@ -302,7 +302,7 @@ function loadImageFromURL() {
 	  imageToExplain.src = url;
 	});
   }
-};
+}
 /* 圖片載入成功後，畫在主繪圖區中 */
 imageToExplain.onload = function(e) {
   console.log('image load');
@@ -424,7 +424,7 @@ function gameStart() {
   }
   //清除未關閉的選單
   closePopupMenu();
-};
+}
 /* 大叉叉放在主繪圖區左上角 */
 function updateCloseBtnPosition(hintDelay) {
   var btn = document.querySelector('.canvas-close-btn');
@@ -456,20 +456,20 @@ function updateCloseBtnPosition(hintDelay) {
 	  canvas.style.opacity = 1;
     }
   }
-};
+}
 /* 製造按鈕按下的動畫, 先縮小, 再復原 */
 function clickAni(target, scale) {
   target.style.scale = (scale!=null && !isNaN(scale)?Number(scale):0.85);
   setTimeout(function() {
     target.style.scale = 1;
   }, 100);
-};
+}
 function getResetedLayer(id) {
   var elm = document.querySelector(id);
   var newone = elm.cloneNode(true);
   elm.parentNode.replaceChild(newone, elm);  
   return document.querySelector(id);
-};
+}
 /* 淡入後淡出的單行訊息, 在物件的中心點或偏移後顯示 */
 function showFadeOutMessage(target, txt, xOffset, yOffset, delay) {
   if(typeof(xOffset)!='number') xOffset = 0;
@@ -504,7 +504,7 @@ function showFadeOutMessage(target, txt, xOffset, yOffset, delay) {
 	topLayer.classList.toggle('fade-in-out', false);
 	topLayer.style.display = 'none';
   }, delay*1000);
-};
+}
 function closePopupMenu() {
   var menuLayer = document.querySelector('.menuLayer');	
   //for(var i=menuLayer.children.length-1; i>=0; i--) {
@@ -519,7 +519,7 @@ function closePopupMenu() {
   menuLayer = document.querySelector('.menuLayer');
   menuLayer.style.display = 'none';
   menuLayer.style['pointer-events'] = 'none';
-};
+}
 function popupMenu(target, posX, posY) {
   closePopupMenu();
   var menuLayer = document.querySelector('.menuLayer');
@@ -677,7 +677,7 @@ function popupMenu(target, posX, posY) {
   var rect = menuLayer.getBoundingClientRect();
   menuLayer.posX = posX;
   menuLayer.posY = posY;
-};
+}
 //回傳彈跳式選單是否已存在
 function popupMenuIsExist() {
   return document.querySelector('.menuLayer').style.display == 'block';
@@ -693,7 +693,7 @@ function spotScalingStop() {
   }
   var longPressSpot = document.querySelector('.longPressSpot');
   longPressSpot.style.display = 'none';
-};
+}
 //準備啟動長按的動畫
 function spotScalingStart(x, y) {
   spotScalingStop();
@@ -715,7 +715,7 @@ function spotScalingStart(x, y) {
 	if(opacity<0.2) opacity = 0.2;
 	longPressSpot.style.opacity = opacity;
   }, 25);
-};
+}
 function pressTimerStop() {
   //試著停止長按的動畫
   spotScalingStop();
@@ -723,7 +723,7 @@ function pressTimerStop() {
     clearTimeout(pressTimerId);
   }
   pressTimerId = null;  
-};
+}
 
 /* 更改工具列擺放位置 guesture 偵測的相關事件 */
 /* 按下 */
@@ -739,7 +739,7 @@ function toolsDragStart(e) {
     target.y1 = target.y0;
     target.isDraging = true;
   } 
-};
+}
 /* 移動 */
 function toolsDragMove(e) {
   var target = e.target || e.touches[0].target;
@@ -750,7 +750,7 @@ function toolsDragMove(e) {
       target.y1 = e.clientY || e.touches[0].clientY; // get the y coordinate of the mouse or touch
     }
   }
-};
+}
 /* 放開 */
 function toolsDragEnd(e) {
   var target = e.target || e.touches[0].target;
@@ -786,7 +786,7 @@ function toolsDragEnd(e) {
     }
   }
   target.isDraging = false;
-};
+}
 /* 依指定的位置設定工具列的 class */
 function setToolsPosition(position) {
   var target = document.getElementById('tools');
@@ -806,7 +806,7 @@ function setToolsPosition(position) {
       target.classList.toggle('tools-v-right', true);
     }
   }
-};
+}
 function drawDoodleToCanvas(target) {
   var canvasDoodle = document.getElementById('canvasDoodle');
   var ctx = target.getContext("2d");
@@ -824,7 +824,7 @@ function drawDoodleToCanvas(target) {
     ctx2.clearRect(0, 0, target.width, target.height);
     ctx2.drawImage(target, 0, 0);
   }
-};
+}
 /* 塗鴉的相關函數 */
 /* 畫筆啟用與停止 */
 function enableDoole(enable) {
@@ -889,15 +889,13 @@ function clearDoodle() {
   var canvasDoodle = document.getElementById('canvasDoodle');
   var ctxDoodle = canvasDoodle.getContext("2d");
   ctxDoodle.clearRect(0, 0, canvasDoodle.width, canvasDoodle.height);
-};
+}
 
 function clearSelectCanvas() {
   var canvas = getSelectCanvas();
   var ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-};
-
-
+}
 
 /* 塗鴉時的相關事件 */
 /* 筆按下 */
@@ -943,7 +941,7 @@ function startDoodle(e) {
     ctxDoodle.moveTo(x, y);
 	*/
   }
-};
+}
 // function to draw the doodle
 /* 筆移動，畫出移動軌跡 */
 function drawDoodle(e) {  
@@ -978,7 +976,7 @@ function drawDoodle(e) {
       target.isMoved = true;
     }
   }
-};
+}
 // function to end drawing the doodle
 /* 筆放開 */
 function endDoodle(e) {
@@ -996,8 +994,7 @@ function endDoodle(e) {
   }
   
   target.isDrawing = false; // set the flag to false
-};
-
+}
 
 /* 設定矩形選取區用的函數 */
 function isHitRectangle(target, x, y) {
@@ -1107,7 +1104,7 @@ function drawCorner(ctx, x0, y0, x1, y1) {
   ctx.strokeStyle = 'rgba(51, 153, 255, 0.2)';
   ctx.stroke();
   ctx.closePath();
-};
+}
 function drawTextAtCenter(ctx, x0, y0, x1, y1, text) {  
   //var text = "按這裡確定範圍";
   var fontSize = (Math.abs(x1-x0)>=150 && Math.abs(y1-y0)>28?24:12);
@@ -1125,7 +1122,7 @@ function drawTextAtCenter(ctx, x0, y0, x1, y1, text) {
   ctx.fillStyle = 'white';
   ctx.fillText(text, tx, ty);
   ctx.restore();  
-};
+}
 function getBounding(target) {
   if (target.isDrawing) {
     //ctx.strokeRect(target.x0, target.y0, target.x1 - target.x0, target.y1 - target.y0);
@@ -1686,10 +1683,10 @@ function imageSplit() {
 	
 	showFadeOutMessage(canvas1, '[小秘訣] 長按可以縫回原處');
     //console.log(canvas1.toDataURL());
-};
+}
 function isCanvas(target) {
   return (target.tagName.toLowerCase()=='canvas');
-};
+}
 function startDragOrRotate(e) {  
   var target = e.target || e.touches[0].target;
   
@@ -1754,7 +1751,7 @@ function startDragOrRotate(e) {
     }
 	
   }
-};
+}
 function dragOrRotate(e) {
   var target = e.target || e.touches[0].target;
   var x = e.clientX || e.touches[0].clientX; // get the x coordinate of the mouse or touch
@@ -1805,7 +1802,7 @@ function dragOrRotate(e) {
     target.angle = Math.round(Math.atan2(dy, dx)*180)%360;
     updateTransform(target);
   }  
-};
+}
 function endDragOrRotate(e) {
   var target = e.target || e.touches[0].target;  
 
@@ -1819,7 +1816,7 @@ function endDragOrRotate(e) {
   target.style['cursor'] = 'default';
   target.dragging = false;
   target.rotating = false;
-};
+}
 
 function selectFileOrTakePicture(ev) {
     /* 新增 input 的元件, 接收上載的檔案 */
@@ -1838,7 +1835,7 @@ function selectFileOrTakePicture(ev) {
       inputFromCamera.remove();
     };
     inputFromCamera.click();
-};
+}
 
 function dropHandler(e) {
     /* https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop 
@@ -1851,11 +1848,11 @@ function dropHandler(e) {
     } else {
       console.log(e);
     }
-};
+}
 function dragOverHandler(e) {
     e.preventDefault();
     e.stopPropagation();
-};
+}
 function readFiles(files) {
     if(typeof(files) != 'undefined' && files.length>0) {
       if(files[0].type.match(/image/i)) {
@@ -1874,7 +1871,7 @@ function readFiles(files) {
         imageURL.value = '';
       }
     }
-};
+}
 function rotate(dir) {
   //隱藏選取區的設定
   getSelectCanvas().style.display = 'none';
@@ -1934,7 +1931,7 @@ function recoverClip(target) {
   } else {
     showFadeOutMessage(target, '此區塊的來源已不存在，無法復原');
   }
-};
+}
 
 function clearAllClip() {
   var imageClipList = document.querySelectorAll('.imageClip');
@@ -2014,7 +2011,7 @@ function isImageLoaded() {
 /*
 載入設定檔時顯示動畫
  */
-loadingAnimation = function (txt, callback) {
+function loadingAnimation(txt, callback) {
   if (typeof(txt) == 'undefined' || txt == null) {
     var txt = "載入檔案中";
   }
@@ -2061,8 +2058,8 @@ loadingAnimation = function (txt, callback) {
       }
     }
   }, 100);
-};
-setViewport = function() {
+}
+function setViewport() {
   //<meta name="viewport" content="initial-scale=1.0,minimum-scale=1,maximum-scale=1.0,user-scalable=no">
   var viewport = document.querySelector("meta[name=viewport]");
   if(typeof(viewport)=='undefined' || viewport==null) {
@@ -2076,8 +2073,8 @@ setViewport = function() {
     content += ',target-densityDpi=device-dpi';
   }
   viewport.content = content;
-};
-setVisibility = function(enable) {
+}
+function setVisibility(enable) {
   var HTML5FunWrapper = document.getElementById("HTML5FunWrapper");
   if(typeof(HTML5FunWrapper)!='undefined' && HTML5FunWrapper!=null) {
     if (enable) {
@@ -2093,7 +2090,7 @@ setVisibility = function(enable) {
       //恢復捲軸的功能
       window.onscroll=null;
       //重新顯示原有的內容
-      document.body.style.overflow = 'visible';
+      document.body.style.overflow = '';
       //
       try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
     }
@@ -2110,13 +2107,13 @@ function applyTheUrlAndAutoStart(url) {
 		document.querySelector('.imageURL').nextElementSibling.click();
 	}, 4000);
   }
-};
+}
 
-set__scale=function(s){
-  for(var i=3; i<=10; i++) {
+function set__scale(s){
+  for(var i=0; i<=10; i++) {
     try{document.querySelector('#aswift_'+i).parentElement.parentElement.style.scale= s}catch(e){};
   }
-};
+}
 
 function start() {
   try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};

@@ -2095,7 +2095,7 @@ function setVisibility(enable) {
       try{if(typeof(set__scale)=='function')set__scale(1)}catch(e){};
     }
   }
-};
+}
 function applyTheUrlAndAutoStart(url) {
   var imageURL = document.querySelector('.imageURL');
   if(typeof(imageURL)!='undefined' && imageURL!=null) {
@@ -2118,29 +2118,31 @@ function set__scale(s){
 function start() {
   try{if(typeof(set__scale)=='function')set__scale(0.001)}catch(e){};
   
-  setViewport();
+  setTimeout(function() {
+    setViewport();
   
-  setVisibility(true);
+    setVisibility(true);
   
-  window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     
-  gameStart();
+    gameStart();
 
-  importImage();
+    importImage();
   
-  loadingLogoEnable = true;
-  loadingAnimation('東拼西湊');
-  setTimeout(function() {
-	loadingLogoEnable = false;
-	showFadeOutMessage(document.querySelector('.closeButton'), '[小秘訣] 按&times可以結束程式', 50, 50, 5);
-  }, 1200);
-  setTimeout(function() {
-    var imageURL = document.querySelector('.imageURL');
-    if(typeof(imageURL)!='undefined' && imageURL!=null && imageURL.value == '') {
-      imageURL.value = sampleURL;
-    }
-  }, 5000);
-};
+    loadingLogoEnable = true;
+    loadingAnimation('東拼西湊');
+    setTimeout(function() {
+	  loadingLogoEnable = false;
+	  showFadeOutMessage(document.querySelector('.closeButton'), '[小秘訣] 按&times可以結束程式', 50, 50, 5);
+    }, 1200);
+    setTimeout(function() {
+      var imageURL = document.querySelector('.imageURL');
+      if(typeof(imageURL)!='undefined' && imageURL!=null && imageURL.value == '') {
+        imageURL.value = sampleURL;
+      }
+    }, 5000);
+  }, 100);
+}
 
 //檢查網址中是否帶有名為 autostart 的參數，用來自動啟動工具
 var autostart = gup('autostart');

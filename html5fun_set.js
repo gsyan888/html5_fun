@@ -99,7 +99,7 @@ menu_items = [
 	[ "Make 10"
 	, "Make 10 , 湊10小遊戲"
 	, "assets/icon-make10.png"
-	, "https://gsyan888.blogspot.com/p/big-numbers.html"
+	, "https://gsyan888.blogspot.com/p/make10.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2025/12/make10.html"
 	, ""

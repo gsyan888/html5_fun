@@ -123,6 +123,15 @@ menu_items = [
 	, ""
 	],
 
+	[ "字音字形語文高手"
+	, "字音字形語文高手各版本選單"
+	, "assets/icon-confusable.png"
+	, "https://gsyan888.blogspot.com/2026/01/html5-fun-confusable.html#gameLogo"
+	, ""
+	, "https://gsyan888.blogspot.com/2026/01/html5-fun-confusable.html"
+	, ""
+	],
+	
 	[ "真分數小教具"
 	, "真分數的小教具"
 	, "html5_math/assets/icon-fraction.png"

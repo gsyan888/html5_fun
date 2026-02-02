@@ -86,6 +86,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2025/07/ddpetals.html"
 	, "https://gsyan888.blogspot.com/2025/07/ddpetals.html"
 	],
+
+	[ "字音字形語文高手"
+	, "字音字形語文高手各版本選單"
+	, "assets/icon-confusable.png"
+	, "https://gsyan888.blogspot.com/2026/01/html5-fun-confusable.html#gameLogo"
+	, ""
+	, "https://gsyan888.blogspot.com/2026/01/html5-fun-confusable.html"
+	, ""
+	],
 		
 	[ "國字基本筆畫練習"
 	, "國字基本筆畫練習"
@@ -102,6 +111,15 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/p/make10.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2025/12/make10.html"
+	, ""
+	],
+		
+	[ "Zlizer加減高手"
+	, "LimeJS Zlizer"
+	, "limejs_demos/zlizer/assets/icon.png"
+	, "https://gsyan888.blogspot.com/2025/03/html5-zlizer.html?autostart=1"
+	, ""
+	, "https://gsyan888.blogspot.com/2025/03/html5-zlizer.html"
 	, ""
 	],
 	
@@ -122,15 +140,6 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2023/12/html5-crop.html"
 	, ""
 	],
-
-	[ "字音字形語文高手"
-	, "字音字形語文高手各版本選單"
-	, "assets/icon-confusable.png"
-	, "https://gsyan888.blogspot.com/2026/01/html5-fun-confusable.html#gameLogo"
-	, ""
-	, "https://gsyan888.blogspot.com/2026/01/html5-fun-confusable.html"
-	, ""
-	],
 	
 	[ "真分數小教具"
 	, "真分數的小教具"
@@ -138,15 +147,6 @@ menu_items = [
 	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
 	, ""
 	, "https://gsyan888.blogspot.com/2022/12/html5-math-fraction.html"
-	, ""
-	],
-		
-	[ "Zlizer加減高手"
-	, "LimeJS Zlizer"
-	, "limejs_demos/zlizer/assets/icon.png"
-	, "https://gsyan888.blogspot.com/2025/03/html5-zlizer.html?autostart=1"
-	, ""
-	, "https://gsyan888.blogspot.com/2025/03/html5-zlizer.html"
 	, ""
 	],
 		

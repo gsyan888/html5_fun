@@ -15,6 +15,7 @@
 //		2022.06.16 support HTML5 ghost
 //		2022.06.23 Bubble add commands trigger mouse events to close dialog
 //		2025.03.09 modifed for embed mode
+//	    2026.02.11 Bingo bugfix, add .pause .resume to set micButton display
 //----------------------------------------------------------------------
 var injectionSpeech = {};
 injectionSpeech.recognition = null; //語音辨識的物件
@@ -136,8 +137,9 @@ injectionSpeech.getOptionButtons = function() {
 	if(injectionSpeech.appName == 'bingo') {
 		//bingo gameLayer child 7~16 是選項按鈕
 		var btns = injectionSpeech.findMousedownButtons(injectionSpeech.getAllButtons(gameLayer));
-		hintButton = btns[btns.length-1];  //右邊問號的按鈕(用來查看解釋)
-		injectionSpeech.buttons = btns.slice(1, btns.length-1); //九宮格按鈕
+		hintButton = btns[btns.length-1];  //最後一個是右邊問號的按鈕(用來查看解釋)
+		//injectionSpeech.buttons = btns.slice(1, btns.length-1); //九宮格按鈕
+		injectionSpeech.buttons = btns.slice(0, btns.length-2); //九宮格按鈕
 	} else if(injectionSpeech.appName == 'monster') {
 		injectionSpeech.buttons =  injectionSpeech.findMousedownButtons(injectionSpeech.getAllButtons(qLayer));
 	} else if(injectionSpeech.appName == 'ghost') {
@@ -393,7 +395,6 @@ injectionSpeech.addMicButton = function() {
 	
 	return micButton;
 };
-	
 injectionSpeech.enableSpeech2Text = function(e) {
 	e.preventDefault();
 	//
@@ -635,6 +636,18 @@ injectionSpeech.loadPinyin = function(callback) {
 	};
 	script.setAttribute('src', injectionSpeech.pinyinJSFile);
 	document.getElementsByTagName('head')[0].appendChild(script);
+}
+injectionSpeech.setMicButtonHidden = function(isHidden) {
+	var btn = document.querySelector('#micButton');
+	if(btn) {
+	  btn.style.display = isHidden?'none':'block';
+	}
+}
+injectionSpeech.pause = function() {
+	injectionSpeech.setMicButtonHidden(true);
+}
+injectionSpeech.resume = function() {
+	injectionSpeech.setMicButtonHidden(false);
 }
 injectionSpeech.start = function(callback) {
 	//取得網址中的某一個參數(已編碼過的)

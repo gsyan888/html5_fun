@@ -139,7 +139,7 @@ injectionSpeech.getOptionButtons = function() {
 		var btns = injectionSpeech.findMousedownButtons(injectionSpeech.getAllButtons(gameLayer));
 		hintButton = btns[btns.length-1];  //最後一個是右邊問號的按鈕(用來查看解釋)
 		//injectionSpeech.buttons = btns.slice(1, btns.length-1); //九宮格按鈕
-		injectionSpeech.buttons = btns.slice(0, btns.length-2); //九宮格按鈕
+		injectionSpeech.buttons = btns.slice(0, btns.length-1); //九宮格按鈕
 	} else if(injectionSpeech.appName == 'monster') {
 		injectionSpeech.buttons =  injectionSpeech.findMousedownButtons(injectionSpeech.getAllButtons(qLayer));
 	} else if(injectionSpeech.appName == 'ghost') {

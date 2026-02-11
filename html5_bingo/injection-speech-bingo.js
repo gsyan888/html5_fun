@@ -104,7 +104,7 @@ getOptionButtons = function() {
 		var btns = findMousedownButtons(getAllButtons(gameLayer));
 		hintButton = btns[btns.length-1];  //右邊問號的按鈕(用來查看解釋)
 		//buttons = btns.slice(1, btns.length-1); //九宮格按鈕
-		buttons = btns.slice(0, btns.length-2); //九宮格按鈕 2026.02.11 bugfix
+		buttons = btns.slice(0, btns.length-1); //九宮格按鈕 2026.02.11 bugfix
 	} else if(HTML5FunAppName == 'monster') {
 		buttons =  findMousedownButtons(getAllButtons(qLayer));
 	} else if(HTML5FunAppName == 'ghost') {

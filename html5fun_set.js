@@ -96,6 +96,15 @@ menu_items = [
 	, ""
 	],
 		
+	[ "成語BINGO集"
+	, "成語BINGO各版本選單"
+	, "assets/icon-bingo-nhk.png"
+	, "https://gsyan888.blogspot.com/2026/02/idioms-bingo.html#gameLogo"
+	, ""
+	, "https://gsyan888.blogspot.com/2026/02/idioms-bingo.html"
+	, ""
+	],
+
 	[ "國字基本筆畫練習"
 	, "國字基本筆畫練習"
 	, "assets/icon-stroke-order.png"
@@ -289,7 +298,7 @@ menu_items = [
 	[ "Bingo"
 	, ""
 	, "html5_bingo/assets/icon.png"
-	, "html5_bingo/html5_bingo.html"
+	, "https://gsyan888.blogspot.com/2026/02/idioms-bingo.html"
 	, "archives/html5_bingo.zip"
 	, "https://gsyan888.blogspot.com/2017/10/html5-bingo.html"
 	, "bingo"

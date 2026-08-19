@@ -28,6 +28,25 @@ function html5FunSendScore(logger_url, score) {
         //var nocache = '&nocache=' + new Date().getTime();
         //url += nocache;
         //url = 'https://corsproxy.io/?'+encodeURIComponent(url); //已不能用了
+
+        fetch(url)
+        ['then'](function (res) {
+	      return res.text();
+        })
+        ['catch'](function (e) {
+          return null;
+        })
+        ['then'](function (r) {
+          if (r && r.indexOf('getJsonData(') >= 0) {
+	        eval(r);
+            if (typeof(responseJsonData) != 'undefined' && responseJsonData != null && typeof(responseJsonData.dataBase64) == 'string') {
+              console.log(Base64.decode(responseJsonData.dataBase64));
+	        }
+          } else {
+            console.log(r);
+         }
+        });		
+		return;		
       }
       loadSettingFromExternalScript(url, function (result) {
         //由 Google Apps Script 傳回的資料以 base64 encode

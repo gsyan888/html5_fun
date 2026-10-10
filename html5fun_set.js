@@ -114,6 +114,15 @@ menu_items = [
 	, ""
 	],
 
+	[ "Stroke Quest 字詞解謎"
+	, "Stroke Quest 字詞解謎"
+	, "assets/icon-stroke-quest.png"
+	, "https://gsyan888.blogspot.com/p/stroke-quest.html?bank"
+	, ""
+	, "https://gsyan888.blogspot.com/2026/09/stroke-quest.html"
+	, "https://gsyan888.blogspot.com/2026/09/stroke-quest.html"
+	],
+
 	[ "Make 10"
 	, "Make 10 , 湊十數學小遊戲"
 	, "assets/icon-make10-2.png"
